@@ -56,8 +56,12 @@ def fingerprint(root):
                     remaining -= len(block)
                 position = end
         rows.append({"path": path.relative_to(root).as_posix(), "size": stat.st_size, "mode": stat.st_mode, "mtime_ns": stat.st_mtime_ns, "allocated_bytes": getattr(stat, "st_blocks", 0) * 512, "extents": extents, "extent_sha256": digest.hexdigest()})
-    canonical = json.dumps(rows, sort_keys=True, separators=(",", ":")).encode()
-    return {"definition": "SHA-256 of ordered path, size, mode, mtime, allocated extents and extent contents; not a whole-file SHA-256", "tree_fingerprint_sha256": hashlib.sha256(canonical).hexdigest(), "files": rows}
+    # st_blocks can change when the filesystem finishes allocation bookkeeping,
+    # even though bytes, holes, permissions and modification time are unchanged.
+    # Retain allocation measurements, but exclude them from source identity.
+    identity = [{key: value for key, value in row.items() if key != "allocated_bytes"} for row in rows]
+    canonical = json.dumps(identity, sort_keys=True, separators=(",", ":")).encode()
+    return {"definition": "SHA-256 of ordered path, size, mode, mtime, extent positions and contents; allocation accounting excluded; not a whole-file SHA-256", "tree_fingerprint_sha256": hashlib.sha256(canonical).hexdigest(), "files": rows}
 
 
 def run_command(command, evidence, name, commands):
@@ -126,7 +130,7 @@ def main():
     if sys.platform != "win32":
         mountpoint.mkdir()
     commands = []
-    report = {"schema": 1, "os": platform.platform(), "python": platform.python_version(), "commands": commands, "source": str(source), "store": str(store), "mountpoint": str(mountpoint), "status": "FAIL", "windows_physical_test": "REQUIRED"}
+    report = {"schema": 1, "os": platform.platform(), "python": platform.python_version(), "commands": commands, "source": str(source), "store": str(store), "mountpoint": str(mountpoint), "status": "FAIL", "windows_physical_test": "REQUIRED", "windows_native_runtime_test": "NOT RUN"}
     process = None
     mounted = False
     before = None
@@ -174,7 +178,7 @@ def main():
         report["io_probe"], report["probe_wall_seconds"] = run_command(probe_command, evidence, "io-probe", commands)
         report["status"] = "PASS"
         if sys.platform == "win32":
-            report["windows_physical_test"] = "PASS"
+            report["windows_native_runtime_test"] = "PASS"
     except Exception as error:
         report["error"] = str(error)
     finally:
@@ -198,9 +202,10 @@ def main():
         if before is not None:
             after = fingerprint(source)
             (evidence / "source-after.json").write_text(json.dumps(after, indent=2))
-            report["source_untouched"] = before == after
+            report["source_untouched"] = before["tree_fingerprint_sha256"] == after["tree_fingerprint_sha256"]
+            report["source_allocation_changed"] = {row["path"]: row["allocated_bytes"] for row in before["files"]} != {row["path"]: row["allocated_bytes"] for row in after["files"]}
             report["source_fingerprint_sha256"] = after["tree_fingerprint_sha256"]
-            if before != after:
+            if not report["source_untouched"]:
                 report["status"] = "FAIL"
         report["no_pre_extraction"] = {"basis": "OS-verified filesystem mount; empty or absent mountpoint after unmount; runner never calls unpack/extraction", "mountpoint_empty_after_unmount": not mountpoint.exists() or (not os.path.ismount(mountpoint) and not any(mountpoint.iterdir()))}
         report["wall_seconds"] = time.perf_counter() - start
