@@ -60,11 +60,15 @@ jobs:
         shell: pwsh
         run: |
           $installer = Join-Path $env:RUNNER_TEMP 'winfsp-2.1.25156.msi'
+          $installerLog = Join-Path $env:RUNNER_TEMP 'winfsp-install.log'
           Invoke-WebRequest 'https://github.com/winfsp/winfsp/releases/download/v2.1/winfsp-2.1.25156.msi' -OutFile $installer
           $expected = '073A70E00F77423E34BED98B86E600DEF93393BA5822204FAC57A29324DB9F7A'
           if ((Get-FileHash $installer -Algorithm SHA256).Hash -ne $expected) { throw 'WinFsp installer checksum mismatch' }
-          $install = Start-Process msiexec.exe -ArgumentList "/i `"$installer`" /qn ADDLOCAL=Core,Developer /norestart" -Wait -PassThru
-          if ($install.ExitCode -notin 0,3010) { throw "WinFsp install failed: $($install.ExitCode)" }
+          $install = Start-Process msiexec.exe -ArgumentList "/i `"$installer`" /qn ADDLOCAL=F.Main,F.User,F.Developer /norestart /l*v `"$installerLog`"" -Wait -PassThru
+          if ($install.ExitCode -notin 0,3010) {
+            Get-Content $installerLog -Tail 80
+            throw "WinFsp install failed: $($install.ExitCode)"
+          }
           'C:\Program Files (x86)\WinFsp\bin' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
           'LIBCLANG_PATH=C:\Program Files\LLVM\bin' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - run: cargo test --workspace
@@ -79,5 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-runtime-evidence
-          path: ${{ runner.temp }}/playsparse-mounted-ci/evidence
+          path: |
+            ${{ runner.temp }}/playsparse-mounted-ci/evidence
+            ${{ runner.temp }}/winfsp-install.log
           if-no-files-found: warn
