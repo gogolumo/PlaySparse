@@ -55,7 +55,7 @@ def fingerprint(root):
                     digest.update(block)
                     remaining -= len(block)
                 position = end
-        rows.append({"path": path.relative_to(root).as_posix(), "size": stat.st_size, "mode": stat.st_mode, "mtime_ns": stat.st_mtime_ns, "allocated_bytes": getattr(stat, "st_blocks", 0) * 512, "extents": extents, "extent_sha256": digest.hexdigest()})
+        rows.append({"path": path.relative_to(root).as_posix(), "size": stat.st_size, "mode": stat.st_mode, "mtime_ns": stat.st_mtime_ns, "allocated_bytes": stat.st_blocks * 512 if hasattr(stat, "st_blocks") else None, "extents": extents, "extent_sha256": digest.hexdigest()})
     # st_blocks can change when the filesystem finishes allocation bookkeeping,
     # even though bytes, holes, permissions and modification time are unchanged.
     # Retain allocation measurements, but exclude them from source identity.
@@ -95,14 +95,34 @@ def windows_mount_record(mountpoint):
     if sys.platform != "win32":
         return None
     import ctypes
+    from ctypes import wintypes
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    create = kernel.CreateFileW
+    create.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                       wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+    create.restype = wintypes.HANDLE
+    close = kernel.CloseHandle
+    close.argtypes = [wintypes.HANDLE]
+    close.restype = wintypes.BOOL
+    query = kernel.GetVolumeInformationByHandleW
+    query.argtypes = [wintypes.HANDLE, wintypes.LPWSTR, wintypes.DWORD,
+                     ctypes.POINTER(wintypes.DWORD), ctypes.POINTER(wintypes.DWORD),
+                     ctypes.POINTER(wintypes.DWORD), wintypes.LPWSTR, wintypes.DWORD]
+    query.restype = wintypes.BOOL
+    # Query the directory's resolved handle: directory mounts are reparse points,
+    # and a drive-root query can describe the underlying NTFS volume instead.
+    handle = create(str(mountpoint), 0x80, 7, None, 3, 0x02000000, None)
+    if handle == ctypes.c_void_p(-1).value:
+        return {"real_mount": False, "api": "CreateFileW", "error": ctypes.get_last_error()}
     filesystem = ctypes.create_unicode_buffer(261)
     label = ctypes.create_unicode_buffer(261)
-    ok = ctypes.windll.kernel32.GetVolumeInformationW(
-        str(mountpoint) + "\\", label, len(label), None, None, None,
-        filesystem, len(filesystem))
-    if ok and filesystem.value == "PlaySparse":
-        return {"filesystem_type": filesystem.value, "volume_label": label.value}
-    return None
+    try:
+        ok = query(handle, label, len(label), None, None, None, filesystem, len(filesystem))
+        if not ok:
+            return {"real_mount": False, "api": "GetVolumeInformationByHandleW", "error": ctypes.get_last_error()}
+        return {"real_mount": filesystem.value == "PlaySparse", "filesystem_type": filesystem.value, "volume_label": label.value, "api": "GetVolumeInformationByHandleW"}
+    finally:
+        close(handle)
 
 
 def main():
@@ -158,7 +178,9 @@ def main():
             if process.poll() is not None:
                 raise RuntimeError(f"mount exited {process.returncode}: {(evidence / 'mount.stderr.log').read_text()[-4000:]}")
             record = windows_mount_record(mountpoint) if sys.platform == "win32" else linux_mount_record(mountpoint)
-            real_mount = record is not None if sys.platform == "win32" else os.path.ismount(mountpoint)
+            if sys.platform == "win32":
+                report["last_windows_mount_observation"] = record
+            real_mount = record["real_mount"] if sys.platform == "win32" else os.path.ismount(mountpoint)
             if real_mount and (mountpoint / "fixture.json").is_file():
                 if sys.platform == "linux" and (record is None or not record["filesystem_type"].startswith("fuse")):
                     raise RuntimeError("mount is not a real FUSE filesystem")
@@ -182,7 +204,7 @@ def main():
     except Exception as error:
         report["error"] = str(error)
     finally:
-        if mounted:
+        if mounted or (process is not None and process.poll() is None):
             try:
                 run_command([str(playsparse), "unmount", str(mountpoint)], evidence, "unmount", commands)
             except Exception as error:
@@ -192,7 +214,10 @@ def main():
             try:
                 process.wait(timeout=10)
             except subprocess.TimeoutExpired:
-                process.send_signal(signal.SIGINT)
+                if sys.platform == "win32":
+                    process.terminate()
+                else:
+                    process.send_signal(signal.SIGINT)
                 try:
                     process.wait(timeout=5)
                 except subprocess.TimeoutExpired:

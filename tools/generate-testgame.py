@@ -76,7 +76,8 @@ def generate(destination, executable, logical_bytes=10 * GIB):
     fixture = {"schema": 1, "dataset": "synthetic sparse TestGame; not a real game compression estimate", "world_logical_bytes": logical_bytes, "seed": 5042, "files": files}
     (destination / "fixture.json").write_text(json.dumps(fixture, sort_keys=True, separators=(",", ":")) + "\n")
     paths = [p for p in destination.rglob("*") if p.is_file()]
-    summary = {"source": str(destination.resolve()), "executable": name, "world_logical_bytes": logical_bytes, "logical_bytes": sum(p.stat().st_size for p in paths), "files": len(paths), "source_allocated_bytes": sum(getattr(p.stat(), "st_blocks", 0) * 512 for p in paths), "nonzero_world_regions": len(markers), "sample_count": sum(len(f["samples"]) for f in files)}
+    allocated = sum(p.stat().st_blocks * 512 for p in paths) if hasattr(paths[0].stat(), "st_blocks") else None
+    summary = {"source": str(destination.resolve()), "executable": name, "world_logical_bytes": logical_bytes, "logical_bytes": sum(p.stat().st_size for p in paths), "files": len(paths), "source_allocated_bytes": allocated, "nonzero_world_regions": len(markers), "sample_count": sum(len(f["samples"]) for f in files)}
     return summary
 
 
