@@ -1,0 +1,108 @@
+{
+  "experiment": "01-zstd-random-access",
+  "dataset": {
+    "description": "synthetic mixed-entropy baseline (25% repetitive text, 25% zeros, 25% deterministic high-entropy-like bytes, 25% structured repeated binary)",
+    "size_bytes": 33554432,
+    "size_mib": 32.0,
+    "sha256": "09f2e29b63052b97201d8c6f04e44886ac4eb6a4e9eb985d3365fdbbd322ea74",
+    "synthetic": true
+  },
+  "environment": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "zstd": "*** Zstandard CLI (64-bit) v1.5.7, by Yann Collet ***"
+  },
+  "config": {
+    "level": 3,
+    "random_reads": 50,
+    "read_size": 4096
+  },
+  "monolithic": {
+    "stored_bytes": 8390959,
+    "stored_mib": 8.002242088317871,
+    "ratio": 3.998879269938037,
+    "compress_seconds": 0.02089200100004973
+  },
+  "chunked": [
+    {
+      "chunk_bytes": 262144,
+      "chunk_label": "256 KiB",
+      "chunks": 128,
+      "stored_bytes": 8403584,
+      "stored_mib": 8.0142822265625,
+      "ratio": 3.992871612873745,
+      "compress_seconds": 0.20390068199992584,
+      "reconstruct_seconds": 0.17093273399996178,
+      "reconstruct_mib_s": 187.20814469630582,
+      "random_read_ms": {
+        "mean": 1.3703955799917367,
+        "p50": 1.3541074999920966,
+        "p95": 1.6750727499839968,
+        "p99": 1.865554509976732,
+        "min": 1.1454479999883915,
+        "max": 1.9719829999758076
+      },
+      "reconstructed_sha256": "09f2e29b63052b97201d8c6f04e44886ac4eb6a4e9eb985d3365fdbbd322ea74"
+    },
+    {
+      "chunk_bytes": 1048576,
+      "chunk_label": "1 MiB",
+      "chunks": 32,
+      "stored_bytes": 8393840,
+      "stored_mib": 8.004989624023438,
+      "ratio": 3.9975067430401343,
+      "compress_seconds": 0.08784565600029737,
+      "reconstruct_seconds": 0.05784839899996541,
+      "reconstruct_mib_s": 553.170019450653,
+      "random_read_ms": {
+        "mean": 2.1991847000060716,
+        "p50": 1.9377270000120461,
+        "p95": 3.7552455000110285,
+        "p99": 5.155467559984002,
+        "min": 1.6378320000285385,
+        "max": 5.645396999966579
+      },
+      "reconstructed_sha256": "09f2e29b63052b97201d8c6f04e44886ac4eb6a4e9eb985d3365fdbbd322ea74"
+    },
+    {
+      "chunk_bytes": 4194304,
+      "chunk_label": "4 MiB",
+      "chunks": 8,
+      "stored_bytes": 8391412,
+      "stored_mib": 8.002674102783203,
+      "ratio": 3.9986633953856634,
+      "compress_seconds": 0.04512988499993753,
+      "reconstruct_seconds": 0.02889762900002779,
+      "reconstruct_mib_s": 1107.3572852627192,
+      "random_read_ms": {
+        "mean": 5.010204320001321,
+        "p50": 4.848821999985375,
+        "p95": 7.170204250019195,
+        "p99": 7.549631859961892,
+        "min": 3.990885000007438,
+        "max": 7.654239999965284
+      },
+      "reconstructed_sha256": "09f2e29b63052b97201d8c6f04e44886ac4eb6a4e9eb985d3365fdbbd322ea74"
+    },
+    {
+      "chunk_bytes": 16777216,
+      "chunk_label": "16 MiB",
+      "chunks": 2,
+      "stored_bytes": 8390973,
+      "stored_mib": 8.0022554397583,
+      "ratio": 3.99887259796927,
+      "compress_seconds": 0.025706481999975495,
+      "reconstruct_seconds": 0.013345530999970379,
+      "reconstruct_mib_s": 2397.8064267409836,
+      "random_read_ms": {
+        "mean": 15.750064559996417,
+        "p50": 15.41302550000978,
+        "p95": 18.726560199991127,
+        "p99": 19.171663390001186,
+        "min": 13.736069999993106,
+        "max": 19.5179899999971
+      },
+      "reconstructed_sha256": "09f2e29b63052b97201d8c6f04e44886ac4eb6a4e9eb985d3365fdbbd322ea74"
+    }
+  ]
+}
