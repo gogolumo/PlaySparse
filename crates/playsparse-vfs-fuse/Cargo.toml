@@ -1,0 +1,34 @@
+[package]
+name = "playsparse-vfs-fuse"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[features]
+default = []
+# A genuine macFUSE mount requires installed macFUSE headers/library and driver.
+# Default macOS builds keep the platform-independent CLI usable without that driver.
+macfuse = ["dep:fuser"]
+
+[dependencies]
+anyhow.workspace = true
+playsparse-core = { path = "../playsparse-core" }
+playsparse-range = { path = "../playsparse-range" }
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+fuser = { version = "0.18", default-features = false }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+fuser = { version = "0.18", default-features = false, optional = true }
+
+[dev-dependencies]
+tempfile.workspace = true
+playsparse-store = { path = "../playsparse-store" }
+memmap2 = "0.9"

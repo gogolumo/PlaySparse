@@ -1,0 +1,10 @@
+[package]
+name = "playsparse-cache"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[dependencies]
+playsparse-core = { path = "../playsparse-core" }
+serde.workspace = true
+parking_lot.workspace = true
+lru.workspace = true

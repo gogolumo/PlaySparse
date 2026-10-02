@@ -1,0 +1,29 @@
+[package]
+name = "playsparse-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+[package.metadata]
+cargo-fuzz = true
+[dependencies]
+libfuzzer-sys = "0.4"
+serde_json = "1"
+playsparse-core = { path = "../crates/playsparse-core" }
+playsparse-store = { path = "../crates/playsparse-store" }
+[workspace]
+members = ["."]
+[[bin]]
+name = "manifest"
+path = "fuzz_targets/manifest.rs"
+test = false
+doc = false
+[[bin]]
+name = "index"
+path = "fuzz_targets/index.rs"
+test = false
+doc = false
+[[bin]]
+name = "range"
+path = "fuzz_targets/range.rs"
+test = false
+doc = false

@@ -1,0 +1,12 @@
+[package]
+name = "playsparse-range"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[dependencies]
+playsparse-core = { path = "../playsparse-core" }
+playsparse-store = { path = "../playsparse-store" }
+playsparse-cache = { path = "../playsparse-cache" }
+[dev-dependencies]
+tempfile.workspace = true
+proptest.workspace = true

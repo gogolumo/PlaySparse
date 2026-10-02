@@ -1,0 +1,26 @@
+[package]
+name = "playsparse-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[[bin]]
+name = "playsparse"
+path = "src/main.rs"
+[features]
+macfuse = ["playsparse-vfs-fuse/macfuse"]
+[dependencies]
+playsparse-core = { path = "../playsparse-core" }
+playsparse-store = { path = "../playsparse-store" }
+playsparse-range = { path = "../playsparse-range" }
+playsparse-vfs-win = { path = "../playsparse-vfs-win" }
+anyhow.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+blake3.workspace = true
+tempfile.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+libc.workspace = true
+[target.'cfg(unix)'.dependencies]
+playsparse-vfs-fuse = { path = "../playsparse-vfs-fuse" }

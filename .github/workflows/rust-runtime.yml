@@ -1,0 +1,83 @@
+name: rust-runtime
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Install genuine FUSE mount dependencies
+        run: sudo apt-get update && sudo apt-get install -y fuse3
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test --workspace
+      - run: cargo build --release --workspace
+      - name: Real mounted application and 64-bit I/O test
+        run: sudo python3 tools/mounted-smoke.py --work /tmp/playsparse-mounted-ci --world-bytes 10737418240 --iterations 32 --cache 64M
+      - name: Object-write and manifest-write kill tests, real ENOSPC
+        run: |
+          sudo mkdir /tmp/playsparse-enospc
+          sudo mount -t tmpfs -o size=1M tmpfs /tmp/playsparse-enospc
+          sudo python3 tools/crash-smoke.py --work /tmp/playsparse-crash-ci --disk-full-dir /tmp/playsparse-enospc
+          sudo umount /tmp/playsparse-enospc
+      - name: Loose versus packfiles experiment
+        run: python3 experiments/04-loose-vs-packfiles/run_benchmark.py --output /tmp/playsparse-experiment04-ci --repetitions 2 --iterations 64 --size-mib 32
+      - name: Preserve raw measured evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-runtime-evidence
+          path: |
+            /tmp/playsparse-mounted-ci/evidence
+            /tmp/playsparse-crash-ci/evidence
+            /tmp/playsparse-experiment04-ci
+          if-no-files-found: warn
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: Swatinem/rust-cache@v2
+      - name: Install pinned upstream WinFsp driver and SDK
+        shell: pwsh
+        run: |
+          $installer = Join-Path $env:RUNNER_TEMP 'winfsp-2.1.25156.msi'
+          Invoke-WebRequest 'https://github.com/winfsp/winfsp/releases/download/v2.1/winfsp-2.1.25156.msi' -OutFile $installer
+          $expected = '073A70E00F77423E34BED98B86E600DEF93393BA5822204FAC57A29324DB9F7A'
+          if ((Get-FileHash $installer -Algorithm SHA256).Hash -ne $expected) { throw 'WinFsp installer checksum mismatch' }
+          $install = Start-Process msiexec.exe -ArgumentList "/i `"$installer`" /qn ADDLOCAL=Core,Developer /norestart" -Wait -PassThru
+          if ($install.ExitCode -notin 0,3010) { throw "WinFsp install failed: $($install.ExitCode)" }
+          'C:\Program Files (x86)\WinFsp\bin' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          'LIBCLANG_PATH=C:\Program Files\LLVM\bin' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - run: cargo test --workspace
+      - run: cargo build --release --workspace
+      - name: Native WinFsp mounted application and memory mapping
+        shell: pwsh
+        run: |
+          python tools/mounted-smoke.py --work "$env:RUNNER_TEMP\playsparse-mounted-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe --world-bytes 10737418240 --iterations 32 --cache 64M
+          if ($LASTEXITCODE -ne 0) { throw 'Windows mounted runtime test failed' }
+      - name: Preserve native Windows evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-runtime-evidence
+          path: ${{ runner.temp }}/playsparse-mounted-ci/evidence
+          if-no-files-found: warn

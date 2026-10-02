@@ -3,3 +3,10 @@ __pycache__/
 *.pyc
 experiments/01-zstd-random-access/work/
 experiments/01-zstd-random-access/dataset/
+/target/
+/target-linux/
+/runtime-work/
+/fuzz/target/
+/fuzz/artifacts/
+/fuzz/corpus/
+*.pack.lock

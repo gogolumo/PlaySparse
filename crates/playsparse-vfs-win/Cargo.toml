@@ -1,0 +1,20 @@
+[package]
+name = "playsparse-vfs-win"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+playsparse-core = { path = "../playsparse-core" }
+playsparse-range = { path = "../playsparse-range" }
+serde_json.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+winfsp = { version = "0.13.1", default-features = false, features = ["system", "delayload"] }
+windows = { version = "0.61.1", features = ["Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_Console", "Win32_System_Threading", "Win32_System_SystemInformation", "Win32_Globalization", "Win32_Security_Authorization"] }
+blake3.workspace = true
+
+[dev-dependencies]
+playsparse-store = { path = "../playsparse-store" }
+tempfile.workspace = true
