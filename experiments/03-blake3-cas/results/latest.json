@@ -1,0 +1,22 @@
+{
+  "experiment": "03-blake3-cas",
+  "dataset": "generated duplicate + versioned game-like files",
+  "logical_bytes": 2972540,
+  "physical_bytes": 1184528,
+  "physical_ratio": 0.3984901801153222,
+  "space_saved_ratio": 0.6015098198846778,
+  "object_count": 9,
+  "created_chunks": 9,
+  "reused_chunk_references": 1,
+  "manifest_bytes": 3498,
+  "pack_seconds": 3.7786321120001958,
+  "verify_seconds": 3.73485937400028,
+  "unpack_seconds": 3.254186835999917,
+  "checked_files": 5,
+  "checked_bytes": 2972540,
+  "source_tree_sha256": "41f4b0623466d3b964c9d159bc7ba779583f27610e5814e6960d14b6b925caf1",
+  "reconstructed_tree_sha256": "41f4b0623466d3b964c9d159bc7ba779583f27610e5814e6960d14b6b925caf1",
+  "byte_identical": true,
+  "hash_algorithm": "BLAKE3-256 (dependency-free reference implementation validated against official empty/abc vectors)",
+  "codec": "Zstd level 3 via CLI (experiment only)"
+}

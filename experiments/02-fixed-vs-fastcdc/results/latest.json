@@ -1,0 +1,57 @@
+{
+  "experiment": "02-fixed-vs-fastcdc",
+  "dataset": {
+    "synthetic": true,
+    "base_bytes": 25165824,
+    "updated_bytes": 25296896,
+    "update": "128 KiB insertion near 1/3 + 96 KiB replacement near 3/4"
+  },
+  "config": {
+    "target_chunk_kib": 256,
+    "zstd_level": 3
+  },
+  "results": [
+    {
+      "name": "fixed",
+      "base_chunks": 96,
+      "updated_chunks": 97,
+      "base_avg_chunk": 262144.0,
+      "updated_avg_chunk": 260792.74226804124,
+      "chunking_seconds_base": 0.0016971339996416646,
+      "chunking_seconds_updated": 0.005343515000276966,
+      "reused_v2_chunks": 32,
+      "reused_v2_bytes": 8388608,
+      "v2_reuse_ratio": 0.3316062176165803,
+      "two_version_logical_bytes": 50462720,
+      "unique_raw_bytes": 42074112,
+      "unique_raw_ratio": 0.8337662337662337,
+      "compressed_unique_bytes": 8509611,
+      "compressed_unique_ratio": 0.1686316353934152,
+      "compression_seconds": 0.39968840099982117,
+      "manifest_bytes": 18647
+    },
+    {
+      "name": "fastcdc-style",
+      "base_chunks": 36,
+      "updated_chunks": 37,
+      "base_avg_chunk": 699050.6666666666,
+      "updated_avg_chunk": 683699.8918918918,
+      "chunking_seconds_base": 3.3015285860001313,
+      "chunking_seconds_updated": 3.2476813110001785,
+      "reused_v2_chunks": 34,
+      "reused_v2_bytes": 23504244,
+      "v2_reuse_ratio": 0.9291354955169203,
+      "two_version_logical_bytes": 50462720,
+      "unique_raw_bytes": 26958476,
+      "unique_raw_ratio": 0.5342255827668425,
+      "compressed_unique_bytes": 5497718,
+      "compressed_unique_ratio": 0.1089461289442979,
+      "compression_seconds": 0.12964383700000326,
+      "manifest_bytes": 7078
+    }
+  ],
+  "conclusion": {
+    "cdc_patch_reuse_delta_percentage_points": 59.75292779003401,
+    "cdc_compressed_store_delta_percent": -35.394015073074435
+  }
+}

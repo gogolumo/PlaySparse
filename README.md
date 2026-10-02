@@ -1,133 +1,178 @@
 # PlaySparse
 
-**Experimental transparent storage for very large games.**
+**Experimental adaptive virtual storage runtime for very large games.**
 
-Modern games are huge: 100 GB, 150 GB, sometimes more than 200 GB. PlaySparse explores whether a game can occupy substantially less **local physical storage** while still presenting a normal file tree to the game at runtime.
+Modern games can occupy 100–200+ GB. PlaySparse investigates a different question from ordinary compression:
 
-The project investigates a storage layer combining:
+> Can an unmodified game see the normal files it expects while the bytes underneath are stored in a more efficient, adaptive physical representation?
 
-- transparent chunk compression;
-- content-addressable storage and deduplication;
-- random-access decompression;
-- a virtual filesystem/provider layer;
-- hot/warm/cold caching;
-- optional remote or secondary-storage backing.
+PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. Transparent filesystem compression already exists, and modern game data is often already compressed. The research target is a storage runtime that can combine content-addressed chunks, on-demand reconstruction, caching, tiering and eventually access-trace-driven policy decisions.
 
-> The goal is not to promise a magical 10× lossless compressor. The goal is to measure how far a transparent storage architecture can realistically go.
+## Current status
 
-## What this project is NOT
+PlaySparse is still an R&D project, but it now has two working storage primitives beyond the original compression benchmark:
 
-- not a magical `100 GB -> 10 GB` compressor;
-- not a repack/piracy project;
-- not DRM bypass;
-- not a ZIP frontend that extracts the whole game before launch;
-- not a claim that already-compressed textures, audio and video can always shrink much further.
+- **Experiment 02 — fixed chunks vs CDC:** shows why content-defined boundaries can preserve reuse across insertion-heavy updates.
+- **Experiment 03 — BLAKE3 CAS:** packs a directory into immutable BLAKE3-addressed, Zstd-compressed chunks and reconstructs it byte-for-byte.
+- correctness tests validate official BLAKE3 vectors, deterministic chunking and a full CAS directory round trip;
+- GitHub Actions runs the lab correctness suite and smoke experiments.
 
-## Reality check
+It does **not** yet mount a real game as a virtual filesystem. That is the next major systems milestone.
 
-A universal 10× reduction with byte-identical output, no remote backing and no runtime cost is not realistic for arbitrary modern games. Much game content is already compressed or entropy-dense. The promising direction is **systems engineering rather than a new universal codec**: chunking, deduplication, compression where it actually helps, sparse/virtual files, caching, and optional streaming.
+## What already exists elsewhere
 
-The initial target is a **local-only, byte-identical prototype**. Remote backing and perceptual asset recompression are explicitly later, opt-in research tracks.
+PlaySparse does not claim novelty for:
 
-## Working architecture
+- Windows WOF/CompactOS/CompactGUI-style transparent compression;
+- btrfs/ZFS/filesystem compression;
+- WinFsp/ProjFS virtual filesystems;
+- Cloud Files hydration;
+- FastCDC/content-defined chunking;
+- content-addressed storage;
+- game codecs such as Oodle Kraken/Leviathan.
+
+See [`docs/prior-art.md`](docs/prior-art.md).
+
+## Research hypothesis
+
+The candidate differentiator is the **control loop**, not any one primitive:
 
 ```text
-Game / application
-       |
-       v
-Virtual filesystem / provider
-       |
-       v
-Chunk resolver -----> Hot cache
-       |
-       +-----------> Compressed content-addressed store
-       |
-       +-----------> Optional secondary / remote backing (later)
+unmodified game
+      |
+      v
+virtual filesystem
+      |
+      v
+range resolver <--------- access trace
+      |                        |
+      v                        v
+cache / prefetch <------ policy optimizer
+      |
+      v
+content-addressed compressed store
+      |
+      +---- NVMe / SSD / HDD / NAS / remote tier (later)
 ```
 
-See [`docs/architecture.md`](docs/architecture.md).
+The long-term hypothesis is that PlaySparse can choose, per file or byte range:
 
-## M0 status
+- chunk size;
+- codec / compression level;
+- compressed vs decompressed cache state;
+- prefetch behavior;
+- storage tier;
 
-M0 is a feasibility phase. It contains:
+based on observed game I/O, and thereby find a better **space × latency × CPU** Pareto frontier than a static filesystem-compression policy.
 
-- architecture and limits research;
-- platform/API selection;
-- Experiment 01: Zstd independent-frame random-access benchmark;
-- measured baseline results on a synthetic mixed-entropy dataset.
+That hypothesis is not proven yet.
 
-No results from the synthetic dataset should be interpreted as a claim about a particular commercial game.
+## M0 baseline — random-access compression
 
-## Experiment 01
+The original synthetic benchmark established the expected chunk-size trade-off: smaller independent chunks reduce random-read amplification while preserving almost the same ratio on that generated dataset. Those numbers are synthetic and are not a claim about GTA, Dota, or any other game.
 
-Run:
+See [`experiments/01-zstd-random-access`](experiments/01-zstd-random-access).
+
+## Experiment 02 — update reuse
+
+Default synthetic run (`24 MiB`, target `256 KiB`, Zstd level 3):
+
+| Chunker | v2 bytes reused from v1 | Compressed unique store / two versions |
+|---|---:|---:|
+| fixed offsets | ~33.16% | ~16.86% |
+| FastCDC-style | ~92.91% | ~10.89% |
+
+On this insertion-heavy **synthetic** update, CDC recovered content boundaries after the insertion and improved reuse by about **59.75 percentage points**. The Python reference CDC implementation is far too slow for production; the result supports the *storage behavior*, not the implementation performance.
+
+See [`experiments/02-fixed-vs-fastcdc`](experiments/02-fixed-vs-fastcdc).
+
+## Experiment 03 — working content-addressed store
+
+The current lab prototype implements:
+
+```text
+source directory
+    ↓
+content-defined chunks
+    ↓
+BLAKE3-256 IDs
+    ↓
+Zstd immutable objects
+    ↓
+manifest
+    ↓
+verified reconstruction
+```
+
+A generated ~2.97 MB corpus was reconstructed with an identical whole-tree SHA-256. The corpus deliberately contains duplicate/compressible data, so its ~60% synthetic saving is **not** an AAA-game estimate.
+
+See [`experiments/03-blake3-cas`](experiments/03-blake3-cas) and [`docs/storage-format-v0.md`](docs/storage-format-v0.md).
+
+## Lab CLI
+
+Today the research implementation can already pack and verify ordinary directories:
 
 ```bash
-cd experiments/01-zstd-random-access
-python3 benchmark.py
+python3 -m playsparse_lab analyze ./some-directory
+python3 -m playsparse_lab pack ./some-directory ./some-directory.playsparse
+python3 -m playsparse_lab verify ./some-directory.playsparse
+python3 -m playsparse_lab unpack ./some-directory.playsparse ./reconstructed
 ```
 
-Requirements:
+Requirements for the lab implementation:
 
 - Python 3.10+;
-- `zstd` command line tool in `PATH`.
+- `zstd` CLI in `PATH`.
 
-The experiment compares monolithic Zstd compression with independently compressed chunks at several chunk sizes. Independent chunks model the core trade-off of a future virtual filesystem: slightly worse compression can buy bounded read amplification for random reads.
+This is **not** the final production CLI. The production storage engine is planned in Rust with in-process BLAKE3/Zstd and a Windows-first virtual filesystem provider.
 
-Results are written to `results/latest.json` and `results/latest.md`.
+## Correctness
 
-## Planned product modes
+```bash
+bash tools/check.sh
+```
 
-| Mode | Intent | Byte-identical? | Remote backing? |
-|---|---|---:|---:|
-| Safe | compression + dedup + transparent reconstruction | yes | no |
-| Balanced | Safe + removable/regenerable caches and optional content rules | mostly | no |
-| Aggressive | optional perceptual texture/audio/video transcoding | no | no |
-| Streaming | minimum local working set + on-demand chunks | source chunks remain exact | optional |
+The suite checks:
 
-## Technology direction
+- official BLAKE3 empty and `abc` vectors;
+- deterministic CDC behavior;
+- chunk concatenation round trip;
+- CAS deduplication;
+- per-object BLAKE3 verification;
+- per-file SHA-256 verification;
+- byte-identical directory reconstruction.
 
-The likely main implementation language after M0 is **Rust**. For a first real gaming-platform filesystem prototype, Windows is the primary target. Candidate provider layers are WinFsp and Windows Projected File System; macOS and Linux follow after the storage format and resolver are stable.
+## Next milestone
 
-M0 intentionally uses Python + the system Zstd CLI so the first hypothesis can be tested before committing to a large Rust codebase.
-
-## Repository layout
+The next critical milestone is not another compression ratio benchmark. It is a **range-serving virtual filesystem prototype**:
 
 ```text
-PlaySparse/
-├── README.md
-├── ROADMAP.md
-├── CONTRIBUTING.md
-├── SECURITY.md
-├── LICENSE
-├── docs/
-├── experiments/
-│   └── 01-zstd-random-access/
-├── src/
-├── tests/
-├── benchmarks/
-└── tools/
+original directory
+      ↓
+PlaySparse pack
+      ↓
+compressed CAS
+      ↓
+virtual mounted/projected directory
+      ↓
+arbitrary reader receives identical bytes
 ```
+
+Windows is the primary target. ProjFS and WinFsp must be benchmarked against the actual requirements (random reads, memory mapping, concurrency, large files and launcher behavior) rather than chosen by preference.
+
+## Breakthrough policy
+
+A feature is interesting only when it produces a reproducible, non-dominated improvement versus meaningful baselines. Negative results stay in the repository. Synthetic results never become game claims.
+
+See [`docs/breakthrough-criteria.md`](docs/breakthrough-criteria.md).
 
 ## Safety / legal scope
 
-PlaySparse is for storage research on files the user is authorized to access. The project must not bypass DRM, license checks, anti-cheat systems or platform protections. Experiments must treat source installations as read-only.
+- source installations are read-only inputs;
+- PlaySparse does not bypass DRM, anti-cheat or license checks;
+- commercial game assets are never committed to the repository;
+- destructive source deletion is out of scope until reconstruction and crash safety are mature.
 
 ## License
 
 MIT.
-
-## M0 measured baseline
-
-The first local run used a **32 MiB synthetic mixed-entropy dataset** at Zstd level 3. It is intentionally not a game corpus.
-
-| Layout | Ratio | Random-read p95* | Sequential reconstruction |
-|---|---:|---:|---:|
-| 256 KiB chunks | 3.993× | 1.675 ms | 187.2 MiB/s |
-| 1 MiB chunks | 3.998× | 3.755 ms | 553.2 MiB/s |
-| 4 MiB chunks | 3.999× | 7.170 ms | 1107.4 MiB/s |
-| 16 MiB chunks | 3.999× | 18.727 ms | 2397.8 MiB/s |
-
-\* Random-read latency includes spawning the `zstd` CLI for every access, so absolute values are intentionally conservative and are not a production prediction. The useful signal is the chunk-size trend.
-
-See [`experiments/01-zstd-random-access/results/latest.md`](experiments/01-zstd-random-access/results/latest.md) for the complete run metadata.
