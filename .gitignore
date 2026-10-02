@@ -1,0 +1,5 @@
+.DS_Store
+__pycache__/
+*.pyc
+experiments/01-zstd-random-access/work/
+experiments/01-zstd-random-access/dataset/
