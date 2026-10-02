@@ -134,7 +134,24 @@ fn publish_directory(stage: &Path, destination: &Path) -> Result<()> {
     }
     #[cfg(windows)]
     {
-        fs::rename(stage, destination)?;
+        use std::os::windows::ffi::OsStrExt;
+        #[link(name = "kernel32")]
+        unsafe extern "system" {
+            fn MoveFileExW(source: *const u16, destination: *const u16, flags: u32) -> i32;
+        }
+        let source: Vec<u16> = stage.as_os_str().encode_wide().collect();
+        let target: Vec<u16> = destination.as_os_str().encode_wide().collect();
+        if source.contains(&0) || target.contains(&0) {
+            return Err(invalid("NUL in publication path"));
+        }
+        let source: Vec<u16> = source.into_iter().chain([0]).collect();
+        let target: Vec<u16> = target.into_iter().chain([0]).collect();
+        // SAFETY: both terminated UTF-16 buffers remain alive for this call.
+        // No REPLACE_EXISTING or COPY_ALLOWED flags: same-volume publication
+        // must refuse an existing destination, including an empty directory.
+        if unsafe { MoveFileExW(source.as_ptr(), target.as_ptr(), 0) } == 0 {
+            return Err(std::io::Error::last_os_error().into());
+        }
     }
     Ok(())
 }
