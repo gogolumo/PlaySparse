@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import random
@@ -38,6 +39,9 @@ def make_corpus(root: Path) -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=RESULTS)
+    results = parser.parse_args().output
     if shutil.which("zstd") is None:
         raise SystemExit("zstd CLI required")
     with tempfile.TemporaryDirectory(prefix="playsparse-cas-") as td:
@@ -89,8 +93,8 @@ def main() -> None:
             "hash_algorithm": "BLAKE3-256 (dependency-free reference implementation validated against official empty/abc vectors)",
             "codec": "Zstd level 3 via CLI (experiment only)",
         }
-        RESULTS.mkdir(parents=True, exist_ok=True)
-        (RESULTS / "latest.json").write_text(json.dumps(result, indent=2) + "\n")
+        results.mkdir(parents=True, exist_ok=True)
+        (results / "latest.json").write_text(json.dumps(result, indent=2) + "\n")
         md = f"""# Experiment 03 results
 
 > Generated corpus only; not a commercial-game compression claim.
@@ -116,7 +120,7 @@ The prototype can turn a directory into a BLAKE3-addressed, Zstd-compressed obje
 
 The corpus intentionally contains duplicate and compressible data. The reported space saving is **not** an estimate for an AAA game. The current lab implementation is Python and invokes the Zstd CLI per object, so its pack/verify times are not production performance targets.
 """
-        (RESULTS / "latest.md").write_text(md)
+        (results / "latest.md").write_text(md)
         print(json.dumps(result, indent=2))
 
 

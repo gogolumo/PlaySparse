@@ -127,7 +127,9 @@ def main() -> None:
     parser.add_argument("--dataset-mib", type=int, default=24)
     parser.add_argument("--chunk-kib", type=int, default=256)
     parser.add_argument("--level", type=int, default=3)
+    parser.add_argument("--output", type=Path, default=RESULTS)
     args = parser.parse_args()
+    results = args.output
     if shutil.which("zstd") is None:
         raise SystemExit("zstd CLI is required")
 
@@ -159,8 +161,8 @@ def main() -> None:
             "cdc_compressed_store_delta_percent": ((cdc["compressed_unique_bytes"] / fixed["compressed_unique_bytes"]) - 1) * 100,
         },
     }
-    RESULTS.mkdir(parents=True, exist_ok=True)
-    (RESULTS / "latest.json").write_text(json.dumps(result, indent=2) + "\n")
+    results.mkdir(parents=True, exist_ok=True)
+    (results / "latest.json").write_text(json.dumps(result, indent=2) + "\n")
     md = [
         "# Experiment 02 results",
         "",
@@ -188,7 +190,7 @@ def main() -> None:
         "",
         "The implementation is a small FastCDC-style normalized Gear reference. Production code should use a vetted Rust FastCDC implementation and repeat this benchmark on open game-like corpora.",
     ]
-    (RESULTS / "latest.md").write_text("\n".join(md) + "\n")
+    (results / "latest.md").write_text("\n".join(md) + "\n")
     print(json.dumps(result, indent=2))
 
 
