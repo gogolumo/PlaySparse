@@ -27,6 +27,12 @@ pub(crate) fn reject_links(path: &Path) -> Result<()> {
             return Err(refused("parent traversal in overlay storage path"));
         }
         prefix.push(component);
+        // A Windows prefix (including canonical \\?\C:) is not a complete
+        // filesystem path until the RootDir component is appended. Querying
+        // that partial prefix fails with ERROR_INVALID_FUNCTION on Windows.
+        if matches!(component, Component::Prefix(_) | Component::RootDir) {
+            continue;
+        }
         match fs::symlink_metadata(&prefix) {
             Ok(metadata) => {
                 if metadata.file_type().is_symlink() || is_reparse(&metadata) {

@@ -382,6 +382,26 @@ fn exclusive_lock_is_retained_by_handles_and_discard_preserves_base() {
     assert_eq!(digest_tree(&fixture.source), original);
 }
 
+#[cfg(windows)]
+#[test]
+fn canonical_verbatim_windows_storage_paths_are_supported() {
+    let fixture = Fixture::new();
+    let parent = fs::canonicalize(fixture.root.parent().unwrap()).unwrap();
+    assert!(parent.as_os_str().to_string_lossy().starts_with(r"\\?\"));
+    let root = parent.join("verbatim-overlay");
+    let overlay = Overlay::open(fixture.base.clone(), &root).unwrap();
+    let handle = overlay.create("file", 0o644, true).unwrap();
+    overlay
+        .write(&handle, 0, b"verbatim path works", false)
+        .unwrap();
+    overlay.flush(&handle).unwrap();
+    drop(handle);
+    drop(overlay);
+    assert_eq!(Overlay::status(&root).unwrap().overlay_files, 1);
+    let overlay = Overlay::open(fixture.base.clone(), &root).unwrap();
+    assert_eq!(bytes(&overlay, "file"), b"verbatim path works");
+}
+
 #[test]
 fn refuses_overlap_unrecognized_roots_and_foreign_handles() {
     let fixture = Fixture::new();

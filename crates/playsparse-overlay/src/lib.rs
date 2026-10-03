@@ -1043,11 +1043,16 @@ impl Overlay {
     fn fresh_data(&self, id: u64) -> Result<File> {
         let name = data_name(id);
         match self.inner.data.open_file(&name, true, true) {
-            Ok(file) => Ok(file),
+            Ok(file) => {
+                enable_sparse(&file)?;
+                Ok(file)
+            }
             Err(Error::Io(error)) if error.kind() == std::io::ErrorKind::AlreadyExists => {
                 self.inner.data.open_file(&name, false, false)?;
                 self.inner.data.remove(&name)?;
-                self.inner.data.open_file(&name, true, true)
+                let file = self.inner.data.open_file(&name, true, true)?;
+                enable_sparse(&file)?;
+                Ok(file)
             }
             Err(error) => Err(error),
         }
@@ -1551,6 +1556,52 @@ fn read_exact_at(file: &File, mut offset: u64, mut bytes: &mut [u8]) -> Result<(
         offset += count as u64;
         bytes = &mut bytes[count..];
     }
+    Ok(())
+}
+
+fn enable_sparse(file: &File) -> Result<()> {
+    #[cfg(windows)]
+    {
+        use std::os::windows::io::AsRawHandle;
+        #[link(name = "kernel32")]
+        unsafe extern "system" {
+            fn DeviceIoControl(
+                device: *mut std::ffi::c_void,
+                control: u32,
+                input: *mut std::ffi::c_void,
+                input_size: u32,
+                output: *mut std::ffi::c_void,
+                output_size: u32,
+                returned: *mut u32,
+                overlapped: *mut std::ffi::c_void,
+            ) -> i32;
+        }
+        let mut returned = 0;
+        // SAFETY: the valid owned data-file handle remains live. FSCTL_SET_SPARSE
+        // has no input/output buffers; the returned byte count is writable.
+        if unsafe {
+            DeviceIoControl(
+                file.as_raw_handle(),
+                0x000900c4,
+                std::ptr::null_mut(),
+                0,
+                std::ptr::null_mut(),
+                0,
+                &mut returned,
+                std::ptr::null_mut(),
+            )
+        } == 0
+        {
+            let error = std::io::Error::last_os_error();
+            // Filesystems without sparse support still provide ordinary file
+            // semantics. Allocation is intentionally not claimed on Windows.
+            if !matches!(error.raw_os_error(), Some(1 | 50)) {
+                return Err(error.into());
+            }
+        }
+    }
+    #[cfg(not(windows))]
+    let _ = file;
     Ok(())
 }
 
