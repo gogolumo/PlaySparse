@@ -93,6 +93,9 @@ impl TierConfig {
         }
         let mut config: Self = serde_json::from_slice(&bytes)
             .map_err(|_| Error::Invalid("invalid tier config JSON/schema".into()))?;
+        // Validate the supplied paths before joining a canonical parent:
+        // Windows verbatim PathBuf::push normalizes away ParentDir components.
+        config.validate()?;
         let parent = fs::canonicalize(
             path.parent()
                 .filter(|parent| !parent.as_os_str().is_empty())
