@@ -135,7 +135,9 @@ impl Directory {
         let file = {
             use std::os::fd::{AsRawFd, FromRawFd};
             let name = std::ffi::CString::new(name).map_err(|_| refused("invalid storage name"))?;
-            let mut flags = libc::O_NOFOLLOW | libc::O_CLOEXEC;
+            // Nonblocking open prevents a malicious FIFO from stalling before
+            // the regular-file check. Regular files ignore O_NONBLOCK.
+            let mut flags = libc::O_NOFOLLOW | libc::O_CLOEXEC | libc::O_NONBLOCK;
             flags |= if write { libc::O_RDWR } else { libc::O_RDONLY };
             if create_new {
                 flags |= libc::O_CREAT | libc::O_EXCL;

@@ -61,6 +61,53 @@ fn bytes(overlay: &Overlay, path: &str) -> Vec<u8> {
     overlay.read(&handle, 0, 1024 * 1024).unwrap()
 }
 
+#[test]
+fn handle_delete_preserves_replacements_and_follows_live_renames() {
+    let fixture = Fixture::new();
+    let overlay = fixture.open();
+    let old = overlay.open_file("replace", false, false).unwrap();
+    let replacement = overlay.create("staged", 0o644, true).unwrap();
+    overlay
+        .write(&replacement, 0, b"new replacement", false)
+        .unwrap();
+    overlay.rename("staged", "replace", true).unwrap();
+    overlay.delete_handle(&old).unwrap();
+    overlay.delete_handle(&old).unwrap();
+    assert_eq!(bytes(&overlay, "replace"), b"new replacement");
+    assert_eq!(overlay.read(&old, 0, 64).unwrap(), b"old destination");
+
+    overlay.rename("replace", "moved", false).unwrap();
+    overlay.delete_handle(&replacement).unwrap();
+    assert!(overlay.metadata("moved").is_err());
+    assert_eq!(
+        overlay.read(&replacement, 0, 64).unwrap(),
+        b"new replacement"
+    );
+
+    let nonempty = overlay.open_dir("dir").unwrap();
+    assert!(
+        matches!(overlay.delete_handle(&nonempty), Err(Error::Io(error))
+        if error.kind() == std::io::ErrorKind::DirectoryNotEmpty)
+    );
+    let old_directory = overlay.open_dir("empty").unwrap();
+    overlay.mkdir("new-directory", 0o755).unwrap();
+    overlay.rename("new-directory", "empty", true).unwrap();
+    let child = overlay.create("empty/child", 0o644, true).unwrap();
+    overlay.write(&child, 0, b"keep this child", false).unwrap();
+    overlay.delete_handle(&old_directory).unwrap();
+    assert_eq!(bytes(&overlay, "empty/child"), b"keep this child");
+    overlay.sync().unwrap();
+    drop(child);
+    drop(nonempty);
+    drop(old_directory);
+    drop(old);
+    drop(replacement);
+    drop(overlay);
+    let remounted = fixture.open();
+    assert_eq!(bytes(&remounted, "empty/child"), b"keep this child");
+    assert!(remounted.metadata("moved").is_err());
+}
+
 fn digest_tree(root: &Path) -> BTreeMap<String, String> {
     fn collect(root: &Path, path: &Path, result: &mut BTreeMap<String, String>) {
         for item in fs::read_dir(path).unwrap() {

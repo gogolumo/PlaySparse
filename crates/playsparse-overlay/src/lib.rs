@@ -742,52 +742,59 @@ impl Overlay {
         self.remove(path, true)
     }
 
+    /// Delete the live name of this exact open inode. Cleanup of an inode which
+    /// has already been unlinked or replaced cannot delete its replacement.
+    pub fn delete_handle(&self, handle: &Handle) -> Result<()> {
+        self.check_handle(handle)?;
+        let start = Instant::now();
+        let directory = matches!(&*handle.node.content.read(), Content::Directory);
+        let mut path = handle.node.path.read().clone();
+        let result = (|| {
+            let _mutation = self.inner.mutations.lock();
+            let candidate = self.inner.namespace.read().clone();
+            let Some(live) = candidate.ids.get(&handle.node.id) else {
+                return Ok(());
+            };
+            if !Arc::ptr_eq(live, &handle.node) {
+                return Err(Error::Corrupt("open inode identity was reused".into()));
+            }
+            path = live.path.read().clone();
+            if candidate
+                .nodes
+                .get(&path)
+                .is_none_or(|named| !Arc::ptr_eq(named, live))
+            {
+                return Err(Error::Corrupt(
+                    "overlay inode/name identity mismatch".into(),
+                ));
+            }
+            checked_path(&path, false)?;
+            self.remove_from_namespace(candidate, &path, handle.node.clone(), directory)
+        })();
+        self.record(
+            if directory { "rmdir" } else { "unlink" },
+            &path,
+            0,
+            0,
+            0,
+            start,
+            result.is_ok(),
+        );
+        result
+    }
+
     fn remove(&self, path: &str, directory: bool) -> Result<()> {
         let start = Instant::now();
         let result = (|| {
             checked_path(path, false)?;
             let _mutation = self.inner.mutations.lock();
-            let mut candidate = self.inner.namespace.read().clone();
+            let candidate = self.inner.namespace.read().clone();
             let node = candidate
                 .nodes
                 .get(path)
                 .cloned()
                 .ok_or_else(|| Error::NotFound(path.into()))?;
-            let is_dir = matches!(&*node.content.read(), Content::Directory);
-            if directory && !is_dir {
-                return Err(io(
-                    std::io::ErrorKind::NotADirectory,
-                    "rmdir requires a directory",
-                ));
-            }
-            if !directory && is_dir {
-                return Err(io(
-                    std::io::ErrorKind::IsADirectory,
-                    "unlink requires a file",
-                ));
-            }
-            if directory
-                && candidate
-                    .nodes
-                    .keys()
-                    .any(|child| is_descendant(child, path))
-            {
-                return Err(io(
-                    std::io::ErrorKind::DirectoryNotEmpty,
-                    "directory is not empty",
-                ));
-            }
-            candidate.nodes.remove(path);
-            candidate.ids.remove(&node.id);
-            candidate.snapshot.overrides.remove(path);
-            candidate.snapshot.tombstones.insert(path.into());
-            self.install(candidate, || {})?;
-            // Open handles retain the node and OS file descriptor. Windows
-            // sharing modes also permit deletion while such handles remain.
-            if matches!(&*node.content.read(), Content::Data(_)) {
-                let _ = self.inner.data.remove(&data_name(node.id));
-            }
-            Ok(())
+            self.remove_from_namespace(candidate, path, node, directory)
         })();
         self.record(
             if directory { "rmdir" } else { "unlink" },
@@ -799,6 +806,51 @@ impl Overlay {
             result.is_ok(),
         );
         result
+    }
+
+    // Caller holds the namespace mutation lock through validation and publish.
+    fn remove_from_namespace(
+        &self,
+        mut candidate: Namespace,
+        path: &str,
+        node: Arc<Node>,
+        directory: bool,
+    ) -> Result<()> {
+        let is_dir = matches!(&*node.content.read(), Content::Directory);
+        if directory && !is_dir {
+            return Err(io(
+                std::io::ErrorKind::NotADirectory,
+                "rmdir requires a directory",
+            ));
+        }
+        if !directory && is_dir {
+            return Err(io(
+                std::io::ErrorKind::IsADirectory,
+                "unlink requires a file",
+            ));
+        }
+        if directory
+            && candidate
+                .nodes
+                .keys()
+                .any(|child| is_descendant(child, path))
+        {
+            return Err(io(
+                std::io::ErrorKind::DirectoryNotEmpty,
+                "directory is not empty",
+            ));
+        }
+        candidate.nodes.remove(path);
+        candidate.ids.remove(&node.id);
+        candidate.snapshot.overrides.remove(path);
+        candidate.snapshot.tombstones.insert(path.into());
+        self.install(candidate, || {})?;
+        // Open handles retain the node and OS file descriptor. Windows
+        // sharing modes also permit deletion while such handles remain.
+        if matches!(&*node.content.read(), Content::Data(_)) {
+            let _ = self.inner.data.remove(&data_name(node.id));
+        }
+        Ok(())
     }
 
     pub fn rename(&self, from: &str, to: &str, replace: bool) -> Result<()> {
