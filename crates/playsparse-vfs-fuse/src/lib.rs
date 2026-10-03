@@ -1,15 +1,19 @@
-//! Read-only, on-demand FUSE development backend.
+//! On-demand FUSE backend with an optional persistent writable overlay.
 //!
 //! Linux uses fuser's native Rust mount implementation. macOS mounting is an
 //! explicit `macfuse` feature because it needs the installed macFUSE driver.
 
 use std::path::Path;
+use std::sync::Arc;
 
 use anyhow::{Result, bail};
 use serde::Serialize;
 
 #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
 mod fuse;
+
+#[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
+mod writable;
 
 /// A runtime diagnostic, not evidence that a mount has passed IO tests.
 #[derive(Debug, Clone, Serialize)]
@@ -48,13 +52,25 @@ pub fn availability() -> Availability {
 /// The mountpoint must already exist and be empty. File content is served from
 /// compressed CAS chunks by the range resolver; no files are extracted.
 pub fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> {
+    mount_with_options(store, mountpoint, cache_bytes, None, None)
+}
+
+/// Mount the immutable base with an optional persistent writable overlay and
+/// bounded asynchronous access trace. Without an overlay the volume is read-only.
+pub fn mount_with_options(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay: Option<&Path>,
+    trace: Option<Arc<playsparse_trace::TraceWriter>>,
+) -> Result<()> {
     #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
     {
-        fuse::mount(store, mountpoint, cache_bytes)
+        fuse::mount(store, mountpoint, cache_bytes, overlay, trace)
     }
     #[cfg(not(any(target_os = "linux", all(target_os = "macos", feature = "macfuse"))))]
     {
-        let _ = (store, mountpoint, cache_bytes);
+        let _ = (store, mountpoint, cache_bytes, overlay, trace);
         bail!("{}", availability().detail)
     }
 }

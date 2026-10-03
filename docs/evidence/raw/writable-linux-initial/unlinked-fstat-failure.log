@@ -1,0 +1,28 @@
+Command: docker exec -e CARGO_TARGET_DIR=/src/target-linux playsparse-runtime-dev cargo test -p playsparse-vfs-fuse real_ -- --ignored --nocapture
+Exit status: 101
+Source: native tool output from initial writable FUSE integration (uncommitted tree).
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_vfs_fuse-501a6b6e3c2c2273)
+
+running 2 tests
+
+thread 'writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base' (10762) panicked at crates/playsparse-vfs-fuse/src/writable/tests.rs:141:45:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base ... FAILED
+{"cache":{"decompressions":66,"decompressions_avoided":0,"evictions":61,"hit_ratio":0.0,"hits":0,"in_flight_waits":0,"misses":66,"raw_bytes_loaded":262166,"resident_bytes":12310},"event":"fuse_unmounted","io_errors":0,"overlay":{"copy_up_bytes":262157,"copy_up_files":1,"metadata_bytes":0,"overlay_allocated_bytes":null,"overlay_bytes_written":4127,"overlay_files":1,"overlay_logical_bytes":0,"tombstones":2},"read_requests":3,"returned_bytes":122901,"sync_error":null,"trace":null,"writable":true,"write_requests":4,"written_bytes":4127}
+{"cache":{"decompressions":37,"decompressions_avoided":16,"evictions":27,"hit_ratio":0.3018867924528302,"hits":16,"in_flight_waits":9,"misses":37,"raw_bytes_loaded":2233624,"resident_bytes":464152},"event":"fuse_unmounted","read_errors":0,"read_requests":37,"requested_bytes":2179072,"returned_bytes":2168088,"trace":null}
+REAL_FUSE_TEST_OK layout=Packs logical_bytes=2168088 physical_bytes=174244 random_threads=1,2,4,8,16 mmap=true native_exec=true original_unchanged=true
+{"cache":{"decompressions":37,"decompressions_avoided":17,"evictions":27,"hit_ratio":0.3148148148148148,"hits":17,"in_flight_waits":10,"misses":37,"raw_bytes_loaded":2233624,"resident_bytes":464152},"event":"fuse_unmounted","read_errors":0,"read_requests":38,"requested_bytes":2179072,"returned_bytes":2168088,"trace":null}
+REAL_FUSE_TEST_OK layout=Loose logical_bytes=2168088 physical_bytes=174236 random_threads=1,2,4,8,16 mmap=true native_exec=true original_unchanged=true
+test fuse::tests::real_mount_random_concurrent_mmap_and_native_execution ... ok
+
+failures:
+
+failures:
+    writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.40s
+
+error: test failed, to rerun pass `-p playsparse-vfs-fuse --lib`

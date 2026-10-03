@@ -650,8 +650,10 @@ dependencies = [
  "clap",
  "libc",
  "playsparse-core",
+ "playsparse-overlay",
  "playsparse-range",
  "playsparse-store",
+ "playsparse-trace",
  "playsparse-vfs-fuse",
  "playsparse-vfs-win",
  "serde",
@@ -671,13 +673,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "playsparse-overlay"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "libc",
+ "parking_lot",
+ "playsparse-core",
+ "playsparse-range",
+ "playsparse-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
 name = "playsparse-range"
 version = "0.1.0"
 dependencies = [
  "playsparse-cache",
  "playsparse-core",
  "playsparse-store",
+ "playsparse-trace",
  "proptest",
+ "serde_json",
  "tempfile",
 ]
 
@@ -699,6 +718,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "playsparse-trace"
+version = "0.1.0"
+dependencies = [
+ "playsparse-core",
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
 name = "playsparse-vfs-fuse"
 version = "0.1.0"
 dependencies = [
@@ -707,8 +736,10 @@ dependencies = [
  "libc",
  "memmap2",
  "playsparse-core",
+ "playsparse-overlay",
  "playsparse-range",
  "playsparse-store",
+ "playsparse-trace",
  "serde",
  "serde_json",
  "tempfile",
@@ -722,8 +753,10 @@ dependencies = [
  "anyhow",
  "blake3",
  "playsparse-core",
+ "playsparse-overlay",
  "playsparse-range",
  "playsparse-store",
+ "playsparse-trace",
  "serde_json",
  "tempfile",
  "windows",

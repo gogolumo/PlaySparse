@@ -1,0 +1,40 @@
+   Compiling zeroize v1.9.0
+   Compiling getrandom v0.2.17
+   Compiling untrusted v0.9.0
+   Compiling bytes v1.12.1
+   Compiling httparse v1.10.1
+   Compiling subtle v2.6.1
+   Compiling base64 v0.23.1
+   Compiling percent-encoding v2.3.2
+   Compiling utf8-zero v0.8.1
+   Compiling rustls-pki-types v1.15.1
+   Compiling ring v0.17.14
+   Compiling webpki-roots v1.0.9
+   Compiling http v1.5.0
+   Compiling ureq-proto v0.6.4
+   Compiling rustls-webpki v0.103.15
+   Compiling rustls v0.23.45
+   Compiling ureq v3.4.2
+   Compiling playsparse-store v0.1.0 (/src/crates/playsparse-store)
+   Compiling playsparse-range v0.1.0 (/src/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/src/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/src/crates/playsparse-vfs-fuse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.42s
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_vfs_fuse-44ebb83d246e58cb)
+
+running 1 test
+
+thread 'writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base' (13017) panicked at crates/playsparse-vfs-fuse/src/writable/tests.rs:149:14:
+called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+{"cache":{"decompressions":66,"decompressions_avoided":0,"evictions":61,"hit_ratio":0.0,"hits":0,"in_flight_waits":0,"misses":66,"raw_bytes_loaded":262166,"resident_bytes":12310},"event":"fuse_unmounted","io_errors":0,"overlay":{"copy_up_bytes":262157,"copy_up_files":1,"metadata_bytes":354,"overlay_allocated_bytes":266240,"overlay_bytes_written":4127,"overlay_files":1,"overlay_logical_bytes":262157,"tombstones":2},"read_requests":3,"returned_bytes":122901,"sync_error":null,"trace":null,"writable":true,"write_requests":4,"written_bytes":4127}
+test writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base ... FAILED
+
+failures:
+
+failures:
+    writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.04s
+
+error: test failed, to rerun pass `-p playsparse-vfs-fuse --lib`

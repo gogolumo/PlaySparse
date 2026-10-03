@@ -5,6 +5,12 @@ use serde::Serialize;
 use std::{collections::HashMap, sync::Arc};
 
 pub type Chunk = Arc<Vec<u8>>;
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CacheOutcome {
+    Hit,
+    Miss,
+    SharedLoad,
+}
 #[derive(Debug, Clone, Default, Serialize)]
 pub struct CacheMetrics {
     pub hits: u64,
@@ -61,6 +67,14 @@ impl ChunkCache {
         hash: [u8; 32],
         loader: impl FnOnce() -> Result<Vec<u8>>,
     ) -> Result<Chunk> {
+        self.get_or_load_status(hash, loader)
+            .map(|(chunk, _)| chunk)
+    }
+    pub fn get_or_load_status(
+        &self,
+        hash: [u8; 32],
+        loader: impl FnOnce() -> Result<Vec<u8>>,
+    ) -> Result<(Chunk, CacheOutcome)> {
         let mut state = self.state.lock();
         // At most eight independent loaders at a time. Recheck after waiting:
         // another caller may have populated or started the exact same object.
@@ -68,7 +82,7 @@ impl ChunkCache {
             if let Some(chunk) = state.cache.get(&hash).cloned() {
                 state.metrics.hits += 1;
                 state.metrics.decompressions_avoided += 1;
-                return Ok(chunk);
+                return Ok((chunk, CacheOutcome::Hit));
             }
             if let Some(flight) = state.flights.get(&hash).cloned() {
                 state.metrics.hits += 1;
@@ -80,7 +94,7 @@ impl ChunkCache {
                     flight.ready.wait(&mut result);
                 }
                 return match result.as_ref() {
-                    Some(Ok(chunk)) => Ok(chunk.clone()),
+                    Some(Ok(chunk)) => Ok((chunk.clone(), CacheOutcome::SharedLoad)),
                     Some(Err(e)) => Err(Error::Corrupt(e.clone())),
                     None => Err(Error::Corrupt("flight completed without result".into())),
                 };
@@ -127,7 +141,9 @@ impl ChunkCache {
         flight.ready.notify_all();
         self.permit.notify_all();
         drop(state);
-        result.map_err(Error::Corrupt)
+        result
+            .map(|chunk| (chunk, CacheOutcome::Miss))
+            .map_err(Error::Corrupt)
     }
 }
 

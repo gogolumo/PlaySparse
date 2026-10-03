@@ -184,9 +184,20 @@ struct StoreFs {
 }
 
 impl StoreFs {
+    #[cfg(test)]
     fn open(store: &Path, cache_bytes: usize) -> Result<Self> {
-        let resolver =
-            Arc::new(RangeResolver::open(store, cache_bytes).context("open immutable store")?);
+        Self::open_with_trace(store, cache_bytes, None)
+    }
+
+    fn open_with_trace(
+        store: &Path,
+        cache_bytes: usize,
+        trace: Option<Arc<playsparse_trace::TraceWriter>>,
+    ) -> Result<Self> {
+        let resolver = Arc::new(
+            RangeResolver::open_with_trace(store, cache_bytes, trace)
+                .context("open immutable store")?,
+        );
         // Only the mounting user can access the filesystem (fuser's default ACL).
         // SAFETY: getuid/getgid have no pointer arguments or preconditions.
         let (uid, gid) = unsafe { (libc::getuid(), libc::getgid()) };
@@ -477,12 +488,13 @@ impl Filesystem for StoreFs {
                 "returned_bytes": self.returned_bytes.load(Ordering::Relaxed),
                 "read_errors": self.read_errors.load(Ordering::Relaxed),
                 "cache": self.resolver.metrics(),
+                "trace": self.resolver.trace().map(|trace| trace.metrics()),
             })
         );
     }
 }
 
-fn mount_config() -> Config {
+pub(super) fn mount_config() -> Config {
     let mut config = Config::default();
     config.mount_options = vec![
         MountOption::RO,
@@ -521,9 +533,18 @@ fn validate_mountpoint(store: &Path, mountpoint: &Path) -> Result<(PathBuf, Path
     Ok((store, mountpoint))
 }
 
-pub(super) fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> {
+pub(super) fn mount(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay: Option<&Path>,
+    trace: Option<Arc<playsparse_trace::TraceWriter>>,
+) -> Result<()> {
     let (store, mountpoint) = validate_mountpoint(store, mountpoint)?;
-    let fs = StoreFs::open(&store, cache_bytes)?;
+    if let Some(overlay) = overlay {
+        return crate::writable::mount(&store, &mountpoint, cache_bytes, overlay, trace);
+    }
+    let fs = StoreFs::open_with_trace(&store, cache_bytes, trace)?;
     tracing::info!(store = %store.display(), mountpoint = %mountpoint.display(), cache_bytes, "mounting FUSE store");
     fuser::mount(fs, &mountpoint, &mount_config()).context("mount FUSE store")
 }

@@ -341,6 +341,9 @@ impl Store {
             packs,
         })
     }
+    pub fn root(&self) -> &Path {
+        &self.root
+    }
     pub fn manifest(&self) -> &Manifest {
         &self.manifest
     }

@@ -17,7 +17,7 @@ use std::{
 #[command(
     name = "playsparse",
     version,
-    about = "Read-only compressed content-addressed filesystem runtime"
+    about = "Immutable compressed CAS with experimental writable overlays"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -60,6 +60,20 @@ enum Command {
         mountpoint: PathBuf,
         #[arg(long,default_value="256M",value_parser=parse_size)]
         cache: usize,
+        #[arg(long)]
+        overlay: Option<PathBuf>,
+        #[arg(long)]
+        trace: Option<PathBuf>,
+    },
+    /// Inspect/reset a persistent overlay or publish its merged tree as a new store.
+    Overlay {
+        #[command(subcommand)]
+        command: OverlayCommand,
+    },
+    /// Analyze recorded runtime callback traffic.
+    Trace {
+        #[command(subcommand)]
+        command: TraceCommand,
     },
     Unmount {
         mountpoint: PathBuf,
@@ -89,6 +103,24 @@ enum Command {
         #[arg(long,default_value="64M",value_parser=parse_size)]
         cache: usize,
     },
+}
+#[derive(Subcommand)]
+enum OverlayCommand {
+    Status {
+        overlay: PathBuf,
+    },
+    Discard {
+        overlay: PathBuf,
+    },
+    Commit {
+        base: PathBuf,
+        overlay: PathBuf,
+        new_store: PathBuf,
+    },
+}
+#[derive(Subcommand)]
+enum TraceCommand {
+    Summarize { trace: PathBuf },
 }
 fn parse_size(s: &str) -> std::result::Result<usize, String> {
     let upper = s.trim().to_ascii_uppercase();
@@ -148,7 +180,32 @@ fn main() -> Result<()> {
             store,
             mountpoint,
             cache,
-        } => mount(&store, &mountpoint, cache),
+            overlay,
+            trace,
+        } => mount(
+            &store,
+            &mountpoint,
+            cache,
+            overlay.as_deref(),
+            trace.as_deref(),
+        ),
+        Command::Overlay { command } => match command {
+            OverlayCommand::Status { overlay } => {
+                print(&playsparse_overlay::Overlay::status(&overlay)?)
+            }
+            OverlayCommand::Discard { overlay } => {
+                playsparse_overlay::Overlay::discard(&overlay)?;
+                print(&json!({"overlay_reset":true}))
+            }
+            OverlayCommand::Commit {
+                base,
+                overlay,
+                new_store,
+            } => overlay_commit(&base, &overlay, &new_store),
+        },
+        Command::Trace {
+            command: TraceCommand::Summarize { trace },
+        } => print(&playsparse_trace::summarize(&trace)?),
         Command::Unmount { mountpoint } => unmount(&mountpoint),
         Command::Benchmark {
             source,
@@ -184,20 +241,119 @@ fn main() -> Result<()> {
         }
     }
 }
-fn mount(store: &Path, mountpoint: &Path, cache: usize) -> Result<()> {
+fn resolved_location(path: &Path) -> Result<PathBuf> {
+    if path.exists() {
+        return Ok(path.canonicalize()?);
+    }
+    let name = path.file_name().context("path needs a final component")?;
+    let parent = path
+        .parent()
+        .filter(|p| !p.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    Ok(parent.canonicalize()?.join(name))
+}
+fn mount(
+    store: &Path,
+    mountpoint: &Path,
+    cache: usize,
+    overlay: Option<&Path>,
+    trace_path: Option<&Path>,
+) -> Result<()> {
+    let base = store.canonicalize()?;
+    let mount = resolved_location(mountpoint)?;
+    let writable = overlay.map(resolved_location).transpose()?;
+    if let Some(root) = &writable
+        && (root.starts_with(&mount)
+            || mount.starts_with(root)
+            || root.starts_with(&base)
+            || base.starts_with(root))
+    {
+        bail!("overlay, store and mountpoint must be separate directory trees");
+    }
+    let trace = if let Some(path) = trace_path {
+        let resolved = resolved_location(path)?;
+        if resolved.starts_with(&base)
+            || resolved.starts_with(&mount)
+            || writable
+                .as_ref()
+                .is_some_and(|root| resolved.starts_with(root))
+        {
+            bail!("trace destination must be outside store, mountpoint and overlay");
+        }
+        Some(std::sync::Arc::new(playsparse_trace::TraceWriter::open(
+            &resolved,
+        )?))
+    } else {
+        None
+    };
     #[cfg(windows)]
-    {
-        playsparse_vfs_win::mount(store, mountpoint, cache)
-    }
+    let result =
+        playsparse_vfs_win::mount_with_options(store, mountpoint, cache, overlay, trace.clone());
     #[cfg(unix)]
-    {
-        playsparse_vfs_fuse::mount(store, mountpoint, cache)
-    }
+    let result =
+        playsparse_vfs_fuse::mount_with_options(store, mountpoint, cache, overlay, trace.clone());
     #[cfg(not(any(windows, unix)))]
-    {
-        let _ = (store, mountpoint, cache);
-        bail!("unsupported OS")
+    let result: Result<()> = Err(anyhow::anyhow!("unsupported OS"));
+    if let Some(trace) = trace {
+        trace.shutdown();
+        eprintln!(
+            "{}",
+            json!({"event":"trace_closed","trace":trace.metrics()})
+        );
     }
+    result
+}
+fn overlay_commit(base: &Path, overlay_path: &Path, new_store: &Path) -> Result<()> {
+    use std::io::Write;
+    let new_location = resolved_location(new_store)?;
+    let base_location = base.canonicalize()?;
+    let overlay_location = overlay_path.canonicalize()?;
+    if new_location.starts_with(&base_location)
+        || new_location.starts_with(&overlay_location)
+        || base_location.starts_with(&new_location)
+        || overlay_location.starts_with(&new_location)
+    {
+        bail!("new store must be outside immutable base and overlay");
+    }
+    if new_store.exists() {
+        bail!("new store already exists");
+    }
+    let resolver = std::sync::Arc::new(RangeResolver::open(base, 64 << 20)?);
+    let overlay = playsparse_overlay::Overlay::open(resolver, overlay_path)?;
+    let stage = tempfile::tempdir()?;
+    let entries = overlay.entries()?;
+    for entry in entries.iter().filter(|e| e.is_dir && !e.path.is_empty()) {
+        fs::create_dir_all(stage.path().join(&entry.path))?;
+    }
+    for entry in entries.iter().filter(|e| !e.is_dir) {
+        let handle = overlay.open_file(&entry.path, false, false)?;
+        let target = stage.path().join(&entry.path);
+        let mut file = File::create(&target)?;
+        let mut offset = 0;
+        while offset < entry.size {
+            let bytes = overlay.read(
+                &handle,
+                offset,
+                ((entry.size - offset).min(playsparse_core::MAX_READ_BYTES as u64)) as usize,
+            )?;
+            if bytes.is_empty() {
+                bail!("unexpected EOF committing overlay");
+            }
+            file.write_all(&bytes)?;
+            offset += bytes.len() as u64;
+        }
+        file.sync_all()?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            fs::set_permissions(&target, fs::Permissions::from_mode(entry.mode))?;
+        }
+    }
+    let packed = pack_directory(stage.path(), new_store, &PackOptions::default())?;
+    let verified = Store::open(new_store)?.verify()?;
+    print(
+        &json!({"pack":packed,"verify":verified,"base_unchanged":true,"method":"bounded streaming merged tree into disposable staging directory; full temporary logical space required"}),
+    )
 }
 fn unmount(mountpoint: &Path) -> Result<()> {
     #[cfg(windows)]
