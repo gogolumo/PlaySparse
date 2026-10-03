@@ -1,64 +1,58 @@
-# Architecture v2 — adaptive storage runtime hypothesis
+# Architecture v2 — adaptive writable runtime
 
-This is the architecture to test, not a finished design.
+The immutable v1 manifest, index, compressed objects and verify-before-publish
+format remain unchanged. New mechanisms sit above and beside that data plane.
 
 ```text
-Game / application
+application / game
         |
-        v
-Virtual FS provider
+FUSE / WinFsp callback adapter
         |
-        v
-Range Resolver  <----- access trace profiler
-        |                         |
-        |                         v
-        |                  Policy / optimizer
-        |                   /      |      \
-        v                  /       |       \
-Cache Manager <---- Prefetcher  Codec   Tier placement
-        |
-        v
-Object Resolver
-   |       |       |
- NVMe     HDD     remote/NAS (later)
-        |
-        v
-Immutable content-addressed chunks
+shared merged namespace
+   |                 |
+persistent overlay   immutable RangeResolver
+                     |       |          |
+                 byte cache  trace      policy tracker
+                     |                  |
+                     +----- bounded prefetch worker
+                     |
+             verified Object Resolver
+                |          |           |
+          primary local  secondary    HTTP(S)
+                ^          |           |
+                +---- verified atomic promotion
 ```
 
-## Separation of concerns
+`--overlay` selects a shared copy-on-write engine. Namespace snapshots bind to
+the base manifest digest and publish atomically; data-file handles retain inode
+identity across rename/unlink. Ordinary base reads continue through the bounded
+range resolver. First modification copies one complete base file in bounded
+buffers, except truncate-to-zero. This initial design measures copy-up cost and
+allows a later block-overlay implementation without changing callback adapters.
 
-### Immutable data plane
+`--trace` attaches a bounded asynchronous JSONL recorder. Callback threads never
+write the trace file themselves; overflow drops events with visible counters.
+`--policy` supplies strict versioned parameters and initial priorities. Actual
+read observations decay hotness, change cache eviction and predict bounded
+forward reads. One background worker shares verification, byte limits and
+single-flight loads with demand reads. The kernel's page cache and read-ahead
+remain outside PlaySparse's policy and trace view.
 
-- logical file -> chunk references;
-- BLAKE3 object identity;
-- compressed immutable objects;
-- deterministic reconstruction.
+`--tiers` configures sources by immutable BLAKE3 identity. A metadata-only base
+can resolve objects from a full secondary store or exact HTTP packfile ranges.
+Verified promotions go to a separate disk cache, never into either immutable
+store. A corrupt existing source is an error; it is not silently hidden by
+another tier. Promotion currently stores raw chunks with a self-describing
+header, so its disk cost differs from the compressed base.
 
-### Mutable policy plane
+There is no codec switching, writable distributed storage, learned model,
+access graph, background tier eviction or automatic physical placement service.
+The research question remains: can a policy improve the space/latency/CPU
+frontier on the same workload? An implementation is not evidence of improvement.
+Static/adaptive replay preserves identical request order, data hashes and cache
+budgets, including negative results and uncontrolled OS/device cache state.
 
-- hot/warm/cold observations;
-- access graph;
-- prefetch scores;
-- cache state;
-- selected physical representation;
-- tier placement.
-
-The same logical bytes must remain stable even if policy changes.
-
-## Central research question
-
-Can the mutable policy plane select a better physical representation than any one static configuration for the same observed workload?
-
-## Required progression
-
-1. prove byte-identical CAS reconstruction;
-2. expose byte-range reads without full extraction;
-3. record traces;
-4. establish static policy baselines;
-5. add one adaptive dimension at a time;
-6. retain only non-dominated policies.
-
-## Near-term differentiator
-
-Experiments 02 and 03 are foundations, not novel features. The first experiment that can directly test the PlaySparse differentiator is the later trace-aware adaptive chunk/codec/cache study after a working range-serving VFS exists.
+See [overlay](writable-overlay.md), [trace](access-tracing.md),
+[policy](adaptive-policy.md), [tiers](tiered-storage.md) and
+[sprint evidence](evidence/adaptive-writable-runtime.md). The last document
+separates Linux mounts, hosted Windows execution and unavailable physical gates.

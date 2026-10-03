@@ -1,7 +1,7 @@
 use anyhow::{Context, Result, bail};
 use playsparse_core::{Error, MAX_READ_BYTES, Manifest};
 use playsparse_overlay::Overlay;
-use playsparse_range::RangeResolver;
+use playsparse_range::{RangeResolver, RuntimeOptions};
 use playsparse_trace::TraceWriter;
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
@@ -636,14 +636,29 @@ pub fn mount_with_options(
     overlay_root: Option<&Path>,
     trace: Option<Arc<TraceWriter>>,
 ) -> Result<()> {
+    mount_configured(
+        store,
+        mountpoint,
+        overlay_root,
+        RuntimeOptions {
+            cache_bytes,
+            trace,
+            ..Default::default()
+        },
+    )
+}
+
+pub fn mount_configured(
+    store: &Path,
+    mountpoint: &Path,
+    overlay_root: Option<&Path>,
+    options: RuntimeOptions,
+) -> Result<()> {
     validate_mount_paths(store, mountpoint, overlay_root)?;
     let _init = winfsp::winfsp_init()
         .context("WinFsp is not installed; install WinFsp 2.1+ including its driver")?;
-    let reader = Arc::new(RangeResolver::open_with_trace(
-        store,
-        cache_bytes,
-        trace.clone(),
-    )?);
+    let trace = options.trace.clone();
+    let reader = Arc::new(RangeResolver::open_configured(store, options)?);
     let namespace = Namespace::from_manifest(reader.manifest())?;
     let overlay = overlay_root
         .map(|root| Overlay::open(reader.clone(), root).map(Arc::new))
@@ -680,6 +695,7 @@ pub fn mount_with_options(
         };
         serve(filesystem, mountpoint, &stop, false)?
     };
+    reader.stop_prefetch();
     let flush_result = overlay
         .as_ref()
         .map(|overlay| overlay.flush_all())
@@ -691,6 +707,7 @@ pub fn mount_with_options(
         "{}",
         serde_json::json!({
             "event": "winfsp_unmounted", "cache": reader.metrics(),
+            "tiers": reader.store().tier_metrics(),
             "overlay": overlay.as_ref().map(|overlay| overlay.metrics()),
             "trace": trace.as_ref().map(|trace| trace.metrics()),
         })

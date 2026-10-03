@@ -17,7 +17,8 @@ use fuser::{
 };
 use playsparse_core::Error;
 use playsparse_overlay::{Entry, Handle, Overlay};
-use playsparse_range::RangeResolver;
+use playsparse_range::{RangeResolver, RuntimeOptions};
+#[cfg(test)]
 use playsparse_trace::TraceWriter;
 
 type FsResult<T> = std::result::Result<T, Errno>;
@@ -68,14 +69,27 @@ struct WritableFs {
 }
 
 impl WritableFs {
+    #[cfg(test)]
     fn open(
         store: &Path,
         cache_bytes: usize,
         overlay: &Path,
         trace: Option<Arc<TraceWriter>>,
     ) -> Result<Self> {
+        Self::open_configured(
+            store,
+            overlay,
+            RuntimeOptions {
+                cache_bytes,
+                trace,
+                ..Default::default()
+            },
+        )
+    }
+
+    fn open_configured(store: &Path, overlay: &Path, options: RuntimeOptions) -> Result<Self> {
         let resolver = Arc::new(
-            RangeResolver::open_with_trace(store, cache_bytes, trace)
+            RangeResolver::open_configured(store, options)
                 .context("open immutable overlay base")?,
         );
         let overlay = Overlay::open(Arc::clone(&resolver), overlay).context("open overlay")?;
@@ -869,6 +883,7 @@ impl Filesystem for WritableFs {
     }
 
     fn destroy(&mut self) {
+        self.resolver.stop_prefetch();
         let sync_error = self.overlay.sync().err().map(|error| error.to_string());
         eprintln!(
             "{}",
@@ -880,6 +895,7 @@ impl Filesystem for WritableFs {
                 "written_bytes": self.written_bytes.load(Ordering::Relaxed),
                 "io_errors": self.io_errors.load(Ordering::Relaxed),
                 "cache": self.resolver.metrics(), "overlay": self.overlay.metrics(),
+                "tiers": self.resolver.store().tier_metrics(),
                 "trace": self.resolver.trace().map(|trace| trace.metrics()),
                 "sync_error": sync_error,
             })
@@ -915,12 +931,12 @@ fn overlay_path(store: &Path, mountpoint: &Path, overlay: &Path) -> Result<PathB
 pub(super) fn mount(
     store: &Path,
     mountpoint: &Path,
-    cache_bytes: usize,
     overlay: &Path,
-    trace: Option<Arc<TraceWriter>>,
+    options: RuntimeOptions,
 ) -> Result<()> {
     let overlay = overlay_path(store, mountpoint, overlay)?;
-    let fs = WritableFs::open(store, cache_bytes, &overlay, trace)?;
+    let cache_bytes = options.cache_bytes;
+    let fs = WritableFs::open_configured(store, &overlay, options)?;
     let mut config = crate::fuse::mount_config();
     config
         .mount_options

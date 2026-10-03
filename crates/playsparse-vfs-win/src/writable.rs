@@ -274,13 +274,9 @@ impl FileSystemContext for WritableFilesystem {
         // validation happens in set_delete, and persistence failures are logged.
         let result = (|| -> winfsp::Result<()> {
             if flags & 1 != 0 {
-                let entry = self.entry(handle)?;
-                if entry.is_dir {
-                    self.overlay.rmdir(&entry.path)
-                } else {
-                    self.overlay.unlink(&entry.path)
-                }
-                .map_err(map_error)?;
+                self.overlay
+                    .delete_handle(&handle.file)
+                    .map_err(map_error)?;
                 self.refresh_after_mutation()?;
             }
             self.overlay.flush(&handle.file).map_err(map_error)
@@ -642,6 +638,49 @@ mod tests {
         // nullable pointer and an integer length. Zero length prevents writes
         // to the unused normalized-name pointer in these callback tests.
         unsafe { std::mem::zeroed() }
+    }
+
+    #[test]
+    fn cleanup_of_replaced_open_inode_keeps_new_file() {
+        let (_temp, _reader, _overlay, filesystem) = fixture();
+        let old_name = name("\\Assets\\base.dat");
+        let old = filesystem
+            .open(
+                &old_name,
+                0x40,
+                FILE_GENERIC_READ.0 | DELETE.0,
+                &mut open_info(),
+            )
+            .unwrap();
+        let replacement = filesystem
+            .create(
+                &name("\\staged"),
+                0x40,
+                (FILE_GENERIC_READ | FILE_GENERIC_WRITE).0,
+                FILE_ATTRIBUTE_NORMAL.0,
+                None,
+                0,
+                None,
+                false,
+                &mut open_info(),
+            )
+            .unwrap();
+        let mut info = FileInfo::default();
+        filesystem
+            .write(&replacement, b"new", 0, false, false, &mut info)
+            .unwrap();
+        filesystem
+            .rename(&replacement, &name("\\staged"), &old_name, true)
+            .unwrap();
+        filesystem.cleanup(&old, Some(&old_name), 1);
+        let reopened = filesystem
+            .open(&old_name, 0x40, FILE_GENERIC_READ.0, &mut open_info())
+            .unwrap();
+        let mut bytes = [0u8; 8];
+        assert_eq!(filesystem.read(&reopened, &mut bytes, 0).unwrap(), 3);
+        assert_eq!(&bytes[..3], b"new");
+        assert_eq!(filesystem.read(&old, &mut bytes, 0).unwrap(), 4);
+        assert_eq!(&bytes[..4], b"base");
     }
 
     #[test]

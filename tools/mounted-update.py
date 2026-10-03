@@ -97,10 +97,14 @@ def update(root):
 
 
 class Mount:
-    def __init__(self, cli, store, path, overlay, trace, evidence, label, commands):
+    def __init__(self, cli, store, path, overlay, trace, evidence, label, commands, *, extra=None, cache="8M"):
         self.cli, self.path, self.evidence, self.label = cli, path, evidence, label
         self.ready_file = Path("fixture.json")
-        self.command = [str(cli), "mount", str(store), str(path), "--overlay", str(overlay), "--trace", str(trace), "--cache", "8M"]
+        self.command = [str(cli), "mount", str(store), str(path), "--trace", str(trace), "--cache", cache]
+        if overlay is not None:
+            self.command.extend(["--overlay", str(overlay)])
+        if extra:
+            self.command.extend([str(v) for v in extra])
         commands.append(self.command)
 
     def __enter__(self):
@@ -215,6 +219,24 @@ def main():
         report["trace"] = run([str(cli), "trace", "summarize", str(evidence / "update.trace.jsonl")], "trace-summary")
         if report["trace"]["read_operations"] == 0 or report["trace"]["write_operations"] == 0:
             raise RuntimeError("mounted read/write trace events missing")
+        committed_store = work / "committed-base"
+        report["immutable_commit"] = run([str(cli), "overlay", "commit", str(store), str(overlay), str(committed_store)], "overlay-commit")
+        report["committed_verify"] = run([str(cli), "verify", str(committed_store)], "verify-committed")
+        committed = Mount(cli, committed_store, mountpoint, None, evidence / "commit.trace.jsonl", evidence, "committed", report["commands"])
+        with committed:
+            if tree(mountpoint) != expected_tree:
+                raise RuntimeError("committed immutable store differs from updated tree")
+            report["committed_mount_verified"] = True
+        # Reset a disposable duplicate; preserve the real update overlay for inspection.
+        discarded_overlay = work / "discarded-overlay"
+        shutil.copytree(overlay, discarded_overlay)
+        run([str(cli), "overlay", "discard", str(discarded_overlay)], "overlay-discard")
+        report["discarded_overlay"] = run([str(cli), "overlay", "status", str(discarded_overlay)], "discarded-status")
+        reset = Mount(cli, store, mountpoint, discarded_overlay, evidence / "reset.trace.jsonl", evidence, "reset", report["commands"])
+        with reset:
+            if tree(mountpoint) != tree(source):
+                raise RuntimeError("discarded overlay did not restore immutable base view")
+            report["discard_mount_verified"] = True
         run([str(cli), "verify", str(store)], "verify-after")
         report["clean_unmount"] = not mountpoint.exists() or (not os.path.ismount(mountpoint) and not any(mountpoint.iterdir()))
         if not report["clean_unmount"]:

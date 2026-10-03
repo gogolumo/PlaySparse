@@ -1,0 +1,161 @@
+{
+  "cache_hit_ratio": 0.04479166666666667,
+  "cache_miss_ratio": 0.9552083333333333,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 960,
+  "hot_files": [
+    {
+      "events": 896,
+      "path": "stream.bin"
+    },
+    {
+      "events": 64,
+      "path": "hot.bin"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 4,
+      "length": 8192,
+      "offset": 348160,
+      "path": "hot.bin"
+    },
+    {
+      "events": 2,
+      "length": 8192,
+      "offset": 704512,
+      "path": "hot.bin"
+    },
+    {
+      "events": 2,
+      "length": 8192,
+      "offset": 712704,
+      "path": "hot.bin"
+    },
+    {
+      "events": 2,
+      "length": 8192,
+      "offset": 970752,
+      "path": "hot.bin"
+    },
+    {
+      "events": 2,
+      "length": 8192,
+      "offset": 15622144,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 16842752,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 16908288,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 16973824,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17039360,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17104896,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17170432,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17235968,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17301504,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17367040,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17432576,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17498112,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17563648,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17629184,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17694720,
+      "path": "stream.bin"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 17760256,
+      "path": "stream.bin"
+    }
+  ],
+  "latency_ns": {
+    "p50": 42750,
+    "p95": 106167,
+    "p99": 168500
+  },
+  "operations": {
+    "read": 960
+  },
+  "read_bytes": 102039552,
+  "read_operations": 960,
+  "reread_ratio": 0.27291666666666664,
+  "sequential_read_percentage": 0.10416666666666667,
+  "sessions": [
+    "14852-1791019842044929797"
+  ],
+  "sources": {
+    "memory-cache": 43,
+    "mixed": 767,
+    "primary-local": 150
+  },
+  "version": 1,
+  "write_bytes": 0,
+  "write_operations": 0
+}

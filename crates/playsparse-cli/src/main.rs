@@ -64,6 +64,40 @@ enum Command {
         overlay: Option<PathBuf>,
         #[arg(long)]
         trace: Option<PathBuf>,
+        #[arg(long)]
+        policy: Option<PathBuf>,
+        #[arg(long)]
+        tiers: Option<PathBuf>,
+    },
+    /// Persist bounded cache/prefetch suggestions from an access trace.
+    Optimize {
+        trace: PathBuf,
+        #[arg(long)]
+        output: PathBuf,
+    },
+    /// Compare static and adaptive reads on exactly the same recorded workload.
+    Replay {
+        store: PathBuf,
+        trace: PathBuf,
+        #[arg(long)]
+        policy: Option<PathBuf>,
+        #[arg(long,default_value="256M",value_parser=parse_size)]
+        cache: usize,
+        #[arg(long, default_value_t = 3)]
+        repetitions: usize,
+        #[arg(long)]
+        output: Option<PathBuf>,
+    },
+    /// Single replay mode for isolated-process CPU/RSS benchmark runs.
+    ReplayOne {
+        store: PathBuf,
+        trace: PathBuf,
+        #[arg(long)]
+        policy: Option<PathBuf>,
+        #[arg(long,default_value="256M",value_parser=parse_size)]
+        cache: usize,
+        #[arg(long)]
+        output: Option<PathBuf>,
     },
     /// Inspect/reset a persistent overlay or publish its merged tree as a new store.
     Overlay {
@@ -182,13 +216,57 @@ fn main() -> Result<()> {
             cache,
             overlay,
             trace,
+            policy,
+            tiers,
         } => mount(
             &store,
             &mountpoint,
             cache,
             overlay.as_deref(),
             trace.as_deref(),
+            policy.as_deref(),
+            tiers.as_deref(),
         ),
+        Command::Optimize { trace, output } => {
+            let policy = playsparse_policy::optimize_trace(&trace)?;
+            write_json_exclusive(&output, &serde_json::to_value(&policy)?)?;
+            print(&policy)
+        }
+        Command::Replay {
+            store,
+            trace,
+            policy,
+            cache,
+            repetitions,
+            output,
+        } => {
+            let policy = policy
+                .map(|path| playsparse_policy::Policy::load(&path))
+                .transpose()?
+                .unwrap_or_default();
+            let value =
+                playsparse_range::replay_trace(&store, &trace, cache, &policy, repetitions)?;
+            if let Some(path) = output {
+                write_json_exclusive(&path, &value)?;
+            }
+            print(&value)
+        }
+        Command::ReplayOne {
+            store,
+            trace,
+            policy,
+            cache,
+            output,
+        } => {
+            let policy = policy
+                .map(|path| playsparse_policy::Policy::load(&path))
+                .transpose()?;
+            let value = playsparse_range::replay_one(&store, &trace, cache, policy)?;
+            if let Some(path) = output {
+                write_json_exclusive(&path, &value)?;
+            }
+            print(&value)
+        }
         Command::Overlay { command } => match command {
             OverlayCommand::Status { overlay } => {
                 print(&playsparse_overlay::Overlay::status(&overlay)?)
@@ -241,23 +319,72 @@ fn main() -> Result<()> {
         }
     }
 }
+fn write_json_exclusive(path: &Path, value: &Value) -> Result<()> {
+    use std::io::Write;
+    let mut file = fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)?;
+    serde_json::to_writer_pretty(&mut file, value)?;
+    file.write_all(b"\n")?;
+    file.sync_all()?;
+    Ok(())
+}
 fn resolved_location(path: &Path) -> Result<PathBuf> {
+    #[cfg(windows)]
+    {
+        let text = path.to_string_lossy();
+        if text.len() == 2 && text.as_bytes()[0].is_ascii_alphabetic() && text.ends_with(':') {
+            // An unused WinFsp drive has no parent to canonicalize. Compare its
+            // future absolute root with the other resolved storage locations.
+            return Ok(PathBuf::from(format!(
+                r"\\?\{}\",
+                text.to_ascii_uppercase()
+            )));
+        }
+    }
     if path.exists() {
         return Ok(path.canonicalize()?);
     }
-    let name = path.file_name().context("path needs a final component")?;
-    let parent = path
-        .parent()
-        .filter(|p| !p.as_os_str().is_empty())
-        .unwrap_or(Path::new("."));
-    Ok(parent.canonicalize()?.join(name))
+    if path
+        .components()
+        .any(|component| matches!(component, std::path::Component::ParentDir))
+    {
+        bail!("new storage paths must not contain parent traversal");
+    }
+    let absolute = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir()?.join(path)
+    };
+    let mut ancestor = absolute.as_path();
+    let mut missing = Vec::new();
+    while !ancestor.exists() {
+        missing.push(
+            ancestor
+                .file_name()
+                .context("path needs an existing ancestor")?
+                .to_os_string(),
+        );
+        ancestor = ancestor
+            .parent()
+            .context("path needs an existing ancestor")?;
+    }
+    let mut resolved = ancestor.canonicalize()?;
+    for component in missing.iter().rev() {
+        resolved.push(component);
+    }
+    Ok(resolved)
 }
+
 fn mount(
     store: &Path,
     mountpoint: &Path,
     cache: usize,
     overlay: Option<&Path>,
     trace_path: Option<&Path>,
+    policy_path: Option<&Path>,
+    tiers_path: Option<&Path>,
 ) -> Result<()> {
     let base = store.canonicalize()?;
     let mount = resolved_location(mountpoint)?;
@@ -270,6 +397,38 @@ fn mount(
     {
         bail!("overlay, store and mountpoint must be separate directory trees");
     }
+    let policy = policy_path
+        .map(playsparse_policy::Policy::load)
+        .transpose()?;
+    let tiers = tiers_path
+        .map(playsparse_store::TierConfig::load)
+        .transpose()?;
+    if let Some(config) = &tiers {
+        if let Some(path) = &config.primary_cache {
+            let resolved = resolved_location(path)?;
+            if resolved.starts_with(&base)
+                || base.starts_with(&resolved)
+                || resolved.starts_with(&mount)
+                || mount.starts_with(&resolved)
+                || writable
+                    .as_ref()
+                    .is_some_and(|root| resolved.starts_with(root) || root.starts_with(&resolved))
+            {
+                bail!("primary tier cache must be outside store, overlay and mountpoint");
+            }
+        }
+        if let Some(path) = &config.secondary {
+            let resolved = path.canonicalize()?;
+            if resolved.starts_with(&mount)
+                || mount.starts_with(&resolved)
+                || writable
+                    .as_ref()
+                    .is_some_and(|root| resolved.starts_with(root) || root.starts_with(&resolved))
+            {
+                bail!("secondary store must be outside overlay and mountpoint");
+            }
+        }
+    }
     let trace = if let Some(path) = trace_path {
         let resolved = resolved_location(path)?;
         if resolved.starts_with(&base)
@@ -277,8 +436,16 @@ fn mount(
             || writable
                 .as_ref()
                 .is_some_and(|root| resolved.starts_with(root))
+            || tiers
+                .as_ref()
+                .and_then(|config| config.secondary.as_ref())
+                .map(|path| path.canonicalize())
+                .transpose()?
+                .is_some_and(|root| resolved.starts_with(root))
         {
-            bail!("trace destination must be outside store, mountpoint and overlay");
+            bail!(
+                "trace destination must be outside base/secondary stores, mountpoint and overlay"
+            );
         }
         Some(std::sync::Arc::new(playsparse_trace::TraceWriter::open(
             &resolved,
@@ -287,11 +454,29 @@ fn mount(
         None
     };
     #[cfg(windows)]
-    let result =
-        playsparse_vfs_win::mount_with_options(store, mountpoint, cache, overlay, trace.clone());
+    let result = playsparse_vfs_win::mount_configured(
+        store,
+        mountpoint,
+        overlay,
+        playsparse_range::RuntimeOptions {
+            cache_bytes: cache,
+            trace: trace.clone(),
+            policy,
+            tiers,
+        },
+    );
     #[cfg(unix)]
-    let result =
-        playsparse_vfs_fuse::mount_with_options(store, mountpoint, cache, overlay, trace.clone());
+    let result = playsparse_vfs_fuse::mount_configured(
+        store,
+        mountpoint,
+        overlay,
+        playsparse_range::RuntimeOptions {
+            cache_bytes: cache,
+            trace: trace.clone(),
+            policy,
+            tiers,
+        },
+    );
     #[cfg(not(any(windows, unix)))]
     let result: Result<()> = Err(anyhow::anyhow!("unsupported OS"));
     if let Some(trace) = trace {
@@ -348,11 +533,17 @@ fn overlay_commit(base: &Path, overlay_path: &Path, new_store: &Path) -> Result<
             use std::os::unix::fs::PermissionsExt;
             fs::set_permissions(&target, fs::Permissions::from_mode(entry.mode))?;
         }
+        #[cfg(windows)]
+        {
+            let mut permissions = fs::metadata(&target)?.permissions();
+            permissions.set_readonly(entry.mode & 0o222 == 0);
+            fs::set_permissions(&target, permissions)?;
+        }
     }
     let packed = pack_directory(stage.path(), new_store, &PackOptions::default())?;
     let verified = Store::open(new_store)?.verify()?;
     print(
-        &json!({"pack":packed,"verify":verified,"base_unchanged":true,"method":"bounded streaming merged tree into disposable staging directory; full temporary logical space required"}),
+        &json!({"pack":packed,"verify":verified,"base_opened_read_only":true,"method":"bounded streaming merged tree into disposable staging directory; full temporary logical space required"}),
     )
 }
 fn unmount(mountpoint: &Path) -> Result<()> {
@@ -687,4 +878,17 @@ fn macos_available_memory() -> Option<u64> {
         )?;
     }
     pages.checked_mul(page_size)
+}
+
+#[cfg(windows)]
+#[cfg(test)]
+mod mount_path_tests {
+    use super::*;
+    #[test]
+    fn unused_drive_mount_root_does_not_require_a_parent() {
+        assert_eq!(
+            resolved_location(Path::new("Q:")).unwrap(),
+            PathBuf::from(r"\\?\Q:\")
+        );
+    }
 }

@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-10-03T14:43:33.516432+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "arch": "arm64",
+  "commit": "2cf6cc28bc5d446f0e88d298781d8078989e3997",
+  "provenance": "Working tree contained uncommitted initial tier implementation; this is a failure reproduction, not clean-commit platform validation.",
+  "linked_store_rlib": "libplaysparse_store-57e41eb39f252482.rlib",
+  "linked_store_rlib_sha256": "0faf0dbc9b4aedcffc3a6759f73f7414e6ceb420885e4622337df2d1bc5a76c6",
+  "reproduction": "Generate sealed fixed-4K pack CAS plus metadata-only base. Configure promotion cache at switch/leaf and secondary at complete CAS. Concurrently rename switch to held and replace switch with a symlink to secondary, restore, repeat. Repeatedly Store::open_with_tiers and read one object. Secondary already contains an empty leaf directory.",
+  "observed_before_fix": {
+    "attempts": 10,
+    "opens": 8,
+    "successful_reads": 8,
+    "immutable_secondary_new_cache_files": 1
+  },
+  "expected": "No cache files or other mutations in immutable secondary regardless of concurrent symlink substitutions; opens/reads may fail closed."
+}

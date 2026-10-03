@@ -14,5 +14,6 @@ tempfile.workspace = true
 walkdir.workspace = true
 tracing.workspace = true
 libc.workspace = true
+ureq = { version = "=3.4.2", default-features = false, features = ["rustls"] }
 [dev-dependencies]
 proptest.workspace = true

@@ -129,3 +129,36 @@ docker exec -e CARGO_TARGET_DIR=/src/target-linux playsparse-runtime-dev \
 
 The container uses real Linux `/dev/fuse`; the repository is mounted at `/src`
 and generated test data is under the container's `/tmp`.
+
+
+## Writable and configured mounts
+
+The default mount retains the existing read-only path. `--overlay` selects the
+shared persistent Overlay engine through a separate callback adapter. The kernel
+exercises create/write/truncate/chmod, directories, rename/replace, unlink,
+flush/fsync and retained file handles. Mutable attributes have zero cache TTL.
+Unlinked handles still support fstat/fchmod/read/write until their release;
+`MAP_SHARED` writes and concurrent append were exercised by native FUSE tests.
+
+Both adapters accept `--trace`, `--policy` and `--tiers`. Resolver prefetch stops
+before final cache/tier metrics; the CLI drains and joins the trace writer after
+mount teardown. Linux's kernel page cache may hide application reads from the
+resolver and may generate larger or overlapping read-ahead requests.
+
+Run the actual mounted scripts on a Linux machine with `/dev/fuse` permission:
+
+```sh
+python3 tools/mounted-update.py --work /tmp/playsparse-update-validation
+python3 tools/adaptive-smoke.py --work /tmp/playsparse-adaptive-validation
+python3 tools/tiered-smoke.py --work /tmp/playsparse-tiers-validation
+```
+
+Each requires an unused work directory, preserves raw logs and records actual
+mount identity. The updater checks the complete remounted tree, immutable source
+and base, immutable commit and reset. Tiers use verified local promotion and a
+loopback HTTP range server; deliberately corrupt bytes produce EIO. Adaptive
+capture/replay compares an identical trace and budget, including losing results.
+See [sprint evidence](evidence/adaptive-writable-runtime.md).
+
+macOS physical execution remains blocked without macFUSE. Portable host tests or
+feature type checks do not establish physical mounting on macOS.
