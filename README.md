@@ -10,14 +10,80 @@ PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. 
 
 ## Current status
 
-PlaySparse is still an R&D project, but it now has two working storage primitives beyond the original compression benchmark:
+The Rust runtime now serves file ranges directly from compressed CAS through a
+**real read-only Linux FUSE mount**, without extracting files. Generated native
+programs and the open-source Zstd CLI have run from the mounted view. A generated
+10 GiB file passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. These are
+development-backend results, not evidence of Windows gaming compatibility.
+Native WinFsp CI on Windows Server 2025 also passed a real mount, executable
+launch, random/concurrent reads and mmap of the generated 10 GiB corpus.
 
-- **Experiment 02 — fixed chunks vs CDC:** shows why content-defined boundaries can preserve reuse across insertion-heavy updates.
-- **Experiment 03 — BLAKE3 CAS:** packs a directory into immutable BLAKE3-addressed, Zstd-compressed chunks and reconstructs it byte-for-byte.
-- correctness tests validate official BLAKE3 vectors, deterministic chunking and a full CAS directory round trip;
-- GitHub Actions runs the lab correctness suite and smoke experiments.
+### Current capabilities
 
-It does **not** yet mount a real game as a virtual filesystem. That is the next major systems milestone.
+- [x] **WORKING:** directory → Rust BLAKE3/raw/Zstd CAS; originals remain untouched
+- [x] **WORKING:** deterministic v1 manifests, indexed packfiles and loose comparison layout
+- [x] **WORKING:** per-object and streaming whole-file verification
+- [x] **WORKING:** binary-search byte-range reads; only intersecting chunks loaded
+- [x] **WORKING:** byte-bounded LRU, metrics and concurrent single-flight loads
+- [x] **WORKING:** Linux FUSE mount, normal reads, directories, mmap and executable launch
+- [x] **WORKING:** analyze, pack, verify, mount, unmount, benchmark, doctor and io-probe
+- [x] **WORKING:** generated 10 GiB mounted test corpus and reproducible evidence
+- [x] **WORKING:** native WinFsp mounted I/O and executable launch in hosted Windows CI
+- [ ] **EXPERIMENTAL:** Windows desktop/game compatibility; hardware validation required
+- [ ] **EXPERIMENTAL:** macFUSE backend; type-checked, macOS physical mount untested
+- [ ] **NOT IMPLEMENTED:** real game compatibility, writable overlays, launcher updates
+- [ ] **NOT IMPLEMENTED:** access tracing, adaptive policy, remote/tiered storage
+
+**WINDOWS HARDWARE TEST REQUIRED.** The production Windows milestone remains open.
+See [first mounted run](docs/evidence/first-mounted-run.md),
+[FUSE backend](docs/fuse-backend.md), [Windows backend](docs/windows-backend.md),
+[format v1](docs/storage-format-v1.md) and
+[Experiment 04](experiments/04-loose-vs-packfiles).
+
+Experiments 01–03 and the Python `playsparse_lab` remain research/reference
+implementations. Their earlier reconstruction and synthetic reuse results below
+are preserved; production reads use Rust in-process BLAKE3/Zstd.
+
+## Rust CLI
+
+Build with the pinned Rust toolchain, then put `target/release` on PATH:
+
+```bash
+cargo build --locked --release --workspace
+playsparse doctor
+playsparse analyze ./TestGame
+playsparse pack ./TestGame ./TestGame.playsparse
+playsparse verify ./TestGame.playsparse
+mkdir ./mounted
+playsparse mount ./TestGame.playsparse ./mounted --cache 256M
+```
+
+Linux requires FUSE (`/dev/fuse` and mount permission or `fusermount3`). In a
+second terminal, ordinary programs can read the virtual files:
+
+```bash
+cat ./mounted/readme.txt
+./mounted/testgame --self-test
+io-probe ./TestGame ./mounted --iterations 64 --output io-probe.json
+playsparse unmount ./mounted
+playsparse benchmark ./TestGame ./TestGame.playsparse --output benchmark.json
+```
+
+`pack` defaults to packfiles, CDC target 256 KiB (64 KiB–1 MiB chunks), and Zstd
+level 3, retaining raw objects if compression expands them. `--chunker fixed`
+and `--layout loose` remain measured baselines. Cache accepts `64M`, `256M`, `1G`
+or integer bytes. Mount stays in the foreground. Stores must stay immutable.
+Saves/updates need a separate writable location.
+
+macOS builds CAS/range/CLI without a driver; actual mount requires macFUSE and
+`cargo build --release --features macfuse`. Windows uses WinFsp with an installed
+driver and SDK; choose an unused drive letter or a nonexistent directory path,
+following [native Windows commands](docs/windows-backend.md).
+
+`analyze` performs two full measured temporary pack passes (fixed and CDC), with
+exact duplicate/reuse and encoded-size results; it makes no sampled game-saving
+prediction. Benchmark JSON labels cache state explicitly: chunk-cache-cold is
+not disk-cold. Physical allocated blocks and encoded store bytes are separate.
 
 ## What already exists elsewhere
 
@@ -124,7 +190,9 @@ Requirements for the lab implementation:
 - Python 3.10+;
 - `zstd` CLI in `PATH`.
 
-This is **not** the final production CLI. The production storage engine is planned in Rust with in-process BLAKE3/Zstd and a Windows-first virtual filesystem provider.
+This remains the Python research CLI. The Rust production path above uses
+in-process BLAKE3/Zstd and platform filesystem callbacks. V0 and v1 stores are
+different formats; repack from source to migrate.
 
 ## Correctness
 
@@ -144,7 +212,8 @@ The suite checks:
 
 ## Next milestone
 
-The next critical milestone is not another compression ratio benchmark. It is a **range-serving virtual filesystem prototype**:
+The Linux development implementation now proves this **range-serving virtual
+filesystem path**:
 
 ```text
 original directory
@@ -158,7 +227,12 @@ virtual mounted/projected directory
 arbitrary reader receives identical bytes
 ```
 
-Windows is the primary target. ProjFS and WinFsp must be benchmarked against the actual requirements (random reads, memory mapping, concurrency, large files and launcher behavior) rather than chosen by preference.
+Windows remains the primary target. WinFsp was selected because its read callbacks
+return bytes directly, while ProjFS's file-data contract materializes retrieved
+bytes in local files. Hosted Windows native mount, large/mapped/concurrent reads
+and executable launch have recorded evidence. Physical desktop/game validation
+and WOF comparisons remain open.
+The research adaptive policy stays deferred until that runtime is validated.
 
 ## Breakthrough policy
 
@@ -175,4 +249,7 @@ See [`docs/breakthrough-criteria.md`](docs/breakthrough-criteria.md).
 
 ## License
 
-MIT.
+PlaySparse's own code is MIT. The Windows build also links the GPL-3.0 WinFsp
+Rust bindings and uses the separately licensed WinFsp driver. Review the
+[Windows dependency licensing notes](docs/windows-backend.md#dependency-licenses)
+before distributing a combined Windows executable.

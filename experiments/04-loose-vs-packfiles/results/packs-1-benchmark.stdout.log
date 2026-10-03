@@ -1,0 +1,142 @@
+{
+  "allocated_bytes": 22806528,
+  "arch": "aarch64",
+  "cold_cache": {
+    "decompressions": 1373,
+    "decompressions_avoided": 0,
+    "evictions": 0,
+    "hit_ratio": 0.0,
+    "hits": 0,
+    "in_flight_waits": 0,
+    "misses": 1373,
+    "raw_bytes_loaded": 73490432,
+    "resident_bytes": 0
+  },
+  "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+  "filesystem_entries": 8,
+  "iterations": 200,
+  "kind": "direct range resolver benchmark (not mounted I/O)",
+  "logical_bytes": 69210112,
+  "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+  "object_lookup": {
+    "p50_ms": 0.000042,
+    "p95_ms": 0.000417,
+    "p99_ms": 0.0012079999999999999,
+    "samples": 200
+  },
+  "os": "linux",
+  "peak_rss_bytes": 18935808,
+  "physical_bytes": 22779000,
+  "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+  "process_cpu_seconds": 0.169209,
+  "random_chunk_read": {
+    "p50_ms": 0.00425,
+    "p95_ms": 0.24875,
+    "p99_ms": 0.404416,
+    "samples": 200
+  },
+  "requested_random_bytes": 2305281,
+  "sequential": {
+    "blake3": "1585a86a7998531aeb1b7c11d80cd63c2eb614a05c14567c8d3800f74de9c39b",
+    "bytes_equal": true,
+    "original_mib_s": 1262.6325606817338,
+    "playsparse_mib_s": 727.1912393493033
+  },
+  "store_open_first_ms": 0.852,
+  "store_open_repeat_ms": 0.704584,
+  "wall_seconds": 0.16919,
+  "warm_cache": {
+    "decompressions": 205,
+    "decompressions_avoided": 1003,
+    "evictions": 0,
+    "hit_ratio": 0.8302980132450332,
+    "hits": 1003,
+    "in_flight_waits": 0,
+    "misses": 205,
+    "raw_bytes_loaded": 2646016,
+    "resident_bytes": 2646016
+  },
+  "workloads": [
+    {
+      "aggregate_read_blake3": "bb83f936d6bd7b16781ec3be7bb0365e1c3721e0293c4c22cb1c9f1d13bb2866",
+      "original": {
+        "p50_ms": 0.0007080000000000001,
+        "p95_ms": 0.000917,
+        "p99_ms": 0.001084,
+        "samples": 200
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.003584,
+        "p95_ms": 0.0051660000000000005,
+        "p99_ms": 0.008291999999999999,
+        "samples": 200
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.000458,
+        "p95_ms": 0.0007080000000000001,
+        "p99_ms": 0.000833,
+        "samples": 200
+      },
+      "raw_bytes_loaded": 1077248,
+      "read_amplification": 2.7866324173450567,
+      "read_bytes": 4096,
+      "requested_bytes": 386577,
+      "verified_cold_reads": 200,
+      "verified_warm_reads": 200
+    },
+    {
+      "aggregate_read_blake3": "532111b182b5390282a12b9d6cdd33242e3aebee78a2972d54651b31deb1c1b8",
+      "original": {
+        "p50_ms": 0.000417,
+        "p95_ms": 0.000625,
+        "p99_ms": 0.000958,
+        "samples": 200
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.003084,
+        "p95_ms": 0.003375,
+        "p99_ms": 0.010291,
+        "samples": 200
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.000334,
+        "p95_ms": 0.0005,
+        "p99_ms": 0.000625,
+        "samples": 200
+      },
+      "raw_bytes_loaded": 1077248,
+      "read_amplification": 2.18502960368185,
+      "read_bytes": 65536,
+      "requested_bytes": 493013,
+      "verified_cold_reads": 200,
+      "verified_warm_reads": 200
+    },
+    {
+      "aggregate_read_blake3": "54f1575616588870dee523083338b88126da28b1136f30dbb5b3021a6edce7aa",
+      "original": {
+        "p50_ms": 0.0006670000000000001,
+        "p95_ms": 0.000916,
+        "p99_ms": 0.001042,
+        "samples": 200
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.003125,
+        "p95_ms": 0.003625,
+        "p99_ms": 0.006584,
+        "samples": 200
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.000458,
+        "p95_ms": 0.00075,
+        "p99_ms": 0.000917,
+        "samples": 200
+      },
+      "raw_bytes_loaded": 2125824,
+      "read_amplification": 1.49108327119972,
+      "read_bytes": 1048576,
+      "requested_bytes": 1425691,
+      "verified_cold_reads": 200,
+      "verified_warm_reads": 200
+    }
+  ]
+}

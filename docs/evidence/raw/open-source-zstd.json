@@ -1,0 +1,45 @@
+{
+  "application": "Zstandard command line, installed OS build",
+  "version": "*** Zstandard CLI (64-bit) v1.5.4, by Yann Collet ***",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "architecture": "aarch64",
+  "pack": {
+    "logical_bytes": 1182840,
+    "physical_bytes": 506395,
+    "object_bytes": 504818,
+    "metadata_bytes": 1577,
+    "allocated_bytes": 536576,
+    "filesystem_entries": 8,
+    "files": 2,
+    "unique_objects": 6,
+    "reused_chunks": 0,
+    "pack_seconds": 0.015541333,
+    "verified_before_publish": true
+  },
+  "mounted_executable": "/tmp/playsparse-opensource-1/mounted/zstd",
+  "mount_entry": [
+    "playsparse /tmp/playsparse-opensource-1/mounted fuse ro,nosuid,nodev,noatime,user_id=0,group_id=0,default_permissions 0 0"
+  ],
+  "decoded_output_bytes": 2080768,
+  "output_sha256": "3d557b5be35c06c7d6c227acd0a2c085206e88a54d84c488ba21539675724443",
+  "output_bytes_equal": true,
+  "source_unchanged": true,
+  "store_unchanged": true,
+  "source_hashes": {
+    "fixture.zst": {
+      "size": 528,
+      "sha256": "a6af613e272f3b2f355749d203a84f8a86dcc27795f2d9dcb17049088c2bdaaa"
+    },
+    "zstd": {
+      "size": 1182312,
+      "sha256": "f3336accc2f38ffc03c3ee4b123b53d06ce14abfb4d19028841883c408fdbaf2"
+    }
+  },
+  "execution_seconds": 0.0024791250000362197,
+  "total_seconds": 0.06893454200007909,
+  "provider_log": "{\"cache\":{\"decompressions\":6,\"decompressions_avoided\":7,\"evictions\":0,\"hit_ratio\":0.5384615384615384,\"hits\":7,\"in_flight_waits\":0,\"misses\":6,\"raw_bytes_loaded\":1182840,\"resident_bytes\":1182840},\"event\":\"fuse_unmounted\",\"read_errors\":0,\"read_requests\":10,\"requested_bytes\":839680,\"returned_bytes\":834680}\n",
+  "limitations": [
+    "Linux dynamic libraries come from the installed OS, outside mount",
+    "CLI compatibility evidence; no real game/DRM compatibility claim"
+  ]
+}

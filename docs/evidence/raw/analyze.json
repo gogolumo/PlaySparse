@@ -1,0 +1,46 @@
+{
+  "already_compressed_bytes": null,
+  "cdc_chunks": {
+    "allocated_bytes": 22847488,
+    "files": 514,
+    "filesystem_entries": 8,
+    "logical_bytes": 69210112,
+    "metadata_bytes": 170612,
+    "object_bytes": 22649409,
+    "pack_seconds": 0.223857709,
+    "physical_bytes": 22820021,
+    "reused_chunks": 1,
+    "unique_objects": 609,
+    "verified_before_publish": true
+  },
+  "cdc_duplicate_reuse_bytes": 4096,
+  "classification_note": "Codec choice is measured. Already-compressed and high-entropy attribution is not inferred from filename or compression ratio.",
+  "exact_duplicate_file_bytes": 4096,
+  "files": 514,
+  "fixed_chunks": {
+    "allocated_bytes": 22806528,
+    "files": 514,
+    "filesystem_entries": 8,
+    "logical_bytes": 69210112,
+    "metadata_bytes": 197284,
+    "object_bytes": 22581716,
+    "pack_seconds": 0.225762584,
+    "physical_bytes": 22779000,
+    "reused_chunks": 1,
+    "unique_objects": 768,
+    "verified_before_publish": true
+  },
+  "high_entropy_bytes": null,
+  "logical_bytes": 69210112,
+  "measurement": "measured full scan, two temporary verified stores; no extrapolation",
+  "projected_safe_mode": {
+    "measurement": "measured on this input",
+    "metadata_bytes": 170612,
+    "physical_bytes": 22820021
+  },
+  "source_modified": false,
+  "temporary_stores_removed_on_exit": true,
+  "title": "PlaySparse Analysis",
+  "unique_compressible_raw_bytes": 67450338,
+  "unique_incompressible_raw_bytes": 1755678
+}

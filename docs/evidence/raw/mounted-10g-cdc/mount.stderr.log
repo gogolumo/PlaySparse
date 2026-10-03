@@ -1,0 +1,1 @@
+{"cache":{"decompressions":106,"decompressions_avoided":10818,"evictions":33,"hit_ratio":0.9902965946539729,"hits":10818,"in_flight_waits":17,"misses":106,"raw_bytes_loaded":92288494,"resident_bytes":66716877},"event":"fuse_unmounted","read_errors":0,"read_requests":9897,"requested_bytes":1111789568,"returned_bytes":1111778583}

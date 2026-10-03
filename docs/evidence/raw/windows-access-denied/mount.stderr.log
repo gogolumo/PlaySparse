@@ -1,0 +1,3 @@
+PlaySparse mounted D:\a\_temp\playsparse-mounted-ci\mounted from compressed CAS; Ctrl+C or playsparse unmount stops it
+WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos; https://github.com/winfsp/winfsp
+PlaySparse cache metrics: CacheMetrics { hits: 0, misses: 0, evictions: 0, resident_bytes: 0, decompressions: 0, decompressions_avoided: 0, in_flight_waits: 0, raw_bytes_loaded: 0, hit_ratio: 0.0 }

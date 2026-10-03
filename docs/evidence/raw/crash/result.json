@@ -1,0 +1,213 @@
+{
+  "schema": 1,
+  "os": "linux",
+  "method": "actual partial write syscall then SIGKILL; real tiny-tmpfs ENOSPC if supplied",
+  "source_sha256": "006536072f4945c4001c142ae2055952cfe0152087dcdd4c4a3f0a528a224a60",
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "kill-object-write",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "pack",
+        "/tmp/playsparse-crash-1/source",
+        "/tmp/playsparse-crash-1/kill-object-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-crash-1/.playsparse-transaction-7qINpy/packs/pack-0000.psp",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/kill-object-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/.playsparse-transaction-7qINpy"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "kill-manifest-write",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "pack",
+        "/tmp/playsparse-crash-1/source",
+        "/tmp/playsparse-crash-1/kill-manifest-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-crash-1/.playsparse-transaction-k8u4lQ/manifest.json",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/kill-manifest-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/.playsparse-transaction-k8u4lQ"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "kill-commit-write",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "pack",
+        "/tmp/playsparse-crash-1/source",
+        "/tmp/playsparse-crash-1/kill-commit-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-crash-1/.playsparse-transaction-eTTPSd/COMMITTED.json",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/kill-commit-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/.playsparse-transaction-eTTPSd"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: EOF while parsing a string at line 1 column 90\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "missing-object",
+      "verify": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/missing-object"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-object",
+      "verify": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/corrupt-object"
+        ],
+        "returncode": 1,
+        "stderr": "Error: corrupt object: c91610d89e5b8b28b7e9173bba251fd589ac4b0f50f4ae5839653d9e70692fd0\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-manifest",
+      "verify": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/corrupt-manifest"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: commit marker metadata digest mismatch\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-index",
+      "verify": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/corrupt-index"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: commit marker metadata digest mismatch\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "missing-commit",
+      "verify": {
+        "command": [
+          "/src/target-linux/release/playsparse",
+          "verify",
+          "/tmp/playsparse-crash-1/missing-commit"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    }
+  ],
+  "disk_full": {
+    "status": "PASS",
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-probe-enospc rw,relatime - tmpfs tmpfs rw,size=1024k",
+    "capacity_bytes": 1048576,
+    "pack": {
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "pack",
+        "/tmp/playsparse-crash-1/source",
+        "/tmp/playsparse-probe-enospc/store",
+        "--chunker",
+        "fixed"
+      ],
+      "returncode": 1,
+      "stderr": "Error: I/O: No space left on device (os error 28)\n\nCaused by:\n    No space left on device (os error 28)\n"
+    },
+    "destination_absent": true
+  },
+  "retry_pack": {
+    "command": [
+      "/src/target-linux/release/playsparse",
+      "pack",
+      "/tmp/playsparse-crash-1/source",
+      "/tmp/playsparse-crash-1/valid-store",
+      "--chunker",
+      "fixed"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  "retry_verify": {
+    "command": [
+      "/src/target-linux/release/playsparse",
+      "verify",
+      "/tmp/playsparse-crash-1/valid-store"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  "source_untouched": true
+}

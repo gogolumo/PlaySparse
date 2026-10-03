@@ -24,8 +24,8 @@ reason for choosing WinFsp, rather than a claim that ProjFS cannot handle random
 reads. See [Microsoft's file-data contract](https://learn.microsoft.com/en-us/windows/win32/projfs/providing-file-data).
 
 WinFsp documents memory-mapped I/O support. That establishes suitability of the
-driver; PlaySparse's mapped-read and executable-launch compatibility still need
-actual mount tests. See [WinFsp compatibility](https://github.com/winfsp/winfsp/wiki/NTFS-Compatibility)
+driver; PlaySparse's mapped-read and executable-launch paths also passed the
+native CI run recorded below. See [WinFsp compatibility](https://github.com/winfsp/winfsp/wiki/NTFS-Compatibility)
 and [native API reference](https://github.com/winfsp/winfsp/blob/master/doc/WinFsp-API-winfsp.h.md).
 
 ## Installation and native build
@@ -44,9 +44,15 @@ the installer checksum used below. Run installation in an elevated terminal:
 $winfspMsi = Join-Path $env:TEMP 'winfsp-2.1.25156.msi'
 Invoke-WebRequest 'https://github.com/winfsp/winfsp/releases/download/v2.1/winfsp-2.1.25156.msi' -OutFile $winfspMsi
 if ((Get-FileHash $winfspMsi -Algorithm SHA256).Hash -ne '073A70E00F77423E34BED98B86E600DEF93393BA5822204FAC57A29324DB9F7A') { throw 'WinFsp installer checksum mismatch' }
-$installer = Start-Process msiexec.exe -ArgumentList @('/i', $winfspMsi, '/qn', 'ADDLOCAL=Core,Developer') -Wait -PassThru
+$installLog = Join-Path $env:TEMP 'winfsp-install.log'
+$installer = Start-Process msiexec.exe -ArgumentList "/i `"$winfspMsi`" /qn ADDLOCAL=F.Main,F.User,F.Developer /norestart /l*v `"$installLog`"" -Wait -PassThru
 if ($installer.ExitCode -notin @(0, 3010)) { throw "WinFsp installation failed: $($installer.ExitCode)" }
 ```
+
+`ADDLOCAL` uses MSI feature IDs, not their display titles. The pinned installer
+defines `F.Main`, `F.User` and `F.Developer` in its
+[upstream WiX source](https://github.com/winfsp/winfsp/blob/v2.1/build/VStudio/installer/Product.wxs).
+The CI workflow retains the verbose installer log even if a later step fails.
 
 From a Developer PowerShell terminal with LLVM installed:
 
@@ -126,8 +132,19 @@ check against the real bindings' pregenerated documentation API. That limited
 check used an external temporary Cargo manifest, disabled `system` registry
 discovery, and did not link or execute Windows code. The normal cross-build
 failed before the backend because the Mac lacks MSVC assembly tools and Windows
-C headers. Native Windows build, mounted I/O, mapped executable launch, WOF
-comparisons, and physical-Windows gaming tests remain separate evidence gates.
+C headers. On 2026-10-03, native MSVC workspace tests and release build passed
+on hosted Windows Server 2025 with the pinned WinFsp 2.1 driver. The real directory
+mount passed all 19 io-probe workloads, 177 executable read/mmap samples and
+10 GiB offsets beyond 4/8 GiB. Source bytes stayed unchanged and the directory
+mountpoint disappeared after unmount. See
+[native raw evidence](evidence/raw/windows-native/result.json) and
+[CI run](https://github.com/gogolumo/PlaySparse/actions/runs/37093219918).
+
+The access descriptor uses concrete file read/execute rights (`FRFX`), rather
+than generic ACE rights (`GRGX`), as required by the WinFsp user-mode access
+check. [Microsoft's SDDL rights definitions](https://learn.microsoft.com/en-us/windows/win32/secauthz/ace-strings)
+distinguish those masks. WOF comparisons and physical-Windows gaming tests remain
+separate evidence gates. **WINDOWS HARDWARE TEST REQUIRED.**
 
 ## Dependency licenses
 

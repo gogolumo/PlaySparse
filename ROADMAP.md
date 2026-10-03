@@ -1,5 +1,27 @@
 # Roadmap
 
+## Runtime sprint — real reads from compressed CAS
+
+- [x] Rust workspace and in-process BLAKE3/Zstd/FastCDC
+- [x] Immutable v1 packfiles, sorted binary index and verify-before-publish transaction
+- [x] Experiment 04: loose/pack comparisons, native read baseline and real measurements
+- [x] Binary-search byte ranges, 64-bit offsets, bounded LRU and single-flight
+- [x] Correctness/property tests, malformed/corrupt object checks and optional fuzz targets
+- [x] Genuine Linux FUSE reads, mmap, concurrent requests and executable launch
+- [x] Generated 10 GiB corpus; mounted offsets beyond 4/8 GiB and EOF checks
+- [x] Open-source native Zstd application executed from the mounted directory
+- [x] Rust CLI: analyze/pack/verify/mount/unmount/benchmark/doctor and independent io-probe
+- [x] Native WinFsp runtime validation in hosted Windows Server 2025 CI
+- [ ] Physical Windows desktop/game validation
+- [ ] Physical macFUSE validation (backend type-checked, experimental)
+- [ ] Windows original vs WOF vs PlaySparse frontier and real open game compatibility
+- [ ] Power-loss durability tests, installer/service and writable application state
+
+Evidence: [`docs/evidence/first-mounted-run.md`](docs/evidence/first-mounted-run.md).
+**WINDOWS HARDWARE TEST REQUIRED.** This sprint's Windows production milestone is
+not declared complete. The historical research milestones below remain intact.
+Tracing/adaptive policies follow validated Windows runtime behavior.
+
 ## M0 — Feasibility baseline ✅
 
 - reality check and compression limits;
@@ -45,7 +67,7 @@
 - multi-writer/journal design;
 - crash/fault injection.
 
-## M3 — Packfiles + indexes
+## M3 — Packfiles + indexes 🟡
 
 - compare loose objects with packfiles;
 - binary index;
@@ -53,17 +75,19 @@
 - compaction/recovery;
 - metadata overhead at millions of chunks.
 
-## M4 — Byte-range resolver
+## M4 — Byte-range resolver ✅
 
 - serve `(path, offset, length)` directly from CAS;
 - no whole-file reconstruction;
 - concurrent reads;
-- bounded buffer reuse;
+- bounded request buffers and cached chunk reuse;
 - read amplification metrics.
 
-## M5 — Windows virtual filesystem
+## M5 — Windows virtual filesystem 🟡
 
-Benchmark both **ProjFS** and **WinFsp**.
+WinFsp's direct-buffer read contract is the implemented backend. ProjFS was
+evaluated and rejected for this stage because it hydrates retrieved file data
+into the local filesystem. Native Windows hardware tests and WOF baselines remain.
 
 Required compatibility:
 

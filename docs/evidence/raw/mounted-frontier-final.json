@@ -1,0 +1,1290 @@
+{
+  "kind": "actual mounted OS file API frontier",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "commit": "8045e2f1eb88b8ce18711cccbcc63592fbe7412d",
+  "working_tree_status": " M README.md\n M ROADMAP.md\n?? docs/evidence/\n?? experiments/04-loose-vs-packfiles/results/\n",
+  "command": [
+    "/usr/bin/python3",
+    "tools/mounted-frontier.py",
+    "/tmp/playsparse-exp04-1/corpus",
+    "/tmp/playsparse-exp04-1/packs-0",
+    "--cli",
+    "/src/target-linux/release/playsparse",
+    "--reads",
+    "200",
+    "--runs",
+    "3",
+    "--output",
+    "/src/docs/evidence/raw/mounted-frontier-final.json"
+  ],
+  "cli_sha256": "4c2e930bceebf802bebd905116be1d1e789277f42b61b808f8c03070b895ccd8",
+  "machine": "aarch64",
+  "cpu_count": 10,
+  "source": "/tmp/playsparse-exp04-1/corpus",
+  "store": "/tmp/playsparse-exp04-1/packs-0",
+  "cli": "/src/target-linux/release/playsparse",
+  "source_storage": {
+    "encoded_bytes": 69210112,
+    "allocated_bytes": 69234688,
+    "filesystem_entries": 516
+  },
+  "store_storage": {
+    "encoded_bytes": 22779000,
+    "allocated_bytes": 22806528,
+    "filesystem_entries": 8
+  },
+  "savings_encoded_percent": 67.08717939944961,
+  "manifest_sha256": "48a4ce546e3357dfe1bb2653985da661ebac6f48c185f888b9c0c4158f6c3634",
+  "cold_definition": "fresh FUSE mount, userspace chunk cache disabled, POSIX_FADV_DONTNEED on the requested virtual file before each read; native baseline uses the same file-local advice; advice may retain busy pages; compressed pack OS cache and device caches uncontrolled; NOT disk-cold",
+  "warm_definition": "fresh FUSE mount with 256M chunk cache; one untimed preload of identical queries, then timed replay with kernel page cache retained; native baseline uses identical preload/replay",
+  "latency_definition": "pread only; open, file-local cache advice and SHA-256 verification excluded from latency; CPU/wall includes the whole measurement loop",
+  "provider_cpu_definition": "/proc/PID/stat utime+stime delta; percentage of one CPU core, 10ms tick granularity; excludes client and kernel worker CPU",
+  "memory_definition": "provider VmHWM; excludes kernel page cache and benchmark client memory",
+  "runs": [
+    {
+      "run": 1,
+      "workloads": [
+        {
+          "read_bytes": 4096,
+          "eligible_files": 514,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.037083,
+              "p95_ms": 0.266792,
+              "p99_ms": 1.405666
+            },
+            "open_latency": {
+              "samples": 172,
+              "p50_ms": 0.005958,
+              "p95_ms": 0.017541,
+              "p99_ms": 0.025416
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.02550491700094426,
+            "client_cpu_seconds": 0.0038093739999999973,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "639aac9d1b51020c5d6d30002b2b094345ee0a4c3252f5c5da6613d1d22d5ef0",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000416,
+              "p95_ms": 0.0005,
+              "p99_ms": 0.000625
+            },
+            "open_latency": {
+              "samples": 172,
+              "p50_ms": 0.001709,
+              "p95_ms": 0.002,
+              "p99_ms": 0.003125
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.0007684590000280878,
+            "client_cpu_seconds": 0.0007870420000000017,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "639aac9d1b51020c5d6d30002b2b094345ee0a4c3252f5c5da6613d1d22d5ef0",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.033458,
+              "p95_ms": 0.045959,
+              "p99_ms": 0.068833
+            },
+            "open_latency": {
+              "samples": 172,
+              "p50_ms": 0.058333,
+              "p95_ms": 0.080791,
+              "p99_ms": 0.085291
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.022206207999261096,
+            "client_cpu_seconds": 0.008378534000000007,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 6348800,
+            "aggregate_query_sha256": "639aac9d1b51020c5d6d30002b2b094345ee0a4c3252f5c5da6613d1d22d5ef0",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000916,
+              "p95_ms": 0.001209,
+              "p99_ms": 0.001458
+            },
+            "open_latency": {
+              "samples": 172,
+              "p50_ms": 0.024916,
+              "p95_ms": 0.037375,
+              "p99_ms": 0.063041
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.009986666998884175,
+            "client_cpu_seconds": 0.0043652039999999975,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 7094272,
+            "aggregate_query_sha256": "639aac9d1b51020c5d6d30002b2b094345ee0a4c3252f5c5da6613d1d22d5ef0",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 200,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 200,
+              "raw_bytes_loaded": 1335296,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 827392,
+            "returned_bytes": 827392
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 173,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 173,
+              "raw_bytes_loaded": 1224704,
+              "resident_bytes": 1224704
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 173,
+            "requested_bytes": 716800,
+            "returned_bytes": 716800
+          },
+          "cold_read_amplification": 1.63,
+          "warm_read_amplification_including_preload": 0.7475,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 65536,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.15175,
+              "p95_ms": 0.193041,
+              "p99_ms": 0.296
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.009083,
+              "p95_ms": 0.009083,
+              "p99_ms": 0.009083
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.037966874999256106,
+            "client_cpu_seconds": 0.007177301000000011,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "0da4e7ba8fb56fcb8a09060f2b0452f771e1e6cf38be7f9d1859c88d9c6092f5",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.009042,
+              "p95_ms": 0.013125,
+              "p99_ms": 0.021875
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.021333,
+              "p95_ms": 0.021333,
+              "p99_ms": 0.021333
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.005926207999436883,
+            "client_cpu_seconds": 0.005947374999999991,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "0da4e7ba8fb56fcb8a09060f2b0452f771e1e6cf38be7f9d1859c88d9c6092f5",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.18175,
+              "p95_ms": 0.42175,
+              "p99_ms": 0.472333
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.068542,
+              "p95_ms": 0.068542,
+              "p99_ms": 0.068542
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.05211020800015831,
+            "client_cpu_seconds": 0.007570836999999997,
+            "provider_cpu_seconds": 0.03,
+            "provider_cpu_percent_one_core": 57.57029409652109,
+            "provider_peak_rss_bytes": 9891840,
+            "aggregate_query_sha256": "0da4e7ba8fb56fcb8a09060f2b0452f771e1e6cf38be7f9d1859c88d9c6092f5",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.005208,
+              "p95_ms": 0.010542,
+              "p99_ms": 0.011583
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.0325,
+              "p95_ms": 0.0325,
+              "p99_ms": 0.0325
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.00527762499950768,
+            "client_cpu_seconds": 0.005307292000000005,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 47493120,
+            "aggregate_query_sha256": "0da4e7ba8fb56fcb8a09060f2b0452f771e1e6cf38be7f9d1859c88d9c6092f5",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 242,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 242,
+              "raw_bytes_loaded": 63438848,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 13926400,
+            "returned_bytes": 13926400
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 151,
+              "decompressions_avoided": 90,
+              "evictions": 0,
+              "hit_ratio": 0.37344398340248963,
+              "hits": 90,
+              "in_flight_waits": 0,
+              "misses": 151,
+              "raw_bytes_loaded": 39583744,
+              "resident_bytes": 39583744
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 199,
+            "requested_bytes": 13762560,
+            "returned_bytes": 13762560
+          },
+          "cold_read_amplification": 4.84,
+          "warm_read_amplification_including_preload": 1.51,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 1048576,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.331584,
+              "p95_ms": 0.659333,
+              "p99_ms": 0.76925
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.011,
+              "p95_ms": 0.011,
+              "p99_ms": 0.011
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.14364762600052927,
+            "client_cpu_seconds": 0.091106993,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "5ed4be2dd6949e3c2367ad601d4aaa30c2031b56d736533c1f1ca35486086e1d",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.134708,
+              "p95_ms": 0.215209,
+              "p99_ms": 0.348542
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.03375,
+              "p95_ms": 0.03375,
+              "p99_ms": 0.03375
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.09360424999977113,
+            "client_cpu_seconds": 0.09364137499999997,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "5ed4be2dd6949e3c2367ad601d4aaa30c2031b56d736533c1f1ca35486086e1d",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 1.343917,
+              "p95_ms": 3.142375,
+              "p99_ms": 4.871083
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.089584,
+              "p95_ms": 0.089584,
+              "p99_ms": 0.089584
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.3980190839993156,
+            "client_cpu_seconds": 0.12875062500000006,
+            "provider_cpu_seconds": 0.43,
+            "provider_cpu_percent_one_core": 108.03502075311026,
+            "provider_peak_rss_bytes": 11517952,
+            "aggregate_query_sha256": "5ed4be2dd6949e3c2367ad601d4aaa30c2031b56d736533c1f1ca35486086e1d",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.127,
+              "p95_ms": 0.165,
+              "p99_ms": 0.209375
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.045167,
+              "p95_ms": 0.045167,
+              "p99_ms": 0.045167
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.08828312500008906,
+            "client_cpu_seconds": 0.08818674900000001,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 74973184,
+            "aggregate_query_sha256": "5ed4be2dd6949e3c2367ad601d4aaa30c2031b56d736533c1f1ca35486086e1d",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 2124,
+              "decompressions_avoided": 861,
+              "evictions": 0,
+              "hit_ratio": 0.2884422110552764,
+              "hits": 861,
+              "in_flight_waits": 861,
+              "misses": 2124,
+              "raw_bytes_loaded": 556793856,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 1998,
+            "requested_bytes": 261730304,
+            "returned_bytes": 261730304
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 255,
+              "decompressions_avoided": 531,
+              "evictions": 0,
+              "hit_ratio": 0.6755725190839694,
+              "hits": 531,
+              "in_flight_waits": 159,
+              "misses": 255,
+              "raw_bytes_loaded": 66846720,
+              "resident_bytes": 66846720
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 532,
+            "requested_bytes": 66293760,
+            "returned_bytes": 66293760
+          },
+          "cold_read_amplification": 2.655,
+          "warm_read_amplification_including_preload": 0.159375,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "workloads": [
+        {
+          "read_bytes": 4096,
+          "eligible_files": 514,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.017167,
+              "p95_ms": 0.140041,
+              "p99_ms": 0.180292
+            },
+            "open_latency": {
+              "samples": 164,
+              "p50_ms": 0.005541,
+              "p95_ms": 0.012708,
+              "p99_ms": 0.029875
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.009285000000090804,
+            "client_cpu_seconds": 0.004340203999999903,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "e53056b6e8b0d4abda3f5226234c2372d6d32748c67690c126e41f4c126163ae",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000375,
+              "p95_ms": 0.0005,
+              "p99_ms": 0.000542
+            },
+            "open_latency": {
+              "samples": 164,
+              "p50_ms": 0.001708,
+              "p95_ms": 0.001875,
+              "p99_ms": 0.002125
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.0007375000004685717,
+            "client_cpu_seconds": 0.0007558340000000108,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "e53056b6e8b0d4abda3f5226234c2372d6d32748c67690c126e41f4c126163ae",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.033375,
+              "p95_ms": 0.048958,
+              "p99_ms": 0.161208
+            },
+            "open_latency": {
+              "samples": 164,
+              "p50_ms": 0.05975,
+              "p95_ms": 0.084667,
+              "p99_ms": 0.1705
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.02409491700018407,
+            "client_cpu_seconds": 0.010513349000000005,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 6393856,
+            "aggregate_query_sha256": "e53056b6e8b0d4abda3f5226234c2372d6d32748c67690c126e41f4c126163ae",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000875,
+              "p95_ms": 0.001417,
+              "p99_ms": 0.002
+            },
+            "open_latency": {
+              "samples": 164,
+              "p50_ms": 0.024125,
+              "p95_ms": 0.0345,
+              "p99_ms": 0.038542
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.009378040998853976,
+            "client_cpu_seconds": 0.004125236000000032,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 7045120,
+            "aggregate_query_sha256": "e53056b6e8b0d4abda3f5226234c2372d6d32748c67690c126e41f4c126163ae",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 200,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 200,
+              "raw_bytes_loaded": 1335296,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 827392,
+            "returned_bytes": 827392
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 164,
+              "decompressions_avoided": 1,
+              "evictions": 0,
+              "hit_ratio": 0.006060606060606061,
+              "hits": 1,
+              "in_flight_waits": 0,
+              "misses": 164,
+              "raw_bytes_loaded": 1187840,
+              "resident_bytes": 1187840
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 165,
+            "requested_bytes": 684032,
+            "returned_bytes": 684032
+          },
+          "cold_read_amplification": 1.63,
+          "warm_read_amplification_including_preload": 0.725,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 65536,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.024042,
+              "p95_ms": 0.038333,
+              "p99_ms": 0.203875
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.00775,
+              "p95_ms": 0.00775,
+              "p99_ms": 0.00775
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.011240957999689272,
+            "client_cpu_seconds": 0.006614208999999982,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "945e54a9e93f7e5096fee2dc9cca221f743dc186427f6f0db8008943f9a99a4a",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.007917,
+              "p95_ms": 0.012083,
+              "p99_ms": 0.017334
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.02375,
+              "p95_ms": 0.02375,
+              "p99_ms": 0.02375
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.005667500001436565,
+            "client_cpu_seconds": 0.00568633399999996,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "945e54a9e93f7e5096fee2dc9cca221f743dc186427f6f0db8008943f9a99a4a",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.18425,
+              "p95_ms": 0.32975,
+              "p99_ms": 0.426375
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.064583,
+              "p95_ms": 0.064583,
+              "p99_ms": 0.064583
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.04922400000032212,
+            "client_cpu_seconds": 0.007510537000000039,
+            "provider_cpu_seconds": 0.03,
+            "provider_cpu_percent_one_core": 60.94588005810922,
+            "provider_peak_rss_bytes": 9900032,
+            "aggregate_query_sha256": "945e54a9e93f7e5096fee2dc9cca221f743dc186427f6f0db8008943f9a99a4a",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.007416,
+              "p95_ms": 0.01125,
+              "p99_ms": 0.015417
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.031333,
+              "p95_ms": 0.031333,
+              "p99_ms": 0.031333
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.005520374999832711,
+            "client_cpu_seconds": 0.005523457999999981,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 49127424,
+            "aggregate_query_sha256": "945e54a9e93f7e5096fee2dc9cca221f743dc186427f6f0db8008943f9a99a4a",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 261,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 261,
+              "raw_bytes_loaded": 68419584,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 13926400,
+            "returned_bytes": 13926400
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 159,
+              "decompressions_avoided": 94,
+              "evictions": 0,
+              "hit_ratio": 0.3715415019762846,
+              "hits": 94,
+              "in_flight_waits": 0,
+              "misses": 159,
+              "raw_bytes_loaded": 41680896,
+              "resident_bytes": 41680896
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 195,
+            "requested_bytes": 13553664,
+            "returned_bytes": 13553664
+          },
+          "cold_read_amplification": 5.22,
+          "warm_read_amplification_including_preload": 1.59,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 1048576,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.160875,
+              "p95_ms": 0.332375,
+              "p99_ms": 0.722459
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.010583,
+              "p95_ms": 0.010583,
+              "p99_ms": 0.010583
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.10773837499982619,
+            "client_cpu_seconds": 0.08628112999999993,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "41317264d11a87a2cc808bf6441e037e196cd8219f13071ec69f1de559df8767",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.124292,
+              "p95_ms": 0.166625,
+              "p99_ms": 0.201666
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.02425,
+              "p95_ms": 0.02425,
+              "p99_ms": 0.02425
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.08770050000021001,
+            "client_cpu_seconds": 0.08770816500000012,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "41317264d11a87a2cc808bf6441e037e196cd8219f13071ec69f1de559df8767",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 1.269125,
+              "p95_ms": 1.554625,
+              "p99_ms": 2.251417
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.061792,
+              "p95_ms": 0.061792,
+              "p99_ms": 0.061792
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.3207363749988872,
+            "client_cpu_seconds": 0.103519366,
+            "provider_cpu_seconds": 0.34,
+            "provider_cpu_percent_one_core": 106.00606183230065,
+            "provider_peak_rss_bytes": 11010048,
+            "aggregate_query_sha256": "41317264d11a87a2cc808bf6441e037e196cd8219f13071ec69f1de559df8767",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.095417,
+              "p95_ms": 0.145541,
+              "p99_ms": 0.171
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.034084,
+              "p95_ms": 0.034084,
+              "p99_ms": 0.034084
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.0828121659997123,
+            "client_cpu_seconds": 0.08284391699999993,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 73760768,
+            "aggregate_query_sha256": "41317264d11a87a2cc808bf6441e037e196cd8219f13071ec69f1de559df8767",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 2085,
+              "decompressions_avoided": 880,
+              "evictions": 0,
+              "hit_ratio": 0.29679595278246207,
+              "hits": 880,
+              "in_flight_waits": 880,
+              "misses": 2085,
+              "raw_bytes_loaded": 546570240,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 2000,
+            "requested_bytes": 262144000,
+            "returned_bytes": 262144000
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 251,
+              "decompressions_avoided": 512,
+              "evictions": 0,
+              "hit_ratio": 0.6710353866317169,
+              "hits": 512,
+              "in_flight_waits": 158,
+              "misses": 251,
+              "raw_bytes_loaded": 65798144,
+              "resident_bytes": 65798144
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 516,
+            "requested_bytes": 64950272,
+            "returned_bytes": 64950272
+          },
+          "cold_read_amplification": 2.60625,
+          "warm_read_amplification_including_preload": 0.156875,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "workloads": [
+        {
+          "read_bytes": 4096,
+          "eligible_files": 514,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.016125,
+              "p95_ms": 0.036125,
+              "p99_ms": 0.167625
+            },
+            "open_latency": {
+              "samples": 162,
+              "p50_ms": 0.0035,
+              "p95_ms": 0.009667,
+              "p99_ms": 0.020166
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.00587449999875389,
+            "client_cpu_seconds": 0.0025487870000000523,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "34113c3c89b8eca0f357b525be6d0114bf5787087f4a300660cdda5ffcc92f20",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000458,
+              "p95_ms": 0.000583,
+              "p99_ms": 0.000625
+            },
+            "open_latency": {
+              "samples": 162,
+              "p50_ms": 0.001875,
+              "p95_ms": 0.002291,
+              "p99_ms": 0.005458
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.0008135419993777759,
+            "client_cpu_seconds": 0.0008340000000000014,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "34113c3c89b8eca0f357b525be6d0114bf5787087f4a300660cdda5ffcc92f20",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.034333,
+              "p95_ms": 0.043125,
+              "p99_ms": 0.052625
+            },
+            "open_latency": {
+              "samples": 162,
+              "p50_ms": 0.060167,
+              "p95_ms": 0.07625,
+              "p99_ms": 0.087416
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.02155266599947936,
+            "client_cpu_seconds": 0.007553957999999916,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 5804032,
+            "aggregate_query_sha256": "34113c3c89b8eca0f357b525be6d0114bf5787087f4a300660cdda5ffcc92f20",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.000875,
+              "p95_ms": 0.001417,
+              "p99_ms": 0.001875
+            },
+            "open_latency": {
+              "samples": 162,
+              "p50_ms": 0.024666,
+              "p95_ms": 0.033,
+              "p99_ms": 0.036084
+            },
+            "requested_bytes": 819200,
+            "wall_seconds": 0.0091420829994604,
+            "client_cpu_seconds": 0.004091699000000171,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 6508544,
+            "aggregate_query_sha256": "34113c3c89b8eca0f357b525be6d0114bf5787087f4a300660cdda5ffcc92f20",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 200,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 200,
+              "raw_bytes_loaded": 819200,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 819200,
+            "returned_bytes": 819200
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 162,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 162,
+              "raw_bytes_loaded": 663552,
+              "resident_bytes": 663552
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 162,
+            "requested_bytes": 663552,
+            "returned_bytes": 663552
+          },
+          "cold_read_amplification": 1.0,
+          "warm_read_amplification_including_preload": 0.405,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 65536,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.0245,
+              "p95_ms": 0.041708,
+              "p99_ms": 0.048583
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.008125,
+              "p95_ms": 0.008125,
+              "p99_ms": 0.008125
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.011594125000556232,
+            "client_cpu_seconds": 0.007825830000000034,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "15eb9273df40f79d68de3c6ff3472bcb8e624518dcbe53c91bdc5b8e770cffd4",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.00875,
+              "p95_ms": 0.012542,
+              "p99_ms": 0.013833
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.01875,
+              "p95_ms": 0.01875,
+              "p99_ms": 0.01875
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.005844834000527044,
+            "client_cpu_seconds": 0.005867708999999888,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "15eb9273df40f79d68de3c6ff3472bcb8e624518dcbe53c91bdc5b8e770cffd4",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.177458,
+              "p95_ms": 0.327458,
+              "p99_ms": 0.392833
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.069083,
+              "p95_ms": 0.069083,
+              "p99_ms": 0.069083
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.047688374999779626,
+            "client_cpu_seconds": 0.00736629600000005,
+            "provider_cpu_seconds": 0.03,
+            "provider_cpu_percent_one_core": 62.9084132142029,
+            "provider_peak_rss_bytes": 9887744,
+            "aggregate_query_sha256": "15eb9273df40f79d68de3c6ff3472bcb8e624518dcbe53c91bdc5b8e770cffd4",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.007834,
+              "p95_ms": 0.010625,
+              "p99_ms": 0.011542
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.031083,
+              "p95_ms": 0.031083,
+              "p99_ms": 0.031083
+            },
+            "requested_bytes": 13107200,
+            "wall_seconds": 0.00556374999905529,
+            "client_cpu_seconds": 0.005593917000000115,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 49733632,
+            "aggregate_query_sha256": "15eb9273df40f79d68de3c6ff3472bcb8e624518dcbe53c91bdc5b8e770cffd4",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 244,
+              "decompressions_avoided": 0,
+              "evictions": 0,
+              "hit_ratio": 0.0,
+              "hits": 0,
+              "in_flight_waits": 0,
+              "misses": 244,
+              "raw_bytes_loaded": 63963136,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 200,
+            "requested_bytes": 13926400,
+            "returned_bytes": 13926400
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 163,
+              "decompressions_avoided": 79,
+              "evictions": 0,
+              "hit_ratio": 0.32644628099173556,
+              "hits": 79,
+              "in_flight_waits": 0,
+              "misses": 163,
+              "raw_bytes_loaded": 42729472,
+              "resident_bytes": 42729472
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 199,
+            "requested_bytes": 13484032,
+            "returned_bytes": 13484032
+          },
+          "cold_read_amplification": 4.88,
+          "warm_read_amplification_including_preload": 1.63,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        },
+        {
+          "read_bytes": 1048576,
+          "eligible_files": 1,
+          "original_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.152917,
+              "p95_ms": 0.258208,
+              "p99_ms": 0.337583
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.009292,
+              "p95_ms": 0.009292,
+              "p99_ms": 0.009292
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.10160974999962491,
+            "client_cpu_seconds": 0.08447737500000008,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "f9d02fc958b291f022a7c248bf4f5f4813f9ffed0263df5441fef0dc45741e8b",
+            "verified_reads": 200
+          },
+          "original_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.1265,
+              "p95_ms": 0.178042,
+              "p99_ms": 0.258667
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.03125,
+              "p95_ms": 0.03125,
+              "p99_ms": 0.03125
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.08896104199993715,
+            "client_cpu_seconds": 0.08899904099999989,
+            "provider_cpu_seconds": null,
+            "provider_cpu_percent_one_core": null,
+            "provider_peak_rss_bytes": null,
+            "aggregate_query_sha256": "f9d02fc958b291f022a7c248bf4f5f4813f9ffed0263df5441fef0dc45741e8b",
+            "verified_reads": 200
+          },
+          "mounted_cold": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 1.265125,
+              "p95_ms": 1.417042,
+              "p99_ms": 1.51475
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.068083,
+              "p95_ms": 0.068083,
+              "p99_ms": 0.068083
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.3084959160005383,
+            "client_cpu_seconds": 0.09883595199999995,
+            "provider_cpu_seconds": 0.33,
+            "provider_cpu_percent_one_core": 106.97062193828984,
+            "provider_peak_rss_bytes": 11337728,
+            "aggregate_query_sha256": "f9d02fc958b291f022a7c248bf4f5f4813f9ffed0263df5441fef0dc45741e8b",
+            "verified_reads": 200
+          },
+          "mounted_warm": {
+            "read_latency": {
+              "samples": 200,
+              "p50_ms": 0.096875,
+              "p95_ms": 0.149,
+              "p99_ms": 0.205125
+            },
+            "open_latency": {
+              "samples": 1,
+              "p50_ms": 0.03175,
+              "p95_ms": 0.03175,
+              "p99_ms": 0.03175
+            },
+            "requested_bytes": 209715200,
+            "wall_seconds": 0.0840844169997581,
+            "client_cpu_seconds": 0.08414762400000009,
+            "provider_cpu_seconds": 0.0,
+            "provider_cpu_percent_one_core": 0.0,
+            "provider_peak_rss_bytes": 74579968,
+            "aggregate_query_sha256": "f9d02fc958b291f022a7c248bf4f5f4813f9ffed0263df5441fef0dc45741e8b",
+            "verified_reads": 200
+          },
+          "real_mount_verified": true,
+          "cold_provider_metrics": {
+            "cache": {
+              "decompressions": 2086,
+              "decompressions_avoided": 881,
+              "evictions": 0,
+              "hit_ratio": 0.296932928884395,
+              "hits": 881,
+              "in_flight_waits": 881,
+              "misses": 2086,
+              "raw_bytes_loaded": 546832384,
+              "resident_bytes": 0
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 1998,
+            "requested_bytes": 261787648,
+            "returned_bytes": 261787648
+          },
+          "warm_provider_metrics": {
+            "cache": {
+              "decompressions": 254,
+              "decompressions_avoided": 524,
+              "evictions": 0,
+              "hit_ratio": 0.6735218508997429,
+              "hits": 524,
+              "in_flight_waits": 176,
+              "misses": 254,
+              "raw_bytes_loaded": 66584576,
+              "resident_bytes": 66584576
+            },
+            "event": "fuse_unmounted",
+            "read_errors": 0,
+            "read_requests": 532,
+            "requested_bytes": 66293760,
+            "returned_bytes": 66293760
+          },
+          "cold_read_amplification": 2.6075,
+          "warm_read_amplification_including_preload": 0.15875,
+          "warm_metrics_window": "includes untimed preload plus measured replay; kernel cache hits do not reach the provider"
+        }
+      ]
+    }
+  ],
+  "sequential": {
+    "original": {
+      "bytes": 69210112,
+      "seconds": 0.05054095900050015,
+      "mib_s": 1305.948829529468,
+      "sha256": "010feb398cd123ed0f4a8bd45eaf23c644f169271989daed5f367165ee129a60",
+      "provider_peak_rss_bytes": null,
+      "provider_cpu_seconds": null,
+      "includes": "file opens, sequential reads and SHA-256 verification"
+    },
+    "mounted": {
+      "bytes": 69210112,
+      "seconds": 0.1312208749986894,
+      "mib_s": 502.9985225343089,
+      "sha256": "010feb398cd123ed0f4a8bd45eaf23c644f169271989daed5f367165ee129a60",
+      "provider_peak_rss_bytes": 10670080,
+      "provider_cpu_seconds": 0.1,
+      "includes": "file opens, sequential reads and SHA-256 verification"
+    },
+    "provider_metrics": {
+      "cache": {
+        "decompressions": 1013,
+        "decompressions_avoided": 12,
+        "evictions": 0,
+        "hit_ratio": 0.011707317073170732,
+        "hits": 12,
+        "in_flight_waits": 12,
+        "misses": 1013,
+        "raw_bytes_loaded": 133173248,
+        "resident_bytes": 0
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 1025,
+      "requested_bytes": 69210112,
+      "returned_bytes": 69210112
+    },
+    "bytes_equal": true,
+    "real_mount_verified": true
+  },
+  "footprints_unchanged": true,
+  "no_full_pre_extraction": "real FUSE mount served CAS callbacks; each detached mountpoint empty; source/store footprints unchanged"
+}

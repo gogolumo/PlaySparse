@@ -1,0 +1,31 @@
+{
+  "arch": "aarch64",
+  "available_disk_bytes": 447089491968,
+  "available_ram_bytes": 7427809280,
+  "codecs": [
+    "raw",
+    "zstd (in-process)"
+  ],
+  "filesystem_support": "read-only native callbacks; actual driver mount test required on each platform",
+  "hash": "BLAKE3 raw bytes",
+  "memory_note": "Linux MemAvailable; Windows ullAvailPhys; macOS free+speculative pages (excludes reclaimable inactive/compressed pages); null on measurement failure",
+  "mount_backend": {
+    "available": true,
+    "backend": "FUSE",
+    "detail": "Linux /dev/fuse can be opened; mounting still requires mount permission or fusermount3."
+  },
+  "os": "linux",
+  "permissions": {
+    "exists": true,
+    "note": "actual mount privilege is checked by backend at mount time",
+    "path": "/tmp",
+    "readonly_flag": false
+  },
+  "store_health": {
+    "checked_bytes": 69210112,
+    "checked_files": 514,
+    "checked_objects": 768,
+    "ok": true
+  },
+  "windows_physical_test": "REQUIRED"
+}

@@ -594,7 +594,10 @@ pub fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> 
     unsafe {
         SetEvent(done.0)?;
     }
-    eprintln!("PlaySparse cache metrics: {:?}", reader.metrics());
+    eprintln!(
+        "{}",
+        serde_json::json!({"event": "winfsp_unmounted", "cache": reader.metrics()})
+    );
     if wait == WAIT_FAILED {
         bail!("waiting for unmount failed: {:?}", unsafe {
             GetLastError()
@@ -637,6 +640,70 @@ mod tests {
     use super::*;
     use playsparse_core::{Chunker, Layout};
     use playsparse_store::{PackOptions, pack_directory};
+    use windows::Win32::Security::{
+        AccessCheck, DuplicateToken, GENERIC_MAPPING, PRIVILEGE_SET, SecurityImpersonation,
+        TOKEN_DUPLICATE,
+    };
+    use windows::core::Owned;
+
+    #[test]
+    fn readonly_descriptor_grants_native_read_execute_and_denies_mutation() {
+        let mut primary = HANDLE::default();
+        // SAFETY: the current process is valid and the output handle is writable.
+        unsafe {
+            OpenProcessToken(
+                GetCurrentProcess(),
+                TOKEN_QUERY | TOKEN_DUPLICATE,
+                &mut primary,
+            )
+            .unwrap();
+        }
+        // SAFETY: OpenProcessToken returned a handle uniquely owned by this test.
+        let primary = unsafe { Owned::new(primary) };
+        let mut impersonation = HANDLE::default();
+        // AccessCheck requires an impersonation token rather than a primary token.
+        unsafe { DuplicateToken(*primary, SecurityImpersonation, &mut impersonation).unwrap() };
+        // SAFETY: DuplicateToken returned a handle uniquely owned by this test.
+        let impersonation = unsafe { Owned::new(impersonation) };
+        let descriptor = readonly_security().unwrap();
+        let mapping = GENERIC_MAPPING {
+            GenericRead: FILE_GENERIC_READ.0,
+            GenericWrite: FILE_GENERIC_WRITE.0,
+            GenericExecute: FILE_GENERIC_EXECUTE.0,
+            GenericAll: FILE_ALL_ACCESS.0,
+        };
+        for (desired, expected) in [
+            (FILE_READ_ATTRIBUTES.0, true),
+            (FILE_GENERIC_READ.0, true),
+            (FILE_GENERIC_EXECUTE.0, true),
+            (FILE_WRITE_DATA.0, false),
+            (DELETE.0, false),
+        ] {
+            let mut privileges = PRIVILEGE_SET::default();
+            let mut privileges_len = std::mem::size_of_val(&privileges) as u32;
+            let mut granted = 0;
+            let mut allowed = BOOL(0);
+            // SAFETY: the self-relative descriptor remains alive for the call;
+            // the token and mapping are valid and all output buffers are writable.
+            unsafe {
+                AccessCheck(
+                    PSECURITY_DESCRIPTOR(descriptor.as_ptr().cast_mut().cast()),
+                    *impersonation,
+                    desired,
+                    &mapping,
+                    Some(&mut privileges),
+                    &mut privileges_len,
+                    &mut granted,
+                    &mut allowed,
+                )
+                .unwrap();
+            }
+            assert_eq!(allowed.as_bool(), expected, "desired access {desired:#x}");
+            if expected {
+                assert_eq!(granted & desired, desired);
+            }
+        }
+    }
 
     fn fixture() -> (tempfile::TempDir, Arc<RangeResolver>) {
         winfsp::winfsp_init().expect("Windows callback tests require an installed WinFsp DLL");

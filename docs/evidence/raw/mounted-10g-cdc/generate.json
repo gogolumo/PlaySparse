@@ -1,0 +1,10 @@
+{
+  "source": "/tmp/playsparse-mounted-10g-cdc-final/TestGame",
+  "executable": "testgame",
+  "world_logical_bytes": 10737418240,
+  "logical_bytes": 10745242903,
+  "files": 9,
+  "source_allocated_bytes": 12697600,
+  "nonzero_world_regions": 70,
+  "sample_count": 177
+}

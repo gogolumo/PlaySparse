@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10",
+  "commands": [
+    [
+      "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+      "D:\\a\\PlaySparse\\PlaySparse\\tools\\generate-testgame.py",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame",
+      "--io-probe",
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+      "--world-bytes",
+      "10737418240"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "pack",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame.playsparse",
+      "--layout",
+      "packs",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "256K"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "verify",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame.playsparse"
+    ],
+    [
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame\\testgame.exe",
+      "--self-test"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame.playsparse",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\mounted",
+      "--cache",
+      "64M"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "unmount",
+      "D:\\a\\_temp\\playsparse-mounted-ci\\mounted"
+    ]
+  ],
+  "source": "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame",
+  "store": "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame.playsparse",
+  "mountpoint": "D:\\a\\_temp\\playsparse-mounted-ci\\mounted",
+  "status": "FAIL",
+  "windows_physical_test": "REQUIRED",
+  "windows_native_runtime_test": "NOT RUN",
+  "commit": "da10f69f0677686a7b70b8135d54a9ff8c2b4aaf",
+  "working_tree_status": "",
+  "binary_sha256": {
+    "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe": "54b01bf07f31ff4b69824a26c0525851d5a94820ca306b50afa930e5c7dd9234",
+    "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe": "a072f4b929d032270663d3f7ef1b400de24f3b48dcadbbfd6b7c01f95ebe48e7"
+  },
+  "dataset": {
+    "source": "D:\\a\\_temp\\playsparse-mounted-ci\\TestGame",
+    "executable": "testgame.exe",
+    "world_logical_bytes": 10737418240,
+    "logical_bytes": 10744948048,
+    "files": 9,
+    "source_allocated_bytes": null,
+    "nonzero_world_regions": 70,
+    "sample_count": 177
+  },
+  "pack": {
+    "logical_bytes": 10744948048,
+    "physical_bytes": 7218057,
+    "object_bytes": 2538173,
+    "metadata_bytes": 4679884,
+    "allocated_bytes": null,
+    "filesystem_entries": 8,
+    "files": 9,
+    "unique_objects": 120,
+    "reused_chunks": 40873,
+    "pack_seconds": 5.5284878,
+    "verified_before_publish": true
+  },
+  "pack_wall_seconds": 5.564287599999943,
+  "verify": {
+    "ok": true,
+    "checked_files": 9,
+    "checked_bytes": 10744948048,
+    "checked_objects": 120
+  },
+  "last_windows_mount_observation": {
+    "real_mount": false,
+    "api": "CreateFileW",
+    "error": 5
+  },
+  "error": "real filesystem mount did not become ready within 30 seconds",
+  "mount_exit_code": 0,
+  "source_untouched": true,
+  "source_allocation_changed": false,
+  "source_fingerprint_sha256": "c644d60fc2ed242873b13f2b944e171ae5642578e0d3fac6a62503e86296c8b3",
+  "no_pre_extraction": {
+    "basis": "OS-verified filesystem mount; empty or absent mountpoint after unmount; runner never calls unpack/extraction",
+    "mountpoint_empty_after_unmount": true
+  },
+  "wall_seconds": 102.45686540000008
+}

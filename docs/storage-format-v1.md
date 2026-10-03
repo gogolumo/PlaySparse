@@ -84,6 +84,9 @@ pack process is active an operator may remove that specific staging path. It is
 never automatically promoted. A staging tree without `COMMITTED.json` is rejected.
 Linux and macOS publication uses exclusive rename, refusing even an externally
 created empty destination directory during the publication race.
+Windows uses `MoveFileExW` without replacement or cross-volume-copy flags for
+the same guarantee. The native regression test caught that `std::fs::rename`
+could replace an empty directory on Windows; the destination is now preserved.
 Windows directory durability and real power-loss behavior require hardware tests;
 Rust's Unix directory-fsync behavior is not claimed for Windows. There is no
 multi-writer mutation, compaction, garbage collection or transactional update yet.
