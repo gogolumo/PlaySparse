@@ -1,17 +1,47 @@
-//! Binary-search range resolution. Never reconstructs a file on a read.
+//! Binary-search range resolution over verified tier sources, with optional
+//! bounded prefetch and measured decaying retention policy.
+mod prefetch;
+mod replay;
+use parking_lot::Mutex;
 pub use playsparse_cache::CacheMetrics;
 use playsparse_cache::{CacheOutcome, ChunkCache};
 use playsparse_core::{Error, MAX_READ_BYTES, Manifest, Result, intersecting_chunks, parse_hash};
-use playsparse_store::Store;
+use playsparse_policy::{Eviction, Policy, Tracker};
+use playsparse_store::{Store, TierConfig};
 use playsparse_trace::TraceWriter;
-use std::path::Path;
-use std::sync::Arc;
-use std::time::Instant;
+pub use replay::{replay_one, replay_synthetic, replay_trace};
+use std::{collections::BTreeSet, path::Path, sync::Arc, time::Instant};
 
+pub struct RuntimeOptions {
+    pub cache_bytes: usize,
+    pub trace: Option<Arc<TraceWriter>>,
+    pub policy: Option<Policy>,
+    pub tiers: Option<TierConfig>,
+}
+impl Default for RuntimeOptions {
+    fn default() -> Self {
+        Self {
+            cache_bytes: 64 * 1024 * 1024,
+            trace: None,
+            policy: None,
+            tiers: None,
+        }
+    }
+}
+#[derive(Default)]
+struct ReadStats {
+    hits: bool,
+    misses: bool,
+    sources: BTreeSet<&'static str>,
+}
 pub struct RangeResolver {
-    store: Store,
-    cache: ChunkCache,
+    store: Arc<Store>,
+    cache: Arc<ChunkCache>,
     trace: Option<Arc<TraceWriter>>,
+    policy: Option<Policy>,
+    tracker: Mutex<Tracker>,
+    prefetch: Option<prefetch::Prefetcher>,
+    start: Instant,
 }
 impl RangeResolver {
     pub fn open(path: &Path, cache_bytes: usize) -> Result<Self> {
@@ -22,10 +52,57 @@ impl RangeResolver {
         cache_bytes: usize,
         trace: Option<Arc<TraceWriter>>,
     ) -> Result<Self> {
+        Self::open_configured(
+            path,
+            RuntimeOptions {
+                cache_bytes,
+                trace,
+                ..Default::default()
+            },
+        )
+    }
+    pub fn open_configured(path: &Path, options: RuntimeOptions) -> Result<Self> {
+        if let Some(policy) = &options.policy {
+            policy.validate()?;
+        }
+        let capacity = options
+            .policy
+            .as_ref()
+            .and_then(|policy| policy.cache_bytes)
+            .map_or(options.cache_bytes, |limit| limit.min(options.cache_bytes));
+        let store = Arc::new(if let Some(tiers) = options.tiers {
+            Store::open_with_tiers(path, tiers)?
+        } else {
+            Store::open(path)?
+        });
+        let adaptive = options
+            .policy
+            .as_ref()
+            .is_some_and(|policy| policy.eviction == Eviction::DecayingHotness);
+        let cache = Arc::new(ChunkCache::with_adaptive(
+            capacity,
+            adaptive,
+            options
+                .policy
+                .as_ref()
+                .map_or(64, |policy| policy.decay_accesses),
+        ));
+        let prefetch = options
+            .policy
+            .as_ref()
+            .filter(|policy| {
+                policy.prefetch.enabled && capacity > 0 && policy.prefetch.budget_bytes > 0
+            })
+            .map(|policy| prefetch::Prefetcher::new(&policy.prefetch, store.clone(), cache.clone()))
+            .transpose()?;
         Ok(Self {
-            store: Store::open(path)?,
-            cache: ChunkCache::new(cache_bytes),
-            trace,
+            store,
+            cache,
+            trace: options.trace,
+            policy: options.policy,
+            tracker: Mutex::new(Tracker::default()),
+            prefetch,
+            start: Instant::now(),
         })
     }
     pub fn trace(&self) -> Option<&Arc<TraceWriter>> {
@@ -38,12 +115,23 @@ impl RangeResolver {
         &self.store
     }
     pub fn metrics(&self) -> CacheMetrics {
-        self.cache.metrics()
+        let mut metrics = self.cache.metrics();
+        if let Some(prefetch) = &self.prefetch {
+            prefetch.add_metrics(&mut metrics);
+        }
+        metrics
+    }
+    /// Finish background work before capturing benchmark CPU and final counters.
+    /// Outstanding queued requests are cancelled; an active verified load finishes.
+    pub fn stop_prefetch(&self) {
+        if let Some(prefetch) = &self.prefetch {
+            prefetch.stop();
+        }
+        self.cache.retire_prefetch();
     }
     pub fn read_range(&self, path: &str, offset: u64, len: usize) -> Result<Vec<u8>> {
         self.read_range_as(path, path, offset, len)
     }
-    /// A renamed overlay base reference still reports its application-visible path.
     pub fn read_range_as(
         &self,
         path: &str,
@@ -52,69 +140,128 @@ impl RangeResolver {
         len: usize,
     ) -> Result<Vec<u8>> {
         let started = Instant::now();
-        let mut misses = false;
-        let mut hits = false;
-        let result = self.read_impl(path, offset, len, &mut hits, &mut misses);
+        let mut stats = ReadStats::default();
+        let result = self.read_impl(path, visible_path, offset, len, true, &mut stats);
         if let Some(trace) = &self.trace {
-            let cache = match (hits, misses) {
+            let cache = match (stats.hits, stats.misses) {
                 (true, false) => "hit",
                 (true, true) => "mixed",
                 (false, true) => "miss",
                 _ => "bypass",
+            };
+            let source = if stats.sources.len() > 1 {
+                "mixed"
+            } else {
+                stats
+                    .sources
+                    .iter()
+                    .next()
+                    .copied()
+                    .unwrap_or(if result.is_err() {
+                        "unresolved"
+                    } else {
+                        "primary-local"
+                    })
             };
             trace.record(
                 "read",
                 visible_path,
                 offset,
                 len as u64,
-                result.as_ref().map_or(0, |v| v.len() as u64),
+                result.as_ref().map_or(0, |bytes| bytes.len() as u64),
                 started.elapsed().as_nanos().min(u64::MAX as u128) as u64,
                 cache,
-                if misses {
-                    "primary-local"
-                } else if hits {
-                    "memory-cache"
-                } else {
-                    "primary-local"
-                },
+                source,
                 result.is_ok(),
             );
         }
         result
     }
-    /// Internal copy-up must not be reported as application filesystem traffic.
     pub fn read_range_untraced(&self, path: &str, offset: u64, len: usize) -> Result<Vec<u8>> {
-        self.read_impl(path, offset, len, &mut false, &mut false)
+        self.read_impl(path, path, offset, len, false, &mut ReadStats::default())
     }
     fn read_impl(
         &self,
         path: &str,
+        visible_path: &str,
         offset: u64,
         len: usize,
-        hits: &mut bool,
-        misses: &mut bool,
+        observe: bool,
+        stats: &mut ReadStats,
     ) -> Result<Vec<u8>> {
         if len > MAX_READ_BYTES {
             return Err(Error::ReadTooLarge);
         }
         let file = self.manifest().file(path)?;
         let end = offset.saturating_add(len as u64).min(file.size);
-        let mut output = Vec::with_capacity(end.saturating_sub(offset) as usize);
-        for index in intersecting_chunks(file, offset, len) {
+        let returned = end.saturating_sub(offset) as usize;
+        let observation = if observe {
+            self.policy.as_ref().map(|policy| {
+                self.tracker.lock().observe(
+                    policy,
+                    visible_path,
+                    &format!("{:?}", std::thread::current().id()),
+                    offset,
+                    returned,
+                    self.start.elapsed().as_millis().min(u64::MAX as u128) as u64,
+                )
+            })
+        } else {
+            None
+        };
+        let indices = intersecting_chunks(file, offset, len);
+        let mut output = Vec::with_capacity(returned);
+        for index in indices.clone() {
             let chunk = &file.chunks[index];
             let hash = parse_hash(&chunk.hash)?;
-            let (raw, outcome) = self
+            let loaded = self
                 .cache
-                .get_or_load_status(hash, || self.store.read_object(&hash))?;
-            match outcome {
-                CacheOutcome::Hit => *hits = true,
-                CacheOutcome::Miss | CacheOutcome::SharedLoad => *misses = true,
-            }
+                .get_or_load_tagged(
+                    hash,
+                    observation.map_or(1, |observation| observation.priority),
+                    false,
+                    || {
+                        self.store
+                            .read_object_with_source(&hash)
+                            .map(|(bytes, source)| (bytes, source.as_str()))
+                    },
+                )
+                .inspect_err(|_| {
+                    stats.misses = true;
+                    stats.sources.insert("unresolved");
+                })?;
+            match loaded.outcome {
+                CacheOutcome::Hit => stats.hits = true,
+                CacheOutcome::Miss | CacheOutcome::SharedLoad => stats.misses = true,
+            };
+            stats.sources.insert(loaded.source);
             let start = offset.saturating_sub(chunk.offset) as usize;
             let stop = (end - chunk.offset).min(chunk.raw_size as u64) as usize;
-            output.extend_from_slice(&raw[start..stop]);
+            output.extend_from_slice(&loaded.chunk[start..stop]);
+        }
+        if observation.is_some_and(|observation| observation.sequential)
+            && let (Some(prefetch), Some(policy)) = (&self.prefetch, &self.policy)
+        {
+            for chunk in file
+                .chunks
+                .iter()
+                .skip(indices.end)
+                .take(policy.prefetch.max_chunks)
+            {
+                prefetch.request(
+                    parse_hash(&chunk.hash)?,
+                    chunk.raw_size as usize,
+                    &self.cache,
+                );
+            }
         }
         Ok(output)
+    }
+}
+
+impl Drop for RangeResolver {
+    fn drop(&mut self) {
+        self.stop_prefetch();
     }
 }
 
@@ -160,6 +307,7 @@ mod tests {
         assert_eq!(events[0].cache, "miss");
         assert_eq!(events[1].cache, "hit");
         assert!(!events[2].success);
+        assert_eq!(events[2].source, "unresolved");
     }
     #[test]
     fn loads_only_intersecting_chunks_and_handles_overflow() {

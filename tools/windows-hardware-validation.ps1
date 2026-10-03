@@ -64,6 +64,8 @@ try {
     Invoke-Checked 'cargo' @('build','--locked','--release','--workspace') 'build'
     Invoke-Checked 'python' @('tools/mounted-smoke.py','--work',(Join-Path $work 'readonly'),'--playsparse','target/release/playsparse.exe','--io-probe','target/release/io-probe.exe','--world-bytes','10737418240','--iterations','32','--cache','64M') 'readonly'
     Invoke-Checked 'python' @('tools/mounted-update.py','--work',(Join-Path $work 'writable'),'--playsparse','target/release/playsparse.exe','--io-probe','target/release/io-probe.exe') 'writable'
+    Invoke-Checked 'python' @('tools/adaptive-smoke.py','--work',(Join-Path $work 'adaptive'),'--playsparse','target/release/playsparse.exe','--io-probe','target/release/io-probe.exe') 'adaptive'
+    Invoke-Checked 'python' @('tools/tiered-smoke.py','--work',(Join-Path $work 'tiers'),'--playsparse','target/release/playsparse.exe','--io-probe','target/release/io-probe.exe') 'tiers'
     if ($GamePath) {
         Invoke-Checked 'python' (@('tools/owned-application.py','--work',(Join-Path $work 'application'),'--playsparse','target/release/playsparse.exe','--source',$GamePath,'--executable',$Executable,'--') + $GameArguments) 'application'
         $result.game_validation='PASS (one user-owned application execution; no general launcher/DRM/anti-cheat claim)'

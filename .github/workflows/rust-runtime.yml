@@ -29,6 +29,10 @@ jobs:
         run: sudo python3 tools/mounted-smoke.py --work /tmp/playsparse-mounted-ci --world-bytes 10737418240 --iterations 32 --cache 64M
       - name: Real writable overlay, updater, remount and trace
         run: sudo python3 tools/mounted-update.py --work /tmp/playsparse-update-ci
+      - name: Real mounted adaptive capture and identical trace replay
+        run: sudo python3 tools/adaptive-smoke.py --work /tmp/playsparse-adaptive-ci
+      - name: Real mounted tier promotion, offline remount and HTTP ranges
+        run: sudo python3 tools/tiered-smoke.py --work /tmp/playsparse-tiered-ci
       - name: Object-write and manifest-write kill tests, real ENOSPC
         run: |
           sudo mkdir /tmp/playsparse-enospc
@@ -45,6 +49,8 @@ jobs:
           path: |
             /tmp/playsparse-mounted-ci/evidence
             /tmp/playsparse-update-ci/evidence
+            /tmp/playsparse-adaptive-ci/evidence
+            /tmp/playsparse-tiered-ci/evidence
             /tmp/playsparse-crash-ci/evidence
             /tmp/playsparse-experiment04-ci
           if-no-files-found: warn
@@ -57,6 +63,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: 1.99.0
+          components: rustfmt, clippy
       - uses: ilammy/msvc-dev-cmd@v1
       - uses: Swatinem/rust-cache@v2
       - name: Install pinned upstream WinFsp driver and SDK
@@ -74,6 +81,8 @@ jobs:
           }
           'C:\Program Files (x86)\WinFsp\bin' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
           'LIBCLANG_PATH=C:\Program Files\LLVM\bin' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --locked --workspace
       - run: cargo build --locked --release --workspace
       - name: Native WinFsp mounted application and memory mapping
@@ -92,6 +101,16 @@ jobs:
         run: |
           python tools/mounted-update.py --work "$env:RUNNER_TEMP\playsparse-update-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
           if ($LASTEXITCODE -ne 0) { throw 'Windows mounted update test failed' }
+      - name: Native WinFsp adaptive capture and identical trace replay
+        shell: pwsh
+        run: |
+          python tools/adaptive-smoke.py --work "$env:RUNNER_TEMP\playsparse-adaptive-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
+          if ($LASTEXITCODE -ne 0) { throw 'Windows adaptive mounted test failed' }
+      - name: Native WinFsp tier promotion, offline remount and HTTP ranges
+        shell: pwsh
+        run: |
+          python tools/tiered-smoke.py --work "$env:RUNNER_TEMP\playsparse-tiered-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
+          if ($LASTEXITCODE -ne 0) { throw 'Windows mounted tier test failed' }
       - name: Preserve native Windows evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -100,5 +119,7 @@ jobs:
           path: |
             ${{ runner.temp }}/playsparse-mounted-ci/evidence
             ${{ runner.temp }}/playsparse-update-ci/evidence
+            ${{ runner.temp }}/playsparse-adaptive-ci/evidence
+            ${{ runner.temp }}/playsparse-tiered-ci/evidence
             ${{ runner.temp }}/winfsp-install.log
           if-no-files-found: warn

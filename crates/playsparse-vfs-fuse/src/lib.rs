@@ -64,13 +64,33 @@ pub fn mount_with_options(
     overlay: Option<&Path>,
     trace: Option<Arc<playsparse_trace::TraceWriter>>,
 ) -> Result<()> {
+    mount_configured(
+        store,
+        mountpoint,
+        overlay,
+        playsparse_range::RuntimeOptions {
+            cache_bytes,
+            trace,
+            ..Default::default()
+        },
+    )
+}
+
+/// Mount with a shared cache/policy/tier configuration, preserving identical
+/// resolver behavior for the read-only view and writable overlay fallback.
+pub fn mount_configured(
+    store: &Path,
+    mountpoint: &Path,
+    overlay: Option<&Path>,
+    options: playsparse_range::RuntimeOptions,
+) -> Result<()> {
     #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
     {
-        fuse::mount(store, mountpoint, cache_bytes, overlay, trace)
+        fuse::mount(store, mountpoint, overlay, options)
     }
     #[cfg(not(any(target_os = "linux", all(target_os = "macos", feature = "macfuse"))))]
     {
-        let _ = (store, mountpoint, cache_bytes, overlay, trace);
+        let _ = (store, mountpoint, overlay, options);
         bail!("{}", availability().detail)
     }
 }

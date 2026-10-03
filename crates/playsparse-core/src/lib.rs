@@ -1,4 +1,4 @@
-//! Versioned, validated immutable storage metadata. No filesystem side effects.
+//! Versioned immutable storage metadata and shared anchored directory guards.
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -242,3 +242,5 @@ mod tests {
         assert_eq!(intersecting_chunks(&file, u64::MAX, 2), 0..0);
     }
 }
+#[cfg(any(unix, windows))]
+pub mod directory;

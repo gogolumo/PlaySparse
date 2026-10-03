@@ -1,14 +1,17 @@
 //! Opaque names, no-follow opens, and directory-relative operations on Unix.
-use playsparse_core::{Error, Result};
+use playsparse_core::{Error, Result, directory::DirectoryAnchor};
 use std::{
-    fs::{self, File, OpenOptions},
+    fs::{self, File},
     io::{Read, Write},
     path::{Component, Path, PathBuf},
 };
 
+#[cfg(not(unix))]
+use std::fs::OpenOptions;
+
 pub(crate) struct Directory {
     pub(crate) path: PathBuf,
-    _file: File,
+    _anchor: DirectoryAnchor,
 }
 
 fn refused(message: &str) -> Error {
@@ -61,72 +64,20 @@ fn is_reparse(metadata: &fs::Metadata) -> bool {
 
 impl Directory {
     pub(crate) fn open(path: &Path, create: bool) -> Result<Self> {
-        reject_links(path)?;
-        if create {
-            fs::create_dir_all(path)?;
-        }
-        let path = fs::canonicalize(path)?;
-        reject_links(&path)?;
-        let mut options = OpenOptions::new();
-        options.read(true);
-        #[cfg(unix)]
-        {
-            use std::os::unix::fs::OpenOptionsExt;
-            options.custom_flags(libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC);
-        }
-        #[cfg(windows)]
-        {
-            use std::os::windows::fs::OpenOptionsExt;
-            // Retain the directory identity while this overlay is open. Denying
-            // delete sharing prevents renaming it through an external handle.
-            options.custom_flags(0x02000000 | 0x00200000).share_mode(3);
-        }
-        let file = options.open(&path)?;
-        let metadata = file.metadata()?;
-        if !metadata.is_dir() || is_reparse(&metadata) {
-            return Err(refused("overlay storage must be a real directory"));
-        }
-        Ok(Self { path, _file: file })
+        let anchor = DirectoryAnchor::open(path, create)?;
+        Ok(Self {
+            path: anchor.path().to_path_buf(),
+            _anchor: anchor,
+        })
     }
 
     pub(crate) fn child(&self, name: &str, create: bool) -> Result<Self> {
         checked_name(name)?;
-        #[cfg(unix)]
-        {
-            use std::os::fd::{AsRawFd, FromRawFd};
-            let name = std::ffi::CString::new(name).map_err(|_| refused("invalid storage name"))?;
-            if create {
-                // SAFETY: the retained descriptor anchors this directory; the
-                // C string is live. No user path is passed to this operation.
-                if unsafe { libc::mkdirat(self._file.as_raw_fd(), name.as_ptr(), 0o700) } != 0 {
-                    let error = std::io::Error::last_os_error();
-                    if error.kind() != std::io::ErrorKind::AlreadyExists {
-                        return Err(error.into());
-                    }
-                }
-            }
-            // SAFETY: openat never follows the child symlink, and the returned
-            // descriptor is uniquely transferred to File below.
-            let descriptor = unsafe {
-                libc::openat(
-                    self._file.as_raw_fd(),
-                    name.as_ptr(),
-                    libc::O_RDONLY | libc::O_DIRECTORY | libc::O_NOFOLLOW | libc::O_CLOEXEC,
-                )
-            };
-            if descriptor < 0 {
-                return Err(std::io::Error::last_os_error().into());
-            }
-            let file = unsafe { File::from_raw_fd(descriptor) };
-            Ok(Self {
-                path: self.path.join(name.to_string_lossy().as_ref()),
-                _file: file,
-            })
-        }
-        #[cfg(not(unix))]
-        {
-            Self::open(&self.path.join(name), create)
-        }
+        let anchor = self._anchor.child(name, create)?;
+        Ok(Self {
+            path: anchor.path().to_path_buf(),
+            _anchor: anchor,
+        })
     }
 
     pub(crate) fn open_file(&self, name: &str, create_new: bool, write: bool) -> Result<File> {
@@ -144,8 +95,9 @@ impl Directory {
             }
             // SAFETY: the retained directory descriptor and name are valid;
             // an exclusively created file has owner-only permissions.
-            let descriptor =
-                unsafe { libc::openat(self._file.as_raw_fd(), name.as_ptr(), flags, 0o600) };
+            let descriptor = unsafe {
+                libc::openat(self._anchor.file().as_raw_fd(), name.as_ptr(), flags, 0o600)
+            };
             if descriptor < 0 {
                 return Err(std::io::Error::last_os_error().into());
             }
@@ -208,9 +160,9 @@ impl Directory {
             // Replacing a symlink replaces its directory entry, not its target.
             if unsafe {
                 libc::renameat(
-                    self._file.as_raw_fd(),
+                    self._anchor.file().as_raw_fd(),
                     from.as_ptr(),
-                    self._file.as_raw_fd(),
+                    self._anchor.file().as_raw_fd(),
                     to.as_ptr(),
                 )
             } != 0
@@ -234,7 +186,7 @@ impl Directory {
             use std::os::fd::AsRawFd;
             let name = std::ffi::CString::new(name).map_err(|_| refused("invalid storage name"))?;
             // SAFETY: unlinkat removes the anchored entry, never a link target.
-            if unsafe { libc::unlinkat(self._file.as_raw_fd(), name.as_ptr(), 0) } != 0 {
+            if unsafe { libc::unlinkat(self._anchor.file().as_raw_fd(), name.as_ptr(), 0) } != 0 {
                 return Err(std::io::Error::last_os_error().into());
             }
             Ok(())
@@ -265,7 +217,7 @@ impl Directory {
 
     pub(crate) fn sync(&self) -> Result<()> {
         #[cfg(unix)]
-        self._file.sync_all()?;
+        self._anchor.file().sync_all()?;
         Ok(())
     }
 }

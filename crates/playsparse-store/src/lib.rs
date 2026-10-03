@@ -12,6 +12,9 @@ use std::{
     time::Instant,
 };
 
+pub mod tiers;
+pub use tiers::{HttpTier, SourceKind, TierConfig, TierMetrics};
+
 pub use playsparse_core::{Chunker as Chunking, Layout as ObjectLayout};
 const INDEX_MAGIC: &[u8; 8] = b"PSPIDX01";
 const PACK_MAGIC: &[u8; 8] = b"PSPPACK1";
@@ -259,12 +262,26 @@ pub struct Store {
     manifest: Manifest,
     index: BTreeMap<[u8; 32], ObjectRecord>,
     packs: BTreeMap<u32, File>,
+    pack_lengths: BTreeMap<u32, u64>,
+    tiered: Option<tiers::Tiered>,
+    tier_counters: tiers::Counters,
 }
 impl Store {
     pub fn open(root: &Path) -> Result<Self> {
         Self::open_inner(root, false)
     }
     fn open_inner(root: &Path, staging: bool) -> Result<Self> {
+        Self::open_metadata(root, staging, false)
+    }
+
+    pub fn open_with_tiers(root: &Path, config: TierConfig) -> Result<Self> {
+        config.validate()?;
+        let mut store = Self::open_metadata(root, false, true)?;
+        store.tiered = Some(tiers::Tiered::open(&store, config)?);
+        Ok(store)
+    }
+
+    fn open_metadata(root: &Path, staging: bool, allow_missing: bool) -> Result<Self> {
         let manifest_bytes = metadata_bytes(&root.join("manifest.json"))?;
         let index_bytes = metadata_bytes(&root.join("index/objects.idx"))?;
         if !staging {
@@ -287,37 +304,59 @@ impl Store {
         let index = decode_index(&index_bytes)?;
         let mut packs = BTreeMap::new();
         let mut pack_lengths = BTreeMap::new();
+        let mut unavailable_packs = std::collections::BTreeSet::new();
         for record in index.values() {
             if manifest.layout == Layout::Packs {
-                if let std::collections::btree_map::Entry::Vacant(entry) =
-                    packs.entry(record.pack_id)
+                if !unavailable_packs.contains(&record.pack_id)
+                    && let std::collections::btree_map::Entry::Vacant(entry) =
+                        packs.entry(record.pack_id)
                 {
-                    let file = File::open(pack_path(root, record.pack_id))?;
-                    let mut header = [0u8; 8];
-                    read_at_exact(&file, 0, &mut header)?;
-                    if &header != PACK_MAGIC {
-                        return Err(invalid("pack header"));
+                    let file = match File::open(pack_path(root, record.pack_id)) {
+                        Ok(file) => Some(file),
+                        Err(error)
+                            if allow_missing && error.kind() == std::io::ErrorKind::NotFound =>
+                        {
+                            None
+                        }
+                        Err(error) => return Err(error.into()),
+                    };
+                    if let Some(file) = file {
+                        let mut header = [0u8; 8];
+                        read_at_exact(&file, 0, &mut header)?;
+                        if &header != PACK_MAGIC {
+                            return Err(invalid("pack header"));
+                        }
+                        pack_lengths.insert(record.pack_id, file.metadata()?.len());
+                        entry.insert(file);
+                    } else {
+                        unavailable_packs.insert(record.pack_id);
                     }
-                    pack_lengths.insert(record.pack_id, file.metadata()?.len());
-                    entry.insert(file);
                 }
-                let pack_len = *pack_lengths
-                    .get(&record.pack_id)
-                    .ok_or_else(|| invalid("missing pack"))?;
                 if record.offset < 8
                     || record
                         .offset
                         .checked_add(record.compressed_size as u64)
-                        .is_none_or(|n| n > pack_len)
+                        .is_none_or(|n| {
+                            pack_lengths
+                                .get(&record.pack_id)
+                                .is_some_and(|length| n > *length)
+                        })
                 {
                     return Err(invalid("object outside pack"));
                 }
-            } else if record.offset != 0
-                || record.pack_id != 0
-                || fs::metadata(object_path(root, &record.hash))?.len()
-                    != record.compressed_size as u64
-            {
-                return Err(invalid("loose object locator or length"));
+            } else {
+                if record.offset != 0 || record.pack_id != 0 {
+                    return Err(invalid("loose object locator"));
+                }
+                match fs::metadata(object_path(root, &record.hash)) {
+                    Ok(metadata)
+                        if metadata.len() == record.compressed_size as u64
+                            && metadata.is_file() => {}
+                    Err(error) if allow_missing && error.kind() == std::io::ErrorKind::NotFound => {
+                    }
+                    Err(error) => return Err(error.into()),
+                    _ => return Err(invalid("loose object length/type")),
+                }
             }
         }
         // Reject aliases/overlap, holes and trailing garbage in physical pack coverage.
@@ -330,16 +369,15 @@ impl Store {
                 if *end != record.offset {
                     return Err(invalid("pack index coverage/overlap"));
                 }
-                *end += record.compressed_size as u64;
+                *end = end
+                    .checked_add(record.compressed_size as u64)
+                    .ok_or_else(|| invalid("pack coverage overflow"))?;
             }
             for (id, end) in ends {
-                if *pack_lengths
-                    .get(&id)
-                    .ok_or_else(|| invalid("missing pack"))?
-                    != end
-                {
+                if pack_lengths.get(&id).is_some_and(|length| *length != end) {
                     return Err(invalid("pack trailing data"));
                 }
+                pack_lengths.insert(id, end);
             }
         }
         for file in &manifest.files {
@@ -358,6 +396,9 @@ impl Store {
             manifest,
             index,
             packs,
+            pack_lengths,
+            tiered: None,
+            tier_counters: tiers::Counters::default(),
         })
     }
     pub fn root(&self) -> &Path {
@@ -375,13 +416,44 @@ impl Store {
             .ok_or_else(|| Error::Corrupt("missing object".into()))
     }
     pub fn read_object(&self, hash: &[u8; 32]) -> Result<Vec<u8>> {
+        self.read_object_with_source(hash).map(|(bytes, _)| bytes)
+    }
+
+    pub fn tier_metrics(&self) -> TierMetrics {
+        self.tier_counters.snapshot()
+    }
+
+    pub fn read_object_with_source(&self, hash: &[u8; 32]) -> Result<(Vec<u8>, SourceKind)> {
+        let result = if let Some(tiered) = &self.tiered {
+            tiered.read(self, hash)
+        } else {
+            self.read_primary(hash).map(|(raw, encoded)| {
+                self.tier_counters.hit(SourceKind::PrimaryLocal, encoded);
+                (raw, SourceKind::PrimaryLocal)
+            })
+        };
+        if result.is_err() {
+            self.tier_counters.error();
+            if matches!(&result, Err(Error::Corrupt(_)))
+                || matches!(&result, Err(Error::Io(error)) if error.kind() == std::io::ErrorKind::UnexpectedEof)
+            {
+                self.tier_counters.integrity();
+            }
+        }
+        result
+    }
+
+    fn read_primary(&self, hash: &[u8; 32]) -> Result<(Vec<u8>, u64)> {
         let record = self.lookup(hash)?;
         let mut encoded = vec![0u8; record.compressed_size as usize];
         match self.manifest.layout {
             Layout::Packs => read_at_exact(
-                self.packs
-                    .get(&record.pack_id)
-                    .ok_or_else(|| invalid("missing pack"))?,
+                self.packs.get(&record.pack_id).ok_or_else(|| {
+                    Error::Io(std::io::Error::new(
+                        std::io::ErrorKind::NotFound,
+                        "primary pack unavailable",
+                    ))
+                })?,
                 record.offset,
                 &mut encoded,
             )?,
@@ -389,16 +461,10 @@ impl Store {
                 read_at_exact(&File::open(object_path(&self.root, hash))?, 0, &mut encoded)?
             }
         }
-        let raw = match record.codec {
-            Codec::Raw => encoded,
-            Codec::Zstd => zstd::bulk::decompress(&encoded, record.raw_size as usize)
-                .map_err(|e| Error::Corrupt(e.to_string()))?,
-        };
-        if raw.len() != record.raw_size as usize || blake3::hash(&raw).as_bytes() != hash {
-            return Err(Error::Corrupt(blake3::Hash::from_bytes(*hash).to_string()));
-        }
-        Ok(raw)
+        let raw = decode_object(record, encoded, hash)?;
+        Ok((raw, record.compressed_size as u64))
     }
+
     pub fn verify(&self) -> Result<VerifyStats> {
         let mut bytes = 0u64;
         // Whole-file integrity checked incrementally; no full-file buffer.
@@ -433,6 +499,18 @@ impl Store {
             checked_objects: self.index.len(),
         })
     }
+}
+
+fn decode_object(record: &ObjectRecord, encoded: Vec<u8>, hash: &[u8; 32]) -> Result<Vec<u8>> {
+    let raw = match record.codec {
+        Codec::Raw => encoded,
+        Codec::Zstd => zstd::bulk::decompress(&encoded, record.raw_size as usize)
+            .map_err(|e| Error::Corrupt(e.to_string()))?,
+    };
+    if raw.len() != record.raw_size as usize || blake3::hash(&raw).as_bytes() != hash {
+        return Err(Error::Corrupt(blake3::Hash::from_bytes(*hash).to_string()));
+    }
+    Ok(raw)
 }
 #[derive(Debug, Serialize)]
 pub struct VerifyStats {

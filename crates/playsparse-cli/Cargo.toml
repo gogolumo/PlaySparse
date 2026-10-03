@@ -15,6 +15,7 @@ playsparse-range = { path = "../playsparse-range" }
 playsparse-vfs-win = { path = "../playsparse-vfs-win" }
 playsparse-overlay = { path = "../playsparse-overlay" }
 playsparse-trace = { path = "../playsparse-trace" }
+playsparse-policy = { path = "../playsparse-policy" }
 anyhow.workspace = true
 clap.workspace = true
 serde.workspace = true

@@ -11,7 +11,8 @@ use std::sync::Arc;
 mod backend;
 #[cfg(windows)]
 pub use backend::{
-    availability, mount, mount_with_options, mount_with_overlay, system_resources, unmount,
+    availability, mount, mount_configured, mount_with_options, mount_with_overlay,
+    system_resources, unmount,
 };
 
 #[cfg(not(windows))]
@@ -36,11 +37,30 @@ pub fn mount_with_overlay(
 
 #[cfg(not(windows))]
 pub fn mount_with_options(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay: Option<&Path>,
+    trace: Option<Arc<TraceWriter>>,
+) -> anyhow::Result<()> {
+    mount_configured(
+        store,
+        mountpoint,
+        overlay,
+        playsparse_range::RuntimeOptions {
+            cache_bytes,
+            trace,
+            ..Default::default()
+        },
+    )
+}
+
+#[cfg(not(windows))]
+pub fn mount_configured(
     _store: &Path,
     _mountpoint: &Path,
-    _cache_bytes: usize,
     _overlay: Option<&Path>,
-    _trace: Option<Arc<TraceWriter>>,
+    _options: playsparse_range::RuntimeOptions,
 ) -> anyhow::Result<()> {
     anyhow::bail!("WinFsp mounting requires Windows")
 }

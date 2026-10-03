@@ -13,7 +13,7 @@ use fuser::{
     ReplyEntry, ReplyOpen, ReplyStatfs, ReplyXattr, Request,
 };
 use playsparse_core::{Error, Manifest};
-use playsparse_range::RangeResolver;
+use playsparse_range::{RangeResolver, RuntimeOptions};
 
 use crate::Availability;
 
@@ -186,17 +186,18 @@ struct StoreFs {
 impl StoreFs {
     #[cfg(test)]
     fn open(store: &Path, cache_bytes: usize) -> Result<Self> {
-        Self::open_with_trace(store, cache_bytes, None)
+        Self::open_configured(
+            store,
+            RuntimeOptions {
+                cache_bytes,
+                ..Default::default()
+            },
+        )
     }
 
-    fn open_with_trace(
-        store: &Path,
-        cache_bytes: usize,
-        trace: Option<Arc<playsparse_trace::TraceWriter>>,
-    ) -> Result<Self> {
+    fn open_configured(store: &Path, options: RuntimeOptions) -> Result<Self> {
         let resolver = Arc::new(
-            RangeResolver::open_with_trace(store, cache_bytes, trace)
-                .context("open immutable store")?,
+            RangeResolver::open_configured(store, options).context("open immutable store")?,
         );
         // Only the mounting user can access the filesystem (fuser's default ACL).
         // SAFETY: getuid/getgid have no pointer arguments or preconditions.
@@ -477,6 +478,7 @@ impl Filesystem for StoreFs {
     }
 
     fn destroy(&mut self) {
+        self.resolver.stop_prefetch();
         // A complete machine-readable line also works when no log subscriber
         // has been installed. These counters measure actual kernel callbacks;
         // the kernel page cache can satisfy reads without invoking this backend.
@@ -488,6 +490,7 @@ impl Filesystem for StoreFs {
                 "returned_bytes": self.returned_bytes.load(Ordering::Relaxed),
                 "read_errors": self.read_errors.load(Ordering::Relaxed),
                 "cache": self.resolver.metrics(),
+                "tiers": self.resolver.store().tier_metrics(),
                 "trace": self.resolver.trace().map(|trace| trace.metrics()),
             })
         );
@@ -536,15 +539,15 @@ fn validate_mountpoint(store: &Path, mountpoint: &Path) -> Result<(PathBuf, Path
 pub(super) fn mount(
     store: &Path,
     mountpoint: &Path,
-    cache_bytes: usize,
     overlay: Option<&Path>,
-    trace: Option<Arc<playsparse_trace::TraceWriter>>,
+    options: RuntimeOptions,
 ) -> Result<()> {
     let (store, mountpoint) = validate_mountpoint(store, mountpoint)?;
     if let Some(overlay) = overlay {
-        return crate::writable::mount(&store, &mountpoint, cache_bytes, overlay, trace);
+        return crate::writable::mount(&store, &mountpoint, overlay, options);
     }
-    let fs = StoreFs::open_with_trace(&store, cache_bytes, trace)?;
+    let cache_bytes = options.cache_bytes;
+    let fs = StoreFs::open_configured(&store, options)?;
     tracing::info!(store = %store.display(), mountpoint = %mountpoint.display(), cache_bytes, "mounting FUSE store");
     fuser::mount(fs, &mountpoint, &mount_config()).context("mount FUSE store")
 }

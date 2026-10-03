@@ -1,0 +1,15 @@
+[package]
+name = "playsparse-policy"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+playsparse-core = { path = "../playsparse-core" }
+playsparse-trace = { path = "../playsparse-trace" }
+serde.workspace = true
+serde_json.workspace = true
+lru.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
