@@ -35,7 +35,7 @@ not declared complete. The historical research milestones below remain intact.
 - [x] Optional secondary local objects and separate verified promotion cache
 - [x] Exact HTTP 206 object ranges, verification, bounded failure/retry and offline local reads
 - [x] Actual Linux mounted overlay/trace/tier integration checks
-- [ ] Native Windows adaptive/tiered runtime CI for the combined feature set
+- [x] Native Windows combined writable/adaptive/tiered runtime at `4e39b9c` (hosted Server 2025)
 - [ ] Reproducible non-dominated adaptive benefit on representative workloads
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop and legally owned game/launcher checks
 - [ ] **HARDWARE REQUIRED:** physical macFUSE checks
@@ -44,8 +44,9 @@ not declared complete. The historical research milestones below remain intact.
 Implementation is ahead of compatibility and performance proof. The original
 Linux adaptive benchmark produced zero prefetch requests and a lower adaptive
 hit ratio; that negative result is retained. The corrected sequential detector
-must be evaluated against the same workload without hiding latency, CPU, RAM or
-wasted-I/O regressions. A generated updater does not establish Steam/Epic or
+produces real prefetch, but the final exact-policy replay still loses on latency,
+CPU and loaded bytes. Both results and all trials remain in the evidence.
+A generated updater does not establish Steam/Epic or
 anti-cheat compatibility. Overlay commit currently requires a temporary full
 logical merged tree before packing its new store.
 
@@ -131,9 +132,9 @@ Required compatibility:
 
 **Acceptance:** arbitrary readers see the same logical bytes without a full pre-extraction step.
 
-Hosted native CI has proved those read workloads and the initial writable
-overlay. Physical client Windows, real applications and the newly combined
-adaptive/tiered Windows path remain separate validation gates.
+Hosted native CI has proved those read workloads and the combined writable,
+adaptive and tiered paths at `4e39b9c`. Physical client Windows and real
+applications remain separate validation gates.
 
 ## M6 — Trace profiler + static policy frontier 🟡
 
@@ -168,7 +169,8 @@ adaptive/tiered Windows path remain separate validation gates.
 - [x] Bounded timeout/retry and explicit protocol/corruption failures; actual Linux mounted checks
 - [ ] Physical SSD/HDD/NAS measurements and representative network conditions
 - [ ] Promotion-cache disk eviction/capacity policy
-- [ ] Native Windows combined tier validation and representative application compatibility
+- [x] Native Windows combined tier validation in hosted Server 2025 CI
+- [ ] Representative application compatibility
 
 ## M10 — Representative workloads
 

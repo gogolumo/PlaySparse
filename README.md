@@ -14,9 +14,9 @@ The Rust runtime serves file ranges directly from compressed CAS through real
 Linux FUSE and Windows WinFsp mounts. Generated native programs and the
 open-source Zstd CLI have run from the mounted view. A generated 10 GiB file
 passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. Hosted Windows
-Server 2025 CI passed the read path and the writable overlay baseline at
-`668d70f`; adaptive policy and tiered storage still await their native Windows
-CI run.
+Server 2025 CI passed the read path, writable updater/remount/commit/reset,
+adaptive capture/replay and tiered/HTTP mounted paths at `4e39b9c`
+([native CI evidence](https://github.com/gogolumo/PlaySparse/actions/runs/37131829873)).
 
 The optional persistent writable overlay, generated updater, bounded JSONL
 tracing, adaptive cache/prefetch policy, local tiers and verified HTTP object
@@ -40,15 +40,19 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [x] **EXPERIMENTAL:** generated mounted updater; native Windows overlay baseline passed hosted CI
 - [x] **EXPERIMENTAL:** bounded JSONL tracing and trace summaries
 - [x] **EXPERIMENTAL:** versioned policy, decaying hotness, bounded sequential prefetch and static/adaptive replay
-- [x] **EXPERIMENTAL:** verified secondary local objects, promotion cache and HTTP 206 object ranges
-- [ ] **PENDING VALIDATION:** native Windows adaptive/tiered runtime CI
-- [ ] **HARDWARE REQUIRED:** physical Windows desktop, real game/launcher compatibility and WOF comparison
+- [x] **EXPERIMENTAL:** verified secondary local objects and persistent promotion cache
+- [x] **EXPERIMENTAL:** HTTP 206 object ranges; corrupt remote reads fail
+- [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
+- [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
+- [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
 - [ ] **HARDWARE REQUIRED:** physical macFUSE mount; backend type-checked, experimental
 
 Adaptive performance benefit is unproven. The retained initial Linux benchmark
 issued zero prefetch requests and had a lower adaptive cache hit ratio than the
-static baseline. Subsequent detector changes must be judged on the same workload,
-including regressions and CPU/RAM costs.
+static baseline. The corrected detector activates bounded prefetch, but the final
+three-trial replay still loses: median p95 69 → 108 µs, CPU 0.095 → 0.170 s,
+and raw bytes loaded 61 → 146 MB. All trials and the exact policy are retained;
+static LRU remains the default.
 
 **WINDOWS HARDWARE TEST REQUIRED.** The production Windows milestone remains open.
 See [first mounted run](docs/evidence/first-mounted-run.md),

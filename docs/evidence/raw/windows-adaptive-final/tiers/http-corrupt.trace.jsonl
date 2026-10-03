@@ -1,0 +1,5 @@
+{"version":1,"session":"6888-1791040040805499700","ts_ns":24030200,"op":"flush","path":"","offset":0,"requested":0,"returned":0,"latency_ns":300,"cache":"bypass","source":"overlay","worker":"ThreadId(3)","success":true}
+{"version":1,"session":"6888-1791040040805499700","ts_ns":24284500,"op":"flush","path":"fixture.json","offset":0,"requested":0,"returned":0,"latency_ns":300,"cache":"bypass","source":"overlay","worker":"ThreadId(3)","success":true}
+{"version":1,"session":"6888-1791040040805499700","ts_ns":24688100,"op":"flush","path":"fixture.json","offset":0,"requested":0,"returned":0,"latency_ns":400,"cache":"bypass","source":"overlay","worker":"ThreadId(3)","success":true}
+{"version":1,"session":"6888-1791040040805499700","ts_ns":28383500,"op":"read","path":"readme.txt","offset":0,"requested":35,"returned":0,"latency_ns":2953800,"cache":"miss","source":"unresolved","worker":"ThreadId(3)","success":false}
+{"version":1,"session":"6888-1791040040805499700","ts_ns":28531900,"op":"flush","path":"readme.txt","offset":0,"requested":0,"returned":0,"latency_ns":500,"cache":"bypass","source":"overlay","worker":"ThreadId(3)","success":true}

@@ -1,0 +1,10 @@
+{
+  "source": "D:\\a\\_temp\\playsparse-tiered-ci\\source",
+  "executable": "testgame.exe",
+  "world_logical_bytes": 4194304,
+  "logical_bytes": 11666028,
+  "files": 9,
+  "source_allocated_bytes": null,
+  "nonzero_world_regions": 68,
+  "sample_count": 169
+}

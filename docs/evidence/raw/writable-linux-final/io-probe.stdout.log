@@ -1,0 +1,573 @@
+{
+  "schema": 1,
+  "os": "linux",
+  "arch": "aarch64",
+  "original": "/tmp/playsparse-update-final/source",
+  "iterations_per_thread": 8,
+  "sequential_limit_per_file": 8388608,
+  "page_cache_policy": "OS caches are not cleared; sequential and earlier workloads may warm later reads",
+  "equality": "ORIGINAL == CANDIDATE for every measured byte read",
+  "comparisons": [
+    {
+      "candidate": "/tmp/playsparse-update-final/mounted",
+      "logical_bytes": 29921831,
+      "files": 14,
+      "directory_enumeration_equal": true,
+      "workloads": [
+        {
+          "name": "open",
+          "read_bytes": 0,
+          "threads": 1,
+          "original": {
+            "operations": 112,
+            "bytes": 896,
+            "p50_ms": 0.001583,
+            "p95_ms": 0.003084,
+            "p99_ms": 0.012083,
+            "measured_operation_seconds": 0.000219462,
+            "throughput_mib_s": 3.893576963210032,
+            "blake3": "8e1deac31d3621af4f80a00bdbc96f87c4973038993d2e1d8e46706295a99eca",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 112,
+            "bytes": 896,
+            "p50_ms": 0.099833,
+            "p95_ms": 0.224875,
+            "p99_ms": 0.317791,
+            "measured_operation_seconds": 0.012472458,
+            "throughput_mib_s": 0.06851032791611725,
+            "blake3": "8e1deac31d3621af4f80a00bdbc96f87c4973038993d2e1d8e46706295a99eca",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.020371416
+        },
+        {
+          "name": "stat",
+          "read_bytes": 0,
+          "threads": 1,
+          "original": {
+            "operations": 112,
+            "bytes": 896,
+            "p50_ms": 0.000542,
+            "p95_ms": 0.001458,
+            "p99_ms": 0.002625,
+            "measured_operation_seconds": 0.000081581,
+            "throughput_mib_s": 10.474156819602603,
+            "blake3": "8e1deac31d3621af4f80a00bdbc96f87c4973038993d2e1d8e46706295a99eca",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 112,
+            "bytes": 896,
+            "p50_ms": 0.075292,
+            "p95_ms": 0.111,
+            "p99_ms": 0.115625,
+            "measured_operation_seconds": 0.007597004,
+            "throughput_mib_s": 0.11247752238908917,
+            "blake3": "8e1deac31d3621af4f80a00bdbc96f87c4973038993d2e1d8e46706295a99eca",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.007696041
+        },
+        {
+          "name": "sequential",
+          "read_bytes": 1048576,
+          "threads": 1,
+          "original": {
+            "operations": 30,
+            "bytes": 21533223,
+            "p50_ms": 0.157459,
+            "p95_ms": 0.283125,
+            "p99_ms": 0.317417,
+            "measured_operation_seconds": 0.004478751,
+            "throughput_mib_s": 4585.135839109685,
+            "blake3": "6fc2310df6e6bd47c7725452c927bc6210011a7614c670b9c11d13f21a7fbf12",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 30,
+            "bytes": 21533223,
+            "p50_ms": 0.684542,
+            "p95_ms": 2.354625,
+            "p99_ms": 4.627042,
+            "measured_operation_seconds": 0.028250208,
+            "throughput_mib_s": 726.9214345093792,
+            "blake3": "6fc2310df6e6bd47c7725452c927bc6210011a7614c670b9c11d13f21a7fbf12",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.059126166
+        },
+        {
+          "name": "random",
+          "read_bytes": 4096,
+          "threads": 1,
+          "original": {
+            "operations": 10,
+            "bytes": 28709,
+            "p50_ms": 0.001708,
+            "p95_ms": 0.003375,
+            "p99_ms": 0.003375,
+            "measured_operation_seconds": 0.000018457,
+            "throughput_mib_s": 1483.3957820722237,
+            "blake3": "962cbe3d65f373e3b337d8c2d54db1cdeafdf01161ad49da9b424f5645895c2d",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 10,
+            "bytes": 28709,
+            "p50_ms": 0.026042,
+            "p95_ms": 0.232916,
+            "p99_ms": 0.232916,
+            "measured_operation_seconds": 0.000615375,
+            "throughput_mib_s": 44.491628599970795,
+            "blake3": "962cbe3d65f373e3b337d8c2d54db1cdeafdf01161ad49da9b424f5645895c2d",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.001198292
+        },
+        {
+          "name": "random",
+          "read_bytes": 4096,
+          "threads": 2,
+          "original": {
+            "operations": 20,
+            "bytes": 57418,
+            "p50_ms": 0.001417,
+            "p95_ms": 0.005666,
+            "p99_ms": 0.015792,
+            "measured_operation_seconds": 0.000044415,
+            "throughput_mib_s": 1232.873396361906,
+            "blake3": "a0c5aa69ce69d7c5b3c08ebcf475d2a49a517702dd8d42485f0bbca959f78a96",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 20,
+            "bytes": 57418,
+            "p50_ms": 0.02625,
+            "p95_ms": 0.054042,
+            "p99_ms": 0.06675,
+            "measured_operation_seconds": 0.000618668,
+            "throughput_mib_s": 88.50962373908796,
+            "blake3": "a0c5aa69ce69d7c5b3c08ebcf475d2a49a517702dd8d42485f0bbca959f78a96",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.000710417
+        },
+        {
+          "name": "random",
+          "read_bytes": 4096,
+          "threads": 4,
+          "original": {
+            "operations": 40,
+            "bytes": 114836,
+            "p50_ms": 0.001375,
+            "p95_ms": 0.003875,
+            "p99_ms": 0.008084,
+            "measured_operation_seconds": 0.000075088,
+            "throughput_mib_s": 1458.50393936219,
+            "blake3": "2f9f5b33df48b28d0eff969f030efd24239238ffd3b8b20f92d87304c15c2980",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 40,
+            "bytes": 114836,
+            "p50_ms": 0.058083,
+            "p95_ms": 0.1095,
+            "p99_ms": 0.2335,
+            "measured_operation_seconds": 0.00241829,
+            "throughput_mib_s": 45.28660491455869,
+            "blake3": "2f9f5b33df48b28d0eff969f030efd24239238ffd3b8b20f92d87304c15c2980",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.001579375
+        },
+        {
+          "name": "random",
+          "read_bytes": 4096,
+          "threads": 8,
+          "original": {
+            "operations": 80,
+            "bytes": 229672,
+            "p50_ms": 0.001834,
+            "p95_ms": 0.004875,
+            "p99_ms": 0.015,
+            "measured_operation_seconds": 0.00019262,
+            "throughput_mib_s": 1137.121210661698,
+            "blake3": "057963f2c79eb66b24ce29ffb625b2bf6e36ff580c286f2fcdaaba504fd6f0c6",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 80,
+            "bytes": 229672,
+            "p50_ms": 0.058209,
+            "p95_ms": 0.279583,
+            "p99_ms": 0.400167,
+            "measured_operation_seconds": 0.006802007,
+            "throughput_mib_s": 32.20112646130124,
+            "blake3": "057963f2c79eb66b24ce29ffb625b2bf6e36ff580c286f2fcdaaba504fd6f0c6",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.002413625
+        },
+        {
+          "name": "random",
+          "read_bytes": 4096,
+          "threads": 16,
+          "original": {
+            "operations": 160,
+            "bytes": 459344,
+            "p50_ms": 0.001958,
+            "p95_ms": 0.006208,
+            "p99_ms": 0.028,
+            "measured_operation_seconds": 0.000509406,
+            "throughput_mib_s": 859.951738289915,
+            "blake3": "5202f24573b3812809c4921c89db29f0a77a71c91c5ab4450e6a08a3dd3f4d91",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 160,
+            "bytes": 459344,
+            "p50_ms": 0.049458,
+            "p95_ms": 0.413,
+            "p99_ms": 0.437791,
+            "measured_operation_seconds": 0.016037744,
+            "throughput_mib_s": 27.314600806404723,
+            "blake3": "5202f24573b3812809c4921c89db29f0a77a71c91c5ab4450e6a08a3dd3f4d91",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.003360042
+        },
+        {
+          "name": "random",
+          "read_bytes": 65536,
+          "threads": 1,
+          "original": {
+            "operations": 10,
+            "bytes": 458789,
+            "p50_ms": 0.014042,
+            "p95_ms": 0.065666,
+            "p99_ms": 0.065666,
+            "measured_operation_seconds": 0.000154917,
+            "throughput_mib_s": 2824.3206746174214,
+            "blake3": "75d913edb035b590b2d26483120d1164ff5e53b05a7422cba1fdf4db60384d3c",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 10,
+            "bytes": 458789,
+            "p50_ms": 0.046333,
+            "p95_ms": 0.217375,
+            "p99_ms": 0.217375,
+            "measured_operation_seconds": 0.000560459,
+            "throughput_mib_s": 780.6731374635915,
+            "blake3": "75d913edb035b590b2d26483120d1164ff5e53b05a7422cba1fdf4db60384d3c",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.001725709
+        },
+        {
+          "name": "random",
+          "read_bytes": 65536,
+          "threads": 2,
+          "original": {
+            "operations": 20,
+            "bytes": 917578,
+            "p50_ms": 0.009917,
+            "p95_ms": 0.014708,
+            "p99_ms": 0.017208,
+            "measured_operation_seconds": 0.000157749,
+            "throughput_mib_s": 5547.233718752031,
+            "blake3": "a2319180e4636f1672d20d19820410d15a78d7fdaaecfb467244920ad8c1dbef",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 20,
+            "bytes": 917578,
+            "p50_ms": 0.055167,
+            "p95_ms": 0.203,
+            "p99_ms": 0.252708,
+            "measured_operation_seconds": 0.001540502,
+            "throughput_mib_s": 568.0424769973775,
+            "blake3": "a2319180e4636f1672d20d19820410d15a78d7fdaaecfb467244920ad8c1dbef",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.00170425
+        },
+        {
+          "name": "random",
+          "read_bytes": 65536,
+          "threads": 4,
+          "original": {
+            "operations": 40,
+            "bytes": 1835156,
+            "p50_ms": 0.007833,
+            "p95_ms": 0.040542,
+            "p99_ms": 0.111416,
+            "measured_operation_seconds": 0.000479041,
+            "throughput_mib_s": 3653.426624858474,
+            "blake3": "f7d2124663ce7e0494d8b8b95ea894ae76cc98a5af16f5bcb922467b2b01d44b",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 40,
+            "bytes": 1835156,
+            "p50_ms": 0.061709,
+            "p95_ms": 0.298833,
+            "p99_ms": 0.526,
+            "measured_operation_seconds": 0.003978003,
+            "throughput_mib_s": 439.95470687146997,
+            "blake3": "f7d2124663ce7e0494d8b8b95ea894ae76cc98a5af16f5bcb922467b2b01d44b",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.002279208
+        },
+        {
+          "name": "random",
+          "read_bytes": 65536,
+          "threads": 8,
+          "original": {
+            "operations": 80,
+            "bytes": 3670312,
+            "p50_ms": 0.012875,
+            "p95_ms": 0.056125,
+            "p99_ms": 0.204541,
+            "measured_operation_seconds": 0.001673545,
+            "throughput_mib_s": 2091.537596896203,
+            "blake3": "c139e42197b8a67d3b02a58b3785b1a2ddb6c33227c0941c2326e16a30bf4dcd",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 80,
+            "bytes": 3670312,
+            "p50_ms": 0.077292,
+            "p95_ms": 0.257917,
+            "p99_ms": 0.413166,
+            "measured_operation_seconds": 0.008248667,
+            "throughput_mib_s": 424.3452048188703,
+            "blake3": "c139e42197b8a67d3b02a58b3785b1a2ddb6c33227c0941c2326e16a30bf4dcd",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.003085125
+        },
+        {
+          "name": "random",
+          "read_bytes": 65536,
+          "threads": 16,
+          "original": {
+            "operations": 160,
+            "bytes": 7340624,
+            "p50_ms": 0.01175,
+            "p95_ms": 0.040667,
+            "p99_ms": 0.082209,
+            "measured_operation_seconds": 0.002422083,
+            "throughput_mib_s": 2890.307464771155,
+            "blake3": "91f164e3c9f2f562ca9700a0cbcce45de70a3417fd92d362d3efaeb915c61d84",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 160,
+            "bytes": 7340624,
+            "p50_ms": 0.086625,
+            "p95_ms": 0.673833,
+            "p99_ms": 1.178625,
+            "measured_operation_seconds": 0.031065254,
+            "throughput_mib_s": 225.35030858576957,
+            "blake3": "91f164e3c9f2f562ca9700a0cbcce45de70a3417fd92d362d3efaeb915c61d84",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.005773375
+        },
+        {
+          "name": "random",
+          "read_bytes": 1048576,
+          "threads": 1,
+          "original": {
+            "operations": 10,
+            "bytes": 7340069,
+            "p50_ms": 0.100417,
+            "p95_ms": 0.402416,
+            "p99_ms": 0.402416,
+            "measured_operation_seconds": 0.00111254,
+            "throughput_mib_s": 6291.940322100515,
+            "blake3": "19dc129d25534fbf072a9a8cb58f975cb1e797bd58a399afb2114a0400e9973d",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 10,
+            "bytes": 7340069,
+            "p50_ms": 0.108209,
+            "p95_ms": 0.609667,
+            "p99_ms": 0.609667,
+            "measured_operation_seconds": 0.002171253,
+            "throughput_mib_s": 3223.961134860703,
+            "blake3": "19dc129d25534fbf072a9a8cb58f975cb1e797bd58a399afb2114a0400e9973d",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.011064125
+        },
+        {
+          "name": "random",
+          "read_bytes": 1048576,
+          "threads": 2,
+          "original": {
+            "operations": 20,
+            "bytes": 14680138,
+            "p50_ms": 0.077542,
+            "p95_ms": 0.859958,
+            "p99_ms": 0.902209,
+            "measured_operation_seconds": 0.003182999,
+            "throughput_mib_s": 4398.3898744232765,
+            "blake3": "66b26e6a3381b1e97f2239c75d417d1a4e0083827839e478ce9dec68a2aff5c7",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 20,
+            "bytes": 14680138,
+            "p50_ms": 0.0925,
+            "p95_ms": 1.872667,
+            "p99_ms": 2.645916,
+            "measured_operation_seconds": 0.010300252,
+            "throughput_mib_s": 1359.1968984738835,
+            "blake3": "66b26e6a3381b1e97f2239c75d417d1a4e0083827839e478ce9dec68a2aff5c7",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.01550675
+        },
+        {
+          "name": "random",
+          "read_bytes": 1048576,
+          "threads": 4,
+          "original": {
+            "operations": 40,
+            "bytes": 29360276,
+            "p50_ms": 0.086875,
+            "p95_ms": 0.224209,
+            "p99_ms": 0.277667,
+            "measured_operation_seconds": 0.003969998,
+            "throughput_mib_s": 7052.935831151258,
+            "blake3": "f28d21f9691350554b01248e9d583eff96e52717e481169219aee72b0a6abe40",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 40,
+            "bytes": 29360276,
+            "p50_ms": 0.124166,
+            "p95_ms": 1.721084,
+            "p99_ms": 2.027292,
+            "measured_operation_seconds": 0.016625209,
+            "throughput_mib_s": 1684.1978433954623,
+            "blake3": "f28d21f9691350554b01248e9d583eff96e52717e481169219aee72b0a6abe40",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.014651666
+        },
+        {
+          "name": "random",
+          "read_bytes": 1048576,
+          "threads": 8,
+          "original": {
+            "operations": 80,
+            "bytes": 58720552,
+            "p50_ms": 0.1925,
+            "p95_ms": 0.809291,
+            "p99_ms": 1.21975,
+            "measured_operation_seconds": 0.022882755,
+            "throughput_mib_s": 2447.270107449809,
+            "blake3": "815a1b66e5300e56406bccc059ef57cbffcc615c051cb8192d9780c4c517d31e",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 80,
+            "bytes": 58720552,
+            "p50_ms": 0.225125,
+            "p95_ms": 3.230959,
+            "p99_ms": 4.665,
+            "measured_operation_seconds": 0.063712793,
+            "throughput_mib_s": 878.9487895719412,
+            "blake3": "815a1b66e5300e56406bccc059ef57cbffcc615c051cb8192d9780c4c517d31e",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.02564925
+        },
+        {
+          "name": "random",
+          "read_bytes": 1048576,
+          "threads": 16,
+          "original": {
+            "operations": 160,
+            "bytes": 115504864,
+            "p50_ms": 0.18725,
+            "p95_ms": 1.260458,
+            "p99_ms": 4.558083,
+            "measured_operation_seconds": 0.072783201,
+            "throughput_mib_s": 1513.4539385921878,
+            "blake3": "f0d5b97a2a77fb4016b7f85e57a10549e8d37d63f03089d1866da2857a9d3015",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 160,
+            "bytes": 115504864,
+            "p50_ms": 0.234,
+            "p95_ms": 4.235959,
+            "p99_ms": 5.432916,
+            "measured_operation_seconds": 0.181122838,
+            "throughput_mib_s": 608.1730135920069,
+            "blake3": "f0d5b97a2a77fb4016b7f85e57a10549e8d37d63f03089d1866da2857a9d3015",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.036540042
+        },
+        {
+          "name": "mmap_random_pages",
+          "read_bytes": 4096,
+          "threads": 1,
+          "original": {
+            "operations": 10,
+            "bytes": 28711,
+            "p50_ms": 0.001791,
+            "p95_ms": 0.00525,
+            "p99_ms": 0.00525,
+            "measured_operation_seconds": 0.000017916,
+            "throughput_mib_s": 1528.2955625329228,
+            "blake3": "980f132b5d4e001db79de5c991edaecb4f0ce799856be78cdfeceef331e6d748",
+            "errors": 0
+          },
+          "candidate": {
+            "operations": 10,
+            "bytes": 28711,
+            "p50_ms": 0.203417,
+            "p95_ms": 0.214916,
+            "p99_ms": 0.214916,
+            "measured_operation_seconds": 0.001450082,
+            "throughput_mib_s": 18.882341342310188,
+            "blake3": "980f132b5d4e001db79de5c991edaecb4f0ce799856be78cdfeceef331e6d748",
+            "errors": 0
+          },
+          "bytes_equal": true,
+          "wall_seconds": 0.001984417
+        }
+      ]
+    }
+  ],
+  "process_cpu_seconds": 0.556052,
+  "peak_rss_bytes": 38871040
+}

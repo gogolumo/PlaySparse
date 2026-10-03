@@ -1,0 +1,10 @@
+{
+  "source": "/tmp/playsparse-update-final/source",
+  "executable": "testgame",
+  "world_logical_bytes": 16777216,
+  "logical_bytes": 24537858,
+  "files": 9,
+  "source_allocated_bytes": 11874304,
+  "nonzero_world_regions": 68,
+  "sample_count": 169
+}

@@ -1,0 +1,199 @@
+{
+  "cache_hit_ratio": 0.9185185185185185,
+  "cache_miss_ratio": 0.08148148148148149,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 357,
+  "hot_files": [
+    {
+      "events": 184,
+      "path": "world.dat"
+    },
+    {
+      "events": 49,
+      "path": "testgame.exe"
+    },
+    {
+      "events": 31,
+      "path": "fixture.json"
+    },
+    {
+      "events": 18,
+      "path": "audio.dat"
+    },
+    {
+      "events": 17,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 17,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 13,
+      "path": "config.json"
+    },
+    {
+      "events": 12,
+      "path": "readme.txt"
+    },
+    {
+      "events": 8,
+      "path": "assets/empty.bin"
+    },
+    {
+      "events": 4,
+      "path": ""
+    },
+    {
+      "events": 4,
+      "path": "assets"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 0,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 0,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 1048576,
+      "offset": 0,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 1048576,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 1048576,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 1048576,
+      "offset": 1048576,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 2031616,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 2093056,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 37,
+      "offset": 2097115,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 0,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 0,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 1048576,
+      "offset": 0,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 536576,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 538624,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 1011712,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 1048576,
+      "offset": 1048576,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 1073152,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 37,
+      "offset": 1077211,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 1,
+      "length": 4096,
+      "offset": 0,
+      "path": "audio.dat"
+    },
+    {
+      "events": 1,
+      "length": 65536,
+      "offset": 0,
+      "path": "audio.dat"
+    }
+  ],
+  "latency_ns": {
+    "p50": 2800,
+    "p95": 611200,
+    "p99": 10022300
+  },
+  "operations": {
+    "flush": 87,
+    "read": 270
+  },
+  "read_bytes": 17053246,
+  "read_operations": 270,
+  "reread_ratio": 0.0,
+  "sequential_read_percentage": 10.0,
+  "sessions": [
+    "8716-1791040040488450600"
+  ],
+  "sources": {
+    "memory-cache": 248,
+    "mixed": 5,
+    "overlay": 87,
+    "remote-http": 17
+  },
+  "version": 1,
+  "write_bytes": 0,
+  "write_operations": 0
+}

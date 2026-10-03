@@ -1,0 +1,256 @@
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	﻿2026-10-03T14:51:52.5299225Z ##[group]Run cargo clippy --workspace --all-targets -- -D warnings
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5299794Z ^[[36;1mcargo clippy --workspace --all-targets -- -D warnings^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5374862Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5375221Z env:
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5375426Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5375688Z   CARGO_INCREMENTAL: 0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5375892Z   CARGO_TERM_COLOR: always
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5376108Z   CommandPromptType: Native
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5376465Z   DevEnvDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5377003Z   ExtensionSdkDir: C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5379380Z   EXTERNAL_INCLUDE: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\include\um
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5381639Z   Framework40Version: v4.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5381915Z   FrameworkDir: C:\Windows\Microsoft.NET\Framework64\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5382265Z   FrameworkDir64: C:\Windows\Microsoft.NET\Framework64\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5382573Z   FrameworkVersion: v4.0.30319
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5382805Z   FrameworkVersion64: v4.0.30319
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5383339Z   FSHARPINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5383931Z   HTMLHelpDir: C:\Program Files (x86)\HTML Help Workshop
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5386159Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\include\um
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5389350Z   LIB: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5392465Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5394481Z   llvmArm64: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\ARM64\bin
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5395038Z   llvmX64: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\x64\bin
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5395518Z   NETFXSDKDir: C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5410404Z   Path: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools\;C:\Program Files\MongoDB\Server\7.0\bin;C:\vcpkg;C:\tools\zstd;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.12\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\vcpkg
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5427621Z   Platform: x64
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5427828Z   UCRTVersion: 10.0.26100.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5428123Z   UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5428444Z   use_x64_llvm: true
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5429206Z   VCIDEInstallDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5429745Z   VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5430216Z   VCPKG_ROOT: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\vcpkg
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5430775Z   VCToolsInstallDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5431430Z   VCToolsRedistDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Redist\MSVC\14.51.36231\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5431887Z   VCToolsVersion: 14.51.36231
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5432112Z   VisualStudioVersion: 18.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5432475Z   VS180COMNTOOLS: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5432884Z   VSCMD_ARG_app_plat: Desktop
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5433101Z   VSCMD_ARG_HOST_ARCH: x64
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5433304Z   VSCMD_ARG_TGT_ARCH: x64
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5433497Z   VSCMD_VER: 18.10.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5433795Z   VSINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5434299Z   VSSDK150INSTALL: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VSSDK
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5434785Z   VSSDKINSTALL: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VSSDK
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5435469Z   WindowsLibPath: C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5436138Z   WindowsSdkBinPath: C:\Program Files (x86)\Windows Kits\10\bin\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5436519Z   WindowsSdkDir: C:\Program Files (x86)\Windows Kits\10\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5436831Z   WindowsSDKLibVersion: 10.0.26100.0\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5437204Z   WindowsSdkVerBinPath: C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5437596Z   WindowsSDKVersion: 10.0.26100.0\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5438051Z   WindowsSDK_ExecutablePath_x64: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\x64\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5438729Z   WindowsSDK_ExecutablePath_x86: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5439201Z   __DOTNET_ADD_64BIT: 1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5439410Z   __DOTNET_PREFERRED_BITNESS: 64
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5448157Z   __VSCMD_PREINIT_PATH: C:\Program Files\MongoDB\Server\7.0\bin;C:\vcpkg;C:\tools\zstd;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.12\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5457640Z   CACHE_ON_FAILURE: false
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5457876Z   LIBCLANG_PATH: C:\Program Files\LLVM\bin
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:52.5458134Z ##[endgroup]
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:53.7949662Z ^[[1m^[[92m    Updating^[[0m crates.io index
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:51:54.6402899Z ^[[1m^[[92m Downloading^[[0m crates ...
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.3430391Z ^[[1m^[[92m  Downloaded^[[0m base64 v0.23.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.3805253Z ^[[1m^[[92m  Downloaded^[[0m bytes v1.12.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.4194683Z ^[[1m^[[92m  Downloaded^[[0m getrandom v0.2.17
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.4581829Z ^[[1m^[[92m  Downloaded^[[0m http v1.5.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.4954270Z ^[[1m^[[92m  Downloaded^[[0m httparse v1.10.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.5176155Z ^[[1m^[[92m  Downloaded^[[0m percent-encoding v2.3.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:10.5287334Z ^[[1m^[[92m  Downloaded^[[0m ring v0.17.14
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:11.1072615Z ^[[1m^[[92m  Downloaded^[[0m rustls-pki-types v1.15.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:11.1423898Z ^[[1m^[[92m  Downloaded^[[0m rustls-webpki v0.103.15
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:11.1710133Z ^[[1m^[[92m  Downloaded^[[0m rustls v0.23.45
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:11.2975241Z ^[[1m^[[92m  Downloaded^[[0m subtle v2.6.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.4446499Z ^[[1m^[[92m  Downloaded^[[0m untrusted v0.9.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.4611002Z ^[[1m^[[92m  Downloaded^[[0m ureq v3.4.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.5226923Z ^[[1m^[[92m  Downloaded^[[0m ureq-proto v0.6.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.5748160Z ^[[1m^[[92m  Downloaded^[[0m utf8-zero v0.8.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.5879653Z ^[[1m^[[92m  Downloaded^[[0m webpki-roots v1.0.9
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.6008738Z ^[[1m^[[92m  Downloaded^[[0m zeroize v1.9.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.8784323Z ^[[1m^[[92m    Checking^[[0m cfg-if v1.0.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.8789264Z ^[[1m^[[92m    Checking^[[0m windows-link v0.2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.8795144Z ^[[1m^[[92m    Checking^[[0m serde_core v1.0.229
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.9349439Z ^[[1m^[[92m   Compiling^[[0m getrandom v0.4.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.9350296Z ^[[1m^[[92m    Checking^[[0m windows-sys v0.61.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:12.9483837Z ^[[1m^[[92m    Checking^[[0m once_cell v1.21.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.1321888Z ^[[1m^[[92m   Compiling^[[0m jobserver v0.1.35
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.1449795Z ^[[1m^[[92m    Checking^[[0m constant_time_eq v0.4.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.2585251Z ^[[1m^[[92m    Checking^[[0m itoa v1.0.18
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.4175973Z ^[[1m^[[92m   Compiling^[[0m cc v1.5.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.5311299Z ^[[1m^[[92m    Checking^[[0m cpufeatures v0.3.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.5885113Z ^[[1m^[[92m    Checking^[[0m arrayvec v0.7.8
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.8145929Z ^[[1m^[[92m    Checking^[[0m libc v0.2.189
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:13.9592352Z ^[[1m^[[92m    Checking^[[0m thiserror v2.0.21
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:14.0501476Z ^[[1m^[[92m    Checking^[[0m zmij v1.0.23
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:14.4283373Z ^[[1m^[[92m    Checking^[[0m memchr v2.8.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.0700634Z ^[[1m^[[92m    Checking^[[0m windows-link v0.1.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.1814346Z ^[[1m^[[92m    Checking^[[0m zeroize v1.9.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.2473137Z ^[[1m^[[92m    Checking^[[0m log v0.4.34
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.4162784Z ^[[1m^[[92m    Checking^[[0m fastrand v2.5.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.5402782Z ^[[1m^[[92m    Checking^[[0m rustls-pki-types v1.15.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.6984353Z ^[[1m^[[92m    Checking^[[0m tempfile v3.27.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.9633081Z ^[[1m^[[92m    Checking^[[0m windows-strings v0.4.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:15.9663055Z ^[[1m^[[92m    Checking^[[0m windows-result v0.3.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.0011104Z ^[[1m^[[92m    Checking^[[0m serde v1.0.229
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.1483924Z ^[[1m^[[92m    Checking^[[0m serde_json v1.0.151
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.1756139Z ^[[1m^[[92m    Checking^[[0m tracing-core v0.1.36
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.4196781Z ^[[1m^[[92m   Compiling^[[0m blake3 v1.8.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.7089589Z ^[[1m^[[92m   Compiling^[[0m ring v0.17.14
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:16.8157761Z ^[[1m^[[92m   Compiling^[[0m zstd-sys v2.1.0+zstd.1.5.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:17.1777073Z ^[[1m^[[92m    Checking^[[0m getrandom v0.2.17
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:17.2465742Z ^[[1m^[[92m   Compiling^[[0m httparse v1.10.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:19.3452499Z ^[[1m^[[92m    Checking^[[0m foldhash v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:19.4737576Z ^[[1m^[[92m    Checking^[[0m smallvec v1.16.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:19.6291021Z ^[[1m^[[92m    Checking^[[0m untrusted v0.9.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:19.7033110Z ^[[1m^[[92m    Checking^[[0m hashbrown v0.17.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:20.2792561Z ^[[1m^[[92m    Checking^[[0m windows-core v0.61.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:20.6190527Z ^[[1m^[[92m   Compiling^[[0m rustls v0.23.45
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:20.7715314Z ^[[1m^[[92m    Checking^[[0m scopeguard v1.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:20.8283592Z ^[[1m^[[92m    Checking^[[0m bytes v1.12.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:21.3203499Z ^[[1m^[[92m    Checking^[[0m http v1.5.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:21.9143967Z ^[[1m^[[92m    Checking^[[0m lock_api v0.4.14
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.2600534Z ^[[1m^[[92m    Checking^[[0m parking_lot_core v0.9.12
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.4384769Z ^[[1m^[[92m    Checking^[[0m lru v0.18.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.5844224Z ^[[1m^[[92m    Checking^[[0m winapi-util v0.1.11
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.6987936Z ^[[1m^[[92m    Checking^[[0m pin-project-lite v0.2.17
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.7549371Z ^[[1m^[[92m    Checking^[[0m base64 v0.23.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:22.9954343Z ^[[1m^[[92m    Checking^[[0m playsparse-core v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-core)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.0371944Z ^[[1m^[[92m    Checking^[[0m subtle v2.6.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.2212386Z ^[[1m^[[92m    Checking^[[0m ureq-proto v0.6.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.3033071Z ^[[1m^[[92m    Checking^[[0m tracing v0.1.44
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.4609683Z ^[[1m^[[92m    Checking^[[0m same-file v1.0.6
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.5655515Z ^[[1m^[[92m    Checking^[[0m parking_lot v0.12.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.5779891Z ^[[1m^[[92m    Checking^[[0m webpki-roots v1.0.9
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.6698957Z ^[[1m^[[92m    Checking^[[0m windows-threading v0.1.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.7252661Z ^[[1m^[[92m    Checking^[[0m percent-encoding v2.3.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.7460099Z ^[[1m^[[92m    Checking^[[0m utf8-zero v0.8.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.8309513Z ^[[1m^[[92m    Checking^[[0m windows-future v0.2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:23.8500817Z ^[[1m^[[92m    Checking^[[0m walkdir v2.5.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:24.0121170Z ^[[1m^[[92m    Checking^[[0m playsparse-trace v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-trace)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:24.1100447Z ^[[1m^[[92m    Checking^[[0m windows-collections v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:24.2319774Z ^[[1m^[[92m    Checking^[[0m windows-numerics v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:24.3425798Z ^[[1m^[[92m    Checking^[[0m fastcdc v5.0.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:24.3724482Z ^[[1m^[[92m    Checking^[[0m windows v0.61.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:25.3144029Z ^[[1m^[[92m   Compiling^[[0m nom v7.1.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:27.4885130Z ^[[1m^[[92m    Checking^[[0m playsparse-policy v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-policy)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:27.6333011Z ^[[1m^[[92m    Checking^[[0m rustls-webpki v0.103.15
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:27.7418061Z ^[[1m^[[92m    Checking^[[0m playsparse-cache v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-cache)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:27.9386799Z ^[[1m^[[92m   Compiling^[[0m libloading v0.8.9
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:28.1673236Z ^[[1m^[[92m   Compiling^[[0m clang-sys v1.9.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:32.6128001Z ^[[1m^[[92m    Checking^[[0m ureq v3.4.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:33.7071973Z ^[[1m^[[92m   Compiling^[[0m cexpr v0.6.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:33.9594545Z ^[[1m^[[92m   Compiling^[[0m zstd-safe v8.0.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:34.3220088Z ^[[1m^[[92m    Checking^[[0m zstd v0.14.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:34.7145812Z ^[[1m^[[92m    Checking^[[0m playsparse-store v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-store)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:35.0722804Z ^[[1m^[[92m   Compiling^[[0m windows-strings v0.5.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:35.4313584Z ^[[1m^[[92m   Compiling^[[0m windows-result v0.4.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:35.6994959Z ^[[1m^[[92m   Compiling^[[0m bitflags v2.13.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:35.8290505Z ^[[1m^[[92m   Compiling^[[0m windows-registry v0.6.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.0554309Z ^[[1m^[[92m   Compiling^[[0m bindgen v0.72.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.1852167Z ^[[1m^[[92m    Checking^[[0m anyhow v1.0.104
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.2386868Z ^[[1m^[[92m    Checking^[[0m anstyle v1.0.14
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.4250701Z ^[[1m^[[92m    Checking^[[0m regex-syntax v0.8.11
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.4670413Z ^[[1m^[[92m    Checking^[[0m once_cell_polyfill v1.70.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.5514696Z ^[[1m^[[92m    Checking^[[0m utf8parse v0.2.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.6320518Z ^[[1m^[[92m    Checking^[[0m anstyle-parse v1.0.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.8095028Z ^[[1m^[[92m    Checking^[[0m anstyle-wincon v3.0.11
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.9329999Z ^[[1m^[[92m    Checking^[[0m getrandom v0.3.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:36.9393509Z ^[[1m^[[92m    Checking^[[0m playsparse-range v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-range)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.0556655Z ^[[1m^[[92m    Checking^[[0m anstyle-query v1.1.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.1585018Z ^[[1m^[[92m    Checking^[[0m colorchoice v1.0.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.2557762Z ^[[1m^[[92m    Checking^[[0m is_terminal_polyfill v1.70.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.3087507Z ^[[1m^[[92m    Checking^[[0m playsparse-overlay v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-overlay)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.4521570Z ^[[1m^[[92m    Checking^[[0m anstream v1.0.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:37.8967619Z ^[[1m^[[92m    Checking^[[0m rand_core v0.9.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:38.1027101Z ^[[1m^[[92m    Checking^[[0m strsim v0.11.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:38.2023084Z ^[[1m^[[92m    Checking^[[0m clap_lex v1.1.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:38.3887454Z ^[[1m^[[92m    Checking^[[0m zerocopy v0.8.59
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:38.4846414Z ^[[1m^[[92m    Checking^[[0m clap_builder v4.6.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:38.9936555Z ^[[1m^[[92m    Checking^[[0m bytemuck v1.25.2
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:39.3806237Z ^[[1m^[[92m   Compiling^[[0m playsparse-vfs-win v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-vfs-win)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:40.1599742Z ^[[1m^[[92m    Checking^[[0m widestring v1.2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.0127318Z ^[[1m^[[92m    Checking^[[0m static_assertions v1.1.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.0737142Z ^[[1m^[[92m    Checking^[[0m clap v4.6.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.1974101Z ^[[1m^[[92m    Checking^[[0m regex-automata v0.4.18
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.3957518Z ^[[1m^[[92m    Checking^[[0m bit-vec v0.8.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.6108179Z ^[[1m^[[92m    Checking^[[0m fnv v1.0.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.7016890Z ^[[1m^[[92m    Checking^[[0m wait-timeout v0.2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.7831729Z ^[[1m^[[92m    Checking^[[0m lazy_static v1.5.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.8646571Z ^[[1m^[[92m    Checking^[[0m quick-error v1.2.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:41.9477790Z ^[[1m^[[92m    Checking^[[0m rusty-fork v0.3.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:42.1388213Z ^[[1m^[[92m    Checking^[[0m sharded-slab v0.1.7
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:42.9407505Z ^[[1m^[[92m    Checking^[[0m bit-set v0.8.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:43.1607908Z ^[[1m^[[92m    Checking^[[0m num-traits v0.2.19
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:43.5115452Z ^[[1m^[[92m    Checking^[[0m matchers v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:43.6182443Z ^[[1m^[[92m    Checking^[[0m rand_xorshift v0.4.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:43.7163512Z ^[[1m^[[92m    Checking^[[0m rand v0.9.5
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.1553674Z ^[[1m^[[92m    Checking^[[0m tracing-serde v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.3008766Z ^[[1m^[[92m    Checking^[[0m tracing-log v0.2.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.3520612Z ^[[1m^[[92m    Checking^[[0m nu-ansi-term v0.50.3
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.4281696Z ^[[1m^[[92m    Checking^[[0m ppv-lite86 v0.2.21
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.4482619Z ^[[1m^[[92m    Checking^[[0m thread_local v1.1.10
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.6129142Z ^[[1m^[[92m    Checking^[[0m memmap2 v0.9.11
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.6416697Z ^[[1m^[[92m    Checking^[[0m unarray v0.1.4
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.7357238Z ^[[1m^[[92m   Compiling^[[0m playsparse-cli v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-cli)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.8642463Z ^[[1m^[[92m    Checking^[[0m rand_chacha v0.9.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:44.9634265Z ^[[1m^[[92m    Checking^[[0m tracing-subscriber v0.3.23
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:45.0203890Z ^[[1m^[[92m    Checking^[[0m io-probe v0.1.0 (D:\a\PlaySparse\PlaySparse\tools\io-probe)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:45.0544342Z ^[[1m^[[92m    Checking^[[0m proptest v1.11.0
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:45.4326113Z ^[[1m^[[92m    Checking^[[0m playsparse-vfs-fuse v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-vfs-fuse)
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:52:46.3731445Z ^[[1m^[[92m   Compiling^[[0m winfsp-sys v0.12.1+winfsp-2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:01.2756472Z ^[[1m^[[92m    Checking^[[0m winfsp v0.13.1+winfsp-2.1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4791790Z ^[[1m^[[91merror^[[0m^[[1m^[[97m: items after a test module^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4792907Z    ^[[1m^[[96m--> ^[[0mcrates\playsparse-cli\src\main.rs:381:1
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4793934Z     ^[[1m^[[96m|^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4794577Z ^[[1m^[[96m381^[[0m ^[[1m^[[96m|^[[0m   mod mount_path_tests {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4795337Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4795990Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4796562Z ^[[1m^[[96m392^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m/^[[0m fn mount(
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4797367Z ^[[1m^[[96m393^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m|^[[0m     store: &Path,
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4798551Z ^[[1m^[[96m394^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m|^[[0m     mountpoint: &Path,
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4799401Z ^[[1m^[[96m395^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m|^[[0m     cache: usize,
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4800140Z ^[[1m^[[96m...^[[0m   ^[[1m^[[91m|^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4800891Z ^[[1m^[[96m399^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m|^[[0m     tiers_path: Option<&Path>,
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4801775Z ^[[1m^[[96m400^[[0m ^[[1m^[[96m|^[[0m ^[[1m^[[91m|^[[0m ) -> Result<()> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4802521Z     ^[[1m^[[96m|^[[0m ^[[1m^[[91m|_______________^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4803136Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4804093Z ^[[1m^[[96m503^[[0m ^[[1m^[[96m|^[[0m   fn overlay_commit(base: &Path, overlay_path: &Path, new_store: &Path) -> Result<()> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4805365Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4806172Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4806867Z ^[[1m^[[96m561^[[0m ^[[1m^[[96m|^[[0m   fn unmount(mountpoint: &Path) -> Result<()> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4807782Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4808463Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4809281Z ^[[1m^[[96m577^[[0m ^[[1m^[[96m|^[[0m   fn analyze(source: &Path, chunk_size: u32) -> Result<Value> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4810356Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4811155Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4811898Z ^[[1m^[[96m627^[[0m ^[[1m^[[96m|^[[0m   fn percentiles(mut values: Vec<f64>) -> Value {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4812816Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4813503Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4814539Z ^[[1m^[[96m639^[[0m ^[[1m^[[96m|^[[0m   fn benchmark(source: &Path, root: &Path, iterations: usize, cache_bytes: usize) -> Result<Value> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4816250Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4817057Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4817692Z ^[[1m^[[96m770^[[0m ^[[1m^[[96m|^[[0m   fn cpu_seconds() -> Option<f64> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4819248Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4819946Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4820568Z ^[[1m^[[96m785^[[0m ^[[1m^[[96m|^[[0m   fn peak_rss() -> Option<u64> {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4821352Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4821991Z ^[[1m^[[96m...^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4822725Z ^[[1m^[[96m801^[[0m ^[[1m^[[96m|^[[0m   fn doctor(store: Option<&Path>, path: &Path) -> Value {
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4823713Z     ^[[1m^[[96m|^[[0m   ^[[1m^[[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4824428Z     ^[[1m^[[96m|^[[0m
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4825699Z     ^[[1m^[[96m= ^[[0m^[[1m^[[97mhelp^[[0m: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#items_after_test_module
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4833982Z     ^[[1m^[[96m= ^[[0m^[[1m^[[97mnote^[[0m: `-D clippy::items-after-test-module` implied by `-D warnings`
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4836452Z     ^[[1m^[[96m= ^[[0m^[[1m^[[97mhelp^[[0m: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4838009Z     ^[[1m^[[96m= ^[[0m^[[1m^[[97mhelp^[[0m: move the items to before the test module was defined
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.4840023Z 
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.5503902Z ^[[1m^[[91merror^[[0m: could not compile `playsparse-cli` (bin "playsparse" test) due to 1 previous error
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.5504631Z ^[[1m^[[93mwarning^[[0m: build failed, waiting for other jobs to finish...
+windows	Run cargo clippy --workspace --all-targets -- -D warnings	2026-10-03T14:53:02.6943832Z ##[error]Process completed with exit code 1.
