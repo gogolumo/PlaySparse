@@ -1,0 +1,36 @@
+{
+  "method": "independent medians of every metric across all three recorded trials per mode; no selection",
+  "source": "result.json",
+  "metrics": {
+    "static": {
+      "latency_ns.p50": 19800,
+      "latency_ns.p95": 51500,
+      "latency_ns.p99": 90300,
+      "cpu_seconds": 0.015625,
+      "wall_seconds": 0.0215797,
+      "process_peak_rss_bytes": 12300288,
+      "cache.hit_ratio": 0.05400696864111498,
+      "cache.raw_bytes_loaded": 35586048,
+      "read_amplification": 1.04725168756027,
+      "cache.prefetch_bytes_loaded": 0,
+      "cache.prefetch_useful_bytes": 0,
+      "cache.prefetch_wasted_bytes": 0,
+      "cache.peak_resident_bytes": 4194304
+    },
+    "adaptive": {
+      "latency_ns.p50": 34700,
+      "latency_ns.p95": 62500,
+      "latency_ns.p99": 113400,
+      "cpu_seconds": 0.046875,
+      "wall_seconds": 0.0294546,
+      "process_peak_rss_bytes": 12402688,
+      "cache.hit_ratio": 0.4930313588850174,
+      "cache.raw_bytes_loaded": 66453504,
+      "read_amplification": 1.9556412729026036,
+      "cache.prefetch_bytes_loaded": 47579136,
+      "cache.prefetch_useful_bytes": 18350080,
+      "cache.prefetch_wasted_bytes": 29032448,
+      "cache.peak_resident_bytes": 4194304
+    }
+  }
+}

@@ -1,0 +1,9 @@
+    Checking playsparse-trace v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-trace)
+    Checking playsparse-store v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-store)
+    Checking playsparse-policy v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-policy)
+    Checking playsparse-range v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-range)
+    Checking playsparse-overlay v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-overlay)
+    Checking playsparse-vfs-win v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-win)
+    Checking playsparse-vfs-fuse v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-fuse)
+    Checking playsparse-cli v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.63s

@@ -1,0 +1,242 @@
+{
+  "cache_hit_ratio": 0.817174515235457,
+  "cache_miss_ratio": 0.18282548476454294,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 1639,
+  "hot_files": [
+    {
+      "events": 1089,
+      "path": "world.dat"
+    },
+    {
+      "events": 70,
+      "path": "testgame.exe"
+    },
+    {
+      "events": 50,
+      "path": "fixture.json"
+    },
+    {
+      "events": 38,
+      "path": "audio.dat"
+    },
+    {
+      "events": 36,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 36,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 35,
+      "path": "config.json"
+    },
+    {
+      "events": 31,
+      "path": "data/archive-b.bin"
+    },
+    {
+      "events": 31,
+      "path": "data/truncate.bin"
+    },
+    {
+      "events": 27,
+      "path": "data/replace.bin"
+    },
+    {
+      "events": 25,
+      "path": "assets/empty.bin"
+    },
+    {
+      "events": 25,
+      "path": "data/archive-a.bin"
+    },
+    {
+      "events": 25,
+      "path": "readme.txt"
+    },
+    {
+      "events": 18,
+      "path": "old-dir/nested/file.bin"
+    },
+    {
+      "events": 15,
+      "path": "patch"
+    },
+    {
+      "events": 12,
+      "path": "data/archive-a-v2.bin"
+    },
+    {
+      "events": 11,
+      "path": "renamed-dir/nested/file.bin"
+    },
+    {
+      "events": 10,
+      "path": ""
+    },
+    {
+      "events": 9,
+      "path": "data"
+    },
+    {
+      "events": 9,
+      "path": "patch/renamed.bin"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 33,
+      "length": 65536,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 33,
+      "length": 1048576,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 4096,
+      "offset": 16777179,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 16777179,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 16777179,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 1048576,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 6463700,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 6463700,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 1048576,
+      "offset": 6463700,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 6738069,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 6738069,
+      "path": "world.dat"
+    }
+  ],
+  "latency_ns": {
+    "p50": 2800,
+    "p95": 894300,
+    "p99": 2635100
+  },
+  "operations": {
+    "create": 3,
+    "flush": 522,
+    "mkdir": 2,
+    "read": 1094,
+    "rename": 4,
+    "rmdir": 1,
+    "truncate": 2,
+    "unlink": 2,
+    "write": 9
+  },
+  "read_bytes": 299012789,
+  "read_operations": 1094,
+  "reread_ratio": 0.5164533820840951,
+  "sequential_read_percentage": 5.393053016453382,
+  "sessions": [
+    "9140-1791040033886000800"
+  ],
+  "sources": {
+    "memory-cache": 885,
+    "mixed": 80,
+    "overlay": 556,
+    "primary-local": 118
+  },
+  "version": 1,
+  "write_bytes": 8179,
+  "write_operations": 9
+}

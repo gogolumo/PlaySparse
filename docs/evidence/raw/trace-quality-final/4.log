@@ -1,0 +1,10 @@
+test_official_abc_vector (tests.test_lab.Blake3Tests.test_official_abc_vector) ... ok
+test_official_empty_vector (tests.test_lab.Blake3Tests.test_official_empty_vector) ... ok
+test_directory_roundtrip_and_dedup (tests.test_lab.CASTests.test_directory_roundtrip_and_dedup) ... ok
+test_fastcdc_is_deterministic (tests.test_lab.ChunkingTests.test_fastcdc_is_deterministic) ... ok
+test_roundtrip_boundaries (tests.test_lab.ChunkingTests.test_roundtrip_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.532s
+
+OK

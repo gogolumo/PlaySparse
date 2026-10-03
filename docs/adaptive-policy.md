@@ -8,7 +8,8 @@ This capability does not establish a general game, launcher, or performance win.
 
 ## Configuration and commands
 
-All fields below are required. Unknown fields, unsupported versions, unsafe
+All fields below except optional `cache_bytes` are required. Unknown fields,
+unsupported versions, unsafe
 virtual paths, oversized JSON and parameters outside the listed limits fail
 validation before mounting. `files` contains virtual paths, never machine paths.
 

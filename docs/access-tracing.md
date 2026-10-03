@@ -85,8 +85,13 @@ silently treating it as complete evidence.
 ## Summary interpretation and limits
 
 The analyzer accepts at most 2,000,000 events and 256 KiB per line. It limits
-distinct file paths, exact read ranges and sessions to 100,000 each, and operation
-and source labels to 64 each. It rejects inputs exceeding those bounds. Exact
+distinct file paths, exact read ranges, sessions and `(session, worker, path)`
+streams to 100,000 each, and operation and source labels to 64 each. Retained
+string keys have a combined 32 MiB budget in addition to those count limits.
+Imported events enforce the same 4096-byte paths and 32-byte categories as the
+writer, plus 64-byte session/worker identifiers. Read/write byte totals reject
+`u64` overflow. Optimize and replay share the bounded event deserializer.
+It rejects inputs exceeding those bounds. Exact
 latencies are retained and sorted within the event bound.
 
 The JSON summary reports operation counts, returned read/write bytes, source

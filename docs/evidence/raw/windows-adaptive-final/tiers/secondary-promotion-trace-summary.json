@@ -1,0 +1,206 @@
+{
+  "cache_hit_ratio": 0.9543245869776482,
+  "cache_miss_ratio": 0.0456754130223518,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 1305,
+  "hot_files": [
+    {
+      "events": 1039,
+      "path": "world.dat"
+    },
+    {
+      "events": 62,
+      "path": "testgame.exe"
+    },
+    {
+      "events": 41,
+      "path": "fixture.json"
+    },
+    {
+      "events": 28,
+      "path": "audio.dat"
+    },
+    {
+      "events": 27,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 27,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 23,
+      "path": "config.json"
+    },
+    {
+      "events": 22,
+      "path": "readme.txt"
+    },
+    {
+      "events": 17,
+      "path": "assets/empty.bin"
+    },
+    {
+      "events": 7,
+      "path": ""
+    },
+    {
+      "events": 7,
+      "path": "overlay-created.txt"
+    },
+    {
+      "events": 5,
+      "path": "assets"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 33,
+      "length": 65536,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 33,
+      "length": 1048576,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 0,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 32,
+      "length": 4096,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 262143,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 262144,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 4096,
+      "offset": 4194267,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 65536,
+      "offset": 4194267,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "length": 1048576,
+      "offset": 4194267,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 1048576,
+      "offset": 329796,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 432244,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 432244,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 1048576,
+      "offset": 432244,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 4096,
+      "offset": 2269396,
+      "path": "world.dat"
+    },
+    {
+      "events": 5,
+      "length": 65536,
+      "offset": 2269396,
+      "path": "world.dat"
+    }
+  ],
+  "latency_ns": {
+    "p50": 2600,
+    "p95": 834700,
+    "p99": 4819000
+  },
+  "operations": {
+    "create": 1,
+    "flush": 273,
+    "read": 1030,
+    "write": 1
+  },
+  "read_bytes": 255848338,
+  "read_operations": 1030,
+  "reread_ratio": 0.537864077669903,
+  "sequential_read_percentage": 2.621359223300971,
+  "sessions": [
+    "2600-1791040039365353200"
+  ],
+  "sources": {
+    "memory-cache": 982,
+    "mixed": 24,
+    "overlay": 276,
+    "primary-local": 11,
+    "secondary-local": 12
+  },
+  "version": 1,
+  "write_bytes": 18,
+  "write_operations": 1
+}

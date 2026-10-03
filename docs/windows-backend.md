@@ -201,3 +201,11 @@ Hosted Server CI remains distinct from physical Windows client validation.
 See [sprint evidence](evidence/adaptive-writable-runtime.md),
 [overlay](writable-overlay.md), [policy](adaptive-policy.md) and
 [tiers](tiered-storage.md).
+
+The combined overlay/policy/tier runtime subsequently passed hosted Server 2025
+CI at `4e39b9c`: updater/remount, new-store commit and disposable-copy discard,
+trace-derived adaptive replay, secondary promotion/offline remount, exact HTTP
+ranges and corrupt-object rejection. See the
+[sprint evidence](evidence/adaptive-writable-runtime.md#final-hosted-windows-execution).
+These generated fixtures do not establish physical Windows desktop, real game
+or launcher compatibility.

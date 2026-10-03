@@ -20,23 +20,56 @@ pub const QUEUE_CAPACITY: usize = 4096;
 const MAX_LINE: usize = 256 * 1024;
 const MAX_EVENTS: usize = 2_000_000;
 const MAX_IDENTITIES: usize = 100_000;
+const MAX_PATH_BYTES: usize = 4096;
+const MAX_CATEGORY_BYTES: usize = 32;
+const MAX_IDENTITY_BYTES: usize = 64;
+const MAX_RETAINED_KEY_BYTES: usize = 32 * 1024 * 1024;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Event {
     pub version: u32,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_IDENTITY_BYTES>")]
     pub session: String,
     pub ts_ns: u64,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_CATEGORY_BYTES>")]
     pub op: String,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_PATH_BYTES>")]
     pub path: String,
     pub offset: u64,
     pub requested: u64,
     pub returned: u64,
     pub latency_ns: u64,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_CATEGORY_BYTES>")]
     pub cache: String,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_CATEGORY_BYTES>")]
     pub source: String,
+    #[serde(deserialize_with = "deserialize_bounded_string::<_, MAX_IDENTITY_BYTES>")]
     pub worker: String,
     pub success: bool,
+}
+
+fn deserialize_bounded_string<'de, D, const LIMIT: usize>(
+    deserializer: D,
+) -> std::result::Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let value = String::deserialize(deserializer)?;
+    if value.len() > LIMIT {
+        return Err(serde::de::Error::custom(format!(
+            "trace string field exceeds {LIMIT} byte limit"
+        )));
+    }
+    Ok(value)
+}
+
+fn reserve_key_bytes(retained: &mut usize, additional: usize) -> Result<()> {
+    *retained = retained
+        .checked_add(additional)
+        .filter(|bytes| *bytes <= MAX_RETAINED_KEY_BYTES)
+        .ok_or_else(|| Error::Invalid("trace analysis exceeds retained key byte limit".into()))?;
+    Ok(())
 }
 
 #[derive(Debug, Default, Clone, Serialize)]
@@ -145,10 +178,10 @@ impl TraceWriter {
         self.active.fetch_add(1, Ordering::SeqCst);
         let _producer = Producer(&self.active);
         if self.closed.load(Ordering::SeqCst)
-            || path.len() > 4096
-            || op.len() > 32
-            || cache.len() > 32
-            || source.len() > 32
+            || path.len() > MAX_PATH_BYTES
+            || op.len() > MAX_CATEGORY_BYTES
+            || cache.len() > MAX_CATEGORY_BYTES
+            || source.len() > MAX_CATEGORY_BYTES
         {
             self.counters.dropped.fetch_add(1, Ordering::Relaxed);
             return;
@@ -228,6 +261,7 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
     let mut previous_end = BTreeMap::new();
     let mut latencies = Vec::new();
     let mut sessions = BTreeSet::new();
+    let mut retained_key_bytes = 0;
     let (
         mut reads,
         mut writes,
@@ -261,24 +295,45 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
                 "unsupported trace version or unsafe virtual path".into(),
             ));
         }
-        sessions.insert(event.session.clone());
+        if !sessions.contains(&event.session) {
+            reserve_key_bytes(&mut retained_key_bytes, event.session.len())?;
+            sessions.insert(event.session.clone());
+        }
+        if !operations.contains_key(&event.op) {
+            reserve_key_bytes(&mut retained_key_bytes, event.op.len())?;
+        }
         *operations.entry(event.op.clone()).or_default() += 1;
+        if !sources.contains_key(&event.source) {
+            reserve_key_bytes(&mut retained_key_bytes, event.source.len())?;
+        }
         *sources.entry(event.source).or_default() += 1;
+        if !files.contains_key(&event.path) {
+            reserve_key_bytes(&mut retained_key_bytes, event.path.len())?;
+        }
         *files.entry(event.path.clone()).or_default() += 1;
         latencies.push(event.latency_ns);
         if event.op == "read" {
             reads += 1;
-            read_bytes += event.returned;
-            if previous_end.insert(
-                (event.session, event.worker, event.path.clone()),
-                event.offset.saturating_add(event.returned),
-            ) == Some(event.offset)
+            read_bytes = read_bytes
+                .checked_add(event.returned)
+                .ok_or_else(|| Error::Invalid("trace read byte total overflows u64".into()))?;
+            let stream = (event.session, event.worker, event.path.clone());
+            if !previous_end.contains_key(&stream) {
+                reserve_key_bytes(
+                    &mut retained_key_bytes,
+                    stream.0.len() + stream.1.len() + stream.2.len(),
+                )?;
+            }
+            if previous_end.insert(stream, event.offset.saturating_add(event.returned))
+                == Some(event.offset)
             {
                 sequential += 1;
             }
-            let visits = ranges
-                .entry((event.path, event.offset, event.requested))
-                .or_default();
+            let range = (event.path, event.offset, event.requested);
+            if !ranges.contains_key(&range) {
+                reserve_key_bytes(&mut retained_key_bytes, range.0.len())?;
+            }
+            let visits = ranges.entry(range).or_default();
             if *visits > 0 {
                 repeated += 1;
             }
@@ -290,11 +345,14 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
             }
         } else if event.op == "write" {
             writes += 1;
-            write_bytes += event.returned;
+            write_bytes = write_bytes
+                .checked_add(event.returned)
+                .ok_or_else(|| Error::Invalid("trace write byte total overflows u64".into()))?;
         }
         if files.len() > MAX_IDENTITIES
             || ranges.len() > MAX_IDENTITIES
             || sessions.len() > MAX_IDENTITIES
+            || previous_end.len() > MAX_IDENTITIES
             || operations.len() > 64
             || sources.len() > 64
         {
@@ -311,15 +369,17 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
             .unwrap_or(0)
     };
     let ratio = |n: u64, d: u64| if d == 0 { 0.0 } else { n as f64 / d as f64 };
-    let mut hot_files: Vec<_> = files
+    let mut hot_files: Vec<_> = files.into_iter().collect();
+    hot_files.sort_by_key(|(_, events)| std::cmp::Reverse(*events));
+    hot_files.truncate(20);
+    let hot_files: Vec<_> = hot_files
         .into_iter()
         .map(|(path, events)| serde_json::json!({"path":path,"events":events}))
         .collect();
-    hot_files.sort_by_key(|v| std::cmp::Reverse(v["events"].as_u64().unwrap_or(0)));
-    hot_files.truncate(20);
-    let mut hot_ranges: Vec<_> = ranges.into_iter().map(|((path,offset,length),events)| serde_json::json!({"path":path,"offset":offset,"length":length,"events":events})).collect();
-    hot_ranges.sort_by_key(|v| std::cmp::Reverse(v["events"].as_u64().unwrap_or(0)));
+    let mut hot_ranges: Vec<_> = ranges.into_iter().collect();
+    hot_ranges.sort_by_key(|(_, events)| std::cmp::Reverse(*events));
     hot_ranges.truncate(20);
+    let hot_ranges: Vec<_> = hot_ranges.into_iter().map(|((path,offset,length),events)| serde_json::json!({"path":path,"offset":offset,"length":length,"events":events})).collect();
     Ok(
         serde_json::json!({"version":VERSION,"events":latencies.len(),"sessions":sessions,"operations":operations,"read_operations":reads,"write_operations":writes,"read_bytes":read_bytes,"write_bytes":write_bytes,"hot_files":hot_files,"hot_ranges":hot_ranges,"sequential_read_percentage":100.0*ratio(sequential,reads),"reread_ratio":ratio(repeated,reads),"cache_hit_ratio":ratio(hits,hits+misses),"cache_miss_ratio":ratio(misses,hits+misses),"cache_ratio_basis":"read events; mixed counts as miss; bypass excluded","latency_ns":{"p50":percentile(50),"p95":percentile(95),"p99":percentile(99)},"sources":sources}),
     )
@@ -328,6 +388,31 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn imported_event(op: &str) -> Event {
+        Event {
+            version: VERSION,
+            session: "session".into(),
+            ts_ns: 0,
+            op: op.into(),
+            path: "data/file".into(),
+            offset: 0,
+            requested: 4,
+            returned: 4,
+            latency_ns: 23,
+            cache: "miss".into(),
+            source: "primary-local".into(),
+            worker: "worker".into(),
+            success: true,
+        }
+    }
+    fn write_imported(path: &Path, events: impl IntoIterator<Item = Event>) {
+        let mut writer = BufWriter::new(File::create(path).unwrap());
+        for event in events {
+            serde_json::to_writer(&mut writer, &event).unwrap();
+            writer.write_all(b"\n").unwrap();
+        }
+        writer.flush().unwrap();
+    }
     fn event(trace: &TraceWriter) {
         trace.record(
             "read",
@@ -460,5 +545,93 @@ mod tests {
         assert!(summarize(&path).is_err());
         std::fs::write(&path, vec![b' '; MAX_LINE + 1]).unwrap();
         assert!(summarize(&path).is_err());
+    }
+    #[test]
+    fn rejects_oversized_imported_fields_in_all_event_consumers() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        for field in ["session", "worker", "path", "op", "cache", "source"] {
+            let mut event = imported_event("read");
+            let (value, limit) = match field {
+                "session" => (&mut event.session, MAX_IDENTITY_BYTES),
+                "worker" => (&mut event.worker, MAX_IDENTITY_BYTES),
+                "path" => (&mut event.path, MAX_PATH_BYTES),
+                "op" => (&mut event.op, MAX_CATEGORY_BYTES),
+                "cache" => (&mut event.cache, MAX_CATEGORY_BYTES),
+                "source" => (&mut event.source, MAX_CATEGORY_BYTES),
+                _ => unreachable!(),
+            };
+            *value = "x".repeat(limit + 1);
+            let serialized = serde_json::to_vec(&event).unwrap();
+            assert!(
+                serde_json::from_slice::<Event>(&serialized).is_err(),
+                "{field} was accepted by Event deserialization"
+            );
+            write_imported(&path, [event]);
+            assert!(summarize(&path).is_err(), "{field} was accepted");
+        }
+    }
+    #[test]
+    fn rejects_unbounded_distinct_read_workers() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        write_imported(
+            &path,
+            (0..=MAX_IDENTITIES).map(|index| {
+                let mut event = imported_event("read");
+                event.worker = format!("worker-{index}");
+                event
+            }),
+        );
+        let error = summarize(&path).unwrap_err().to_string();
+        assert!(error.contains("identity limits"), "{error}");
+    }
+    #[test]
+    fn rejects_retained_string_keys_before_identity_limit() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        let suffix = "x".repeat(MAX_PATH_BYTES - 6);
+        let events = MAX_RETAINED_KEY_BYTES / MAX_PATH_BYTES + 1;
+        assert!(events < MAX_IDENTITIES);
+        write_imported(
+            &path,
+            (0..events).map(|index| {
+                let mut event = imported_event("getattr");
+                event.path = format!("{index:05}/{suffix}");
+                event
+            }),
+        );
+        let error = summarize(&path).unwrap_err().to_string();
+        assert!(error.contains("retained key byte limit"), "{error}");
+    }
+    #[test]
+    fn rejects_overflowing_read_and_write_totals() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        for op in ["read", "write"] {
+            write_imported(
+                &path,
+                [u64::MAX, 1].map(|returned| {
+                    let mut event = imported_event(op);
+                    event.returned = returned;
+                    event
+                }),
+            );
+            let error = summarize(&path).unwrap_err().to_string();
+            assert!(error.contains("byte total overflows u64"), "{error}");
+        }
+    }
+    #[test]
+    fn preserves_operation_specific_request_and_return_values() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        let mut event = imported_event("truncate");
+        event.requested = 0;
+        event.returned = u64::MAX;
+        write_imported(&path, [event]);
+        let summary = summarize(&path).unwrap();
+        assert_eq!(summary["events"], 1);
+        assert_eq!(summary["read_bytes"], 0);
+        assert_eq!(summary["write_bytes"], 0);
     }
 }

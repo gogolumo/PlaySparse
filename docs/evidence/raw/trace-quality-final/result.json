@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-10-03T15:23:42.921057+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "commit": "3038c338a2fc1e1f691000f3cc4abe03840c6e1e",
+  "working_tree_status": "",
+  "commands": [
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.33632783399662003,
+      "log": "0.log"
+    },
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.6982131249969825,
+      "log": "1.log"
+    },
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 14.294162417005282,
+      "log": "2.log"
+    },
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 9.166144750022795,
+      "log": "3.log"
+    },
+    {
+      "argv": [
+        "bash",
+        "tools/check.sh"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 13.082289959012996,
+      "log": "4.log"
+    }
+  ],
+  "status": "PASS"
+}
