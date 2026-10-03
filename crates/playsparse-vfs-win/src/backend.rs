@@ -383,7 +383,9 @@ fn readonly_security() -> Result<Vec<u8>> {
     // releasing the LocalAlloc allocation. Everyone receives read/execute.
     unsafe {
         ConvertStringSecurityDescriptorToSecurityDescriptorW(
-            w!("O:SYG:SYD:(A;;GRGX;;;WD)"),
+            // AccessCheck consumes file-specific ACE masks; generic GR/GX
+            // bits in a supplied descriptor are not mapped by the filesystem.
+            w!("O:SYG:SYD:(A;;FRFX;;;WD)"),
             SDDL_REVISION_1,
             &mut descriptor,
             Some(&mut length),
