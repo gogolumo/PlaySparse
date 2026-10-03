@@ -191,3 +191,13 @@ The five new regressions cover oversized fields, 100,001 distinct workers,
 retained-key exhaustion, overflowing totals and metadata-operation numeric
 compatibility. They supplement the five existing queue/shutdown/sink tests.
 This changes trace import validation; mounted callback behavior is unchanged.
+
+
+[Final macOS host quality gates](raw/trace-quality-final/result.json), executed
+from clean `3038c33`, pass fmt, locked workspace clippy with `-D warnings`,
+all 66 portable tests, locked release build, 5 Python reference tests and
+historical experiments. All 26 preserved Linux/Windows trace summaries remain
+identical after the import hardening (14,420 events). Native final-commit checks
+are available in the [follow-up PR](https://github.com/gogolumo/PlaySparse/pull/4).
+Raw Windows CRLF output, installer output and blank log lines are retained
+verbatim; whitespace checks apply to edited source/documentation.
