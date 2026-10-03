@@ -376,18 +376,6 @@ fn resolved_location(path: &Path) -> Result<PathBuf> {
     }
     Ok(resolved)
 }
-#[cfg(windows)]
-#[cfg(test)]
-mod mount_path_tests {
-    use super::*;
-    #[test]
-    fn unused_drive_mount_root_does_not_require_a_parent() {
-        assert_eq!(
-            resolved_location(Path::new("Q:")).unwrap(),
-            PathBuf::from(r"\\?\Q:\")
-        );
-    }
-}
 
 fn mount(
     store: &Path,
@@ -890,4 +878,17 @@ fn macos_available_memory() -> Option<u64> {
         )?;
     }
     pages.checked_mul(page_size)
+}
+
+#[cfg(windows)]
+#[cfg(test)]
+mod mount_path_tests {
+    use super::*;
+    #[test]
+    fn unused_drive_mount_root_does_not_require_a_parent() {
+        assert_eq!(
+            resolved_location(Path::new("Q:")).unwrap(),
+            PathBuf::from(r"\\?\Q:\")
+        );
+    }
 }
