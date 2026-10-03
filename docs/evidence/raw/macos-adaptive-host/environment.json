@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-10-03T14:29:00.836276+00:00",
+  "git_sha": "668d70f1e5da6c0508408d81fa47d4c5fc038aab",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "commands": [
+    {
+      "command": [
+        "sw_vers"
+      ],
+      "exit_status": 0,
+      "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "uname",
+        "-m"
+      ],
+      "exit_status": 0,
+      "stdout": "arm64\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/rustc",
+        "--version"
+      ],
+      "exit_status": 0,
+      "stdout": "rustc 1.99.0 (b940084d7 2026-09-28)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "pkgutil",
+        "--pkgs"
+      ],
+      "exit_status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "test",
+        "-d",
+        "/Library/Filesystems/macfuse.fs"
+      ],
+      "exit_status": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "macfuse_physical_mount": "BLOCKED",
+  "reason": "macFUSE driver is absent; no privileged extension was installed",
+  "windows_physical": "BLOCKED_ON_PHYSICAL_WINDOWS",
+  "real_game": "NOT RUN"
+}

@@ -37,3 +37,35 @@ LRU, parking_lot, tempfile, proptest, tracing, walkdir, libc and ctrlc. Stable l
 New evidence must distinguish: host tests, Linux VM real FUSE tests, compile-only
 Windows checks, Windows hardware execution and native WOF baseline measurements.
 Only recorded commands and real output can establish a working capability.
+
+
+## Adaptive writable sprint audit (2026-10-03)
+
+Starting main for this sprint: `09e90e635c6b5d2423243e02bd7df3f7dd94e638`.
+A dedicated `feat/adaptive-writable-runtime` branch preserves the preceding
+runtime and its historical evidence. At start, main's Linux and hosted Windows
+checks passed; PR #1 was merged, with no open issues or PRs. During the sprint,
+PR #2 published the overlay/trace checkpoint and was subsequently merged by an
+external action. Its Windows fixes were fetched and incorporated before adding
+policy/tiers; no main history was overwritten.
+
+The audited foundation already had immutable CAS, verified packfiles/loose
+objects, byte ranges, bounded single-flight LRU, real FUSE and WinFsp read-only
+mounts, mapped reads, native executables and generated 10 GiB offsets. Missing
+pieces were persistent mutable namespace, write callback adapters, access
+telemetry, policy behavior and independent physical object sources. Shared
+Overlay, Trace and Policy crates reuse the existing resolver and Store.
+
+The development Mac can execute portable Rust tests and host builds. Its
+Linux VM exposes real `/dev/fuse`, enabling ordinary mounted updater, mmap,
+executable, adaptive and HTTP-tier tests. macFUSE is absent; installation needs
+explicit user approval outside this task. Hosted Windows Server runners provide
+native MSVC/WinFsp execution, while physical Windows desktop and user-owned game
+validation remain unavailable. An optional PowerShell harness records these
+separate gates rather than converting hosted results into hardware claims.
+
+Observed failures remain evidence: Windows verbatim-prefix startup, hardcoded
+read-only file modes, small unbuffered fixture reads, Linux unlinked-handle
+metadata and a dispatcher-bound sequential detector. Regression tests and real
+reruns verify fixes. Initial zero-prefetch/negative policy measurements are kept;
+no historical experiment or failed result was replaced by a favorable number.

@@ -1,6 +1,6 @@
 # Windows filesystem backend
 
-PlaySparse implements a native, read-only WinFsp filesystem in
+PlaySparse implements native read-only and experimental writable WinFsp paths in
 `crates/playsparse-vfs-win`. Each WinFsp `Read` callback calls the shared
 `RangeResolver`, copies the returned bytes into the driver buffer, and retains
 only decompressed chunks in the bounded cache. There is no unpack operation,
@@ -108,16 +108,15 @@ only chunks intersecting each received request.
 
 ## Current limits and validation
 
-The initial implementation is read-only. It preserves file names and logical
+The default mount is read-only. It preserves file names and logical
 sizes, while v1 manifests lack source timestamps and Windows ACLs; this backend
 reports a fixed 2020-01-01 timestamp and a common read/execute descriptor.
-Alternate streams, symlinks, writable saves, and per-file Windows permissions
-are unsupported. Names that collide under Windows ordinal case-insensitive
+Alternate streams, symlinks and per-file Windows permissions are unsupported.
+Writable saves and synthetic updates use the separate overlay path described below. Names that collide under Windows ordinal case-insensitive
 comparison or exceed the supported component/path lengths are rejected before
 mount. Components are limited to 255 UTF-16 units; virtual paths, including the
 leading slash and NUL, must fit WinFsp's 2,048-byte transaction limit. Windows
-sizes above `i64::MAX` are rejected. Application writes must go
-to a separate writable location. DRM and anti-cheat compatibility are not
+sizes above `i64::MAX` are rejected. Application writes require `--overlay` or a separate writable location. DRM and anti-cheat compatibility are not
 inferred from WinFsp's generic file API support.
 
 Security descriptor size queries return the required size. An undersized
@@ -162,3 +161,43 @@ is separately provided by its upstream repository.
 
 WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos.
 Upstream: [winfsp/winfsp](https://github.com/winfsp/winfsp).
+
+
+## Writable overlay, tracing, policy and tiers
+
+`mount BASE MOUNT --overlay OVERLAY` routes writes to the shared persistent engine;
+base and source installations remain immutable. The writable path implements
+Create/Open/Read/Write, overwrite, file-size changes, read-only attributes,
+mkdir, rename/replace, delete-on-cleanup, directory enumeration and Flush.
+One current-user security descriptor grants concrete file rights. Open handles
+retain inode identity; cleanup cannot delete a replacement occupying an old name.
+Unsupported explicit timestamps, arbitrary ACLs/reparse/EA and extra attributes
+return explicit errors. Allocation requests are advisory, not an NTFS reservation.
+
+The fixture performs ordinary application operations, unmounts/remounts and checks
+all bytes. It then commits to a new verified immutable store and checks that view.
+`--trace`, `--policy`, `--tiers` combine with this path; the local HTTP fixture needs
+no Internet service. Run these scripts from the repository after a native build:
+
+```powershell
+python tools/mounted-update.py --work "$env:TEMP\playsparse-update-new" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
+python tools/adaptive-smoke.py --work "$env:TEMP\playsparse-adaptive-new" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
+python tools/tiered-smoke.py --work "$env:TEMP\playsparse-tiers-new" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
+```
+
+A physical desktop validation harness records hardware, driver/tool versions,
+Git SHA, source/base integrity and generated mounted workloads. It never installs
+or approves drivers. From PowerShell 7 on an actual Windows client machine:
+
+```powershell
+.\tools\windows-hardware-validation.ps1 -EvidenceRoot "$env:TEMP\playsparse-hardware-new" -PhysicalMachine
+```
+
+Optional `-GamePath` plus a relative `-Executable` invokes a locally owned
+application from a separate overlay with direct argument arrays. Assets remain
+local and originals are fingerprinted. This is one filesystem compatibility run;
+it does not establish Steam/Epic, DRM, anti-cheat or general game support.
+Hosted Server CI remains distinct from physical Windows client validation.
+See [sprint evidence](evidence/adaptive-writable-runtime.md),
+[overlay](writable-overlay.md), [policy](adaptive-policy.md) and
+[tiers](tiered-storage.md).

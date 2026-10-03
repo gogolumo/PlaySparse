@@ -12,15 +12,47 @@
 - [x] Open-source native Zstd application executed from the mounted directory
 - [x] Rust CLI: analyze/pack/verify/mount/unmount/benchmark/doctor and independent io-probe
 - [x] Native WinFsp runtime validation in hosted Windows Server 2025 CI
-- [ ] Physical Windows desktop/game validation
-- [ ] Physical macFUSE validation (backend type-checked, experimental)
+- [ ] **HARDWARE REQUIRED:** physical Windows desktop/game validation
+- [ ] **HARDWARE REQUIRED:** physical macFUSE validation (backend type-checked, experimental)
 - [ ] Windows original vs WOF vs PlaySparse frontier and real open game compatibility
-- [ ] Power-loss durability tests, installer/service and writable application state
+- [ ] Power-loss durability tests and installer/service lifecycle
 
 Evidence: [`docs/evidence/first-mounted-run.md`](docs/evidence/first-mounted-run.md).
 **WINDOWS HARDWARE TEST REQUIRED.** This sprint's Windows production milestone is
 not declared complete. The historical research milestones below remain intact.
-Tracing/adaptive policies follow validated Windows runtime behavior.
+
+## Adaptive writable runtime sprint — EXPERIMENTAL
+
+- [x] Persistent merged namespace over an immutable base, tombstones and whole-file copy-up
+- [x] Create/write/append/truncate/delete/rename, stable handles and remount persistence
+- [x] Overlay status/discard and commit into a new verified store
+- [x] Generated updater through an actual Linux FUSE mount; source/base byte invariance
+- [x] Native Windows writable baseline in hosted CI at `668d70f` (PR #2)
+- [x] Bounded JSONL callback trace, operation/source/error records and summaries
+- [x] Strict versioned policy JSON, observed file heat and decaying retention priorities
+- [x] Bounded sequential prefetch with byte/queue/TTL limits and useful/wasted accounting
+- [x] Static/adaptive replay of the same traced reads with byte verification and resource metrics
+- [x] Optional secondary local objects and separate verified promotion cache
+- [x] Exact HTTP 206 object ranges, verification, bounded failure/retry and offline local reads
+- [x] Actual Linux mounted overlay/trace/tier integration checks
+- [ ] Native Windows adaptive/tiered runtime CI for the combined feature set
+- [ ] Reproducible non-dominated adaptive benefit on representative workloads
+- [ ] **HARDWARE REQUIRED:** physical Windows desktop and legally owned game/launcher checks
+- [ ] **HARDWARE REQUIRED:** physical macFUSE checks
+- [ ] Block/chunk copy-up, mutable-data compression, advanced timestamps/ACL semantics and power-loss proof
+
+Implementation is ahead of compatibility and performance proof. The original
+Linux adaptive benchmark produced zero prefetch requests and a lower adaptive
+hit ratio; that negative result is retained. The corrected sequential detector
+must be evaluated against the same workload without hiding latency, CPU, RAM or
+wasted-I/O regressions. A generated updater does not establish Steam/Epic or
+anti-cheat compatibility. Overlay commit currently requires a temporary full
+logical merged tree before packing its new store.
+
+See [sprint evidence](docs/evidence/adaptive-writable-runtime.md),
+[overlay semantics](docs/writable-overlay.md),
+[adaptive policy](docs/adaptive-policy.md) and
+[local/HTTP tiers](docs/tiered-storage.md).
 
 ## M0 — Feasibility baseline ✅
 
@@ -42,10 +74,10 @@ Tracing/adaptive policies follow validated Windows runtime behavior.
 
 ### Production follow-up
 
-- replace research CDC with vetted Rust FastCDC implementation;
-- repeat on L1 open game-like update corpora;
-- test larger chunk-size families;
-- reject CDC as a central feature if gains disappear outside insertion-heavy updates.
+- [x] Replace research CDC with the Rust FastCDC implementation
+- [ ] Repeat on L1 open game-like update corpora
+- [ ] Test larger chunk-size families
+- [ ] Reject CDC as a central feature if gains disappear outside insertion-heavy updates
 
 ## M2 — Content-addressed compressed store 🟡
 
@@ -61,19 +93,17 @@ Tracing/adaptive policies follow validated Windows runtime behavior.
 
 ### Production follow-up
 
-- Rust storage engine;
-- official BLAKE3 crate;
-- in-process Zstd;
-- multi-writer/journal design;
-- crash/fault injection.
+- [x] Rust immutable storage engine, official BLAKE3 crate and in-process Zstd
+- [x] Verify-before-publish transaction and generated process-interruption/corruption checks
+- [ ] Multi-writer/journal design
+- [ ] Broader fault injection and physical power-loss validation
 
 ## M3 — Packfiles + indexes 🟡
 
-- compare loose objects with packfiles;
-- binary index;
-- random object lookup latency;
-- compaction/recovery;
-- metadata overhead at millions of chunks.
+- [x] Compare loose objects with packfiles in Experiment 04
+- [x] Sorted binary index and measured random object lookup latency
+- [ ] Compaction/recovery
+- [ ] Metadata overhead at millions of chunks
 
 ## M4 — Byte-range resolver ✅
 
@@ -101,33 +131,44 @@ Required compatibility:
 
 **Acceptance:** arbitrary readers see the same logical bytes without a full pre-extraction step.
 
-## M6 — Trace profiler + static policy frontier
+Hosted native CI has proved those read workloads and the initial writable
+overlay. Physical client Windows, real applications and the newly combined
+adaptive/tiered Windows path remain separate validation gates.
 
-- record path/offset/length/timestamp/thread;
-- establish fixed chunk/codec/cache baselines;
-- measure p50/p95/p99, CPU, RAM, physical bytes and amplification.
+## M6 — Trace profiler + static policy frontier 🟡
 
-## M7 — Adaptive chunk/codec policy
+- [x] Record versioned path/offset/length/time/worker/operation/cache/source/error events
+- [x] Bounded trace writer, dropped-event/error metrics and validated summaries
+- [x] Static/adaptive identical-trace replay with p50/p95/p99, CPU/RSS and amplification
+- [ ] Complete representative chunk/codec/cache frontier including physical device allocation
 
-- file-aware policies;
-- region-aware policies;
-- hot/raw or LZ4 vs warm/cold Zstd;
-- reject adaptive policy unless it beats static baselines on the same trace.
+## M7 — Adaptive chunk/codec policy 🟡
 
-## M8 — Cache and prefetch
+- [x] File priorities and decaying observed hotness for cache retention
+- [x] Persisted, strictly validated policy from a recorded trace
+- [ ] Adaptive region/chunk-size/codec selection
+- [ ] Hot/raw or LZ4 vs warm/cold Zstd
+- [ ] Demonstrate a non-dominated improvement over static baselines on identical traces
 
-- LRU/LFU/2Q/ARC baselines;
-- sequential predictor;
-- transition/access graph;
-- wasted-prefetch accounting;
-- compressed vs decompressed cache state.
+## M8 — Cache and prefetch 🟡
 
-## M9 — Tiered storage
+- [x] Byte-bounded static LRU and decaying-priority eviction
+- [x] Bounded per-file sequential predictor, including advancing overlapping kernel reads
+- [x] Single prefetch worker, bounded reservations/queue/TTL and useful/wasted/error accounting
+- [ ] LFU/2Q/ARC comparison baselines
+- [ ] Transition/access graph
+- [ ] Compressed vs decompressed cache state
+- [ ] Representative mounted performance acceptance, including adverse workloads
 
-- primary SSD + secondary disk first;
-- NAS second;
-- remote object backing only after local behavior is robust;
-- hydration/offline/failure semantics.
+## M9 — Tiered storage 🟡
+
+- [x] Primary local and optional secondary local verified objects
+- [x] Separate raw promotion cache and local reads after the remote disappears
+- [x] Sealed local metadata with exact HTTP object ranges and integrity verification
+- [x] Bounded timeout/retry and explicit protocol/corruption failures; actual Linux mounted checks
+- [ ] Physical SSD/HDD/NAS measurements and representative network conditions
+- [ ] Promotion-cache disk eviction/capacity policy
+- [ ] Native Windows combined tier validation and representative application compatibility
 
 ## M10 — Representative workloads
 

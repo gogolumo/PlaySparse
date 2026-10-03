@@ -6,17 +6,24 @@ Modern games can occupy 100–200+ GB. PlaySparse investigates a different quest
 
 > Can an unmodified game see the normal files it expects while the bytes underneath are stored in a more efficient, adaptive physical representation?
 
-PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. Transparent filesystem compression already exists, and modern game data is often already compressed. The research target is a storage runtime that can combine content-addressed chunks, on-demand reconstruction, caching, tiering and eventually access-trace-driven policy decisions.
+PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. Transparent filesystem compression already exists, and modern game data is often already compressed. The research target is a storage runtime that combines content-addressed chunks, on-demand reconstruction, caching, tiering and access-trace-driven policy decisions.
 
 ## Current status
 
-The Rust runtime now serves file ranges directly from compressed CAS through a
-**real read-only Linux FUSE mount**, without extracting files. Generated native
-programs and the open-source Zstd CLI have run from the mounted view. A generated
-10 GiB file passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. These are
-development-backend results, not evidence of Windows gaming compatibility.
-Native WinFsp CI on Windows Server 2025 also passed a real mount, executable
-launch, random/concurrent reads and mmap of the generated 10 GiB corpus.
+The Rust runtime serves file ranges directly from compressed CAS through real
+Linux FUSE and Windows WinFsp mounts. Generated native programs and the
+open-source Zstd CLI have run from the mounted view. A generated 10 GiB file
+passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. Hosted Windows
+Server 2025 CI passed the read path and the writable overlay baseline at
+`668d70f`; adaptive policy and tiered storage still await their native Windows
+CI run.
+
+The optional persistent writable overlay, generated updater, bounded JSONL
+tracing, adaptive cache/prefetch policy, local tiers and verified HTTP object
+ranges are implemented as **EXPERIMENTAL** capabilities. Linux driver-backed
+tests cover writable operations and updater/remount behavior, traced byte
+comparisons, and tiered reads/failures. These development and hosted-CI results
+do not establish compatibility with a physical gaming desktop or a launcher.
 
 ### Current capabilities
 
@@ -29,13 +36,26 @@ launch, random/concurrent reads and mmap of the generated 10 GiB corpus.
 - [x] **WORKING:** analyze, pack, verify, mount, unmount, benchmark, doctor and io-probe
 - [x] **WORKING:** generated 10 GiB mounted test corpus and reproducible evidence
 - [x] **WORKING:** native WinFsp mounted I/O and executable launch in hosted Windows CI
-- [ ] **EXPERIMENTAL:** Windows desktop/game compatibility; hardware validation required
-- [ ] **EXPERIMENTAL:** macFUSE backend; type-checked, macOS physical mount untested
-- [ ] **NOT IMPLEMENTED:** real game compatibility, writable overlays, launcher updates
-- [ ] **NOT IMPLEMENTED:** access tracing, adaptive policy, remote/tiered storage
+- [x] **EXPERIMENTAL:** persistent writable overlay, stable open handles, remount, status/discard/commit
+- [x] **EXPERIMENTAL:** generated mounted updater; native Windows overlay baseline passed hosted CI
+- [x] **EXPERIMENTAL:** bounded JSONL tracing and trace summaries
+- [x] **EXPERIMENTAL:** versioned policy, decaying hotness, bounded sequential prefetch and static/adaptive replay
+- [x] **EXPERIMENTAL:** verified secondary local objects, promotion cache and HTTP 206 object ranges
+- [ ] **PENDING VALIDATION:** native Windows adaptive/tiered runtime CI
+- [ ] **HARDWARE REQUIRED:** physical Windows desktop, real game/launcher compatibility and WOF comparison
+- [ ] **HARDWARE REQUIRED:** physical macFUSE mount; backend type-checked, experimental
+
+Adaptive performance benefit is unproven. The retained initial Linux benchmark
+issued zero prefetch requests and had a lower adaptive cache hit ratio than the
+static baseline. Subsequent detector changes must be judged on the same workload,
+including regressions and CPU/RAM costs.
 
 **WINDOWS HARDWARE TEST REQUIRED.** The production Windows milestone remains open.
 See [first mounted run](docs/evidence/first-mounted-run.md),
+[adaptive writable runtime evidence](docs/evidence/adaptive-writable-runtime.md),
+[writable overlay](docs/writable-overlay.md),
+[adaptive policy](docs/adaptive-policy.md),
+[tiered storage](docs/tiered-storage.md),
 [FUSE backend](docs/fuse-backend.md), [Windows backend](docs/windows-backend.md),
 [format v1](docs/storage-format-v1.md) and
 [Experiment 04](experiments/04-loose-vs-packfiles).
@@ -55,7 +75,7 @@ playsparse analyze ./TestGame
 playsparse pack ./TestGame ./TestGame.playsparse
 playsparse verify ./TestGame.playsparse
 mkdir ./mounted
-playsparse mount ./TestGame.playsparse ./mounted --cache 256M
+playsparse mount ./TestGame.playsparse ./mounted --cache 256M --trace ./reads.jsonl
 ```
 
 Linux requires FUSE (`/dev/fuse` and mount permission or `fusermount3`). In a
@@ -73,7 +93,51 @@ playsparse benchmark ./TestGame ./TestGame.playsparse --output benchmark.json
 level 3, retaining raw objects if compression expands them. `--chunker fixed`
 and `--layout loose` remain measured baselines. Cache accepts `64M`, `256M`, `1G`
 or integer bytes. Mount stays in the foreground. Stores must stay immutable.
-Saves/updates need a separate writable location.
+Omitting `--overlay` keeps the mount read-only.
+
+To enable writable files and directories, use a separate overlay and trace
+destination. Start the mount in one terminal:
+
+```bash
+playsparse mount ./TestGame.playsparse ./mounted --cache 256M \
+  --overlay ./TestGame.overlay --trace ./update.jsonl
+```
+
+Run the application or updater through `./mounted`, then manage the inactive
+overlay after unmounting:
+
+```bash
+playsparse unmount ./mounted
+playsparse overlay status ./TestGame.overlay
+playsparse overlay commit ./TestGame.playsparse ./TestGame.overlay ./TestGame-updated.playsparse
+playsparse verify ./TestGame-updated.playsparse
+playsparse overlay discard ./TestGame.overlay
+```
+
+`commit` writes a new store and leaves the base intact. It first streams the
+entire merged tree into a disposable staging directory: enough temporary disk
+space for its full logical size, plus the new encoded store, is required.
+`discard` resets the overlay's changes. A one-byte edit to a base file can also
+copy that whole file into the overlay; see the [copy-up limits](docs/writable-overlay.md).
+
+Summarize a read-only trace, generate a policy, and compare it with static LRU
+using identical recorded requests:
+
+```bash
+playsparse trace summarize ./reads.jsonl
+playsparse optimize ./reads.jsonl --output ./policy.json
+playsparse replay ./TestGame.playsparse ./reads.jsonl --cache 256M \
+  --policy ./policy.json --repetitions 3 --output ./replay.json
+playsparse mount ./TestGame.playsparse ./mounted --cache 256M \
+  --policy ./policy.json --tiers ./tiers.json --trace ./tiered-reads.jsonl
+```
+
+Create `tiers.json` using the [versioned local/HTTP schema](docs/tiered-storage.md).
+Policy and tiers are independent optional mount flags; they can also accompany
+`--overlay`. Trace destinations and writable tier caches must be outside the
+base, overlay and mount. Replay accepts base-file read traces; it cannot replay
+mutable overlay versions. Fresh-process CPU/RSS comparisons use `replay-one`;
+neither replay command establishes a cold physical-disk baseline.
 
 macOS builds CAS/range/CLI without a driver; actual mount requires macFUSE and
 `cargo build --release --features macfuse`. Windows uses WinFsp with an installed
@@ -118,7 +182,7 @@ cache / prefetch <------ policy optimizer
       v
 content-addressed compressed store
       |
-      +---- NVMe / SSD / HDD / NAS / remote tier (later)
+      +---- primary local / secondary local / HTTP objects
 ```
 
 The long-term hypothesis is that PlaySparse can choose, per file or byte range:
@@ -231,8 +295,10 @@ Windows remains the primary target. WinFsp was selected because its read callbac
 return bytes directly, while ProjFS's file-data contract materializes retrieved
 bytes in local files. Hosted Windows native mount, large/mapped/concurrent reads
 and executable launch have recorded evidence. Physical desktop/game validation
-and WOF comparisons remain open.
-The research adaptive policy stays deferred until that runtime is validated.
+and WOF comparisons remain open. Writable operations and the first
+trace/policy/tier implementations now extend that runtime; their experimental
+status and measured limitations are recorded in the
+[adaptive writable sprint evidence](docs/evidence/adaptive-writable-runtime.md).
 
 ## Breakthrough policy
 

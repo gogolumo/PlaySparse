@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-10-03T14:48:07.901439+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "arch": "arm64",
+  "commit": "2cf6cc28bc5d446f0e88d298781d8078989e3997",
+  "provenance": "Uncommitted shared DirectoryAnchor fix; targeted unit validation, not physical mount evidence.",
+  "commands": [
+    {
+      "command": "cargo test --offline -p playsparse-store promotion_startup_never_follows_a_concurrently_substituted_ancestor -- --nocapture",
+      "exit": 0,
+      "passed": 1,
+      "race_startups": 1000,
+      "new_files_in_immutable_secondary": 0
+    },
+    {
+      "command": "cargo test --locked --offline -p playsparse-overlay -p playsparse-store",
+      "exit": 0,
+      "overlay_tests_passed": 15,
+      "store_tests_passed": 19
+    },
+    {
+      "command": "cargo clippy --locked --offline -p playsparse-core -p playsparse-overlay -p playsparse-store --all-targets -- -D warnings",
+      "exit": 0
+    }
+  ],
+  "sources_sha256": {
+    "crates/playsparse-core/src/directory.rs": "01693c2e9b5fc13ab26e971aad48b2255f97fdc9fc09e57101424282f69a4a7e",
+    "crates/playsparse-overlay/src/storage.rs": "25e038a215837f34cc85c8cf7ad2f4fbea9a133b5284ede9c787181393a8c4b9",
+    "crates/playsparse-store/src/tiers.rs": "7c76bf16346c67c0db8abfd378b05ad318b4ca2d2b396b15f443d734fa3cd89b",
+    "crates/playsparse-store/src/tiers/tests.rs": "816a3701d8b1fbc5c41345ad896710728ea6237bdcc6ecbdd32f2c276728a0bd"
+  },
+  "windows_race_execution": "NOT_RUN"
+}
