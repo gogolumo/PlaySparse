@@ -15,6 +15,8 @@ macfuse = ["dep:fuser"]
 anyhow.workspace = true
 playsparse-core = { path = "../playsparse-core" }
 playsparse-range = { path = "../playsparse-range" }
+playsparse-overlay = { path = "../playsparse-overlay" }
+playsparse-trace = { path = "../playsparse-trace" }
 serde.workspace = true
 serde_json.workspace = true
 tracing.workspace = true

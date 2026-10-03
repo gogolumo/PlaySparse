@@ -8,6 +8,8 @@ license.workspace = true
 anyhow.workspace = true
 playsparse-core = { path = "../playsparse-core" }
 playsparse-range = { path = "../playsparse-range" }
+playsparse-overlay = { path = "../playsparse-overlay" }
+playsparse-trace = { path = "../playsparse-trace" }
 serde_json.workspace = true
 
 [target.'cfg(windows)'.dependencies]

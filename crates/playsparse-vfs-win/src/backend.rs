@@ -1,6 +1,8 @@
 use anyhow::{Context, Result, bail};
 use playsparse_core::{Error, MAX_READ_BYTES, Manifest};
+use playsparse_overlay::Overlay;
 use playsparse_range::RangeResolver;
+use playsparse_trace::TraceWriter;
 use std::cmp::Ordering;
 use std::collections::BTreeMap;
 use std::ffi::c_void;
@@ -10,10 +12,11 @@ use std::sync::{Arc, Mutex};
 use windows::Win32::Foundation::*;
 use windows::Win32::Globalization::{CSTR_EQUAL, CSTR_LESS_THAN, CompareStringOrdinal};
 use windows::Win32::Security::Authorization::{
-    ConvertStringSecurityDescriptorToSecurityDescriptorW, SDDL_REVISION_1,
+    ConvertSidToStringSidW, ConvertStringSecurityDescriptorToSecurityDescriptorW, SDDL_REVISION_1,
 };
 use windows::Win32::Security::{
-    GetTokenInformation, PSECURITY_DESCRIPTOR, TOKEN_ELEVATION, TOKEN_QUERY, TokenElevation,
+    GetTokenInformation, PSECURITY_DESCRIPTOR, TOKEN_ELEVATION, TOKEN_QUERY, TOKEN_USER,
+    TokenElevation, TokenUser,
 };
 use windows::Win32::Storage::FileSystem::*;
 use windows::Win32::System::Console::{
@@ -28,6 +31,9 @@ use winfsp::filesystem::{
 };
 use winfsp::host::{FileSystemHost, VolumeParams};
 use winfsp::{FspError, U16CStr};
+
+#[path = "writable.rs"]
+mod writable;
 
 // Windows ordinal case folding, rather than Rust Unicode lowercase, defines
 // both lookup identity and directory ordering. Colliding names are rejected.
@@ -94,19 +100,7 @@ impl Namespace {
             if size > i64::MAX as u64 {
                 bail!("Windows signed file-size limit exceeded: {path}");
             }
-            for component in path.split('/').filter(|s| !s.is_empty()) {
-                if component.encode_utf16().count() > 255
-                    || component.ends_with([' ', '.'])
-                    || component.contains(['<', '>', '"', '|', '?', '*'])
-                {
-                    bail!("file name cannot be represented by this Windows backend: {path}");
-                }
-            }
-            // Transaction paths include the virtual root slash and UTF-16 NUL.
-            let path_bytes = (path.encode_utf16().count() + 2) * std::mem::size_of::<u16>();
-            if path_bytes > winfsp::constants::FSP_FSCTL_TRANSACT_PATH_SIZEMAX {
-                bail!("path exceeds WinFsp's transaction path limit: {path}");
-            }
+            validate_windows_path(&path)?;
             logical_size = logical_size
                 .checked_add(size)
                 .context("logical volume size overflow")?;
@@ -146,6 +140,43 @@ impl Namespace {
             .cloned()
             .ok_or_else(|| STATUS_OBJECT_NAME_NOT_FOUND.into())
     }
+}
+fn validate_windows_path(path: &str) -> Result<()> {
+    if !path.is_empty() && !playsparse_core::valid_path(path) {
+        bail!("invalid virtual Windows path: {path}");
+    }
+    for component in path.split('/').filter(|s| !s.is_empty()) {
+        let stem = component
+            .split('.')
+            .next()
+            .unwrap_or(component)
+            .to_ascii_uppercase();
+        let reserved = matches!(
+            stem.as_str(),
+            "CON" | "PRN" | "AUX" | "NUL" | "CONIN$" | "CONOUT$"
+        ) || stem
+            .strip_prefix("COM")
+            .or_else(|| stem.strip_prefix("LPT"))
+            .is_some_and(|number| {
+                matches!(
+                    number,
+                    "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "¹" | "²" | "³"
+                )
+            });
+        if component.encode_utf16().count() > 255
+            || component.ends_with([' ', '.'])
+            || component.contains(['<', '>', '"', '|', '?', '*'])
+            || reserved
+        {
+            bail!("file name cannot be represented by this Windows backend: {path}");
+        }
+    }
+    // Transaction paths include the virtual root slash and UTF-16 NUL.
+    let path_bytes = (path.encode_utf16().count() + 2) * std::mem::size_of::<u16>();
+    if path_bytes > winfsp::constants::FSP_FSCTL_TRANSACT_PATH_SIZEMAX {
+        bail!("path exceeds WinFsp's transaction path limit: {path}");
+    }
+    Ok(())
 }
 fn base_name(path: &str) -> &str {
     path.rsplit('/').next().unwrap_or(path)
@@ -367,12 +398,68 @@ impl FileSystemContext for CasFilesystem {
     }
 }
 fn map_error(error: Error) -> FspError {
-    eprintln!("PlaySparse CAS read failed: {error}");
+    eprintln!("PlaySparse filesystem operation failed: {error}");
     match error {
-        Error::Io(e) => e.into(),
+        Error::Io(e) => match e.kind() {
+            std::io::ErrorKind::DirectoryNotEmpty => STATUS_DIRECTORY_NOT_EMPTY.into(),
+            std::io::ErrorKind::StorageFull => STATUS_DISK_FULL.into(),
+            std::io::ErrorKind::FileTooLarge => STATUS_FILE_TOO_LARGE.into(),
+            std::io::ErrorKind::Unsupported => STATUS_NOT_SUPPORTED.into(),
+            std::io::ErrorKind::InvalidData => STATUS_DATA_ERROR.into(),
+            _ => e.into(),
+        },
         Error::NotFound(_) => STATUS_OBJECT_NAME_NOT_FOUND.into(),
-        Error::Corrupt(_) | Error::Invalid(_) => STATUS_DATA_ERROR.into(),
+        Error::Corrupt(_) => STATUS_DATA_ERROR.into(),
+        Error::Invalid(_) => STATUS_INVALID_PARAMETER.into(),
         Error::ReadTooLarge => STATUS_INVALID_PARAMETER.into(),
+    }
+}
+
+fn writable_security() -> Result<Vec<u8>> {
+    let mut token = HANDLE::default();
+    // SAFETY: the current process token is valid and the output is writable.
+    unsafe {
+        OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token)?;
+    }
+    let token = StopEvent(token);
+    let mut length = 0;
+    // The size-query failure is expected; GetTokenInformation writes length.
+    let _ = unsafe { GetTokenInformation(token.0, TokenUser, None, 0, &mut length) };
+    if length < std::mem::size_of::<TOKEN_USER>() as u32 {
+        bail!("cannot query mounted user's Windows SID");
+    }
+    let mut storage = vec![0usize; (length as usize).div_ceil(std::mem::size_of::<usize>())];
+    unsafe {
+        GetTokenInformation(
+            token.0,
+            TokenUser,
+            Some(storage.as_mut_ptr().cast()),
+            length,
+            &mut length,
+        )?;
+        let user = &*storage.as_ptr().cast::<TOKEN_USER>();
+        let mut text = windows::core::PWSTR::null();
+        ConvertSidToStringSidW(user.User.Sid, &mut text)?;
+        let sid_result = text.to_string();
+        let _ = LocalFree(Some(HLOCAL(text.0.cast())));
+        let sid = sid_result.context("invalid mounted-user SID")?;
+        let sddl: Vec<u16> = format!("O:{sid}G:SYD:(A;;FA;;;{sid})")
+            .encode_utf16()
+            .chain(std::iter::once(0))
+            .collect();
+        let mut descriptor = PSECURITY_DESCRIPTOR::default();
+        let mut descriptor_length = 0;
+        ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            PCWSTR(sddl.as_ptr()),
+            SDDL_REVISION_1,
+            &mut descriptor,
+            Some(&mut descriptor_length),
+        )?;
+        let bytes =
+            std::slice::from_raw_parts(descriptor.0.cast::<u8>(), descriptor_length as usize)
+                .to_vec();
+        let _ = LocalFree(Some(HLOCAL(descriptor.0)));
+        Ok(bytes)
     }
 }
 
@@ -530,10 +617,37 @@ pub fn availability() -> String {
 }
 /// Serve the CAS directly until Ctrl+C or an unmount command signals shutdown.
 pub fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> {
+    mount_with_options(store, mountpoint, cache_bytes, None, None)
+}
+
+pub fn mount_with_overlay(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay: Option<&Path>,
+) -> Result<()> {
+    mount_with_options(store, mountpoint, cache_bytes, overlay, None)
+}
+
+pub fn mount_with_options(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay_root: Option<&Path>,
+    trace: Option<Arc<TraceWriter>>,
+) -> Result<()> {
+    validate_mount_paths(store, mountpoint, overlay_root)?;
     let _init = winfsp::winfsp_init()
         .context("WinFsp is not installed; install WinFsp 2.1+ including its driver")?;
-    let reader = Arc::new(RangeResolver::open(store, cache_bytes)?);
+    let reader = Arc::new(RangeResolver::open_with_trace(
+        store,
+        cache_bytes,
+        trace.clone(),
+    )?);
     let namespace = Namespace::from_manifest(reader.manifest())?;
+    let overlay = overlay_root
+        .map(|root| Overlay::open(reader.clone(), root).map(Arc::new))
+        .transpose()?;
     let name = event_name(mountpoint)?;
     let stop = StopEvent(unsafe { CreateEventW(None, true, false, PCWSTR(name.as_ptr()))? });
     if unsafe { GetLastError() } == ERROR_ALREADY_EXISTS {
@@ -553,36 +667,81 @@ pub fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> 
         return Err(error.into());
     }
     let _console = ConsoleRegistration;
-    let filesystem = CasFilesystem {
-        reader: reader.clone(),
-        namespace,
-        security: readonly_security()?,
-        stop_event: stop.0.0 as usize,
+    let wait = if let (Some(overlay), Some(root)) = (&overlay, overlay_root) {
+        let filesystem =
+            writable::WritableFilesystem::new(overlay.clone(), root, stop.0.0 as usize)?;
+        serve(filesystem, mountpoint, &stop, true)?
+    } else {
+        let filesystem = CasFilesystem {
+            reader: reader.clone(),
+            namespace,
+            security: readonly_security()?,
+            stop_event: stop.0.0 as usize,
+        };
+        serve(filesystem, mountpoint, &stop, false)?
     };
+    let flush_result = overlay
+        .as_ref()
+        .map(|overlay| overlay.flush_all())
+        .transpose();
+    unsafe {
+        SetEvent(done.0)?;
+    }
+    eprintln!(
+        "{}",
+        serde_json::json!({
+            "event": "winfsp_unmounted", "cache": reader.metrics(),
+            "overlay": overlay.as_ref().map(|overlay| overlay.metrics()),
+            "trace": trace.as_ref().map(|trace| trace.metrics()),
+        })
+    );
+    flush_result?;
+    if wait == WAIT_FAILED {
+        bail!("waiting for unmount failed: {:?}", unsafe {
+            GetLastError()
+        });
+    }
+    Ok(())
+}
+fn serve<T: FileSystemContext + Sync>(
+    filesystem: T,
+    mountpoint: &Path,
+    stop: &StopEvent,
+    writable: bool,
+) -> Result<WAIT_EVENT>
+where
+    T::FileContext: Sync,
+{
     let mut volume = VolumeParams::new();
     volume
         .sector_size(512)
         .sectors_per_allocation_unit(8)
         .max_component_length(255)
         .filesystem_name("PlaySparse")
-        .read_only_volume(true)
+        .read_only_volume(!writable)
         .case_sensitive_search(false)
         .case_preserved_names(true)
         .unicode_on_disk(true)
         .persistent_acls(false)
-        .file_info_timeout(u32::MAX)
+        .file_info_timeout(if writable { 0 } else { u32::MAX })
+        .flush_and_purge_on_cleanup(writable)
         .pass_query_directory_pattern(false)
         .irp_timeout(60000)
         .irp_capacity(1000);
-    let mut host: FileSystemHost<CasFilesystem> = FileSystemHost::new(volume, filesystem)?;
+    let mut host: FileSystemHost<T> = FileSystemHost::new(volume, filesystem)?;
     host.mount(mountpoint).context(
         "mount failed (choose an unused drive letter or supported directory mountpoint)",
     )?;
     host.start_with_threads(0)
         .context("WinFsp dispatcher failed to start")?;
     eprintln!(
-        "PlaySparse mounted {} from compressed CAS; Ctrl+C or playsparse unmount stops it",
-        mountpoint.display()
+        "PlaySparse mounted {} from compressed CAS{}; Ctrl+C or playsparse unmount stops it",
+        mountpoint.display(),
+        if writable {
+            " with persistent overlay"
+        } else {
+            ""
+        }
     );
     eprintln!(
         "WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos; https://github.com/winfsp/winfsp"
@@ -591,20 +750,81 @@ pub fn mount(store: &Path, mountpoint: &Path, cache_bytes: usize) -> Result<()> 
     host.unmount();
     host.stop();
     drop(host);
-    unsafe {
-        SetEvent(done.0)?;
+    Ok(wait)
+}
+
+fn normalized_destination(path: &Path) -> Result<std::path::PathBuf> {
+    let absolute = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        std::env::current_dir()?.join(path)
+    };
+    let mut ancestor = absolute.as_path();
+    let mut missing = Vec::new();
+    while !ancestor.exists() {
+        missing.push(
+            ancestor
+                .file_name()
+                .context("mount path has no existing parent")?
+                .to_os_string(),
+        );
+        ancestor = ancestor
+            .parent()
+            .context("mount path has no existing parent")?;
     }
-    eprintln!(
-        "{}",
-        serde_json::json!({"event": "winfsp_unmounted", "cache": reader.metrics()})
-    );
-    if wait == WAIT_FAILED {
-        bail!("waiting for unmount failed: {:?}", unsafe {
-            GetLastError()
-        });
+    let mut resolved = ancestor.canonicalize()?;
+    for component in missing.iter().rev() {
+        resolved.push(component);
+    }
+    Ok(resolved)
+}
+
+fn paths_overlap(left: &Path, right: &Path) -> bool {
+    let left: Vec<_> = left
+        .components()
+        .map(|component| WindowsName::new(&component.as_os_str().to_string_lossy()))
+        .collect();
+    let right: Vec<_> = right
+        .components()
+        .map(|component| WindowsName::new(&component.as_os_str().to_string_lossy()))
+        .collect();
+    left.starts_with(&right) || right.starts_with(&left)
+}
+
+fn validate_mount_paths(store: &Path, mountpoint: &Path, overlay: Option<&Path>) -> Result<()> {
+    let store = store
+        .canonicalize()
+        .context("cannot resolve CAS store directory")?;
+    let drive = mountpoint.to_string_lossy();
+    let drive_mount =
+        drive.len() == 2 && drive.as_bytes()[0].is_ascii_alphabetic() && drive.ends_with(':');
+    let mount = if drive_mount {
+        None
+    } else {
+        if mountpoint.exists() {
+            bail!("WinFsp directory mountpoint must not already exist");
+        }
+        let mount = normalized_destination(mountpoint)?;
+        if paths_overlap(&store, &mount) {
+            bail!("CAS store and mountpoint must not overlap");
+        }
+        Some(mount)
+    };
+    if let Some(overlay) = overlay {
+        let overlay = normalized_destination(overlay)?;
+        if paths_overlap(&store, &overlay) {
+            bail!("CAS store and writable overlay must not overlap");
+        }
+        if mount
+            .as_ref()
+            .is_some_and(|mount| paths_overlap(mount, &overlay))
+        {
+            bail!("writable overlay and mountpoint must not overlap");
+        }
     }
     Ok(())
 }
+
 pub fn unmount(mountpoint: &Path) -> Result<()> {
     let name = event_name(mountpoint)?;
     let event = StopEvent(
@@ -646,8 +866,7 @@ mod tests {
     };
     use windows::core::Owned;
 
-    #[test]
-    fn readonly_descriptor_grants_native_read_execute_and_denies_mutation() {
+    fn check_descriptor_access(descriptor: &[u8], expectations: &[(u32, bool)]) {
         let mut primary = HANDLE::default();
         // SAFETY: the current process is valid and the output handle is writable.
         unsafe {
@@ -665,20 +884,13 @@ mod tests {
         unsafe { DuplicateToken(*primary, SecurityImpersonation, &mut impersonation).unwrap() };
         // SAFETY: DuplicateToken returned a handle uniquely owned by this test.
         let impersonation = unsafe { Owned::new(impersonation) };
-        let descriptor = readonly_security().unwrap();
         let mapping = GENERIC_MAPPING {
             GenericRead: FILE_GENERIC_READ.0,
             GenericWrite: FILE_GENERIC_WRITE.0,
             GenericExecute: FILE_GENERIC_EXECUTE.0,
             GenericAll: FILE_ALL_ACCESS.0,
         };
-        for (desired, expected) in [
-            (FILE_READ_ATTRIBUTES.0, true),
-            (FILE_GENERIC_READ.0, true),
-            (FILE_GENERIC_EXECUTE.0, true),
-            (FILE_WRITE_DATA.0, false),
-            (DELETE.0, false),
-        ] {
+        for &(desired, expected) in expectations {
             let mut privileges = PRIVILEGE_SET::default();
             let mut privileges_len = std::mem::size_of_val(&privileges) as u32;
             let mut granted = 0;
@@ -703,6 +915,75 @@ mod tests {
                 assert_eq!(granted & desired, desired);
             }
         }
+    }
+
+    #[test]
+    fn readonly_descriptor_grants_native_read_execute_and_denies_mutation() {
+        check_descriptor_access(
+            &readonly_security().unwrap(),
+            &[
+                (FILE_READ_ATTRIBUTES.0, true),
+                (FILE_GENERIC_READ.0, true),
+                (FILE_GENERIC_EXECUTE.0, true),
+                (FILE_WRITE_DATA.0, false),
+                (DELETE.0, false),
+            ],
+        );
+    }
+
+    #[test]
+    fn writable_descriptor_grants_current_user_concrete_file_rights() {
+        check_descriptor_access(
+            &writable_security().unwrap(),
+            &[
+                (FILE_GENERIC_READ.0, true),
+                (FILE_GENERIC_WRITE.0, true),
+                (FILE_GENERIC_EXECUTE.0, true),
+                (DELETE.0, true),
+                (FILE_DELETE_CHILD.0, true),
+            ],
+        );
+    }
+
+    #[test]
+    fn reject_device_names_and_overlapping_mount_directories() {
+        for path in [
+            "NUL.txt",
+            "Assets/con",
+            "COM1.dat",
+            "LPT².txt",
+            "Assets/../escape",
+            "absolute:/file",
+        ] {
+            assert!(validate_windows_path(path).is_err(), "{path}");
+        }
+        validate_windows_path("Assets/ordinary.dat").unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        let store = temp.path().join("store");
+        std::fs::create_dir(&store).unwrap();
+        assert!(validate_mount_paths(&store, &store.join("mount"), None).is_err());
+        assert!(
+            validate_mount_paths(
+                &store,
+                &temp.path().join("mount"),
+                Some(&store.join("overlay"))
+            )
+            .is_err()
+        );
+        assert!(
+            validate_mount_paths(
+                &store,
+                &temp.path().join("overlay/mount"),
+                Some(&temp.path().join("overlay"))
+            )
+            .is_err()
+        );
+        validate_mount_paths(
+            &store,
+            &temp.path().join("mount"),
+            Some(&temp.path().join("overlay")),
+        )
+        .unwrap();
     }
 
     fn fixture() -> (tempfile::TempDir, Arc<RangeResolver>) {

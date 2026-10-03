@@ -165,6 +165,25 @@ fn pack_path(root: &Path, id: u32) -> PathBuf {
     root.join("packs").join(format!("pack-{id:04}.psp"))
 }
 
+fn source_file_mode(metadata: &fs::Metadata) -> u32 {
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        metadata.permissions().mode() & 0o777
+    }
+    #[cfg(not(unix))]
+    {
+        // Non-Unix filesystems do not expose POSIX mode bits. Preserve the
+        // portable read-only signal instead of marking every packed file as
+        // read-only, otherwise writable overlays reject normal Windows files.
+        if metadata.permissions().readonly() {
+            0o444
+        } else {
+            0o644
+        }
+    }
+}
+
 pub fn encode_index(records: &BTreeMap<[u8; 32], ObjectRecord>) -> Result<Vec<u8>> {
     let len = 16u64
         .checked_add(records.len() as u64 * RECORD_BYTES)
@@ -340,6 +359,9 @@ impl Store {
             index,
             packs,
         })
+    }
+    pub fn root(&self) -> &Path {
+        &self.root
     }
     pub fn manifest(&self) -> &Manifest {
         &self.manifest
@@ -639,13 +661,7 @@ pub fn pack_directory(
     for (path, fullpath) in entries {
         let input = File::open(&fullpath)?;
         let before = input.metadata()?;
-        #[cfg(unix)]
-        let mode = {
-            use std::os::unix::fs::PermissionsExt;
-            before.permissions().mode() & 0o777
-        };
-        #[cfg(not(unix))]
-        let mode = 0o555;
+        let mode = source_file_mode(&before);
         let mut file = FileEntry {
             path,
             size: before.len(),
@@ -868,6 +884,30 @@ mod tests {
         fs::remove_file(pack_path(&store, 0)).unwrap();
         assert!(Store::open(&store).is_err());
     }
+    #[cfg(windows)]
+    #[test]
+    fn windows_pack_preserves_writable_and_readonly_intent() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("src");
+        fs::create_dir(&src).unwrap();
+        let file = src.join("a");
+        fs::write(&file, b"data").unwrap();
+
+        let writable_store = tmp.path().join("writable-store");
+        pack_directory(&src, &writable_store, &PackOptions::default()).unwrap();
+        let writable = Store::open(&writable_store).unwrap();
+        assert_ne!(writable.manifest.files[0].mode & 0o222, 0);
+
+        let mut permissions = fs::metadata(&file).unwrap().permissions();
+        permissions.set_readonly(true);
+        fs::set_permissions(&file, permissions).unwrap();
+
+        let readonly_store = tmp.path().join("readonly-store");
+        pack_directory(&src, &readonly_store, &PackOptions::default()).unwrap();
+        let readonly = Store::open(&readonly_store).unwrap();
+        assert_eq!(readonly.manifest.files[0].mode & 0o222, 0);
+    }
+
     #[test]
     fn deterministic_chunker_index_manifest_and_pack() {
         let tmp = tempfile::tempdir().unwrap();

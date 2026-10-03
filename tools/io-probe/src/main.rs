@@ -4,7 +4,7 @@ use memmap2::MmapOptions;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs::{self, File};
-use std::io::{Read, Seek, SeekFrom};
+use std::io::{BufReader, Read, Seek, SeekFrom};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Barrier};
 use std::time::Instant;
@@ -436,7 +436,13 @@ fn decode_hex(text: &str) -> Result<Vec<u8>> {
 fn self_test() -> Result<serde_json::Value> {
     let executable = std::env::current_exe()?;
     let root = executable.parent().context("executable has no directory")?;
-    let fixture: Fixture = serde_json::from_reader(File::open(root.join("fixture.json"))?)?;
+    // Buffer fixture parsing so serde_json does not turn a normal metadata read
+    // into hundreds of thousands of one-byte VFS callbacks. Besides distorting
+    // the probe, that pathological access pattern can exhaust the trace
+    // summarizer's bounded identity budget on Windows mounts.
+    let fixture_file = File::open(root.join("fixture.json"))?;
+    let fixture: Fixture =
+        serde_json::from_reader(BufReader::with_capacity(64 * 1024, fixture_file))?;
     ensure!(fixture.schema == 1, "unsupported fixture schema");
     let mut digest = blake3::Hasher::new();
     let mut samples = 0;

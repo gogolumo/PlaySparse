@@ -1,0 +1,18 @@
+[package]
+name = "playsparse-overlay"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+playsparse-core = { path = "../playsparse-core" }
+playsparse-range = { path = "../playsparse-range" }
+blake3.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+parking_lot.workspace = true
+libc.workspace = true
+
+[dev-dependencies]
+playsparse-store = { path = "../playsparse-store" }
+tempfile.workspace = true

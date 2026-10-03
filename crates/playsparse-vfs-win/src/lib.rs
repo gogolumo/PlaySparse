@@ -1,11 +1,18 @@
-//! Read-only Windows filesystem backed directly by compressed CAS ranges.
-//! The WinFsp driver is required on Windows; no hydrated backing files are made.
+//! Windows filesystem backed directly by compressed CAS ranges and an optional
+//! persistent writable overlay. The WinFsp driver is required on Windows.
+#[cfg(not(windows))]
+use playsparse_trace::TraceWriter;
+#[cfg(not(windows))]
 use std::path::Path;
+#[cfg(not(windows))]
+use std::sync::Arc;
 
 #[cfg(windows)]
 mod backend;
 #[cfg(windows)]
-pub use backend::{availability, mount, system_resources, unmount};
+pub use backend::{
+    availability, mount, mount_with_options, mount_with_overlay, system_resources, unmount,
+};
 
 #[cfg(not(windows))]
 pub fn availability() -> String {
@@ -14,6 +21,27 @@ pub fn availability() -> String {
 
 #[cfg(not(windows))]
 pub fn mount(_store: &Path, _mountpoint: &Path, _cache_bytes: usize) -> anyhow::Result<()> {
+    anyhow::bail!("WinFsp mounting requires Windows")
+}
+
+#[cfg(not(windows))]
+pub fn mount_with_overlay(
+    store: &Path,
+    mountpoint: &Path,
+    cache_bytes: usize,
+    overlay: Option<&Path>,
+) -> anyhow::Result<()> {
+    mount_with_options(store, mountpoint, cache_bytes, overlay, None)
+}
+
+#[cfg(not(windows))]
+pub fn mount_with_options(
+    _store: &Path,
+    _mountpoint: &Path,
+    _cache_bytes: usize,
+    _overlay: Option<&Path>,
+    _trace: Option<Arc<TraceWriter>>,
+) -> anyhow::Result<()> {
     anyhow::bail!("WinFsp mounting requires Windows")
 }
 

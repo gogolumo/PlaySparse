@@ -1,0 +1,549 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-03T09:04:02.399982+00:00",
+  "commit": "09e90e635c6b5d2423243e02bd7df3f7dd94e638",
+  "working_tree_status": " M .github/workflows/rust-runtime.yml\n M Cargo.lock\n M Cargo.toml\n M crates/playsparse-cache/src/lib.rs\n M crates/playsparse-cli/Cargo.toml\n M crates/playsparse-cli/src/main.rs\n M crates/playsparse-range/Cargo.toml\n M crates/playsparse-range/src/lib.rs\n M crates/playsparse-store/src/lib.rs\n M crates/playsparse-vfs-fuse/Cargo.toml\n M crates/playsparse-vfs-fuse/src/fuse.rs\n M crates/playsparse-vfs-fuse/src/lib.rs\n M crates/playsparse-vfs-win/Cargo.toml\n M crates/playsparse-vfs-win/src/backend.rs\n M crates/playsparse-vfs-win/src/lib.rs\n M experiments/02-fixed-vs-fastcdc/results/latest.json\n M experiments/02-fixed-vs-fastcdc/results/latest.md\n M experiments/03-blake3-cas/results/latest.json\n M experiments/03-blake3-cas/results/latest.md\n?? crates/playsparse-overlay/\n?? crates/playsparse-trace/\n?? crates/playsparse-vfs-fuse/src/writable.rs\n?? crates/playsparse-vfs-fuse/src/writable/\n?? crates/playsparse-vfs-win/src/writable.rs\n?? docs/adaptive-writable-audit.md\n?? tools/mounted-update.py\n?? tools/owned-application.py\n?? tools/windows-hardware-validation.ps1\n",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "architecture": "aarch64",
+  "binary_sha256": "ae412a3a980746dc7e7f24ef3ac3b023cd6bb4aba65ac27539b0044692c22793",
+  "status": "PASS",
+  "commands": [
+    [
+      "/usr/bin/python3",
+      "/src/tools/generate-testgame.py",
+      "/tmp/playsparse-update-first/source",
+      "--io-probe",
+      "/src/target-linux/release/io-probe",
+      "--world-bytes",
+      "16777216"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "pack",
+      "/tmp/playsparse-update-first/source",
+      "/tmp/playsparse-update-first/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "256K"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "verify",
+      "/tmp/playsparse-update-first/base"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-update-first/base",
+      "/tmp/playsparse-update-first/mounted",
+      "--overlay",
+      "/tmp/playsparse-update-first/overlay",
+      "--trace",
+      "/tmp/playsparse-update-first/evidence/update.trace.jsonl",
+      "--cache",
+      "8M"
+    ],
+    [
+      "/tmp/playsparse-update-first/mounted/testgame",
+      "--self-test"
+    ],
+    [
+      "/src/target-linux/release/io-probe",
+      "/tmp/playsparse-update-first/source",
+      "/tmp/playsparse-update-first/mounted",
+      "--iterations",
+      "8",
+      "--sequential-limit",
+      "8388608",
+      "--output",
+      "/tmp/playsparse-update-first/evidence/io-probe.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-update-first/base",
+      "/tmp/playsparse-update-first/mounted",
+      "--overlay",
+      "/tmp/playsparse-update-first/overlay",
+      "--trace",
+      "/tmp/playsparse-update-first/evidence/remount.trace.jsonl",
+      "--cache",
+      "8M"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "overlay",
+      "status",
+      "/tmp/playsparse-update-first/overlay"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-update-first/evidence/update.trace.jsonl"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "verify",
+      "/tmp/playsparse-update-first/base"
+    ]
+  ],
+  "dataset": "generated synthetic updater; no real launcher/game compatibility claim",
+  "windows_physical_validation": "BLOCKED_ON_PHYSICAL_WINDOWS",
+  "expected_tree": {
+    "assets": {
+      "kind": "directory"
+    },
+    "assets/empty.bin": {
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assets/entropy.dat": {
+      "kind": "file",
+      "bytes": 2097152,
+      "sha256": "57a3ba1f81f0b66f43eaa1896aa8b7c439e5784fbf50b70a13d8e45a63d65fba"
+    },
+    "assets/texture.dat": {
+      "kind": "file",
+      "bytes": 1077248,
+      "sha256": "51dc97ab4f4133f1e340e09238875670c3aaa0ad3f6d93d6bbd360bb6361bb7e"
+    },
+    "audio.dat": {
+      "kind": "file",
+      "bytes": 2138112,
+      "sha256": "107fb765c1210d3e25997601182f17fe07e97bf7ea439ed0b07ad3e1b3bb0eeb"
+    },
+    "config.json": {
+      "kind": "file",
+      "bytes": 32,
+      "sha256": "328d309303a1bdaafabec020e6f5a299e4db6fc9998d9115e36d83f75494b2bc"
+    },
+    "data": {
+      "kind": "directory"
+    },
+    "data/archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4194304,
+      "sha256": "180ac4c87f19e3f73ea15a9d72bd52a2a367ad9716964e02a2d30375ab07e87f"
+    },
+    "data/archive-b.bin": {
+      "kind": "file",
+      "bytes": 1179659,
+      "sha256": "033a68d3d9e550ebf548fdd591c801a344e6028f2852a7daea36412f7b75c8f1"
+    },
+    "data/replace.bin": {
+      "kind": "file",
+      "bytes": 19,
+      "sha256": "aa40aec18b8359d012be1197acebec65a4184b3b8d95cec23256381e3c44881c"
+    },
+    "data/truncate.bin": {
+      "kind": "file",
+      "bytes": 8192,
+      "sha256": "457372ad2fc3906058e51bfd8995ab1eb85116cd9a14decb5911267ab1192677"
+    },
+    "fixture.json": {
+      "kind": "file",
+      "bytes": 1202761,
+      "sha256": "d24c8ce6b6d2ff6e56cf581cf60cfe5a0765c68f024657d3e7b31ba587a9b7ae"
+    },
+    "patch": {
+      "kind": "directory"
+    },
+    "patch/renamed.bin": {
+      "kind": "file",
+      "bytes": 8,
+      "sha256": "9103e1254ead22fbc8031e175d94d3b53a6dcdef1648988f087eb176a804e91e"
+    },
+    "renamed-dir": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested/file.bin": {
+      "kind": "file",
+      "bytes": 11,
+      "sha256": "427669f05f889060543116f6924d53247ece013801b74010da0e4162d1fba83f"
+    },
+    "testgame": {
+      "kind": "file",
+      "bytes": 1243088,
+      "sha256": "cc95226c272a24aaed4d73c1da60d092333bbe1e8e887cc48a0b7ef6e811cdc1"
+    },
+    "world.dat": {
+      "kind": "file",
+      "bytes": 16777216,
+      "sha256": "7385008f8830b3d8c276493ed3021891b56de58f3ac2dafb34e557f1290cbb13"
+    }
+  },
+  "mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-update-first/mounted rw,nosuid,nodev,noatime - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "update_metrics": [
+    {
+      "cache": {
+        "decompressions": 324,
+        "decompressions_avoided": 1015,
+        "evictions": 292,
+        "hit_ratio": 0.7580283793876027,
+        "hits": 1015,
+        "in_flight_waits": 129,
+        "misses": 324,
+        "raw_bytes_loaded": 80510365,
+        "resident_bytes": 8388608
+      },
+      "event": "fuse_unmounted",
+      "io_errors": 0,
+      "overlay": {
+        "copy_up_bytes": 5383963,
+        "copy_up_files": 5,
+        "metadata_bytes": 1108,
+        "overlay_allocated_bytes": 5398528,
+        "overlay_bytes_written": 124,
+        "overlay_files": 7,
+        "overlay_logical_bytes": 5382225,
+        "tombstones": 9
+      },
+      "read_requests": 1186,
+      "returned_bytes": 115087069,
+      "sync_error": null,
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 1728,
+        "events_written": 1728,
+        "queue_high_watermark": 32,
+        "writer_errors": 0
+      },
+      "writable": true,
+      "write_requests": 10,
+      "written_bytes": 124
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 1728,
+        "events_written": 1728,
+        "queue_high_watermark": 32,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "remount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-update-first/mounted rw,nosuid,nodev,noatime - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "remount_tree_verified": true,
+  "remount_metrics": [
+    {
+      "cache": {
+        "decompressions": 80,
+        "decompressions_avoided": 110,
+        "evictions": 48,
+        "hit_ratio": 0.5789473684210527,
+        "hits": 110,
+        "in_flight_waits": 56,
+        "misses": 80,
+        "raw_bytes_loaded": 20341273,
+        "resident_bytes": 8388608
+      },
+      "event": "fuse_unmounted",
+      "io_errors": 0,
+      "overlay": {
+        "copy_up_bytes": 0,
+        "copy_up_files": 0,
+        "metadata_bytes": 1108,
+        "overlay_allocated_bytes": 5398528,
+        "overlay_bytes_written": 0,
+        "overlay_files": 7,
+        "overlay_logical_bytes": 5382225,
+        "tombstones": 9
+      },
+      "read_requests": 237,
+      "returned_bytes": 29917802,
+      "sync_error": null,
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 265,
+        "events_written": 265,
+        "queue_high_watermark": 2,
+        "writer_errors": 0
+      },
+      "writable": true,
+      "write_requests": 0,
+      "written_bytes": 0
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 265,
+        "events_written": 265,
+        "queue_high_watermark": 2,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "overlay": {
+    "copy_up_files": 0,
+    "copy_up_bytes": 0,
+    "overlay_bytes_written": 0,
+    "overlay_files": 7,
+    "tombstones": 9,
+    "overlay_logical_bytes": 5382225,
+    "overlay_allocated_bytes": 5398528,
+    "metadata_bytes": 1108
+  },
+  "trace": {
+    "cache_hit_ratio": 0.6151142355008787,
+    "cache_miss_ratio": 0.38488576449912126,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 1728,
+    "hot_files": [
+      {
+        "events": 1144,
+        "path": "world.dat"
+      },
+      {
+        "events": 59,
+        "path": "audio.dat"
+      },
+      {
+        "events": 57,
+        "path": "assets/entropy.dat"
+      },
+      {
+        "events": 56,
+        "path": "data/archive-a.bin"
+      },
+      {
+        "events": 54,
+        "path": "fixture.json"
+      },
+      {
+        "events": 52,
+        "path": "testgame"
+      },
+      {
+        "events": 43,
+        "path": "assets/texture.dat"
+      },
+      {
+        "events": 43,
+        "path": "data/archive-b.bin"
+      },
+      {
+        "events": 34,
+        "path": "data/archive-a-v2.bin"
+      },
+      {
+        "events": 30,
+        "path": "config.json"
+      },
+      {
+        "events": 27,
+        "path": "data/truncate.bin"
+      },
+      {
+        "events": 23,
+        "path": "readme.txt"
+      },
+      {
+        "events": 22,
+        "path": "assets/empty.bin"
+      },
+      {
+        "events": 22,
+        "path": "data/replace.bin"
+      },
+      {
+        "events": 19,
+        "path": "old-dir/nested/file.bin"
+      },
+      {
+        "events": 14,
+        "path": "patch/renamed.bin"
+      },
+      {
+        "events": 7,
+        "path": "renamed-dir/nested/file.bin"
+      },
+      {
+        "events": 6,
+        "path": "patch/created.bin"
+      },
+      {
+        "events": 6,
+        "path": "patch/new.tmp"
+      },
+      {
+        "events": 6,
+        "path": "patch/removed.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 14,
+        "length": 4096,
+        "offset": 16773120,
+        "path": "world.dat"
+      },
+      {
+        "events": 12,
+        "length": 131072,
+        "offset": 0,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 131072,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 262144,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 393216,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 524288,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 655360,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 786432,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 917504,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 1048576,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 1179648,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 1310720,
+        "path": "world.dat"
+      },
+      {
+        "events": 7,
+        "length": 131072,
+        "offset": 1441792,
+        "path": "world.dat"
+      },
+      {
+        "events": 6,
+        "length": 16384,
+        "offset": 0,
+        "path": "world.dat"
+      },
+      {
+        "events": 6,
+        "length": 8192,
+        "offset": 258048,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 69632,
+        "offset": 258048,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 8192,
+        "offset": 327680,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 131072,
+        "offset": 1572864,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 131072,
+        "offset": 1703936,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 8192,
+        "offset": 6463488,
+        "path": "world.dat"
+      }
+    ],
+    "latency_ns": {
+      "p50": 4708,
+      "p95": 366625,
+      "p99": 1012708
+    },
+    "operations": {
+      "create": 4,
+      "flush": 513,
+      "mkdir": 2,
+      "read": 1186,
+      "rename": 4,
+      "rmdir": 1,
+      "truncate": 5,
+      "unlink": 3,
+      "write": 10
+    },
+    "read_bytes": 115087069,
+    "read_operations": 1186,
+    "reread_ratio": 0.3988195615514334,
+    "sequential_read_percentage": 4.5531197301854975,
+    "sessions": [
+      "10909-1791018242671960251"
+    ],
+    "sources": {
+      "memory-cache": 700,
+      "overlay": 590,
+      "primary-local": 438
+    },
+    "version": 1,
+    "write_bytes": 124,
+    "write_operations": 10
+  },
+  "clean_unmount": true,
+  "source_unchanged": true,
+  "base_unchanged": true,
+  "wall_seconds": 0.7969275840005139,
+  "resources": {
+    "child_cpu_seconds": 0.9497180000000001,
+    "peak_single_child_rss_bytes": 39002112
+  }
+}

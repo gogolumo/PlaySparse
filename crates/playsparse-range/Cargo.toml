@@ -7,6 +7,8 @@ license.workspace = true
 playsparse-core = { path = "../playsparse-core" }
 playsparse-store = { path = "../playsparse-store" }
 playsparse-cache = { path = "../playsparse-cache" }
+playsparse-trace = { path = "../playsparse-trace" }
 [dev-dependencies]
 tempfile.workspace = true
 proptest.workspace = true
+serde_json.workspace = true

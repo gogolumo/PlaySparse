@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["crates/playsparse-core", "crates/playsparse-store", "crates/playsparse-cache", "crates/playsparse-range", "crates/playsparse-cli", "crates/playsparse-vfs-fuse", "crates/playsparse-vfs-win", "tools/io-probe"]
+members = ["crates/playsparse-core", "crates/playsparse-store", "crates/playsparse-cache", "crates/playsparse-range", "crates/playsparse-cli", "crates/playsparse-vfs-fuse", "crates/playsparse-vfs-win", "tools/io-probe", "crates/playsparse-trace", "crates/playsparse-overlay"]
 
 [workspace.package]
 version = "0.1.0"
