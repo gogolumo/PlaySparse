@@ -62,6 +62,7 @@ class LifecycleTests(unittest.TestCase):
         mountpoint = "/tmp/work with spaces/mounted"
         mountinfo = "42 1 0:55 / /tmp/work\\040with\\040spaces/mounted rw - fuse.playsparse PlaySparse rw\n"
         with mock.patch.object(common.sys, "platform", "linux"), \
+             mock.patch.object(common.os.path, "abspath", return_value=mountpoint), \
              mock.patch.object(common.Path, "open", return_value=io.StringIO(mountinfo)), \
              mock.patch.object(common.os.path, "ismount", return_value=False):
             self.assertTrue(common.mount_present(mountpoint))

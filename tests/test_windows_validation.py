@@ -112,6 +112,14 @@ class PortableWindowsTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     support.read_workload(root, [{"path": path, "offset": 0, "length": 1}])
 
+    def test_windows_rooted_path_cannot_escape_the_workload_root(self):
+        from pathlib import PureWindowsPath
+        # A path rooted on the current drive is_absolute() == False on Windows.
+        with mock.patch.object(support, "Path", PureWindowsPath):
+            for name in ["/absolute", "C:/absolute", "//server/share/file"]:
+                with self.assertRaises(ValueError):
+                    support.read_workload("C:/fixture", [{"path": name, "offset": 0, "length": 1}])
+
     def test_nonpassing_stage_cannot_be_promoted_by_exit_zero(self):
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw); (root / "result.json").write_text('{"status":"FAIL"}')

@@ -289,7 +289,7 @@ def read_workload(root, queries, expected=None, usage=None, provider_pid=None):
         for index, query in enumerate(queries):
             name, offset, length = query["path"], query["offset"], query["length"]
             relative = Path(name)
-            if relative.is_absolute() or relative.drive or ".." in relative.parts or "\\" in name or ":" in name or "\0" in name or not 0 < length <= 16 << 20 or offset < 0:
+            if relative.is_absolute() or relative.drive or relative.root or ".." in relative.parts or "\\" in name or ":" in name or "\0" in name or not 0 < length <= 16 << 20 or offset < 0:
                 raise ValueError("unsafe query")
             if name not in handles:
                 handles[name] = (Path(root) / relative).open("rb", buffering=0)
