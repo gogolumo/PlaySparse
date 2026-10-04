@@ -9,6 +9,30 @@ permissions:
   contents: read
 
 jobs:
+  macos-sdk:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.99.0
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Install SDK inspection build tool
+        run: brew install pkgconf
+      - name: Verified macFUSE SDK compile, link and tests without driver installation
+        run: python3 tools/macos-sdk-check.py --work "$RUNNER_TEMP/playsparse-macos-sdk"
+      - name: Preserve SDK evidence; this job does not validate mounted macOS I/O
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-sdk-evidence
+          path: |
+            ${{ runner.temp }}/playsparse-macos-sdk/result.json
+            ${{ runner.temp }}/playsparse-macos-sdk/*.log
+          if-no-files-found: warn
+
   linux:
     runs-on: ubuntu-latest
     timeout-minutes: 30

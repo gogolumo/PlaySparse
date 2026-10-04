@@ -45,7 +45,7 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
 - [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
 - [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
-- [ ] **HARDWARE REQUIRED:** physical macFUSE mount; backend type-checked, experimental
+- [ ] **HARDWARE REQUIRED:** physical macFUSE mount; kernel transport compiled against the verified 5.4 SDK, experimental
 
 Adaptive performance benefit is unproven. The retained initial Linux benchmark
 issued zero prefetch requests and had a lower adaptive cache hit ratio than the
@@ -60,7 +60,8 @@ See [first mounted run](docs/evidence/first-mounted-run.md),
 [writable overlay](docs/writable-overlay.md),
 [adaptive policy](docs/adaptive-policy.md),
 [tiered storage](docs/tiered-storage.md),
-[FUSE backend](docs/fuse-backend.md), [Windows backend](docs/windows-backend.md),
+[FUSE backend](docs/fuse-backend.md), [macOS/Red Hat validation](docs/posix-validation.md),
+[Windows backend](docs/windows-backend.md),
 [format v1](docs/storage-format-v1.md) and
 [Experiment 04](experiments/04-loose-vs-packfiles).
 
