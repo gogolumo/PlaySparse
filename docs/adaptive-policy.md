@@ -85,9 +85,12 @@ queued work performs no I/O. Shutdown cancels queued work and waits for the
 active load, whose source timeout/retry limits still apply. TTL does not abort
 an already active network request.
 
-Speculation cannot evict a resident candidate with greater decayed priority.
-Admission is decided after verified loading, so rejected speculation still
-costs source I/O and appears as wasted bytes. Demand loads continue to make
+Speculative admission compares the first eviction candidate against priority
+zero after verified loading. Rejected speculation still costs source I/O and
+appears as wasted bytes. With variable-size objects, later eviction candidates
+can have greater priority; this heuristic does not guarantee protection of
+every demanded object. A follow-up should check all required victims before
+loading and admission, and avoid aging demand scores through speculation. Demand loads continue to make
 progress even when every resident object has high priority.
 
 ## Bounds, tracing and metrics

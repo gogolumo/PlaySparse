@@ -1,0 +1,10 @@
+{
+  "source": "/tmp/playsparse-posix-linux-20261004-02/adaptive/source",
+  "executable": "testgame",
+  "world_logical_bytes": 4194304,
+  "logical_bytes": 11954859,
+  "files": 9,
+  "source_allocated_bytes": 10579968,
+  "nonzero_world_regions": 68,
+  "sample_count": 169
+}

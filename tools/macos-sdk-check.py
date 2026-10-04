@@ -74,7 +74,8 @@ def main():
         mountpoint.mkdir()
         run(["hdiutil", "attach", "-readonly", "-nobrowse", "-noautoopen", "-mountpoint", str(mountpoint), str(image)], "attach")
         package = mountpoint / "Install macFUSE.pkg"
-        run(["pkgutil", "--check-signature", str(package)], "signature")
+        run(["pkgutil", "--check-signature", str(package)], "signature",
+            dict(os.environ, LC_ALL="C", LANG="C"))
         signature = (work / "signature.stdout.log").read_text()
         if "Benjamin Fleischer (3T5GSNBU6W)" not in signature or "trusted by the Apple notary service" not in signature:
             raise RuntimeError("unexpected installer signing identity or notarization status")
