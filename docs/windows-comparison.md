@@ -78,11 +78,13 @@ repeated measurements after a preload, with no disk-cold claim.
 | Workload wall/CPU | Timed replay including file opens and byte verification; explicit preload excluded. |
 | Client peak RSS | Fresh worker lifetime peak including its preload. |
 | Provider CPU/RSS | WinFsp host CPU delta during timed replay and host lifetime peak working set. Windows kernel/driver CPU is not measured separately. |
-| Read amplification | PlaySparse raw loaded bytes / driver returned bytes over preload plus timed replay. Native/WOF kernel read amplification is unmeasured and `null`. |
+| Read amplification | PlaySparse raw loaded bytes / application bytes returned over preload plus timed replay; includes possible extra OS read-ahead demand. Native/WOF kernel read amplification is unmeasured and `null`. |
 
 Each PlaySparse trial starts a new read-only host, verifies a directory volume
 whose filesystem type is `PlaySparse`, unmounts it normally and checks teardown
-and provider error metrics. Mounted contents must not appear as materialized
+and provider metrics. Selected byte-read failures are fatal. The current WinFsp
+event lacks a driver error counter, so `driver_read_errors` is `null` rather than
+a claim of zero unobserved errors. Mounted contents must not appear as materialized
 files after teardown. The source and sealed base fingerprints must match at the
 end, including after failed commands. A failure or interrupt preserves logs and
 disposable work rather than replacing the original or deleting failed evidence.

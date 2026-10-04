@@ -155,6 +155,14 @@ class PortableWindowsTests(unittest.TestCase):
             host.close(failed=True)
             self.assertEqual(runner.run.call_args.args[0], ["cli.exe", "unmount", str(mount)])
 
+    def test_current_winfsp_metrics_use_verified_application_bytes(self):
+        # Current native event has cache metrics and omits driver byte/errors.
+        metrics = {"event": "winfsp_unmounted", "cache": {"raw_bytes_loaded": 8192}}
+        summary = comparison.provider_read_summary({"requested_bytes": 1024}, metrics)
+        self.assertEqual(summary["read_amplification_returned_bytes"], 2048)
+        self.assertEqual(summary["read_amplification"], 4)
+        self.assertIsNone(summary["driver_read_errors"])
+
     def test_unknown_wof_flags_are_rejected(self):
         api = object.__new__(support.WindowsAPI)
 

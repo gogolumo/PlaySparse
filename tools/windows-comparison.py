@@ -80,6 +80,17 @@ def bounded_json(path, maximum=4 << 20):
     return json.loads(payload)
 
 
+def provider_read_summary(measured, metrics):
+    # The Windows event has cache bytes, but no driver-return/error counters.
+    # Every requested byte was already verified during preload and timed replay.
+    returned = measured["requested_bytes"] * 2
+    return {
+        "read_amplification_returned_bytes": returned,
+        "read_amplification": metrics["cache"]["raw_bytes_loaded"] / returned if returned else None,
+        "driver_read_errors": metrics.get("read_errors"),
+    }
+
+
 class ReadOnlyMount:
     def __init__(self, cli, store, mountpoint, evidence, runner, report, label, api, cache):
         self.cli, self.store, self.path, self.evidence = cli, store, mountpoint, evidence
@@ -147,8 +158,8 @@ class ReadOnlyMount:
                     continue
                 if event.get("event") == "winfsp_unmounted":
                     self.metrics = event
-        if not failed and (self.metrics is None or self.metrics.get("read_errors", 0)):
-            errors.append("successful unmount metrics missing or read errors reported")
+        if not failed and (self.metrics is None or self.metrics.get("read_errors")):
+            errors.append("successful unmount metrics missing or reported read errors")
         try:
             if self.path.exists() and (self.api.mount_record(self.path)["real_mount"] or any(self.path.iterdir())):
                 errors.append("mount remains attached or materialized files appeared")
@@ -210,7 +221,7 @@ def run_comparison(argv=None):
               "cache_state": "repeated warm trials; no disk-cold claim", "application_startup": "NOT RUN",
               "read_latency_definition": "seek + read only; file opens and SHA-256 comparison excluded; wall/CPU include verification",
               "cpu_definition": "client process user+kernel CPU and WinFsp process CPU; not total system/driver CPU",
-              "read_amplification_definition": "PlaySparse raw loaded bytes / driver returned bytes for preload+timed replay; WOF/native kernel amplification unmeasured/null",
+              "read_amplification_definition": "PlaySparse raw loaded bytes / application bytes returned for preload+timed replay; includes possible OS read-ahead demand; WOF/native kernel amplification unmeasured/null",
               "allocation_definition": "all file data streams, including WOF backing data; directory and filesystem metadata excluded"}
     try:
         work = common.safe_new_work(args.work, repo=repo, source=source)
@@ -283,8 +294,7 @@ def run_comparison(argv=None):
                         measured = measure(mount, mounted.process.pid)
                         measured["mount_record"] = mounted.record
                     measured["provider_metrics"] = mounted.metrics
-                    returned = mounted.metrics.get("returned_bytes", 0)
-                    measured["read_amplification"] = mounted.metrics["cache"]["raw_bytes_loaded"] / returned if returned else None
+                    measured.update(provider_read_summary(measured, mounted.metrics))
                 else:
                     measured = measure(source if mode == "original" else copy)
                     measured["read_amplification"] = None
