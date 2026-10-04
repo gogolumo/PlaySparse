@@ -13,10 +13,20 @@ PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. 
 The Rust runtime serves file ranges directly from compressed CAS through real
 Linux FUSE and Windows WinFsp mounts. Generated native programs and the
 open-source Zstd CLI have run from the mounted view. A generated 10 GiB file
-passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. Hosted Windows
-Server 2025 CI passed the read path, writable updater/remount/commit/reset,
-adaptive capture/replay and tiered/HTTP mounted paths at `4e39b9c`
-([native CI evidence](https://github.com/gogolumo/PlaySparse/actions/runs/37131829873)).
+passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. **Native macOS
+validation is the current priority**, with Red Hat Linux as another target.
+
+| Platform | Verified behavior | Remaining validation |
+|---|---|---|
+| macOS arm64 | Native macFUSE 5.4.0 SDK compile/link, fmt, clippy, 76 tests and release build | Actual mounting is **BLOCKED** on the development Mac because macFUSE is absent; kernel approval and mounted application tests remain open |
+| Linux | Real FUSE mounts in a Linux VM and hosted CI: large/mapped reads, executable launch, writable updater/remount/commit/discard, adaptive replay and local/HTTP tiers | Red Hat hardware and real game/launcher compatibility are **NOT RUN** |
+| Windows | Native WinFsp mounts in hosted CI, including readonly, writable, adaptive and tiered/HTTP workflows | Physical desktop, real game/launcher and WOF comparisons remain open |
+
+All eight push/PR checks passed at `0c85fe2`, now merged through
+[PR #5](https://github.com/gogolumo/PlaySparse/pull/5). See the
+[runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37197365426)
+and [retained macOS/Linux evidence](docs/evidence/posix-runtime.md).
+The macOS SDK checks do not establish that a volume can mount.
 
 The optional persistent writable overlay, generated updater, bounded JSONL
 tracing, adaptive cache/prefetch policy, local tiers and verified HTTP object
@@ -42,10 +52,13 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [x] **EXPERIMENTAL:** versioned policy, decaying hotness, bounded sequential prefetch and static/adaptive replay
 - [x] **EXPERIMENTAL:** verified secondary local objects and persistent promotion cache
 - [x] **EXPERIMENTAL:** HTTP 206 object ranges; corrupt remote reads fail
+- [x] **EXPERIMENTAL:** macFUSE 5.3.3+ kernel channel transport, compiled/tested against the signed 5.4.0 SDK
+- [x] **WORKING:** native POSIX validation runner and macOS SDK checks without driver installation
+- [ ] **BLOCKED:** native macOS mounted runtime; macFUSE installation and kernel approval required
+- [ ] **HARDWARE REQUIRED:** Red Hat Linux validation
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
 - [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
 - [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
-- [ ] **HARDWARE REQUIRED:** physical macFUSE mount; kernel transport compiled against the verified 5.4 SDK, experimental
 
 Adaptive performance benefit is unproven. The retained initial Linux benchmark
 issued zero prefetch requests and had a lower adaptive cache hit ratio than the
@@ -54,9 +67,11 @@ three-trial replay still loses: median p95 69 → 108 µs, CPU 0.095 → 0.170 s
 and raw bytes loaded 61 → 146 MB. All trials and the exact policy are retained;
 static LRU remains the default.
 
-**WINDOWS HARDWARE TEST REQUIRED.** The production Windows milestone remains open.
+Native macOS mounting is the next validation gate. Physical Windows validation
+also remains open; hosted CI does not establish desktop/game compatibility.
 See [first mounted run](docs/evidence/first-mounted-run.md),
 [adaptive writable runtime evidence](docs/evidence/adaptive-writable-runtime.md),
+[macOS/Linux runtime evidence](docs/evidence/posix-runtime.md),
 [writable overlay](docs/writable-overlay.md),
 [adaptive policy](docs/adaptive-policy.md),
 [tiered storage](docs/tiered-storage.md),
@@ -69,12 +84,71 @@ Experiments 01–03 and the Python `playsparse_lab` remain research/reference
 implementations. Their earlier reconstruction and synthetic reuse results below
 are preserved; production reads use Rust in-process BLAKE3/Zstd.
 
+## Run on macOS or Linux
+
+Use Python 3.9+ and the Rust toolchain pinned in `rust-toolchain.toml`.
+Run these commands from the repository root; every `--work` directory must be
+new. The tools preserve commands, environment, hashes, results and failure logs.
+
+### macOS first
+
+SDK compilation requires `pkg-config` (for example, Homebrew's `pkgconf`) and a
+C linker. To compile, link and test without installing a driver:
+
+```bash
+python3 tools/macos-sdk-check.py --work /tmp/playsparse-macos-sdk-01
+```
+
+This verifies the checksum and Apple installer signature/notarization of the
+official macFUSE 5.4.0 SDK and uses its extracted libraries in temporary storage.
+It does not run mounted tests.
+
+For real mounted validation, install macFUSE **5.3.3+ in the 5.x series** and
+complete its kernel-extension approval/restart steps. The current transport
+uses the kernel backend; **FSKit is unsupported**. Then run:
+
+```bash
+python3 tools/posix-runtime-validation.py --work /tmp/playsparse-macos-01 --build
+```
+
+The runner enables `macfuse` during the build. If the driver is absent, it returns
+exit code 2 with a `BLOCKED` report.
+
+### Red Hat / Linux
+
+Provide a `/dev/fuse` character device that the testing user can open for reading
+and writing, `fusermount3` or `fusermount`, Git, Python, Rust and a C linker.
+The current Linux build does not require a libfuse development package. Run:
+
+```bash
+python3 tools/posix-runtime-validation.py --work /tmp/playsparse-rhel-01 --build
+```
+
+The mounted runner tests readonly 10 GiB/mmap/executable behavior, writable
+updater/remount/commit/discard, identical-trace adaptive replay, and verified
+local/HTTP tiers. It does not install packages, drivers or change mount
+privileges. An owned native application can also be tested with `--source` and
+`--executable`; see the [macOS/Red Hat guide](docs/posix-validation.md) for
+prerequisites, application commands and evidence interpretation.
+
 ## Rust CLI
 
-Build with the pinned Rust toolchain, then put `target/release` on PATH:
+Build with the pinned Rust toolchain. On macOS, after macFUSE installation and
+kernel approval, enable the mount backend:
+
+```bash
+cargo build --locked --release --workspace --features macfuse
+```
+
+On Linux:
 
 ```bash
 cargo build --locked --release --workspace
+```
+
+Put `target/release` on PATH, then use the common CLI:
+
+```bash
 playsparse doctor
 playsparse analyze ./TestGame
 playsparse pack ./TestGame ./TestGame.playsparse
@@ -144,9 +218,9 @@ base, overlay and mount. Replay accepts base-file read traces; it cannot replay
 mutable overlay versions. Fresh-process CPU/RSS comparisons use `replay-one`;
 neither replay command establishes a cold physical-disk baseline.
 
-macOS builds CAS/range/CLI without a driver; actual mount requires macFUSE and
-`cargo build --release --features macfuse`. Windows uses WinFsp with an installed
-driver and SDK; choose an unused drive letter or a nonexistent directory path,
+Default macOS builds support CAS/range/CLI without a driver; mounting requires
+the `macfuse` build above and the approved kernel backend. Windows uses WinFsp
+with an installed driver and SDK; choose an unused drive letter or a nonexistent directory path,
 following [native Windows commands](docs/windows-backend.md).
 
 `analyze` performs two full measured temporary pack passes (fixed and CDC), with
@@ -296,13 +370,17 @@ virtual mounted/projected directory
 arbitrary reader receives identical bytes
 ```
 
-Windows remains the primary target. WinFsp was selected because its read callbacks
-return bytes directly, while ProjFS's file-data contract materializes retrieved
-bytes in local files. Hosted Windows native mount, large/mapped/concurrent reads
-and executable launch have recorded evidence. Physical desktop/game validation
-and WOF comparisons remain open. Writable operations and the first
-trace/policy/tier implementations now extend that runtime; their experimental
-status and measured limitations are recorded in the
+The next step is a real macOS kernel-backed mount after macFUSE installation
+and approval, followed by an owned native application and Red Hat validation.
+The [POSIX runner](docs/posix-validation.md) is ready; native SDK success and
+Linux VM mounts are separate evidence from that pending Mac run.
+
+Windows remains supported through WinFsp and hosted native runtime checks.
+WinFsp was selected because its read callbacks return bytes directly, while
+ProjFS's file-data contract materializes retrieved bytes in local files.
+Physical desktop/game validation and WOF comparisons remain open. Writable
+operations and the trace/policy/tier implementations extend the shared runtime;
+their experimental status and measured limitations are recorded in the
 [adaptive writable sprint evidence](docs/evidence/adaptive-writable-runtime.md).
 
 ## Breakthrough policy
