@@ -220,7 +220,10 @@ fn real_writable_mount_update_remount_mmap_and_immutable_base() {
         drop(mapping);
         drop(data);
         drop(existing_read);
-        drop(session);
+        // Dropping a background session starts unmounting but does not guarantee
+        // the filesystem thread has released the overlay lock before the next
+        // mount. Join explicitly so remount validation is deterministic.
+        session.umount_and_join().unwrap();
     }
     {
         let backend = WritableFs::open(&store, 16384, &overlay, None).unwrap();
@@ -240,7 +243,10 @@ fn real_writable_mount_update_remount_mmap_and_immutable_base() {
         assert!(!mounted.join("config").exists());
         assert!(!mounted.join("config.old").exists());
         assert!(!mounted.join("assets/empty").exists());
-        drop(session);
+        // Dropping a background session starts unmounting but does not guarantee
+        // the filesystem thread has released the overlay lock before the next
+        // mount. Join explicitly so remount validation is deterministic.
+        session.umount_and_join().unwrap();
     }
     assert_eq!(fs::read(source.join("config")).unwrap(), b"original\n");
     assert_eq!(
