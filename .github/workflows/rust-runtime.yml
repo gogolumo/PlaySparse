@@ -137,14 +137,31 @@ jobs:
       - name: Canonical Windows hosted validation and disposable WOF comparison
         shell: pwsh
         run: |
-          $source = Join-Path $env:RUNNER_TEMP 'playsparse-wof-source'
+          $evidence = Join-Path $env:RUNNER_TEMP 'playsparse-windows-ci'
+          ./tools/windows-hardware-validation.ps1 -EvidenceRoot $evidence
+          if ($LASTEXITCODE -ne 0) { throw 'Canonical Windows validation failed' }
+          $result = Get-Content (Join-Path $evidence 'result.json') -Raw | ConvertFrom-Json
+          if ($result.status -ne 'PASS' -or $result.windows_physical_validation.status -ne 'BLOCKED') { throw 'Hosted validation must pass software stages while retaining physical BLOCKED' }
+
+          # GitHub's Windows Server runner keeps WOF attached to the system
+          # volume, while RUNNER_TEMP is a separate D: data volume where
+          # compact /EXE can fail even on NTFS. Keep the large mounted-runtime
+          # evidence on D:, but run the small disposable WOF comparison on C:.
+          $systemRoot = "$env:SystemDrive\"
+          $suffix = "$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          $source = Join-Path $systemRoot "playsparse-wof-source-$suffix"
+          $wofWork = Join-Path $systemRoot "playsparse-wof-ci-$suffix"
+          if ((Test-Path $source) -or (Test-Path $wofWork)) { throw 'Fresh WOF paths already exist' }
           New-Item -ItemType Directory -Path $source -ErrorAction Stop | Out-Null
           python -c "from pathlib import Path; import sys; p=Path(sys.argv[1]); (p/'compressible.bin').write_bytes(b'PlaySparse WOF CI bytes\n' * 300000); (p/'small.txt').write_text('owned generated CI fixture\n')" $source
           if ($LASTEXITCODE -ne 0) { throw 'WOF fixture creation failed' }
-          ./tools/windows-hardware-validation.ps1 -EvidenceRoot "$env:RUNNER_TEMP\playsparse-windows-ci" -WofComparison -WofSource $source
-          if ($LASTEXITCODE -ne 0) { throw 'Canonical Windows validation failed' }
-          $result = Get-Content "$env:RUNNER_TEMP\playsparse-windows-ci\result.json" -Raw | ConvertFrom-Json
-          if ($result.status -ne 'PASS' -or $result.windows_physical_validation.status -ne 'BLOCKED') { throw 'Hosted validation must pass software stages while retaining physical BLOCKED' }
+
+          $playsparse = (Resolve-Path 'target/release/playsparse.exe').Path
+          python tools/windows-comparison.py --work $wofWork --source $source --playsparse $playsparse --binary-manifest (Join-Path $evidence 'binary-build-manifest.json') --environment (Join-Path $evidence 'environment.json') --algorithm XPRESS4K --timeout 1800
+          if ($LASTEXITCODE -ne 0) { throw 'Disposable WOF comparison failed' }
+          $wofResult = Get-Content (Join-Path $wofWork 'result.json') -Raw | ConvertFrom-Json
+          if ($wofResult.status -ne 'PASS' -or $wofResult.physical_wof_validation.status -ne 'BLOCKED') { throw 'Hosted WOF comparison must pass while retaining physical BLOCKED' }
+          "PLAYSPARSE_WOF_EVIDENCE=$wofWork" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - name: Preserve native Windows evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -155,8 +172,10 @@ jobs:
             ${{ runner.temp }}/playsparse-windows-ci/environment.json
             ${{ runner.temp }}/playsparse-windows-ci/*.log
             ${{ runner.temp }}/playsparse-windows-ci/*/evidence
-            ${{ runner.temp }}/playsparse-windows-ci/wof/result.json
-            ${{ runner.temp }}/playsparse-windows-ci/wof/*.json
-            ${{ runner.temp }}/playsparse-windows-ci/wof/*.log
+            ${{ env.PLAYSPARSE_WOF_EVIDENCE }}/result.json
+            ${{ env.PLAYSPARSE_WOF_EVIDENCE }}/*.json
+            ${{ env.PLAYSPARSE_WOF_EVIDENCE }}/*.log
+            ${{ env.PLAYSPARSE_WOF_EVIDENCE }}/trial-*.stdout.log
+            ${{ env.PLAYSPARSE_WOF_EVIDENCE }}/trial-*.stderr.log
             ${{ runner.temp }}/winfsp-install.log
           if-no-files-found: warn
