@@ -904,6 +904,10 @@ impl Filesystem for WritableFs {
 }
 
 fn overlay_path(store: &Path, mountpoint: &Path, overlay: &Path) -> Result<PathBuf> {
+    let store = store.canonicalize().context("resolve store path")?;
+    let mountpoint = mountpoint
+        .canonicalize()
+        .context("resolve mountpoint path")?;
     let overlay = if overlay.exists() {
         overlay.canonicalize().context("resolve overlay path")?
     } else {
@@ -920,7 +924,7 @@ fn overlay_path(store: &Path, mountpoint: &Path, overlay: &Path) -> Result<PathB
                     .context("overlay needs a directory name")?,
             )
     };
-    for (other, label) in [(store, "store"), (mountpoint, "mountpoint")] {
+    for (other, label) in [(&store, "store"), (&mountpoint, "mountpoint")] {
         if overlay.starts_with(other) || other.starts_with(&overlay) {
             bail!("overlay and {label} must be separate directory trees");
         }
@@ -943,7 +947,7 @@ pub(super) fn mount(
         .retain(|option| *option != MountOption::RO);
     config.mount_options.push(MountOption::RW);
     tracing::info!(store = %store.display(), mountpoint = %mountpoint.display(), overlay = %overlay.display(), cache_bytes, "mounting writable FUSE overlay");
-    fuser::mount(fs, mountpoint, &config).context("mount writable FUSE overlay")
+    crate::run_session(fs, mountpoint, &config).context("mount writable FUSE overlay")
 }
 
 #[cfg(test)]

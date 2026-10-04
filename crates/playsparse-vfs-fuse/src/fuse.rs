@@ -549,7 +549,7 @@ pub(super) fn mount(
     let cache_bytes = options.cache_bytes;
     let fs = StoreFs::open_configured(&store, options)?;
     tracing::info!(store = %store.display(), mountpoint = %mountpoint.display(), cache_bytes, "mounting FUSE store");
-    fuser::mount(fs, &mountpoint, &mount_config()).context("mount FUSE store")
+    crate::run_session(fs, &mountpoint, &mount_config()).context("mount FUSE store")
 }
 
 pub(super) fn availability() -> Availability {
@@ -562,15 +562,15 @@ pub(super) fn availability() -> Availability {
     }
     #[cfg(target_os = "macos")]
     {
-        let installed = Path::new("/Library/Filesystems/macfuse.fs").exists();
+        let version = crate::macos::runtime_version();
         Availability {
             backend: "macFUSE",
-            available: installed,
-            detail: if installed {
-                "macFUSE installation found; the driver must be approved and loaded for mounting."
-                    .into()
-            } else {
-                "macFUSE is not installed at /Library/Filesystems/macfuse.fs.".into()
+            available: version.is_ok(),
+            detail: match version {
+                Ok(version) => format!(
+                    "macFUSE {version} public-channel kernel transport; the kernel extension must be approved and loaded. FSKit is unsupported."
+                ),
+                Err(error) => error.to_string(),
             },
         }
     }

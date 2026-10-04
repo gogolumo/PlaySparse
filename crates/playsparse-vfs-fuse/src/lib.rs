@@ -15,6 +15,42 @@ mod fuse;
 #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
 mod writable;
 
+#[cfg(all(target_os = "macos", feature = "macfuse"))]
+mod macos;
+
+#[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
+fn run_session<FS: fuser::Filesystem>(
+    filesystem: FS,
+    path: &Path,
+    config: &fuser::Config,
+) -> std::io::Result<()> {
+    #[cfg(target_os = "linux")]
+    {
+        fuser::mount(filesystem, path, config)
+    }
+    #[cfg(target_os = "macos")]
+    {
+        macos::mount(filesystem, path, config)
+    }
+}
+
+#[cfg(all(test, target_os = "linux"))]
+fn spawn_session<FS: fuser::Filesystem>(
+    filesystem: FS,
+    path: &Path,
+    config: &fuser::Config,
+) -> std::io::Result<fuser::BackgroundSession> {
+    fuser::spawn_mount(filesystem, path, config)
+}
+#[cfg(all(test, target_os = "macos", feature = "macfuse"))]
+fn spawn_session<FS: fuser::Filesystem>(
+    filesystem: FS,
+    path: &Path,
+    config: &fuser::Config,
+) -> std::io::Result<macos::MountedSession> {
+    macos::spawn(filesystem, path, config)
+}
+
 /// A runtime diagnostic, not evidence that a mount has passed IO tests.
 #[derive(Debug, Clone, Serialize)]
 pub struct Availability {

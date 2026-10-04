@@ -241,7 +241,7 @@ fn real_mount_random_concurrent_mmap_and_native_execution() {
         .unwrap();
         let backend = StoreFs::open(&store, 512 * 1024).unwrap();
         let resolver = backend.resolver.clone();
-        let session = fuser::spawn_mount(backend, &mountpoint, &mount_config())
+        let session = crate::spawn_session(backend, &mountpoint, &mount_config())
             .expect("real FUSE mount must succeed");
         // FUSE initialization completes on the serving thread; the first open
         // waits for its response and therefore also verifies initialization.
