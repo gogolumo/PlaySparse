@@ -9,6 +9,6 @@ anyhow.workspace = true
 blake3.workspace = true
 clap.workspace = true
 memmap2 = "0.9.11"
-libc.workspace = true
+playsparse-core = { path = "../../crates/playsparse-core" }
 serde.workspace = true
 serde_json.workspace = true

@@ -15,6 +15,7 @@ use fuser::{
 use playsparse_core::{Error, Manifest};
 use playsparse_range::{RangeResolver, RuntimeOptions};
 
+#[cfg(target_os = "linux")]
 use crate::Availability;
 
 const TTL: Duration = Duration::from_secs(60);
@@ -552,26 +553,13 @@ pub(super) fn mount(
     crate::run_session(fs, &mountpoint, &mount_config()).context("mount FUSE store")
 }
 
+#[cfg(target_os = "linux")]
 pub(super) fn availability() -> Availability {
     #[cfg(target_os = "linux")]
     {
         match fs::OpenOptions::new().read(true).write(true).open("/dev/fuse") {
             Ok(_) => Availability { backend: "FUSE", available: true, detail: "Linux /dev/fuse can be opened; mounting still requires mount permission or fusermount3.".into() },
             Err(error) => Availability { backend: "FUSE", available: false, detail: format!("Cannot open /dev/fuse: {error}. Install/enable FUSE and grant access to its device.") },
-        }
-    }
-    #[cfg(target_os = "macos")]
-    {
-        let version = crate::macos::runtime_version();
-        Availability {
-            backend: "macFUSE",
-            available: version.is_ok(),
-            detail: match version {
-                Ok(version) => format!(
-                    "macFUSE {version} public-channel kernel transport; the kernel extension must be approved and loaded. FSKit is unsupported."
-                ),
-                Err(error) => error.to_string(),
-            },
         }
     }
 }

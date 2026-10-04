@@ -226,70 +226,7 @@ fn compare(
 }
 
 fn resources() -> (Option<f64>, Option<u64>) {
-    #[cfg(unix)]
-    {
-        let mut usage = std::mem::MaybeUninit::<libc::rusage>::uninit();
-        // SAFETY: getrusage fills the correctly sized output on success.
-        if unsafe { libc::getrusage(libc::RUSAGE_SELF, usage.as_mut_ptr()) } != 0 {
-            return (None, None);
-        }
-        let usage = unsafe { usage.assume_init() };
-        let cpu = usage.ru_utime.tv_sec as f64
-            + usage.ru_utime.tv_usec as f64 / 1e6
-            + usage.ru_stime.tv_sec as f64
-            + usage.ru_stime.tv_usec as f64 / 1e6;
-        (
-            Some(cpu),
-            Some(usage.ru_maxrss.max(0) as u64 * if cfg!(target_os = "macos") { 1 } else { 1024 }),
-        )
-    }
-    #[cfg(windows)]
-    {
-        use windows::Win32::{
-            Foundation::FILETIME,
-            System::{
-                ProcessStatus::{GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS},
-                Threading::{GetCurrentProcess, GetProcessTimes},
-            },
-        };
-        let (mut created, mut exited, mut kernel, mut user) = (
-            FILETIME::default(),
-            FILETIME::default(),
-            FILETIME::default(),
-            FILETIME::default(),
-        );
-        let ticks =
-            |time: FILETIME| ((time.dwHighDateTime as u64) << 32) | time.dwLowDateTime as u64;
-        let cpu = unsafe {
-            GetProcessTimes(
-                GetCurrentProcess(),
-                &mut created,
-                &mut exited,
-                &mut kernel,
-                &mut user,
-            )
-        }
-        .ok()
-        .map(|_| (ticks(kernel) + ticks(user)) as f64 / 1e7);
-        let mut memory = PROCESS_MEMORY_COUNTERS {
-            cb: std::mem::size_of::<PROCESS_MEMORY_COUNTERS>() as u32,
-            ..Default::default()
-        };
-        let rss = unsafe {
-            GetProcessMemoryInfo(
-                GetCurrentProcess(),
-                &mut memory,
-                std::mem::size_of::<PROCESS_MEMORY_COUNTERS>() as u32,
-            )
-        }
-        .ok()
-        .map(|_| memory.PeakWorkingSetSize as u64);
-        (cpu, rss)
-    }
-    #[cfg(not(any(unix, windows)))]
-    {
-        (None, None)
-    }
+    playsparse_core::process_resources()
 }
 
 #[cfg(test)]

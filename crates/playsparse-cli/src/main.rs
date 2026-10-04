@@ -13,6 +13,8 @@ use std::{
     time::Instant,
 };
 
+mod diagnostics;
+
 #[derive(Parser)]
 #[command(
     name = "playsparse",
@@ -122,11 +124,24 @@ enum Command {
         #[arg(long)]
         output: Option<PathBuf>,
     },
+    /// Report prerequisites as JSON; optionally perform a bounded disposable mount test.
     Doctor {
         #[arg(long)]
         store: Option<PathBuf>,
         #[arg(long, default_value = ".")]
         path: PathBuf,
+        /// Print actionable text instead of JSON.
+        #[arg(long)]
+        human: bool,
+        /// Test a tiny readonly mount, read and ordinary unmount (POSIX only).
+        #[arg(long)]
+        mount_test: bool,
+    },
+    #[command(hide = true)]
+    DoctorProbeRead {
+        path: PathBuf,
+        #[arg(long)]
+        different_device_from: Option<PathBuf>,
     },
     /// Diagnostic direct range read (bounded to 16 MiB). Binary bytes on stdout.
     Read {
@@ -304,7 +319,28 @@ fn main() -> Result<()> {
             }
             print(&value)
         }
-        Command::Doctor { store, path } => print(&doctor(store.as_deref(), &path)),
+        Command::Doctor {
+            store,
+            path,
+            human,
+            mount_test,
+        } => {
+            let mut report = doctor(store.as_deref(), &path);
+            let exit = diagnostics::augment(&mut report, mount_test);
+            if human {
+                diagnostics::print_human(&report);
+            } else {
+                print(&report)?;
+            }
+            if exit != 0 {
+                std::process::exit(exit);
+            }
+            Ok(())
+        }
+        Command::DoctorProbeRead {
+            path,
+            different_device_from,
+        } => diagnostics::probe_read(&path, different_device_from.as_deref()),
         Command::Read {
             store,
             path,
@@ -745,44 +781,11 @@ fn benchmark(source: &Path, root: &Path, iterations: usize, cache_bytes: usize) 
         json!({"kind":"direct range resolver benchmark (not mounted I/O)","os":std::env::consts::OS,"arch":std::env::consts::ARCH,"cold_definition":"decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold","store_open_first_ms":cold_open_ms,"store_open_repeat_ms":warm_open_ms,"logical_bytes":total,"physical_bytes":directory_bytes(root)?,"physical_bytes_definition":"sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately","allocated_bytes":allocation.0,"filesystem_entries":allocation.1,"object_lookup":percentiles(lookups),"random_chunk_read":percentiles(chunk_reads),"iterations":iterations,"workloads":workloads,"sequential":{"original_mib_s":total as f64/1048576.0/native_seconds,"playsparse_mib_s":total as f64/1048576.0/cas_seconds,"blake3":native_hash.to_string(),"bytes_equal":true},"cold_cache":cold_metrics,"warm_cache":warm.metrics(),"requested_random_bytes":requests,"process_cpu_seconds":cpu_seconds().zip(cpu_start).map(|(end,start)|end-start),"wall_seconds":elapsed,"peak_rss_bytes":peak_rss(),"native_filesystem_compression_baseline":"Windows WOF measurement required; not available on this OS"}),
     )
 }
-#[cfg(unix)]
-fn usage() -> Option<libc::rusage> {
-    let mut r = std::mem::MaybeUninit::<libc::rusage>::zeroed();
-    // SAFETY: rusage points to valid initialized writable storage; libc fills it.
-    if unsafe { libc::getrusage(libc::RUSAGE_SELF, r.as_mut_ptr()) } == 0 {
-        Some(unsafe { r.assume_init() })
-    } else {
-        None
-    }
-}
 fn cpu_seconds() -> Option<f64> {
-    #[cfg(unix)]
-    {
-        usage().map(|r| {
-            r.ru_utime.tv_sec as f64
-                + r.ru_utime.tv_usec as f64 / 1e6
-                + r.ru_stime.tv_sec as f64
-                + r.ru_stime.tv_usec as f64 / 1e6
-        })
-    }
-    #[cfg(not(unix))]
-    {
-        None
-    }
+    playsparse_core::process_resources().0
 }
 fn peak_rss() -> Option<u64> {
-    #[cfg(target_os = "macos")]
-    {
-        usage().map(|r| r.ru_maxrss as u64)
-    }
-    #[cfg(target_os = "linux")]
-    {
-        usage().map(|r| r.ru_maxrss as u64 * 1024)
-    }
-    #[cfg(not(any(target_os = "macos", target_os = "linux")))]
-    {
-        None
-    }
+    playsparse_core::process_resources().1
 }
 // libc statvfs field widths differ between Unix targets.
 #[allow(clippy::unnecessary_cast)]
@@ -842,9 +845,14 @@ fn doctor(store: Option<&Path>, path: &Path) -> Value {
     {
         report["windows_resources"] = windows_resources;
     }
+    #[cfg(target_os = "macos")]
+    {
+        report["mount_diagnostic"] = json!(playsparse_vfs_fuse::macos_diagnostic());
+    }
     // Keep the variable mutable on all platforms without cfg-dependent warnings.
-    report["filesystem_support"] =
-        json!("read-only native callbacks; actual driver mount test required on each platform");
+    report["filesystem_support"] = json!(
+        "readonly native callbacks and experimental writable overlays; actual driver mount test required on each platform"
+    );
     report
 }
 
