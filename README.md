@@ -55,7 +55,7 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [x] **EXPERIMENTAL:** macFUSE 5.3.3+ kernel channel transport, compiled/tested against the signed 5.4.0 SDK
 - [x] **WORKING:** native POSIX validation runner and macOS SDK checks without driver installation
 - [ ] **BLOCKED:** native macOS mounted runtime; macFUSE installation and kernel approval required
-- [ ] **HARDWARE REQUIRED:**   Linux validation
+- [ ] **HARDWARE REQUIRED:** physical Linux validation
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
 - [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
 - [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
@@ -75,7 +75,7 @@ See [first mounted run](docs/evidence/first-mounted-run.md),
 [writable overlay](docs/writable-overlay.md),
 [adaptive policy](docs/adaptive-policy.md),
 [tiered storage](docs/tiered-storage.md),
-[FUSE backend](docs/fuse-backend.md), [macOS/  validation](docs/posix-validation.md),
+[FUSE backend](docs/fuse-backend.md), [macOS/Linux validation](docs/posix-validation.md),
 [Windows backend](docs/windows-backend.md),
 [format v1](docs/storage-format-v1.md) and
 [Experiment 04](experiments/04-loose-vs-packfiles).
@@ -114,21 +114,21 @@ python3 tools/posix-runtime-validation.py --work /tmp/playsparse-macos-01 --buil
 The runner enables `macfuse` during the build. If the driver is absent, it returns
 exit code 2 with a `BLOCKED` report.
 
-###   / Linux
+### Linux
 
 Provide a `/dev/fuse` character device that the testing user can open for reading
 and writing, `fusermount3` or `fusermount`, Git, Python, Rust and a C linker.
 The current Linux build does not require a libfuse development package. Run:
 
 ```bash
-python3 tools/posix-runtime-validation.py --work /tmp/playsparse-rhel-01 --build
+python3 tools/posix-runtime-validation.py --work /tmp/playsparse-linux-01 --build
 ```
 
 The mounted runner tests readonly 10 GiB/mmap/executable behavior, writable
 updater/remount/commit/discard, identical-trace adaptive replay, and verified
 local/HTTP tiers. It does not install packages, drivers or change mount
 privileges. An owned native application can also be tested with `--source` and
-`--executable`; see the [macOS/  guide](docs/posix-validation.md) for
+`--executable`; see the [macOS/Linux guide](docs/posix-validation.md) for
 prerequisites, application commands and evidence interpretation.
 
 ## Rust CLI
@@ -371,7 +371,7 @@ arbitrary reader receives identical bytes
 ```
 
 The next step is a real macOS kernel-backed mount after macFUSE installation
-and approval, followed by an owned native application and   validation.
+and approval, followed by an owned native application and physical Linux validation.
 The [POSIX runner](docs/posix-validation.md) is ready; native SDK success and
 Linux VM mounts are separate evidence from that pending Mac run.
 
