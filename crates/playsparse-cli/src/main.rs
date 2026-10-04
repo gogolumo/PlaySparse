@@ -797,9 +797,20 @@ fn doctor(store: Option<&Path>, path: &Path) -> Value {
     #[cfg(unix)]
     let mount = playsparse_vfs_fuse::availability();
     #[cfg(windows)]
-    let mount = playsparse_vfs_win::availability();
+    let mount = {
+        let detail = playsparse_vfs_win::availability();
+        json!({
+            "backend": "WinFsp",
+            "available": detail.starts_with("WinFsp DLL loaded"),
+            "detail": detail,
+        })
+    };
     #[cfg(not(any(unix, windows)))]
-    let mount = "unsupported OS";
+    let mount = json!({
+        "backend": "unsupported",
+        "available": false,
+        "detail": "unsupported OS",
+    });
     let permissions=fs::metadata(path).map(|m|json!({"path":path,"exists":true,"readonly_flag":m.permissions().readonly(),"note":"actual mount privilege is checked by backend at mount time"})).unwrap_or_else(|e|json!({"path":path,"exists":false,"error":e.to_string()}));
     #[cfg(unix)]
     let disk = {
@@ -898,5 +909,14 @@ mod mount_path_tests {
             resolved_location(Path::new("Q:")).unwrap(),
             PathBuf::from(r"\\?\Q:\")
         );
+    }
+
+    #[test]
+    fn doctor_reports_structured_windows_mount_backend() {
+        let report = doctor(None, &std::env::temp_dir());
+        let backend = &report["mount_backend"];
+        assert_eq!(backend["backend"], "WinFsp");
+        assert!(backend["available"].is_boolean());
+        assert!(backend["detail"].is_string());
     }
 }
