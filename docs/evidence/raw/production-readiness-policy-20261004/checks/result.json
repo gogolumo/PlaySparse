@@ -1,0 +1,54 @@
+{
+  "timestamp": "2026-10-04T19:30:15.837743+00:00",
+  "status": "PASS",
+  "commands": [
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--package",
+        "playsparse-cache",
+        "--package",
+        "playsparse-policy",
+        "--package",
+        "playsparse-range"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 0.09077687497483566
+    },
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "-p",
+        "playsparse-cache",
+        "-p",
+        "playsparse-policy",
+        "-p",
+        "playsparse-range",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 5.784693166962825
+    },
+    {
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "-p",
+        "playsparse-cache",
+        "-p",
+        "playsparse-policy",
+        "-p",
+        "playsparse-range"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 5.395186875015497
+    }
+  ]
+}

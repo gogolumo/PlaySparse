@@ -1,7 +1,7 @@
 # macOS-first POSIX runtime continuation
 
 Starting revision: `05e23e7` (merged adaptive writable sprint). The user chose
-native Mac execution first, with Red Hat Linux as another target. No Windows
+native Mac execution first, with Linux as another target. No Windows
 hardware is available. This continuation preserves the immutable CAS and common
 overlay/resolver; it changes only platform mounting, path normalization and
 validation tooling.
@@ -61,7 +61,7 @@ The [fresh runner result](raw/posix-runtime-20261004/linux/result.json) and
 [environment](raw/posix-runtime-20261004/linux/environment.json) record clean
 `2a9ee0e`, a locked release build by the runner and both binary hashes. This is
 Debian userspace in the existing privileged LinuxKit/aarch64 VM, with real
-`/dev/fuse`; it is not native Mac evidence or a Red Hat hardware measurement.
+`/dev/fuse`; it is not native Mac evidence or a physical Linux hardware measurement.
 All four stages pass: generated 10 GiB readonly/mmap/native executable, writable
 updater/remount/immutable commit/copied-overlay discard, identical-trace
 adaptive replay, and verified promotion/offline remount/exact HTTP/corruption.
@@ -82,6 +82,6 @@ python3 tools/posix-runtime-validation.py --work /tmp/playsparse-native-next --b
 
 Both work paths must be new. The second command runs on native Mac only after
 macFUSE is installed/approved, or on Linux with accessible `/dev/fuse` and
-`fusermount3`. The [guide](../posix-validation.md) covers Red Hat prerequisites
+`fusermount3`. The [guide](../posix-validation.md) covers Linux prerequisites
 and the optional local owned-application test. No game assets, temporary stores,
 SDK binaries or installer images are committed.

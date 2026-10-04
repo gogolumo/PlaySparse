@@ -173,6 +173,10 @@ the detector correction has dedicated migration/overlap/repeat/gap tests.
 Benchmark artifacts retain every static/adaptive run, including regressions.
 Use the raw run provenance and measurements, not this algorithm description,
 to decide whether a policy helps a particular workload.
+The [2026-10-04 readiness comparison](evidence/production-readiness-policy.md)
+retains the same-input BEFORE and AFTER trials: wasted prefetch fell, while
+adaptive still had higher median p95, CPU and raw loads than same-build static.
+Static remains the default.
 
 Unit tests cover actual priority eviction and demand-only decay, variable-size
 multi-victim and entry-pressure protection, pre-load and post-load demand races,

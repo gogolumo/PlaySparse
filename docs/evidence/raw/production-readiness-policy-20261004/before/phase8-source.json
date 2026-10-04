@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "commit": "e7d90c7f48e988607ed6b29f4838efdafd3eaa1e",
+  "binary_sha256": "4fd440e7e628db42fafed88a7932046eac073a5f8cf542aeed0ba5569e140da6",
+  "source_hash_basis": "committed file bytes at recorded SHA; these adaptive files were unmodified in recorded before working_tree_status",
+  "source_sha256": {
+    "crates/playsparse-cache/src/lib.rs": "a57d599fe48c9498c12e52548c73e406eab03ac28698f8f857ea494e676e45de",
+    "crates/playsparse-policy/src/lib.rs": "1f96bb8ec5b62467a768a288d1cc5b9663bb7cb3e759b6e36cc88b7a8e8a2f62",
+    "crates/playsparse-range/src/lib.rs": "97c00add8e9456d3ff67cd37af5c0acb534fa1c47c63f0fa9c880d8295e33a8d",
+    "crates/playsparse-range/src/prefetch.rs": "e9d20c9600f18ab107686f9e661458fb4f825ef6fdcf0eadd6e97b70bff68656",
+    "crates/playsparse-range/src/replay.rs": "a3ea3afef8d33bf3678412f1ab55d2f177dfb0f7bc6b3ceab520c4dc2281d4c7",
+    "tools/adaptive-smoke.py": "fa4b06f5806860cdc57ecaece7fde2d1b5d625fef2a79cec6abdd1bbbba88053"
+  },
+  "trace_sha256": "4b9619621eeb8c8f6a6e71433453d4b7a4139bdae16e0e222ebcb127af054288",
+  "policy_sha256": "0e52665418a64e6262ee380a254f95a98982f346c66beca90b28a55cb6ee1eaa"
+}

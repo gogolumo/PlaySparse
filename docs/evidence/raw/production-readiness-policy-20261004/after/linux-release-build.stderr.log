@@ -1,0 +1,17 @@
+ Downloading crates ...
+  Downloaded ctrlc v3.5.2
+   Compiling playsparse-core v0.1.0 (/src/crates/playsparse-core)
+   Compiling nix v0.31.3
+   Compiling playsparse-cli v0.1.0 (/src/crates/playsparse-cli)
+   Compiling playsparse-trace v0.1.0 (/src/crates/playsparse-trace)
+   Compiling playsparse-cache v0.1.0 (/src/crates/playsparse-cache)
+   Compiling playsparse-store v0.1.0 (/src/crates/playsparse-store)
+   Compiling io-probe v0.1.0 (/src/tools/io-probe)
+   Compiling playsparse-policy v0.1.0 (/src/crates/playsparse-policy)
+   Compiling playsparse-range v0.1.0 (/src/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/src/crates/playsparse-overlay)
+   Compiling playsparse-vfs-win v0.1.0 (/src/crates/playsparse-vfs-win)
+   Compiling fuser v0.18.0
+   Compiling ctrlc v3.5.2
+   Compiling playsparse-vfs-fuse v0.1.0 (/src/crates/playsparse-vfs-fuse)
+    Finished `release` profile [optimized] target(s) in 11.49s

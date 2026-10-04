@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T19:30:39.096590+00:00",
+  "status": "PASS",
+  "scope": "Linux VM deterministic same-input replay; synthetic workload, no physical hardware or game validation",
+  "default": "static",
+  "evaluation": "adaptive after still has higher median p95, CPU and raw loads than same-build static; no speedup claimed",
+  "fresh_process_trials_per_mode": 3,
+  "alternating_order": [
+    [
+      "static",
+      "adaptive"
+    ],
+    [
+      "adaptive",
+      "static"
+    ],
+    [
+      "static",
+      "adaptive"
+    ]
+  ],
+  "trace_sha256": "4b9619621eeb8c8f6a6e71433453d4b7a4139bdae16e0e222ebcb127af054288",
+  "policy_sha256": "0e52665418a64e6262ee380a254f95a98982f346c66beca90b28a55cb6ee1eaa",
+  "medians": {
+    "before": {
+      "static": {
+        "p50_us": 33.5,
+        "p95_us": 41.833,
+        "p99_us": 61.834,
+        "cpu_seconds": 0.07828,
+        "process_peak_rss_bytes": 24162304,
+        "raw_bytes_loaded": 60817408,
+        "read_amplification": 0.5960179833012202,
+        "wall_seconds": 0.078283292,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0
+      },
+      "adaptive": {
+        "p50_us": 36.708,
+        "p95_us": 51.875,
+        "p99_us": 89.75,
+        "cpu_seconds": 0.141952,
+        "process_peak_rss_bytes": 24162304,
+        "raw_bytes_loaded": 153354240,
+        "read_amplification": 1.5028901734104045,
+        "wall_seconds": 0.086861375,
+        "prefetch_bytes_loaded": 95289344,
+        "prefetch_useful_bytes": 4194304,
+        "prefetch_wasted_bytes": 91095040
+      }
+    },
+    "after": {
+      "static": {
+        "p50_us": 34.25,
+        "p95_us": 47.458,
+        "p99_us": 62.084,
+        "cpu_seconds": 0.082633,
+        "process_peak_rss_bytes": 22921216,
+        "raw_bytes_loaded": 60817408,
+        "read_amplification": 0.5960179833012202,
+        "wall_seconds": 0.082632125,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0
+      },
+      "adaptive": {
+        "p50_us": 35.0,
+        "p95_us": 52.083,
+        "p99_us": 69.5,
+        "cpu_seconds": 0.088748,
+        "process_peak_rss_bytes": 22921216,
+        "raw_bytes_loaded": 62521344,
+        "read_amplification": 0.6127167630057804,
+        "wall_seconds": 0.085045334,
+        "prefetch_bytes_loaded": 3997696,
+        "prefetch_useful_bytes": 3997696,
+        "prefetch_wasted_bytes": 0
+      }
+    }
+  },
+  "runs": [
+    {
+      "phase": "before",
+      "mode": "static",
+      "trial": 0,
+      "artifact": "before/static-0.json",
+      "sha256": "7a8674037dc19d53a296cf86ac0038918916492ac86f166b8d6ca02b157a2b3c"
+    },
+    {
+      "phase": "before",
+      "mode": "static",
+      "trial": 1,
+      "artifact": "before/static-1.json",
+      "sha256": "1c603272224425e347803bb5de0ccaa45a3912cef7f06977e7c752a8b48dc372"
+    },
+    {
+      "phase": "before",
+      "mode": "static",
+      "trial": 2,
+      "artifact": "before/static-2.json",
+      "sha256": "5e7b5fc7b2dbc8f601fafcf07b05bba0bbadba8fdae22da68050f81aaaad3aa1"
+    },
+    {
+      "phase": "before",
+      "mode": "adaptive",
+      "trial": 0,
+      "artifact": "before/adaptive-0.json",
+      "sha256": "c5ed1781d01ed28d43098b1212b401f860ad6e30f818a4df7b8af178a82f86cc"
+    },
+    {
+      "phase": "before",
+      "mode": "adaptive",
+      "trial": 1,
+      "artifact": "before/adaptive-1.json",
+      "sha256": "691ceda651b8639f596798ac1f65a5dbc7d48d0166f7c44023366f4548551a8c"
+    },
+    {
+      "phase": "before",
+      "mode": "adaptive",
+      "trial": 2,
+      "artifact": "before/adaptive-2.json",
+      "sha256": "06c0a61761437597c2ed0ec92c71b43725d130df1860b987bdb695749cd93daa"
+    },
+    {
+      "phase": "after",
+      "mode": "static",
+      "trial": 0,
+      "artifact": "after/static-0.json",
+      "sha256": "96376c7384a206e7424c4ee3f2d1ff1177b252f02e3a401c98f707a297ff12a9"
+    },
+    {
+      "phase": "after",
+      "mode": "static",
+      "trial": 1,
+      "artifact": "after/static-1.json",
+      "sha256": "0314429f1b6fe58bab4c88aed1cd912b006860df8c098a865e627012d692d74c"
+    },
+    {
+      "phase": "after",
+      "mode": "static",
+      "trial": 2,
+      "artifact": "after/static-2.json",
+      "sha256": "9367bf35a31c8045dabf74e4c9e41c560d09726251ebeb0b7894d460aa050c52"
+    },
+    {
+      "phase": "after",
+      "mode": "adaptive",
+      "trial": 0,
+      "artifact": "after/adaptive-0.json",
+      "sha256": "1877f7fa03ab113b03454321f2ff872c84e45707ca22529bc3a6f1be5b928828"
+    },
+    {
+      "phase": "after",
+      "mode": "adaptive",
+      "trial": 1,
+      "artifact": "after/adaptive-1.json",
+      "sha256": "bbad38457de7ed94798aea887ebc680c183ed85445418423ba1b47654c806a70"
+    },
+    {
+      "phase": "after",
+      "mode": "adaptive",
+      "trial": 2,
+      "artifact": "after/adaptive-2.json",
+      "sha256": "2bb5c192f8299187005a425cad4f40914ceb339af88f2c8830317764db6966a7"
+    }
+  ],
+  "byte_identity": {
+    "queries": 960,
+    "returned_bytes": 102039552,
+    "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+    "all_twelve_runs_identical": true
+  },
+  "provenance": {
+    "before": "dirty e7d90c7 worktree; policy scoped hashes recovered from unmodified committed files, not full-binary source attestation",
+    "after": "dirty e7d90c7 worktree; live scoped hashes recorded during Linux build; later assertion/formatting edits are outside measured binary",
+    "before_binary_sha256": "4fd440e7e628db42fafed88a7932046eac073a5f8cf542aeed0ba5569e140da6",
+    "after_binary_sha256": "be31aa0eb482c04f6d7d2a03a17d8f8828bd122176ca41322d6715b2801f8594",
+    "raw_timestamps": "preserved verbatim; before and after are separate sessions with uncontrolled OS/device caches"
+  }
+}
