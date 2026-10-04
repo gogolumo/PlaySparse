@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-10-04T10:53:45.114799+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "system": "Darwin",
+  "kernel": "25.6.0",
+  "architecture": "arm64",
+  "python": "3.14.6",
+  "cpu_count": 10,
+  "uid": 501,
+  "git": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/Users/bogdan_dron/Documents/PlaySparse",
+      "-C",
+      "/Users/bogdan_dron/Documents/PlaySparse",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "05e23e7e6a0be99b0b6f4f933523272c863e2d2d",
+    "stderr": ""
+  },
+  "working_tree": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/Users/bogdan_dron/Documents/PlaySparse",
+      "-C",
+      "/Users/bogdan_dron/Documents/PlaySparse",
+      "status",
+      "--porcelain"
+    ],
+    "exit_code": 0,
+    "stdout": "M crates/playsparse-vfs-fuse/src/fuse.rs\n M crates/playsparse-vfs-fuse/src/fuse/tests.rs\n M crates/playsparse-vfs-fuse/src/lib.rs\n M crates/playsparse-vfs-fuse/src/writable.rs\n M crates/playsparse-vfs-fuse/src/writable/tests.rs\n?? crates/playsparse-vfs-fuse/src/macos.rs\n?? docs/posix-validation.md\n?? tools/macos-sdk-check.py\n?? tools/posix-runtime-validation.py",
+    "stderr": ""
+  },
+  "source_clean": false,
+  "available_disk_bytes": 11826954240,
+  "physical_hardware_status": "UNKNOWN; virtualization hints are not a physical-machine attestation",
+  "hardware_model": {
+    "command": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.model"
+    ],
+    "exit_code": 0,
+    "stdout": "Mac16,13",
+    "stderr": ""
+  },
+  "ram": {
+    "command": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.memsize"
+    ],
+    "exit_code": 0,
+    "stdout": "17179869184",
+    "stderr": ""
+  },
+  "macfuse": {
+    "filesystem_bundle": "/Library/Filesystems/macfuse.fs",
+    "installed": false,
+    "framework_directory_present": false,
+    "driver_approval_and_load_status": "UNKNOWN; a successful mount is required"
+  },
+  "unmount_helper": true
+}

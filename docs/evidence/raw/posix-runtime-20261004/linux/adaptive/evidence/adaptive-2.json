@@ -1,0 +1,42 @@
+{
+  "cache": {
+    "decompressions": 2350,
+    "decompressions_avoided": 848,
+    "evictions": 888,
+    "hit_ratio": 0.48763657274295574,
+    "hits": 848,
+    "in_flight_waits": 0,
+    "misses": 891,
+    "peak_resident_bytes": 4194304,
+    "prefetch_bytes_loaded": 95617024,
+    "prefetch_chunks_loaded": 1459,
+    "prefetch_dropped": 0,
+    "prefetch_errors": 0,
+    "prefetch_expired": 0,
+    "prefetch_hits": 59,
+    "prefetch_peak_reserved_bytes": 131072,
+    "prefetch_queue_high_watermark": 2,
+    "prefetch_requests": 1459,
+    "prefetch_reserved_bytes": 0,
+    "prefetch_resident_unconsumed_bytes": 0,
+    "prefetch_useful_bytes": 3866624,
+    "prefetch_wasted_bytes": 91750400,
+    "raw_bytes_loaded": 154009600,
+    "resident_bytes": 4194304,
+    "resident_entries": 64
+  },
+  "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+  "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+  "cpu_seconds": 0.146783,
+  "latency_ns": {
+    "p50": 40083,
+    "p95": 49959,
+    "p99": 68041
+  },
+  "process_peak_rss_bytes": 22978560,
+  "queries": 960,
+  "read_amplification": 1.5093127809890816,
+  "returned_bytes": 102039552,
+  "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+  "wall_seconds": 0.089326041
+}

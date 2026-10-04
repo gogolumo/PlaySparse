@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "status": "PASS",
+  "commands": [
+    {
+      "label": "build",
+      "command": [
+        "/usr/local/cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.17068724999990081
+    },
+    {
+      "label": "doctor",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "doctor",
+        "--path",
+        "/tmp/playsparse-posix-linux-20261004-02"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.001650292004342191
+    },
+    {
+      "label": "readonly",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/mounted-smoke.py",
+        "--work",
+        "/tmp/playsparse-posix-linux-20261004-02/readonly",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe",
+        "--world-bytes",
+        "10737418240",
+        "--iterations",
+        "32",
+        "--cache",
+        "64M"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 40.972209894003754
+    },
+    {
+      "label": "writable",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/mounted-update.py",
+        "--work",
+        "/tmp/playsparse-posix-linux-20261004-02/writable",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.294748874999641
+    },
+    {
+      "label": "adaptive",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/adaptive-smoke.py",
+        "--work",
+        "/tmp/playsparse-posix-linux-20261004-02/adaptive",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.1946777080011088
+    },
+    {
+      "label": "tiers",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/tiered-smoke.py",
+        "--work",
+        "/tmp/playsparse-posix-linux-20261004-02/tiers",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 4.5613607530031
+    }
+  ],
+  "stages": {
+    "readonly": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-posix-linux-20261004-02/readonly/evidence"
+    },
+    "writable": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-posix-linux-20261004-02/writable/evidence"
+    },
+    "adaptive": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-posix-linux-20261004-02/adaptive/evidence"
+    },
+    "tiers": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-posix-linux-20261004-02/tiers/evidence"
+    }
+  },
+  "real_game_validation": "NOT RUN",
+  "evidence": "/tmp/playsparse-posix-linux-20261004-02",
+  "scope": "generated fixtures on real FUSE/macFUSE mounts; one optional application only",
+  "binaries": [
+    {
+      "path": "/src/target-linux/release/playsparse",
+      "sha256": "4fd440e7e628db42fafed88a7932046eac073a5f8cf542aeed0ba5569e140da6"
+    },
+    {
+      "path": "/src/target-linux/release/io-probe",
+      "sha256": "64210fd5d38ac5ffd5717cc492bdbddc18acdef600921f6a5426e0f1b5793a0e"
+    }
+  ],
+  "binary_provenance": "built by this run",
+  "wall_seconds": 48.4566780630048
+}

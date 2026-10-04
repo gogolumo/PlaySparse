@@ -7,6 +7,9 @@ use playsparse_core::Chunker;
 use playsparse_store::{PackOptions, Store, pack_directory};
 
 fn fixture(root: &Path) -> (PathBuf, PathBuf, PathBuf, Vec<u8>) {
+    // macOS /var and /tmp are aliases. Physical writable storage deliberately
+    // follows no symlinks, so use the real spelling of this private fixture.
+    let root = root.canonicalize().unwrap();
     let source = root.join("source");
     let store = root.join("store");
     let overlay = root.join("overlay");
@@ -115,7 +118,7 @@ fn real_writable_mount_update_remount_mmap_and_immutable_base() {
     config.mount_options.push(MountOption::RW);
     {
         let backend = WritableFs::open(&store, 16384, &overlay, None).unwrap();
-        let session = fuser::spawn_mount(backend, &mounted, &config).unwrap();
+        let session = crate::spawn_session(backend, &mounted, &config).unwrap();
         let data = OpenOptions::new()
             .read(true)
             .write(true)
@@ -221,7 +224,7 @@ fn real_writable_mount_update_remount_mmap_and_immutable_base() {
     }
     {
         let backend = WritableFs::open(&store, 16384, &overlay, None).unwrap();
-        let session = fuser::spawn_mount(backend, &mounted, &config).unwrap();
+        let session = crate::spawn_session(backend, &mounted, &config).unwrap();
         assert_eq!(fs::read(mounted.join("assets/data")).unwrap(), expected);
         assert_eq!(
             fs::read(mounted.join("installed/staged")).unwrap(),

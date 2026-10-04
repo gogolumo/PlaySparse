@@ -1,0 +1,26 @@
+{
+  "arch": "aarch64",
+  "available_disk_bytes": 445206171648,
+  "available_ram_bytes": 7534395392,
+  "codecs": [
+    "raw",
+    "zstd (in-process)"
+  ],
+  "filesystem_support": "read-only native callbacks; actual driver mount test required on each platform",
+  "hash": "BLAKE3 raw bytes",
+  "memory_note": "Linux MemAvailable; Windows ullAvailPhys; macOS free+speculative pages (excludes reclaimable inactive/compressed pages); null on measurement failure",
+  "mount_backend": {
+    "available": true,
+    "backend": "FUSE",
+    "detail": "Linux /dev/fuse can be opened; mounting still requires mount permission or fusermount3."
+  },
+  "os": "linux",
+  "permissions": {
+    "exists": true,
+    "note": "actual mount privilege is checked by backend at mount time",
+    "path": "/tmp/playsparse-posix-linux-20261004-02",
+    "readonly_flag": false
+  },
+  "store_health": null,
+  "windows_physical_test": "REQUIRED"
+}

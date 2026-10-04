@@ -43,17 +43,27 @@ filesystem driver. They explicitly report mount support as unavailable. To
 build the real macFUSE path:
 
 ```sh
-brew install macfuse pkgconf
-cargo build --release -p playsparse-cli --features macfuse
+brew install pkgconf
+# Install the signed macFUSE 5.4 package from its official release page first.
+cargo build --locked --release -p playsparse-cli --features macfuse
 ```
 
-Follow the installed driver's setup instructions before mounting. macFUSE
-provides the FUSE runtime and libraries; its current project also offers an
-FSKit backend on macOS 26. That does not establish PlaySparse compatibility
-with FSKit. This implementation follows fuser's macOS libfuse mount path; a
-physical macOS mount and executable test are still required. See the
+Follow the installed driver's kernel-backend setup instructions before mounting.
+The supported range is macFUSE 5.3.3 or newer in the 5.x series; the SDK check
+pins the signed 5.4.0 release. macFUSE 5.3 disabled the `fuse_mount_compat25`
+entrypoint used by fuser 0.18. PlaySparse now mounts through public `fuse_mount`,
+retains its channel and duplicates the borrowed `fuse_chan_fd` for
+`Session::from_fd`. Ordinary OS unmount and channel destruction preserve single
+ownership; neither fuser nor the application owns the original channel fd.
+
+This transport uses the kernel backend. FSKit has no compatible device fd and
+is explicitly unsupported; merely adding `backend=fskit` cannot supply the
+missing channel transport. A physical macOS mount and executable test are
+still required. See the
 [macFUSE project](https://macfuse.github.io/) and
-[fuser macOS dependency instructions](https://github.com/cberner/fuser/blob/v0.18.0/README.md#macos-untested).
+[fuser macOS dependency instructions](https://github.com/cberner/fuser/blob/v0.18.0/README.md#macos-untested),
+[upstream compatibility issue](https://github.com/cberner/fuser/issues/752) and
+[POSIX validation guide](posix-validation.md).
 
 ## Implemented behavior
 

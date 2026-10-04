@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "status": "BLOCKED",
+  "commands": [],
+  "stages": {},
+  "real_game_validation": "NOT RUN",
+  "evidence": "/private/tmp/playsparse-posix-macos-20261004-01",
+  "scope": "generated fixtures on real FUSE/macFUSE mounts; one optional application only",
+  "error": "Native macOS requires installed and approved macFUSE; no driver was installed or approved",
+  "wall_seconds": 0.04784250003285706
+}
