@@ -14,12 +14,12 @@ The Rust runtime serves file ranges directly from compressed CAS through real
 Linux FUSE and Windows WinFsp mounts. Generated native programs and the
 open-source Zstd CLI have run from the mounted view. A generated 10 GiB file
 passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. **Native macOS
-validation is the current priority**, with Red Hat Linux as another target.
+validation is the current priority**, with Linux as another target.
 
 | Platform | Verified behavior | Remaining validation |
 |---|---|---|
 | macOS arm64 | Native macFUSE 5.4.0 SDK compile/link, fmt, clippy, 76 tests and release build | Actual mounting is **BLOCKED** on the development Mac because macFUSE is absent; kernel approval and mounted application tests remain open |
-| Linux | Real FUSE mounts in a Linux VM and hosted CI: large/mapped reads, executable launch, writable updater/remount/commit/discard, adaptive replay and local/HTTP tiers | Red Hat hardware and real game/launcher compatibility are **NOT RUN** |
+| Linux | Real FUSE mounts in a Linux VM and hosted CI: large/mapped reads, executable launch, writable updater/remount/commit/discard, adaptive replay and local/HTTP tiers |   hardware and real game/launcher compatibility are **NOT RUN** |
 | Windows | Native WinFsp mounts in hosted CI, including readonly, writable, adaptive and tiered/HTTP workflows | Physical desktop, real game/launcher and WOF comparisons remain open |
 
 All eight push/PR checks passed at `0c85fe2`, now merged through
@@ -55,7 +55,7 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [x] **EXPERIMENTAL:** macFUSE 5.3.3+ kernel channel transport, compiled/tested against the signed 5.4.0 SDK
 - [x] **WORKING:** native POSIX validation runner and macOS SDK checks without driver installation
 - [ ] **BLOCKED:** native macOS mounted runtime; macFUSE installation and kernel approval required
-- [ ] **HARDWARE REQUIRED:** Red Hat Linux validation
+- [ ] **HARDWARE REQUIRED:**   Linux validation
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
 - [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
 - [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
@@ -75,7 +75,7 @@ See [first mounted run](docs/evidence/first-mounted-run.md),
 [writable overlay](docs/writable-overlay.md),
 [adaptive policy](docs/adaptive-policy.md),
 [tiered storage](docs/tiered-storage.md),
-[FUSE backend](docs/fuse-backend.md), [macOS/Red Hat validation](docs/posix-validation.md),
+[FUSE backend](docs/fuse-backend.md), [macOS/  validation](docs/posix-validation.md),
 [Windows backend](docs/windows-backend.md),
 [format v1](docs/storage-format-v1.md) and
 [Experiment 04](experiments/04-loose-vs-packfiles).
@@ -114,7 +114,7 @@ python3 tools/posix-runtime-validation.py --work /tmp/playsparse-macos-01 --buil
 The runner enables `macfuse` during the build. If the driver is absent, it returns
 exit code 2 with a `BLOCKED` report.
 
-### Red Hat / Linux
+###   / Linux
 
 Provide a `/dev/fuse` character device that the testing user can open for reading
 and writing, `fusermount3` or `fusermount`, Git, Python, Rust and a C linker.
@@ -128,7 +128,7 @@ The mounted runner tests readonly 10 GiB/mmap/executable behavior, writable
 updater/remount/commit/discard, identical-trace adaptive replay, and verified
 local/HTTP tiers. It does not install packages, drivers or change mount
 privileges. An owned native application can also be tested with `--source` and
-`--executable`; see the [macOS/Red Hat guide](docs/posix-validation.md) for
+`--executable`; see the [macOS/  guide](docs/posix-validation.md) for
 prerequisites, application commands and evidence interpretation.
 
 ## Rust CLI
@@ -371,7 +371,7 @@ arbitrary reader receives identical bytes
 ```
 
 The next step is a real macOS kernel-backed mount after macFUSE installation
-and approval, followed by an owned native application and Red Hat validation.
+and approval, followed by an owned native application and   validation.
 The [POSIX runner](docs/posix-validation.md) is ready; native SDK success and
 Linux VM mounts are separate evidence from that pending Mac run.
 
