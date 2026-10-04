@@ -64,19 +64,34 @@ jobs:
           sudo umount /tmp/playsparse-enospc
       - name: Loose versus packfiles experiment
         run: python3 experiments/04-loose-vs-packfiles/run_benchmark.py --output /tmp/playsparse-experiment04-ci --repetitions 2 --iterations 64 --size-mib 32
+      - name: Archive private root-owned evidence for upload
+        if: always()
+        run: |
+          sudo python3 - "$RUNNER_TEMP/linux-runtime-evidence.tar.gz" <<'PY'
+          from pathlib import Path
+          import sys, tarfile
+          roots = [Path('/tmp/playsparse-posix-ci'), Path('/tmp/playsparse-crash-ci'), Path('/tmp/playsparse-experiment04-ci')]
+          with tarfile.open(sys.argv[1], 'w:gz') as archive:
+              for root in roots:
+                  if not root.is_dir():
+                      continue
+                  if root.name == 'playsparse-posix-ci':
+                      paths = list(root.glob('*.json')) + list(root.glob('*.log')) + list(root.glob('*/evidence'))
+                  elif root.name == 'playsparse-crash-ci':
+                      paths = [root / 'evidence']
+                  else:
+                      paths = list(root.iterdir())
+                  for path in paths:
+                      if path.exists():
+                          archive.add(path, arcname=str(Path(root.name) / path.relative_to(root)))
+          PY
       - name: Preserve raw measured evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: linux-runtime-evidence
-          path: |
-            /tmp/playsparse-posix-ci/result.json
-            /tmp/playsparse-posix-ci/environment.json
-            /tmp/playsparse-posix-ci/*.log
-            /tmp/playsparse-posix-ci/*/evidence
-            /tmp/playsparse-crash-ci/evidence
-            /tmp/playsparse-experiment04-ci
-          if-no-files-found: warn
+          path: ${{ runner.temp }}/linux-runtime-evidence.tar.gz
+          if-no-files-found: error
 
   windows:
     runs-on: windows-latest
