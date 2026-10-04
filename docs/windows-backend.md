@@ -185,20 +185,69 @@ python tools/adaptive-smoke.py --work "$env:TEMP\playsparse-adaptive-new" --play
 python tools/tiered-smoke.py --work "$env:TEMP\playsparse-tiers-new" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
 ```
 
-A physical desktop validation harness records hardware, driver/tool versions,
-Git SHA, source/base integrity and generated mounted workloads. It never installs
-or approves drivers. From PowerShell 7 on an actual Windows client machine:
+The Windows harness requires **PowerShell 7**, Python 3.9+, the pinned Rust
+MSVC toolchain with LLVM/libclang, and an installed **WinFsp 2.1 Developer SDK**.
+Run it from a clean checkout. It builds the workspace, records a local binary
+build receipt, calls `doctor`, then verifies read-only, writable/remount/commit,
+adaptive replay and tiered-storage mounted workloads. A stage must exit zero
+and publish a `PASS` result before the harness advances.
+
+Choose a **new** evidence root outside Git and every original source directory,
+on a local fixed drive with at least 32 GiB free for the generated validation.
+The harness rejects reused work directories and records every exact command,
+exit code, stdout/stderr log, hardware/OS/driver/tool versions, Git SHA and binary
+hashes. `CARGO_TARGET_DIR` is respected. `-AllowDirty` explicitly permits a stable
+dirty checkout; the source digest and override remain visible in the receipt.
+Neither driver installation nor security approval is performed by this harness.
+
+From PowerShell 7 on an actual Windows client machine:
 
 ```powershell
-.\tools\windows-hardware-validation.ps1 -EvidenceRoot "$env:TEMP\playsparse-hardware-new" -PhysicalMachine
+$run = Join-Path $env:TEMP ('playsparse-hardware-' + [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))
+.\tools\windows-hardware-validation.ps1 -EvidenceRoot $run -PhysicalMachine
+Get-Content (Join-Path $run 'result.json')
 ```
 
-Optional `-GamePath` plus a relative `-Executable` invokes a locally owned
-application from a separate overlay with direct argument arrays. Assets remain
-local and originals are fingerprinted. This is one filesystem compatibility run;
-it does not establish Steam/Epic, DRM, anti-cheat or general game support.
-Hosted Server CI remains distinct from physical Windows client validation.
-See [sprint evidence](evidence/adaptive-writable-runtime.md),
+`-PhysicalMachine` is a user attestation. It also requires a Windows client OS
+and no detected VM hints; missing facts, hosted Server CI and virtual machines
+remain `BLOCKED` for the physical gate. Omitting the flag allows software
+validation on native hosted Windows without creating a physical result. Exit
+codes are `0` for the requested software stages, `1` for validation/integrity or
+cleanup failure, and `2` for a missing prerequisite. Physical, game, launcher
+and WOF fields must be read separately from the overall software status.
+
+An optional locally owned game uses a separate sealed base and writable
+overlay. Its original tree is fingerprinted before and after the run, including
+named stream contents. A relative executable and an argument array are required:
+
+```powershell
+$run = Join-Path $env:TEMP ('playsparse-owned-' + [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))
+.\tools\windows-hardware-validation.ps1 -EvidenceRoot $run -PhysicalMachine `
+    -GamePath 'C:\OwnedGames\Example' -Executable 'bin\Example.exe' `
+    -GameArguments @('--windowed', 'argument with spaces') -StageTimeoutSeconds 3600
+```
+
+The executable runs with the mount as its working directory. Argument elements
+are passed literally through `.NET ArgumentList`; the harness does not construct
+a shell command. A detected generated `TestGame` fixture remains `NOT RUN` for
+real-game validation even if supplied through `-GamePath`. A successful owned
+run establishes compatibility for that executable and those arguments only.
+Launcher/Steam/Epic, DRM and anti-cheat validation remain `NOT RUN`. The harness
+is not a sandbox: an application may perform its own writes outside the mounted
+tree, so choose its arguments and external save/config locations deliberately.
+
+Timeout or Ctrl+C requests owned child cleanup and ordinary unmount. Cleanup
+failures preserve the work directory and make the report fail; immutable source
+or base changes also fail even when the application already failed. Stage
+commands default to 1,800 seconds; `-StageTimeoutSeconds` accepts 60..86,400.
+Retain `environment.json`, `binary-build-manifest.json`, the top-level and child
+`result.json` files, and stdout/stderr logs. Keep proprietary assets and full
+disposable stores local.
+
+Add `-WofComparison` for original/WOF/PlaySparse file-read measurements. See
+[the reproducible WOF comparison](windows-comparison.md) for source selection,
+allocation definitions, cache limits and the physical evidence gate. See also
+[sprint evidence](evidence/adaptive-writable-runtime.md),
 [overlay](writable-overlay.md), [policy](adaptive-policy.md) and
 [tiers](tiered-storage.md).
 
