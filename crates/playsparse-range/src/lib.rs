@@ -239,8 +239,11 @@ impl RangeResolver {
             let stop = (end - chunk.offset).min(chunk.raw_size as u64) as usize;
             output.extend_from_slice(&loaded.chunk[start..stop]);
         }
-        if observation.is_some_and(|observation| observation.sequential)
-            && let (Some(prefetch), Some(policy)) = (&self.prefetch, &self.policy)
+        if observation.is_some_and(|observation| {
+            observation.sequential
+                && indices.end > indices.start
+                && observation.forward_bytes >= file.chunks[indices.end - 1].raw_size as u64
+        }) && let (Some(prefetch), Some(policy)) = (&self.prefetch, &self.policy)
         {
             for chunk in file
                 .chunks
@@ -271,6 +274,52 @@ mod tests {
     use playsparse_core::{Chunker, Layout};
     use playsparse_store::{PackOptions, pack_directory};
     use proptest::prelude::*;
+    #[test]
+    fn tiny_sequential_burst_does_not_predict_whole_chunks_until_chunk_coverage() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        std::fs::create_dir(&source).unwrap();
+        let bytes: Vec<u8> = (0..32768).map(|index| (index / 4096) as u8).collect();
+        std::fs::write(source.join("file"), &bytes).unwrap();
+        let store = tmp.path().join("store");
+        pack_directory(
+            &source,
+            &store,
+            &PackOptions {
+                chunk_size: 4096,
+                chunker: Chunker::Fixed,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        let reader = RangeResolver::open_configured(
+            &store,
+            RuntimeOptions {
+                cache_bytes: 65536,
+                policy: Some(Policy::default()),
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        for offset in 0..3 {
+            assert_eq!(
+                reader.read_range("file", offset, 1).unwrap(),
+                &bytes[offset as usize..offset as usize + 1]
+            );
+        }
+        assert_eq!(reader.metrics().prefetch_requests, 0);
+        assert_eq!(reader.metrics().raw_bytes_loaded, 4096);
+        assert_eq!(reader.read_range("file", 3, 4093).unwrap(), bytes[3..4096]);
+        assert_eq!(reader.metrics().prefetch_requests, 2);
+        assert!(reader.read_range("file", u64::MAX, 1).unwrap().is_empty());
+        assert_eq!(reader.metrics().prefetch_requests, 2);
+        reader.stop_prefetch();
+        assert_eq!(reader.metrics().prefetch_reserved_bytes, 0);
+        assert_eq!(
+            reader.metrics().prefetch_bytes_loaded,
+            reader.metrics().prefetch_useful_bytes + reader.metrics().prefetch_wasted_bytes
+        );
+    }
     proptest! {
         #![proptest_config(ProptestConfig::with_cases(48))]
         #[test] fn ranges_equal_source(data in proptest::collection::vec(any::<u8>(),0..80000), offset in 0u64..100000, len in 0usize..50000, cdc in any::<bool>(), loose in any::<bool>()) {

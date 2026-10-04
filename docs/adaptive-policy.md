@@ -59,7 +59,8 @@ measurement on the intended workload; it does not predict a speedup.
 File hotness increases with observations and halves after each
 `decay_accesses` interval without another access. File observations and
 sequential state each retain at most 4096 identities. A cached object's own
-priority also increases on demand hits and decays with cache accesses.
+priority also increases on demand hits and decays with demand cache accesses.
+Speculative lookups neither advance that aging clock nor refresh LRU recency.
 These scores affect actual eviction: adaptive mode chooses the lowest decayed
 priority among up to 64 least recently used candidates. Static mode evicts the
 least recently used object. The bounded candidate scan controls eviction CPU;
@@ -74,24 +75,42 @@ read-ahead can therefore advance overlapping windows without disabling the
 detector. Concurrent application streams sharing one file can still confuse
 this conservative heuristic; every resulting speculative request remains
 subject to the same byte, queue, time and cache bounds.
+Confidence alone does not schedule a whole object after a tiny read burst.
+The current forward run must cover at least the raw size of the last demanded
+chunk before look-ahead begins. Overlap counts only newly covered forward bytes;
+repeats, gaps, backward reads and expiry reset that coverage.
 
 After sufficient confidence, range reads enqueue only the next configured
 number of manifest chunks. One worker loads objects through the same verified
 tier resolver and single-flight cache used by demand reads. Pending hashes are
-deduplicated. Reservations include both queued and active requests and cannot
+deduplicated. A bounded recent-attempt history also suppresses the same hash
+until its TTL after completion or an admission refusal, including failed loads.
+It retains at most 4096 records; older records can be displaced under churn.
+Demand reads remain free to load an object immediately. Reservations include
+both queued and active requests and cannot
 exceed the smaller of the prefetch budget and cache capacity. The channel has
 the configured queue depth; at most one additional request is active. Expired
 queued work performs no I/O. Shutdown cancels queued work and waits for the
 active load, whose source timeout/retry limits still apply. TTL does not abort
 an already active network request.
 
-Speculative admission compares the first eviction candidate against priority
-zero after verified loading. Rejected speculation still costs source I/O and
-appears as wasted bytes. With variable-size objects, later eviction candidates
-can have greater priority; this heuristic does not guarantee protection of
-every demanded object. A follow-up should check all required victims before
-loading and admission, and avoid aging demand scores through speculation. Demand loads continue to make
-progress even when every resident object has high priority.
+Runtime prefetch knows each object's manifest raw size. A queue preflight,
+an atomic cache check immediately before loading, and another check after
+verified loading each plan every required eviction, including entry-limit
+pressure. Every victim must have decayed priority no greater than speculation's
+zero priority. Planning never partially evicts objects before deciding to admit.
+It considers at most 128 oldest entries and 64 required victims, using the same
+64-candidate priority/LRU ordering. If that bounded search cannot prove safe
+admission, prefetch conservatively skips the load. A full eight-loader demand
+pipeline also skips speculation instead of making it wait for a load permit.
+
+Concurrent demand can change retention eligibility while source I/O is active.
+The final check preserves protected objects; an unused loaded object which can
+no longer fit is counted as wasted. A demand joining that flight turns it into
+demand admission. Demand loads continue to make progress even when every
+resident object has high priority. The cache's compatibility API for unsized
+speculative loaders checks all victims after loading; runtime prefetch uses the
+known-size API to avoid rejected I/O in advance.
 
 ## Bounds, tracing and metrics
 
@@ -105,7 +124,8 @@ the CLI cache budget is not a total process-RAM limit.
 `hits`, `misses` and `hit_ratio` describe demand cache lookups. Verified raw
 bytes loaded and decompression/load counts include speculation. The runtime
 reports prefetch requests, loaded chunks/bytes, useful hits/bytes, wasted bytes,
-unconsumed resident bytes, errors, expired/dropped requests, outstanding byte
+unconsumed resident bytes, errors, expired/dropped requests, skipped admissions
+or cache/load-slot races, suppressed pending/recent duplicates, outstanding byte
 reservations, peak reservations and outstanding-request high-water mark.
 Before terminal retirement:
 
@@ -119,6 +139,8 @@ Backend teardown and replay stop the worker before final metrics and retire
 unconsumed objects as wasted, leaving `loaded = useful + wasted`. A demand
 reader joining a speculative in-flight load claims usefulness once, and gets
 the actual loaded tier rather than an invented memory-cache attribution.
+Useful bytes count the whole raw object when demand first claims it, even when
+the demand reads only a small range; they do not measure every consumed byte.
 Cache hits report `memory-cache`; cross-source reads report `mixed`. Failed
 loads without a resolved source report `unresolved`. Prefetch and copy-up are
 accounted as internal work rather than fabricated application read events.
@@ -152,8 +174,11 @@ Benchmark artifacts retain every static/adaptive run, including regressions.
 Use the raw run provenance and measurements, not this algorithm description,
 to decide whether a policy helps a particular workload.
 
-Unit tests cover actual priority eviction and decay, strict budgets, single-
-flight demand/prefetch races, source attribution, conservation, expiry without
-I/O, queue reservation/cancellation, sequential rejection, tracker bounds,
+Unit tests cover actual priority eviction and demand-only decay, variable-size
+multi-victim and entry-pressure protection, pre-load and post-load demand races,
+loader saturation, bounded planning/history, repeated failures, tiny sequential
+bursts and chunk coverage, strict budgets, single-flight demand/prefetch races,
+source attribution, conservation, expiry without I/O, queue
+reservation/cancellation, sequential rejection, tracker bounds,
 invalid policies, optimization and deterministic byte-equal replay. Mounted
 proof and platform status are recorded separately in evidence documents.
