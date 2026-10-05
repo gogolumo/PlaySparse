@@ -1,0 +1,9 @@
+{
+  "asset_root": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+  "executable": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted\\testgame.exe",
+  "read_and_mmap_samples": 177,
+  "sample_blake3": "aa07c936ab81ab48003e95e5554d1ed9147ad078156ffc2360ce26e033d238d4",
+  "schema": 1,
+  "self_test": "PASS",
+  "verified_bytes": 631142
+}

@@ -1,0 +1,10 @@
+{
+  "source": "/tmp/playsparse-posix-ci/readonly/TestGame",
+  "executable": "testgame",
+  "world_logical_bytes": 10737418240,
+  "logical_bytes": 10745289431,
+  "files": 9,
+  "source_allocated_bytes": 12742656,
+  "nonzero_world_regions": 70,
+  "sample_count": 177
+}

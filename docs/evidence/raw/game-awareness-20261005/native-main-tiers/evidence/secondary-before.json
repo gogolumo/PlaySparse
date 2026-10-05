@@ -1,0 +1,62 @@
+{
+  "definition": "SHA-256 of ordered path, size, mode, mtime, extent positions and contents; allocation accounting excluded; not a whole-file SHA-256",
+  "tree_fingerprint_sha256": "79bf8d550eedb59296b854b8ea5a4b6b2bd34ef84aa53e165cf0bd1e25b93518",
+  "files": [
+    {
+      "path": "COMMITTED.json",
+      "size": 180,
+      "mode": 33188,
+      "mtime_ns": 1791209013075164295,
+      "allocated_bytes": 4096,
+      "extents": [
+        [
+          0,
+          180
+        ]
+      ],
+      "extent_sha256": "3aac6c8387b62d8e98f8d212766dca860de8dbda361d9c3125fb37e19612b188"
+    },
+    {
+      "path": "index/objects.idx",
+      "size": 9928,
+      "mode": 33188,
+      "mtime_ns": 1791209013058912321,
+      "allocated_bytes": 12288,
+      "extents": [
+        [
+          0,
+          9928
+        ]
+      ],
+      "extent_sha256": "9be0822cb0368227af710343504ae68cee98a6bdbf4034fbcc50d425bb553823"
+    },
+    {
+      "path": "manifest.json",
+      "size": 21547,
+      "mode": 33188,
+      "mtime_ns": 1791209013054684097,
+      "allocated_bytes": 24576,
+      "extents": [
+        [
+          0,
+          21547
+        ]
+      ],
+      "extent_sha256": "ffac81a7be90dc0c4762cde984d4e22dd0255918b9f8b9f905353e312919734d"
+    },
+    {
+      "path": "packs/pack-0000.psp",
+      "size": 2642293,
+      "mode": 33188,
+      "mtime_ns": 1791209013051839808,
+      "allocated_bytes": 2646016,
+      "extents": [
+        [
+          0,
+          2642293
+        ]
+      ],
+      "extent_sha256": "e442b5af1cf0291b264508e456fde4872194796ae35e07838753bf7ce5519f3b"
+    }
+  ]
+}

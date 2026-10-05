@@ -1,0 +1,24 @@
+   Compiling playsparse-cli v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse-game-aware/crates/playsparse-cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.15s
+     Running unittests src/main.rs (/tmp/playsparse-game-aware-target/debug/deps/io_probe-102048753fd14a4c)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_cache-e5437e28a1914880)
+     Running unittests src/main.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse-8f475b8af8c33032)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_core-0ed2f2c65fc23026)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_game-5d6a9d715182a476)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_overlay-817cca49c91e50f4)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_policy-a2d34e716ae1a67a)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_range-c9812f173695365b)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_store-5a0fb6af59e3801d)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_trace-7e4fdc470e18f2c4)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_vfs_fuse-fcf64a07c47019d3)
+     Running unittests src/lib.rs (/tmp/playsparse-game-aware-target/debug/deps/playsparse_vfs_win-b4fb601f6ef6423e)
+   Doc-tests playsparse_cache
+   Doc-tests playsparse_core
+   Doc-tests playsparse_game
+   Doc-tests playsparse_overlay
+   Doc-tests playsparse_policy
+   Doc-tests playsparse_range
+   Doc-tests playsparse_store
+   Doc-tests playsparse_trace
+   Doc-tests playsparse_vfs_fuse
+   Doc-tests playsparse_vfs_win

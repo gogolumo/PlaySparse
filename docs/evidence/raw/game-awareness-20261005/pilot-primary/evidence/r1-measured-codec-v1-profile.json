@@ -1,0 +1,177 @@
+{
+  "anti_cheat_detected": [],
+  "engine": {
+    "confidence": null,
+    "evidence_paths": [],
+    "key": "unknown",
+    "label": "Unknown engine",
+    "other_signals": [],
+    "version": null
+  },
+  "executables": [],
+  "files": [
+    {
+      "blake3": "b077b744bec7723d5b98150922d411dffb23616dde01bbfb3f560bf88197e017",
+      "class": "container",
+      "container_hint": "zip-family",
+      "measurement": {
+        "incompressible_candidate": true,
+        "repeated_sample_blocks": 0,
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 196638,
+        "samples": [
+          {
+            "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7997,
+            "offset": 0,
+            "zstd_bytes": 65546
+          },
+          {
+            "blake3": "fac6aa3145e8ec90c0f663a78a96df424bb05e1ec0c113149ce9ac0341a08f54",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7997,
+            "offset": 8359339,
+            "zstd_bytes": 65546
+          },
+          {
+            "blake3": "c9d206b78a4050f39b4f515c89f5271b04918e769c6e201ab95d5cfc75090c4f",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7993,
+            "offset": 16718678,
+            "zstd_bytes": 65546
+          }
+        ]
+      },
+      "mode": 420,
+      "path": "content.pk3",
+      "signature": "zip-local-header",
+      "size": 16784214,
+      "zip_boundaries": [
+        1048946,
+        2097892,
+        3146838,
+        4195784,
+        5244730,
+        6293676,
+        7342622,
+        8391568,
+        9440514,
+        10489460,
+        11538406,
+        12587352,
+        13636298,
+        14685244,
+        15734190,
+        16783136,
+        16784214
+      ]
+    },
+    {
+      "blake3": "0b56da2454b6030000fe81f2d85aa90ccc9de07cdd771b107598f101d910a0ad",
+      "class": "binary",
+      "container_hint": null,
+      "measurement": {
+        "incompressible_candidate": true,
+        "repeated_sample_blocks": 0,
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 196638,
+        "samples": [
+          {
+            "blake3": "e694215573c4c17a4d0df736033a969883bc5b4b0d8565a52f61e910e688e09c",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7997,
+            "offset": 0,
+            "zstd_bytes": 65546
+          },
+          {
+            "blake3": "02c18414d374e6d2acf2eb494bd50420cd98b3062cc0a2bee43888ebebde312e",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7997,
+            "offset": 4161536,
+            "zstd_bytes": 65546
+          },
+          {
+            "blake3": "f3ebd61f76bbc244a42f92f8199a0b1309d218b0a0bd8470cf9ab83b3b475d5e",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 7997,
+            "offset": 8323072,
+            "zstd_bytes": 65546
+          }
+        ]
+      },
+      "mode": 420,
+      "path": "raw.dat",
+      "signature": null,
+      "size": 8388608,
+      "zip_boundaries": null
+    },
+    {
+      "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+      "class": "scripts-text",
+      "container_hint": null,
+      "measurement": {
+        "incompressible_candidate": false,
+        "repeated_sample_blocks": 0,
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 291,
+        "samples": [
+          {
+            "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 4544,
+            "offset": 0,
+            "zstd_bytes": 97
+          },
+          {
+            "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 4544,
+            "offset": 319488,
+            "zstd_bytes": 97
+          },
+          {
+            "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+            "bytes": 65536,
+            "cdc_chunks": 1,
+            "entropy_millibits_per_byte": 4544,
+            "offset": 638976,
+            "zstd_bytes": 97
+          }
+        ]
+      },
+      "mode": 420,
+      "path": "script.lua",
+      "signature": null,
+      "size": 704512,
+      "zip_boundaries": null
+    }
+  ],
+  "game": {
+    "appid": null,
+    "name": null,
+    "store": null
+  },
+  "generated_at": null,
+  "generated_by": "playsparse-game-v1",
+  "hints": {
+    "runtime_policy": "unchanged-static-default",
+    "startup_regions": []
+  },
+  "scanner_status": "generic",
+  "scanner_truncated": false,
+  "schema_version": 1,
+  "source_identity": {
+    "algorithm": "playsparse-source-blake3-v1",
+    "digest": "2d14eea9dbac99bac0806ff6f6510b02dac4483d4240b46c1a614d6de0a009c9",
+    "directories": []
+  }
+}

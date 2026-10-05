@@ -1,0 +1,261 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-05T14:03:46.031927+00:00",
+  "commands": [
+    {
+      "label": "rustc-version",
+      "command": [
+        "rustc",
+        "-Vv"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:47.276758+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.06828260000008868
+    },
+    {
+      "label": "cargo-version",
+      "command": [
+        "cargo",
+        "-V"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:47.347805+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.05324910000001637
+    },
+    {
+      "label": "build",
+      "command": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:48.486473+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.31170880000001944
+    },
+    {
+      "label": "cargo-metadata",
+      "command": [
+        "cargo",
+        "metadata",
+        "--no-deps",
+        "--format-version",
+        "1"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:48.801240+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.05722220000006928
+    },
+    {
+      "label": "doctor",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "doctor",
+        "--path",
+        "D:\\a\\_temp\\playsparse-windows-ci"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:50.677294+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.014347799999995914
+    },
+    {
+      "label": "readonly",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\mounted-smoke.py",
+        "--work",
+        "D:\\a\\_temp\\playsparse-windows-ci\\readonly",
+        "--playsparse",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "--io-probe",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+        "--world-bytes",
+        "10737418240",
+        "--iterations",
+        "32",
+        "--cache",
+        "64M"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:03:50.693161+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 107.81229770000004
+    },
+    {
+      "label": "writable",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\mounted-update.py",
+        "--work",
+        "D:\\a\\_temp\\playsparse-windows-ci\\writable",
+        "--playsparse",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "--io-probe",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:05:38.527056+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 2.9231803000000127
+    },
+    {
+      "label": "adaptive",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\adaptive-smoke.py",
+        "--work",
+        "D:\\a\\_temp\\playsparse-windows-ci\\adaptive",
+        "--playsparse",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "--io-probe",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:05:41.453349+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.2985447000000931
+    },
+    {
+      "label": "tiers",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\tiered-smoke.py",
+        "--work",
+        "D:\\a\\_temp\\playsparse-windows-ci\\tiers",
+        "--playsparse",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "--io-probe",
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-05T14:05:42.755252+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 2.345946600000161
+    }
+  ],
+  "stages": {
+    "build": {
+      "status": "PASS"
+    },
+    "doctor": {
+      "status": "PASS",
+      "result": "D:\\a\\_temp\\playsparse-windows-ci\\doctor.stdout.log"
+    },
+    "readonly": {
+      "status": "PASS",
+      "result": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\evidence\\result.json",
+      "scope": null,
+      "real_game_validation": "NOT RUN",
+      "generated_fixture_detected": null
+    },
+    "writable": {
+      "status": "PASS",
+      "result": "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\result.json",
+      "scope": null,
+      "real_game_validation": "NOT RUN",
+      "generated_fixture_detected": null
+    },
+    "adaptive": {
+      "status": "PASS",
+      "result": "D:\\a\\_temp\\playsparse-windows-ci\\adaptive\\evidence\\result.json",
+      "scope": null,
+      "real_game_validation": "NOT RUN",
+      "generated_fixture_detected": null
+    },
+    "tiers": {
+      "status": "PASS",
+      "result": "D:\\a\\_temp\\playsparse-windows-ci\\tiers\\evidence\\result.json",
+      "scope": null,
+      "real_game_validation": "NOT RUN",
+      "generated_fixture_detected": null
+    },
+    "application": {
+      "status": "NOT RUN"
+    },
+    "wof": {
+      "status": "NOT RUN"
+    }
+  },
+  "game_validation": "NOT RUN",
+  "launcher_validation": "NOT RUN",
+  "wof_physical_validation": "NOT RUN",
+  "binary_repository_match": "VERIFIED_LOCAL_BUILD_RECEIPT",
+  "windows_physical_validation": {
+    "status": "BLOCKED",
+    "user_attested_physical_machine": false,
+    "virtual_machine_detected": true,
+    "evidence_basis": "explicit user attestation, Windows client OS, hardware report and no detected VM hints; not automatic physical proof"
+  },
+  "evidence_type": "native Windows runtime; physical classification requires user attestation and recorded client hardware",
+  "repository": {
+    "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "d218adbab77d972dc1b80a365c26f84bc4e43ca2d931a13f83182dac53d3f5af",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "arguments": [
+    "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+    "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-validation.py",
+    "--work",
+    "D:\\a\\_temp\\playsparse-windows-ci",
+    "--environment-stdin",
+    "--timeout",
+    "1800",
+    "--wof-algorithm",
+    "XPRESS4K"
+  ],
+  "work_volume": {
+    "root": "D:\\",
+    "serial": 4030957153,
+    "filesystem": "NTFS",
+    "flags": 65482495,
+    "drive_type": 3
+  },
+  "disk_space": {
+    "available_bytes": 233924501504,
+    "required_bytes": 34359738368,
+    "definition": "conservative preflight budget; later ENOSPC is still a failure"
+  },
+  "provenance": {
+    "repository": {
+      "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+      "dirty": false,
+      "working_tree_status": "",
+      "source_digest_sha256": "d218adbab77d972dc1b80a365c26f84bc4e43ca2d931a13f83182dac53d3f5af",
+      "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+    },
+    "binaries": {
+      "playsparse": {
+        "path": "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "sha256": "993f1a1ba15b6071fd519955f619896abae874fa81b2c3b9140b67ce9e6e5ab3"
+      },
+      "io_probe": {
+        "path": "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+        "sha256": "b6e6c96e0301669d78f60c5ef02a1cd441b6b5f1a4e7c433045679a5e44c9dd3"
+      }
+    },
+    "allow_dirty": false,
+    "allow_unverified_binaries": false,
+    "status": "VERIFIED_LOCAL_BUILD_RECEIPT",
+    "manifest": "D:\\a\\_temp\\playsparse-windows-ci\\binary-build-manifest.json"
+  },
+  "cleanup": []
+}

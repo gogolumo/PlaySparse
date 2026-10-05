@@ -1,0 +1,13 @@
+{
+  "commit": "7783946b1bde21f78a40ac6711bab3e47caedf65",
+  "binary_sha256": "5ea26b506b7486403b46478b27b3d014f859df879e590ddabcc480e5fc7baa42",
+  "build_command": [
+    "cargo",
+    "build",
+    "--locked",
+    "--release",
+    "--workspace",
+    "--all-features"
+  ],
+  "basis": "binary was preserved from fetched clean main before game-awareness implementation; build log retained; commit label recorded by local experiment owner; no signed build attestation or receipt exists for this initial baseline"
+}

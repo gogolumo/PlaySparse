@@ -1,0 +1,4124 @@
+{
+  "version": 1,
+  "experiment": "05-game-aware-packing",
+  "evidence_level": "L0",
+  "timestamp": "2026-10-05T13:53:29.880962+00:00",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "repository": {
+    "git_sha": "8902923acbbfa578d7c85f798e75c9aaa0dd6e72",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "34f9b6dfed8a3d02060fdcf3273f969c7ff90d7ab4d5a502cf73b4d33cc9fc49",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "binary_sha256": "379371564f1039598380d330ce8a625581cdbb85bdecd2786937a80c5f04c677",
+  "baseline_binary_sha256": "379371564f1039598380d330ce8a625581cdbb85bdecd2786937a80c5f04c677",
+  "baseline_commit": null,
+  "repetitions": 2,
+  "iterations": 64,
+  "adversarial_probe_regions": false,
+  "runs": [
+    {
+      "mode": "generic-cdc",
+      "repetition": 0,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6647635,
+        "object_bytes": 6643581,
+        "metadata_bytes": 4054,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 20,
+        "reused_chunks": 0,
+        "pack_seconds": 0.027192618,
+        "pack_cpu_seconds": 0.022924,
+        "zstd_attempted_objects": 20,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r0-generic-cdc-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v2",
+          "--chunker",
+          "cdc"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:30.357056+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.0318441869999333
+      },
+      "pack_cpu_seconds": 0.024508000000000002,
+      "inspect_wall_seconds": 0.0,
+      "inspect_cpu_seconds": 0.0,
+      "inspection": null,
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 334,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 334,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 142829261,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 9.099999999999999e-05,
+          "p95_ms": 0.00014000000000000001,
+          "p99_ms": 0.00033099999999999997,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6647635,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.156678,
+        "random_chunk_read": {
+          "p50_ms": 0.11677799999999999,
+          "p95_ms": 0.218719,
+          "p99_ms": 0.256018,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2606.168806588557,
+          "playsparse_mib_s": 1281.2117257523566
+        },
+        "store_open_first_ms": 0.126857,
+        "store_open_repeat_ms": 0.081072,
+        "wall_seconds": 0.156684948,
+        "warm_cache": {
+          "decompressions": 20,
+          "decompressions_avoided": 598,
+          "evictions": 0,
+          "hit_ratio": 0.9676375404530745,
+          "hits": 598,
+          "in_flight_waits": 0,
+          "misses": 20,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 20
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.001423,
+              "p95_ms": 0.002063,
+              "p99_ms": 0.002675,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.180226,
+              "p95_ms": 0.41357299999999997,
+              "p99_ms": 0.602866,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000661,
+              "p95_ms": 0.0009220000000000001,
+              "p99_ms": 0.001192,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 33020277,
+            "read_amplification": 125.96236038208008,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.00522,
+              "p95_ms": 0.007404,
+              "p99_ms": 0.017393000000000002,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.179876,
+              "p95_ms": 0.34242,
+              "p99_ms": 0.372876,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003597,
+              "p95_ms": 0.004579,
+              "p99_ms": 0.004799,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 35041019,
+            "read_amplification": 8.525442743244197,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.052568000000000004,
+              "p95_ms": 0.09199199999999999,
+              "p99_ms": 0.40822200000000003,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.721999,
+              "p95_ms": 1.090778,
+              "p99_ms": 1.3038349999999999,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.08682300000000001,
+              "p95_ms": 0.405959,
+              "p99_ms": 0.5372439999999999,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 65206774,
+            "read_amplification": 1.492361413849982,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 12,
+        "v2_chunks": 20,
+        "cross_version_reused_logical_bytes": 4908635,
+        "cross_version_reused_unique_raw_bytes": 4908635,
+        "new_unique_objects": 8,
+        "new_encoded_object_bytes": 2438852,
+        "new_metadata_bytes": 4046,
+        "new_physical_bytes_if_existing_objects_reused": 2442906,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "measured-codec",
+      "repetition": 0,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6647635,
+        "object_bytes": 6643581,
+        "metadata_bytes": 4054,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 20,
+        "reused_chunks": 0,
+        "pack_seconds": 0.027634068,
+        "pack_cpu_seconds": 0.023962,
+        "zstd_attempted_objects": 1,
+        "measured_raw_objects": 19,
+        "measured_raw_bytes": 6642975,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r0-measured-codec-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r0-measured-codec-v2",
+          "--plan",
+          "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v2-plan.json"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:30.668724+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.031972026000062215
+      },
+      "pack_cpu_seconds": 0.02581899999999998,
+      "inspect_wall_seconds": 0.015805986000032135,
+      "inspect_cpu_seconds": 0.010765000000000025,
+      "inspection": {
+        "measurement_cpu_seconds": 0.009096999999999997,
+        "measurement_note": "full identity hash and at most three 64 KiB Zstd level 3 probes per file; scanner hints are untrusted; no already-compressed byte attribution",
+        "measurement_wall_seconds": 0.009872389,
+        "profile": {
+          "anti_cheat_detected": [],
+          "engine": {
+            "confidence": null,
+            "evidence_paths": [],
+            "key": "unknown",
+            "label": "Unknown engine",
+            "other_signals": [],
+            "version": null
+          },
+          "executables": [],
+          "files": [
+            {
+              "blake3": "a236625009f3981b6988f5817222873514718470eb9a4374e4dea891ed0b6bc2",
+              "class": "container",
+              "container_hint": "zip-family",
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "bcb0ee05a3d255de3d188034805b549e7b90752dfd31dc68855e24c728785cbe",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2240143,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "38dabed6de15df46ba73409f6230227c8778b8028bb3ae99429c0e8db8177c71",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7996,
+                    "offset": 4480287,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "content.pk3",
+              "signature": "zip-local-header",
+              "size": 4545823,
+              "zip_boundaries": [
+                1048946,
+                1398632,
+                2447578,
+                3496524,
+                4545470,
+                4545823
+              ]
+            },
+            {
+              "blake3": "4c4f8c4f148c44272d015a21cd1a9d704e8bd755109a7c3f0c162d6e9dd908f2",
+              "class": "binary",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "5ffaead4aeb71ade397e2476dafb01b184061ee6407405eed28ae7003a8f1dc8",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "2f9a6f663c99a97ac7ba9c20295b4fabdf9f8c77425687fed06345567cef9f8c",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 1015808,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "e78153fc648195f073664b4805e1b056c366680dcbe302fa3267745b7c4c7fcb",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2031616,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "raw.dat",
+              "signature": null,
+              "size": 2097152,
+              "zip_boundaries": null
+            },
+            {
+              "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+              "class": "scripts-text",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": false,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 291,
+                "samples": [
+                  {
+                    "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 0,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 319488,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 638976,
+                    "zstd_bytes": 97
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "script.lua",
+              "signature": null,
+              "size": 704512,
+              "zip_boundaries": null
+            }
+          ],
+          "game": {
+            "appid": null,
+            "name": null,
+            "store": null
+          },
+          "generated_at": null,
+          "generated_by": "playsparse-game-v1",
+          "hints": {
+            "runtime_policy": "unchanged-static-default",
+            "startup_regions": []
+          },
+          "scanner_status": "generic",
+          "scanner_truncated": false,
+          "schema_version": 1,
+          "source_identity": {
+            "algorithm": "playsparse-source-blake3-v1",
+            "digest": "7787f640d34cf96c3df8aa3784c5f33ea0f8ef33a89b7355adaf02cc8db21a3c",
+            "directories": []
+          }
+        },
+        "source_unchanged": true,
+        "startup": "NOT RUN"
+      },
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 334,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 334,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 142829261,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 9.999999999999999e-05,
+          "p95_ms": 0.000141,
+          "p99_ms": 0.000411,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6647635,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.157778,
+        "random_chunk_read": {
+          "p50_ms": 0.116087,
+          "p95_ms": 0.210173,
+          "p99_ms": 0.26236,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2566.2462202860324,
+          "playsparse_mib_s": 1266.7252099010207
+        },
+        "store_open_first_ms": 0.132007,
+        "store_open_repeat_ms": 0.094677,
+        "wall_seconds": 0.157767209,
+        "warm_cache": {
+          "decompressions": 20,
+          "decompressions_avoided": 598,
+          "evictions": 0,
+          "hit_ratio": 0.9676375404530745,
+          "hits": 598,
+          "in_flight_waits": 0,
+          "misses": 20,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 20
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.001412,
+              "p95_ms": 0.002044,
+              "p99_ms": 0.002294,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.18965400000000002,
+              "p95_ms": 0.412771,
+              "p99_ms": 0.593589,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000781,
+              "p95_ms": 0.001102,
+              "p99_ms": 0.001263,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 33020277,
+            "read_amplification": 125.96236038208008,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.00514,
+              "p95_ms": 0.006212,
+              "p99_ms": 0.007484,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.165179,
+              "p95_ms": 0.34584600000000004,
+              "p99_ms": 0.374691,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003817,
+              "p95_ms": 0.004789,
+              "p99_ms": 0.005109,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 35041019,
+            "read_amplification": 8.525442743244197,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.059261,
+              "p95_ms": 0.085981,
+              "p99_ms": 0.40703100000000003,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.742267,
+              "p95_ms": 1.100195,
+              "p99_ms": 1.311219,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.08030999999999999,
+              "p95_ms": 0.419735,
+              "p99_ms": 0.536362,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 65206774,
+            "read_amplification": 1.492361413849982,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 12,
+        "v2_chunks": 20,
+        "cross_version_reused_logical_bytes": 4908635,
+        "cross_version_reused_unique_raw_bytes": 4908635,
+        "new_unique_objects": 8,
+        "new_encoded_object_bytes": 2438852,
+        "new_metadata_bytes": 4046,
+        "new_physical_bytes_if_existing_objects_reused": 2442906,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "zip-records",
+      "repetition": 0,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6648111,
+        "object_bytes": 6643396,
+        "metadata_bytes": 4715,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 24,
+        "reused_chunks": 0,
+        "pack_seconds": 0.036898028,
+        "pack_cpu_seconds": 0.033162,
+        "zstd_attempted_objects": 24,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r0-zip-records-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r0-zip-records-v2",
+          "--plan",
+          "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v2-plan.json"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:31.025677+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.06396478099998149
+      },
+      "pack_cpu_seconds": 0.034864000000000006,
+      "inspect_wall_seconds": 0.015837094999938017,
+      "inspect_cpu_seconds": 0.010836999999999986,
+      "inspection": {
+        "measurement_cpu_seconds": 0.009164,
+        "measurement_note": "full identity hash and at most three 64 KiB Zstd level 3 probes per file; scanner hints are untrusted; no already-compressed byte attribution",
+        "measurement_wall_seconds": 0.009842879,
+        "profile": {
+          "anti_cheat_detected": [],
+          "engine": {
+            "confidence": null,
+            "evidence_paths": [],
+            "key": "unknown",
+            "label": "Unknown engine",
+            "other_signals": [],
+            "version": null
+          },
+          "executables": [],
+          "files": [
+            {
+              "blake3": "a236625009f3981b6988f5817222873514718470eb9a4374e4dea891ed0b6bc2",
+              "class": "container",
+              "container_hint": "zip-family",
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "bcb0ee05a3d255de3d188034805b549e7b90752dfd31dc68855e24c728785cbe",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2240143,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "38dabed6de15df46ba73409f6230227c8778b8028bb3ae99429c0e8db8177c71",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7996,
+                    "offset": 4480287,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "content.pk3",
+              "signature": "zip-local-header",
+              "size": 4545823,
+              "zip_boundaries": [
+                1048946,
+                1398632,
+                2447578,
+                3496524,
+                4545470,
+                4545823
+              ]
+            },
+            {
+              "blake3": "4c4f8c4f148c44272d015a21cd1a9d704e8bd755109a7c3f0c162d6e9dd908f2",
+              "class": "binary",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "5ffaead4aeb71ade397e2476dafb01b184061ee6407405eed28ae7003a8f1dc8",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "2f9a6f663c99a97ac7ba9c20295b4fabdf9f8c77425687fed06345567cef9f8c",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 1015808,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "e78153fc648195f073664b4805e1b056c366680dcbe302fa3267745b7c4c7fcb",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2031616,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "raw.dat",
+              "signature": null,
+              "size": 2097152,
+              "zip_boundaries": null
+            },
+            {
+              "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+              "class": "scripts-text",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": false,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 291,
+                "samples": [
+                  {
+                    "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 0,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 319488,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 638976,
+                    "zstd_bytes": 97
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "script.lua",
+              "signature": null,
+              "size": 704512,
+              "zip_boundaries": null
+            }
+          ],
+          "game": {
+            "appid": null,
+            "name": null,
+            "store": null
+          },
+          "generated_at": null,
+          "generated_by": "playsparse-game-v1",
+          "hints": {
+            "runtime_policy": "unchanged-static-default",
+            "startup_regions": []
+          },
+          "scanner_status": "generic",
+          "scanner_truncated": false,
+          "schema_version": 1,
+          "source_identity": {
+            "algorithm": "playsparse-source-blake3-v1",
+            "digest": "7787f640d34cf96c3df8aa3784c5f33ea0f8ef33a89b7355adaf02cc8db21a3c",
+            "directories": []
+          }
+        },
+        "source_unchanged": true,
+        "startup": "NOT RUN"
+      },
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 360,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 360,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 141447117,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 8.999999999999999e-05,
+          "p95_ms": 0.00013,
+          "p99_ms": 0.000391,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6648111,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.15363200000000002,
+        "random_chunk_read": {
+          "p50_ms": 0.095739,
+          "p95_ms": 0.24930599999999997,
+          "p99_ms": 0.46524,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2665.6472575034336,
+          "playsparse_mib_s": 1285.2662482714768
+        },
+        "store_open_first_ms": 0.136415,
+        "store_open_repeat_ms": 0.07914700000000001,
+        "wall_seconds": 0.153562796,
+        "warm_cache": {
+          "decompressions": 24,
+          "decompressions_avoided": 638,
+          "evictions": 0,
+          "hit_ratio": 0.9637462235649547,
+          "hits": 638,
+          "in_flight_waits": 0,
+          "misses": 24,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 24
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.001352,
+              "p95_ms": 0.001973,
+              "p99_ms": 0.003828,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.17804299999999998,
+              "p95_ms": 0.41801099999999997,
+              "p99_ms": 0.6087370000000001,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000671,
+              "p95_ms": 0.000902,
+              "p99_ms": 0.001122,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 32380081,
+            "read_amplification": 123.52020645141602,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004588999999999999,
+              "p95_ms": 0.0055,
+              "p99_ms": 0.006853000000000001,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.161161,
+              "p95_ms": 0.318354,
+              "p99_ms": 0.376504,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.0030960000000000002,
+              "p95_ms": 0.004238,
+              "p99_ms": 0.01072,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 34852296,
+            "read_amplification": 8.479526637584334,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.05345,
+              "p95_ms": 0.21425,
+              "p99_ms": 0.418842,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.721247,
+              "p95_ms": 1.097049,
+              "p99_ms": 1.258441,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.074068,
+              "p95_ms": 0.413011,
+              "p99_ms": 0.480538,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 64723480,
+            "read_amplification": 1.4813004569447192,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 17,
+        "v2_chunks": 24,
+        "cross_version_reused_logical_bytes": 5948502,
+        "cross_version_reused_unique_raw_bytes": 5948502,
+        "new_unique_objects": 7,
+        "new_encoded_object_bytes": 1398800,
+        "new_metadata_bytes": 4707,
+        "new_physical_bytes_if_existing_objects_reused": 1403515,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "generic-fixed",
+      "repetition": 0,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6648884,
+        "object_bytes": 6643330,
+        "metadata_bytes": 5554,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 29,
+        "reused_chunks": 0,
+        "pack_seconds": 0.020939667,
+        "pack_cpu_seconds": 0.016621,
+        "zstd_attempted_objects": 29,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r0-generic-fixed-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v2",
+          "--chunker",
+          "fixed"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:31.348576+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.031879703999948106
+      },
+      "pack_cpu_seconds": 0.01828200000000002,
+      "inspect_wall_seconds": 0.0,
+      "inspect_cpu_seconds": 0.0,
+      "inspection": null,
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 394,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 394,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 99126233,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 8.999999999999999e-05,
+          "p95_ms": 0.00013099999999999999,
+          "p99_ms": 0.001803,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6648884,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.13624,
+        "random_chunk_read": {
+          "p50_ms": 0.079108,
+          "p95_ms": 0.095329,
+          "p99_ms": 0.105517,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2736.7213841058647,
+          "playsparse_mib_s": 1536.070151300391
+        },
+        "store_open_first_ms": 0.147235,
+        "store_open_repeat_ms": 0.08514899999999999,
+        "wall_seconds": 0.136221371,
+        "warm_cache": {
+          "decompressions": 29,
+          "decompressions_avoided": 701,
+          "evictions": 0,
+          "hit_ratio": 0.9602739726027397,
+          "hits": 701,
+          "in_flight_waits": 0,
+          "misses": 29,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 29
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.001313,
+              "p95_ms": 0.001784,
+              "p99_ms": 0.002604,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.09543800000000001,
+              "p95_ms": 0.220812,
+              "p99_ms": 0.284912,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000651,
+              "p95_ms": 0.0008810000000000001,
+              "p99_ms": 0.001102,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 16465920,
+            "read_amplification": 62.8125,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004639,
+              "p95_ms": 0.005339999999999999,
+              "p99_ms": 0.007314,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.085991,
+              "p95_ms": 0.205875,
+              "p99_ms": 0.29921899999999996,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.002865,
+              "p95_ms": 0.0036669999999999997,
+              "p99_ms": 0.003948,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 19176735,
+            "read_amplification": 4.665679278472666,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.057889,
+              "p95_ms": 0.108312,
+              "p99_ms": 0.413903,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.608757,
+              "p95_ms": 0.917504,
+              "p99_ms": 0.999146,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.079288,
+              "p95_ms": 0.424533,
+              "p99_ms": 0.509782,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 56136091,
+            "read_amplification": 1.2847643119527927,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 15,
+        "v2_chunks": 29,
+        "cross_version_reused_logical_bytes": 3850240,
+        "cross_version_reused_unique_raw_bytes": 3850240,
+        "new_unique_objects": 14,
+        "new_encoded_object_bytes": 3497247,
+        "new_metadata_bytes": 5546,
+        "new_physical_bytes_if_existing_objects_reused": 3502801,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "measured-codec",
+      "repetition": 1,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6647635,
+        "object_bytes": 6643581,
+        "metadata_bytes": 4054,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 20,
+        "reused_chunks": 0,
+        "pack_seconds": 0.026870716,
+        "pack_cpu_seconds": 0.023639,
+        "zstd_attempted_objects": 1,
+        "measured_raw_objects": 19,
+        "measured_raw_bytes": 6642975,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r1-measured-codec-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r1-measured-codec-v2",
+          "--plan",
+          "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v2-plan.json"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:31.688931+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.03183056100010617
+      },
+      "pack_cpu_seconds": 0.025339,
+      "inspect_wall_seconds": 0.01578761200005374,
+      "inspect_cpu_seconds": 0.010670999999999875,
+      "inspection": {
+        "measurement_cpu_seconds": 0.009156000000000001,
+        "measurement_note": "full identity hash and at most three 64 KiB Zstd level 3 probes per file; scanner hints are untrusted; no already-compressed byte attribution",
+        "measurement_wall_seconds": 0.009776342,
+        "profile": {
+          "anti_cheat_detected": [],
+          "engine": {
+            "confidence": null,
+            "evidence_paths": [],
+            "key": "unknown",
+            "label": "Unknown engine",
+            "other_signals": [],
+            "version": null
+          },
+          "executables": [],
+          "files": [
+            {
+              "blake3": "a236625009f3981b6988f5817222873514718470eb9a4374e4dea891ed0b6bc2",
+              "class": "container",
+              "container_hint": "zip-family",
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "bcb0ee05a3d255de3d188034805b549e7b90752dfd31dc68855e24c728785cbe",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2240143,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "38dabed6de15df46ba73409f6230227c8778b8028bb3ae99429c0e8db8177c71",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7996,
+                    "offset": 4480287,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "content.pk3",
+              "signature": "zip-local-header",
+              "size": 4545823,
+              "zip_boundaries": [
+                1048946,
+                1398632,
+                2447578,
+                3496524,
+                4545470,
+                4545823
+              ]
+            },
+            {
+              "blake3": "4c4f8c4f148c44272d015a21cd1a9d704e8bd755109a7c3f0c162d6e9dd908f2",
+              "class": "binary",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "5ffaead4aeb71ade397e2476dafb01b184061ee6407405eed28ae7003a8f1dc8",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "2f9a6f663c99a97ac7ba9c20295b4fabdf9f8c77425687fed06345567cef9f8c",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 1015808,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "e78153fc648195f073664b4805e1b056c366680dcbe302fa3267745b7c4c7fcb",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2031616,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "raw.dat",
+              "signature": null,
+              "size": 2097152,
+              "zip_boundaries": null
+            },
+            {
+              "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+              "class": "scripts-text",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": false,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 291,
+                "samples": [
+                  {
+                    "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 0,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 319488,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 638976,
+                    "zstd_bytes": 97
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "script.lua",
+              "signature": null,
+              "size": 704512,
+              "zip_boundaries": null
+            }
+          ],
+          "game": {
+            "appid": null,
+            "name": null,
+            "store": null
+          },
+          "generated_at": null,
+          "generated_by": "playsparse-game-v1",
+          "hints": {
+            "runtime_policy": "unchanged-static-default",
+            "startup_regions": []
+          },
+          "scanner_status": "generic",
+          "scanner_truncated": false,
+          "schema_version": 1,
+          "source_identity": {
+            "algorithm": "playsparse-source-blake3-v1",
+            "digest": "7787f640d34cf96c3df8aa3784c5f33ea0f8ef33a89b7355adaf02cc8db21a3c",
+            "directories": []
+          }
+        },
+        "source_unchanged": true,
+        "startup": "NOT RUN"
+      },
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 334,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 334,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 142829261,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 9.999999999999999e-05,
+          "p95_ms": 0.00015099999999999998,
+          "p99_ms": 0.00052,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6647635,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.15593,
+        "random_chunk_read": {
+          "p50_ms": 0.11241999999999999,
+          "p95_ms": 0.236381,
+          "p99_ms": 0.261619,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2641.9840178977984,
+          "playsparse_mib_s": 1278.107322130502
+        },
+        "store_open_first_ms": 0.123931,
+        "store_open_repeat_ms": 0.07353699999999999,
+        "wall_seconds": 0.155920022,
+        "warm_cache": {
+          "decompressions": 20,
+          "decompressions_avoided": 598,
+          "evictions": 0,
+          "hit_ratio": 0.9676375404530745,
+          "hits": 598,
+          "in_flight_waits": 0,
+          "misses": 20,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 20
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.0013620000000000001,
+              "p95_ms": 0.001784,
+              "p99_ms": 0.002164,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.168665,
+              "p95_ms": 0.410847,
+              "p99_ms": 0.5888,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.0006309999999999999,
+              "p95_ms": 0.0008320000000000001,
+              "p99_ms": 0.001042,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 33020277,
+            "read_amplification": 125.96236038208008,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004999,
+              "p95_ms": 0.006251,
+              "p99_ms": 0.031629,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.164437,
+              "p95_ms": 0.33250100000000005,
+              "p99_ms": 0.376503,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003376,
+              "p95_ms": 0.004468000000000001,
+              "p99_ms": 0.007673999999999999,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 35041019,
+            "read_amplification": 8.525442743244197,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.055975,
+              "p95_ms": 0.089267,
+              "p99_ms": 0.410006,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.716419,
+              "p95_ms": 1.107048,
+              "p99_ms": 1.29006,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.08264400000000001,
+              "p95_ms": 0.424944,
+              "p99_ms": 0.504021,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 65206774,
+            "read_amplification": 1.492361413849982,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 12,
+        "v2_chunks": 20,
+        "cross_version_reused_logical_bytes": 4908635,
+        "cross_version_reused_unique_raw_bytes": 4908635,
+        "new_unique_objects": 8,
+        "new_encoded_object_bytes": 2438852,
+        "new_metadata_bytes": 4046,
+        "new_physical_bytes_if_existing_objects_reused": 2442906,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "zip-records",
+      "repetition": 1,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6648111,
+        "object_bytes": 6643396,
+        "metadata_bytes": 4715,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 24,
+        "reused_chunks": 0,
+        "pack_seconds": 0.03764179,
+        "pack_cpu_seconds": 0.032824000000000006,
+        "zstd_attempted_objects": 24,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r1-zip-records-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r1-zip-records-v2",
+          "--plan",
+          "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v2-plan.json"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:32.069063+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.06402987100000246
+      },
+      "pack_cpu_seconds": 0.034693000000000085,
+      "inspect_wall_seconds": 0.015814092000027813,
+      "inspect_cpu_seconds": 0.010953999999999908,
+      "inspection": {
+        "measurement_cpu_seconds": 0.009263,
+        "measurement_note": "full identity hash and at most three 64 KiB Zstd level 3 probes per file; scanner hints are untrusted; no already-compressed byte attribution",
+        "measurement_wall_seconds": 0.010171624,
+        "profile": {
+          "anti_cheat_detected": [],
+          "engine": {
+            "confidence": null,
+            "evidence_paths": [],
+            "key": "unknown",
+            "label": "Unknown engine",
+            "other_signals": [],
+            "version": null
+          },
+          "executables": [],
+          "files": [
+            {
+              "blake3": "a236625009f3981b6988f5817222873514718470eb9a4374e4dea891ed0b6bc2",
+              "class": "container",
+              "container_hint": "zip-family",
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "bcb0ee05a3d255de3d188034805b549e7b90752dfd31dc68855e24c728785cbe",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2240143,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "38dabed6de15df46ba73409f6230227c8778b8028bb3ae99429c0e8db8177c71",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7996,
+                    "offset": 4480287,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "content.pk3",
+              "signature": "zip-local-header",
+              "size": 4545823,
+              "zip_boundaries": [
+                1048946,
+                1398632,
+                2447578,
+                3496524,
+                4545470,
+                4545823
+              ]
+            },
+            {
+              "blake3": "4c4f8c4f148c44272d015a21cd1a9d704e8bd755109a7c3f0c162d6e9dd908f2",
+              "class": "binary",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": true,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 196638,
+                "samples": [
+                  {
+                    "blake3": "5ffaead4aeb71ade397e2476dafb01b184061ee6407405eed28ae7003a8f1dc8",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 0,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "2f9a6f663c99a97ac7ba9c20295b4fabdf9f8c77425687fed06345567cef9f8c",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 1015808,
+                    "zstd_bytes": 65546
+                  },
+                  {
+                    "blake3": "e78153fc648195f073664b4805e1b056c366680dcbe302fa3267745b7c4c7fcb",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 7997,
+                    "offset": 2031616,
+                    "zstd_bytes": 65546
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "raw.dat",
+              "signature": null,
+              "size": 2097152,
+              "zip_boundaries": null
+            },
+            {
+              "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+              "class": "scripts-text",
+              "container_hint": null,
+              "measurement": {
+                "incompressible_candidate": false,
+                "repeated_sample_blocks": 0,
+                "sampled_bytes": 196608,
+                "sampled_zstd_bytes": 291,
+                "samples": [
+                  {
+                    "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 0,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 319488,
+                    "zstd_bytes": 97
+                  },
+                  {
+                    "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+                    "bytes": 65536,
+                    "cdc_chunks": 1,
+                    "entropy_millibits_per_byte": 4544,
+                    "offset": 638976,
+                    "zstd_bytes": 97
+                  }
+                ]
+              },
+              "mode": 420,
+              "path": "script.lua",
+              "signature": null,
+              "size": 704512,
+              "zip_boundaries": null
+            }
+          ],
+          "game": {
+            "appid": null,
+            "name": null,
+            "store": null
+          },
+          "generated_at": null,
+          "generated_by": "playsparse-game-v1",
+          "hints": {
+            "runtime_policy": "unchanged-static-default",
+            "startup_regions": []
+          },
+          "scanner_status": "generic",
+          "scanner_truncated": false,
+          "schema_version": 1,
+          "source_identity": {
+            "algorithm": "playsparse-source-blake3-v1",
+            "digest": "7787f640d34cf96c3df8aa3784c5f33ea0f8ef33a89b7355adaf02cc8db21a3c",
+            "directories": []
+          }
+        },
+        "source_unchanged": true,
+        "startup": "NOT RUN"
+      },
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 360,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 360,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 141447117,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 9.099999999999999e-05,
+          "p95_ms": 0.00013,
+          "p99_ms": 0.00042100000000000004,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6648111,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.157198,
+        "random_chunk_read": {
+          "p50_ms": 0.09606999999999999,
+          "p95_ms": 0.257521,
+          "p99_ms": 0.420816,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2639.0635715604803,
+          "playsparse_mib_s": 1278.1397278407217
+        },
+        "store_open_first_ms": 0.17305399999999999,
+        "store_open_repeat_ms": 0.083466,
+        "wall_seconds": 0.157138686,
+        "warm_cache": {
+          "decompressions": 24,
+          "decompressions_avoided": 638,
+          "evictions": 0,
+          "hit_ratio": 0.9637462235649547,
+          "hits": 638,
+          "in_flight_waits": 0,
+          "misses": 24,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 24
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.001442,
+              "p95_ms": 0.002735,
+              "p99_ms": 0.029325,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.180256,
+              "p95_ms": 0.432268,
+              "p99_ms": 0.649794,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000741,
+              "p95_ms": 0.001042,
+              "p99_ms": 0.001463,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 32380081,
+            "read_amplification": 123.52020645141602,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004889,
+              "p95_ms": 0.005691,
+              "p99_ms": 0.010268999999999999,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.175238,
+              "p95_ms": 0.332982,
+              "p99_ms": 0.394266,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003436,
+              "p95_ms": 0.004298000000000001,
+              "p99_ms": 0.0048590000000000005,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 34852296,
+            "read_amplification": 8.479526637584334,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.060403,
+              "p95_ms": 0.234668,
+              "p99_ms": 0.426987,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.732518,
+              "p95_ms": 1.112107,
+              "p99_ms": 1.419392,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.08568,
+              "p95_ms": 0.405327,
+              "p99_ms": 0.5455990000000001,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 64723480,
+            "read_amplification": 1.4813004569447192,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 17,
+        "v2_chunks": 24,
+        "cross_version_reused_logical_bytes": 5948502,
+        "cross_version_reused_unique_raw_bytes": 5948502,
+        "new_unique_objects": 7,
+        "new_encoded_object_bytes": 1398800,
+        "new_metadata_bytes": 4707,
+        "new_physical_bytes_if_existing_objects_reused": 1403515,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "generic-fixed",
+      "repetition": 1,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6648884,
+        "object_bytes": 6643330,
+        "metadata_bytes": 5554,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 29,
+        "reused_chunks": 0,
+        "pack_seconds": 0.024286555,
+        "pack_cpu_seconds": 0.0167,
+        "zstd_attempted_objects": 29,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r1-generic-fixed-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v2",
+          "--chunker",
+          "fixed"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:32.406069+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.03185363199997937
+      },
+      "pack_cpu_seconds": 0.0183549999999999,
+      "inspect_wall_seconds": 0.0,
+      "inspect_cpu_seconds": 0.0,
+      "inspection": null,
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 394,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 394,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 99126233,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 8.999999999999999e-05,
+          "p95_ms": 0.00019,
+          "p99_ms": 0.00037099999999999996,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6648884,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.136736,
+        "random_chunk_read": {
+          "p50_ms": 0.081893,
+          "p95_ms": 0.09663000000000001,
+          "p99_ms": 0.103965,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2692.130527302321,
+          "playsparse_mib_s": 1524.1007613486981
+        },
+        "store_open_first_ms": 0.140763,
+        "store_open_repeat_ms": 0.082454,
+        "wall_seconds": 0.136665843,
+        "warm_cache": {
+          "decompressions": 29,
+          "decompressions_avoided": 701,
+          "evictions": 0,
+          "hit_ratio": 0.9602739726027397,
+          "hits": 701,
+          "in_flight_waits": 0,
+          "misses": 29,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 29
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.0013930000000000001,
+              "p95_ms": 0.0019240000000000001,
+              "p99_ms": 0.002865,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.095869,
+              "p95_ms": 0.21839799999999998,
+              "p99_ms": 0.292156,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000691,
+              "p95_ms": 0.001173,
+              "p99_ms": 0.0012729999999999998,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 16465920,
+            "read_amplification": 62.8125,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004969,
+              "p95_ms": 0.006743,
+              "p99_ms": 0.014998,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.089377,
+              "p95_ms": 0.20411100000000001,
+              "p99_ms": 0.308096,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003576,
+              "p95_ms": 0.0046489999999999995,
+              "p99_ms": 0.006202,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 19176735,
+            "read_amplification": 4.665679278472666,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.054762000000000005,
+              "p95_ms": 0.108713,
+              "p99_ms": 0.426126,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.616662,
+              "p95_ms": 0.921372,
+              "p99_ms": 1.007131,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.087954,
+              "p95_ms": 0.43458199999999997,
+              "p99_ms": 0.47719100000000003,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 56136091,
+            "read_amplification": 1.2847643119527927,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 15,
+        "v2_chunks": 29,
+        "cross_version_reused_logical_bytes": 3850240,
+        "cross_version_reused_unique_raw_bytes": 3850240,
+        "new_unique_objects": 14,
+        "new_encoded_object_bytes": 3497247,
+        "new_metadata_bytes": 5546,
+        "new_physical_bytes_if_existing_objects_reused": 3502801,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    },
+    {
+      "mode": "generic-cdc",
+      "repetition": 1,
+      "pack": {
+        "logical_bytes": 7347487,
+        "physical_bytes": 6647635,
+        "object_bytes": 6643581,
+        "metadata_bytes": 4054,
+        "allocated_bytes": 6672384,
+        "filesystem_entries": 8,
+        "files": 3,
+        "unique_objects": 20,
+        "reused_chunks": 0,
+        "pack_seconds": 0.025907799,
+        "pack_cpu_seconds": 0.022491,
+        "zstd_attempted_objects": 20,
+        "measured_raw_objects": 0,
+        "measured_raw_bytes": 0,
+        "verified_before_publish": true
+      },
+      "pack_command": {
+        "label": "r1-generic-cdc-v2-pack",
+        "command": [
+          "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+          "pack",
+          "/tmp/playsparse-experiment05-ci/v2",
+          "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v2",
+          "--chunker",
+          "cdc"
+        ],
+        "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+        "timestamp": "2026-10-05T13:53:32.716681+00:00",
+        "status": "PASS",
+        "exit_code": 0,
+        "wall_seconds": 0.031939879000105975
+      },
+      "pack_cpu_seconds": 0.0242119999999999,
+      "inspect_wall_seconds": 0.0,
+      "inspect_cpu_seconds": 0.0,
+      "inspection": null,
+      "benchmark": {
+        "allocated_bytes": 6672384,
+        "arch": "x86_64",
+        "cold_cache": {
+          "decompressions": 334,
+          "decompressions_avoided": 0,
+          "evictions": 0,
+          "hit_ratio": 0.0,
+          "hits": 0,
+          "in_flight_waits": 0,
+          "misses": 334,
+          "peak_resident_bytes": 0,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 142829261,
+          "resident_bytes": 0,
+          "resident_entries": 0
+        },
+        "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+        "filesystem_entries": 8,
+        "iterations": 64,
+        "kind": "direct range resolver benchmark (not mounted I/O)",
+        "logical_bytes": 7347487,
+        "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+        "object_lookup": {
+          "p50_ms": 0.000101,
+          "p95_ms": 0.00013099999999999999,
+          "p99_ms": 0.000351,
+          "samples": 64
+        },
+        "os": "linux",
+        "peak_rss_bytes": 33411072,
+        "physical_bytes": 6647635,
+        "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+        "process_cpu_seconds": 0.15501900000000002,
+        "random_chunk_read": {
+          "p50_ms": 0.10697899999999999,
+          "p95_ms": 0.207708,
+          "p99_ms": 0.261238,
+          "samples": 64
+        },
+        "requested_random_bytes": 48066002,
+        "sequential": {
+          "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+          "bytes_equal": true,
+          "original_mib_s": 2669.3212068589887,
+          "playsparse_mib_s": 1266.8562085611543
+        },
+        "store_open_first_ms": 0.13874899999999998,
+        "store_open_repeat_ms": 0.07522999999999999,
+        "wall_seconds": 0.155037029,
+        "warm_cache": {
+          "decompressions": 20,
+          "decompressions_avoided": 598,
+          "evictions": 0,
+          "hit_ratio": 0.9676375404530745,
+          "hits": 598,
+          "in_flight_waits": 0,
+          "misses": 20,
+          "peak_resident_bytes": 7347487,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 7347487,
+          "resident_bytes": 7347487,
+          "resident_entries": 20
+        },
+        "workloads": [
+          {
+            "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+            "original": {
+              "p50_ms": 0.0013629999999999998,
+              "p95_ms": 0.001793,
+              "p99_ms": 0.0025450000000000004,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.169467,
+              "p95_ms": 0.407511,
+              "p99_ms": 0.6035269999999999,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.000532,
+              "p95_ms": 0.000792,
+              "p99_ms": 0.0008320000000000001,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 33020277,
+            "read_amplification": 125.96236038208008,
+            "read_bytes": 4096,
+            "requested_bytes": 262144,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+            "original": {
+              "p50_ms": 0.004928999999999999,
+              "p95_ms": 0.006252,
+              "p99_ms": 0.007734,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.162033,
+              "p95_ms": 0.333894,
+              "p99_ms": 0.36206699999999997,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.003396,
+              "p95_ms": 0.004358,
+              "p99_ms": 0.004809,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 35041019,
+            "read_amplification": 8.525442743244197,
+            "read_bytes": 65536,
+            "requested_bytes": 4110170,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          },
+          {
+            "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+            "original": {
+              "p50_ms": 0.051847,
+              "p95_ms": 0.081622,
+              "p99_ms": 0.443668,
+              "samples": 64
+            },
+            "playsparse_chunk_cache_cold": {
+              "p50_ms": 0.704997,
+              "p95_ms": 1.090276,
+              "p99_ms": 1.324223,
+              "samples": 64
+            },
+            "playsparse_warm_replay": {
+              "p50_ms": 0.086101,
+              "p95_ms": 0.411419,
+              "p99_ms": 0.526494,
+              "samples": 64
+            },
+            "raw_bytes_loaded": 65206774,
+            "read_amplification": 1.492361413849982,
+            "read_bytes": 1048576,
+            "requested_bytes": 43693688,
+            "verified_cold_reads": 64,
+            "verified_warm_reads": 64
+          }
+        ]
+      },
+      "update": {
+        "reused_v2_chunks": 12,
+        "v2_chunks": 20,
+        "cross_version_reused_logical_bytes": 4908635,
+        "cross_version_reused_unique_raw_bytes": 4908635,
+        "new_unique_objects": 8,
+        "new_encoded_object_bytes": 2438852,
+        "new_metadata_bytes": 4046,
+        "new_physical_bytes_if_existing_objects_reused": 2442906,
+        "definition": "hypothetical shared-object update: missing v2 payloads + complete v2 metadata + one pack header; stores are independently published, no delta-update API or allocation claim"
+      }
+    }
+  ],
+  "status": "PASS",
+  "limits": {
+    "OS_device_cache": "uncontrolled; cold means disabled decompressed cache",
+    "read_cpu": "whole direct benchmark including original file reads, correctness hashing and store opens",
+    "startup": "NOT RUN",
+    "native_compression": "NOT RUN",
+    "mounted_performance": "NOT RUN",
+    "physical_device_amplification": null,
+    "runtime_policy": "unchanged static LRU; no prefetch",
+    "L1": "NOT RUN",
+    "L2": "NOT RUN"
+  },
+  "sources_before": [
+    {
+      "files": [
+        {
+          "path": "content.pk3",
+          "size": 4196070,
+          "sha256": "c7f871f4ac08b3e4b8099d172a78592ca3b86a53feb4f6ce5c96d5f6792e02b4",
+          "mode": 420
+        },
+        {
+          "path": "raw.dat",
+          "size": 2097152,
+          "sha256": "9a263ef3e8f06fa5273762a1db0439e94a0d7b7fc542ae005c56a764ce2ae5ba",
+          "mode": 420
+        },
+        {
+          "path": "script.lua",
+          "size": 704512,
+          "sha256": "6c5fd76ab1f0a09cfe554d60fceec41b84d05093a4b0c36b71a45cac30b0746d",
+          "mode": 420
+        }
+      ],
+      "sha256": "aead7bb19e23c7c89185a92306adff30a62d521091ef47d5bb278e0ace93b461"
+    },
+    {
+      "files": [
+        {
+          "path": "content.pk3",
+          "size": 4545823,
+          "sha256": "e59e8b2e3251004c6661d964eb08f0c7c3c19a9214ffa937e254362adfb01891",
+          "mode": 420
+        },
+        {
+          "path": "raw.dat",
+          "size": 2097152,
+          "sha256": "9a263ef3e8f06fa5273762a1db0439e94a0d7b7fc542ae005c56a764ce2ae5ba",
+          "mode": 420
+        },
+        {
+          "path": "script.lua",
+          "size": 704512,
+          "sha256": "6c5fd76ab1f0a09cfe554d60fceec41b84d05093a4b0c36b71a45cac30b0746d",
+          "mode": 420
+        }
+      ],
+      "sha256": "990731bd429584d6a26f13bfa874f9a26fa6073c77ae1b664fabe17c2eb08d7b"
+    }
+  ],
+  "commands": [
+    {
+      "label": "r0-generic-cdc-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v1",
+        "--chunker",
+        "cdc"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.311048+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031980841999939
+    },
+    {
+      "label": "r0-generic-cdc-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.346526+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0077371930000254
+    },
+    {
+      "label": "r0-generic-cdc-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v2",
+        "--chunker",
+        "cdc"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.357056+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0318441869999333
+    },
+    {
+      "label": "r0-generic-cdc-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.391691+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007694654000033552
+    },
+    {
+      "label": "r0-generic-cdc-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-generic-cdc-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.402114+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16409695499999088
+    },
+    {
+      "label": "r0-measured-codec-v1-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v1-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v1-plan.json",
+        "--experimental-skip-compression"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.580842+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015821335000055115
+    },
+    {
+      "label": "r0-measured-codec-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r0-measured-codec-v1",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v1-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.600562+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031862551999893185
+    },
+    {
+      "label": "r0-measured-codec-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-measured-codec-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.635899+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007746281000095223
+    },
+    {
+      "label": "r0-measured-codec-v2-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v2-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v2-plan.json",
+        "--experimental-skip-compression"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.648236+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015805986000032135
+    },
+    {
+      "label": "r0-measured-codec-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-measured-codec-v2",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-measured-codec-v2-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.668724+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031972026000062215
+    },
+    {
+      "label": "r0-measured-codec-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-measured-codec-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.707594+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007694893999996566
+    },
+    {
+      "label": "r0-measured-codec-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-measured-codec-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.718829+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16428527599998688
+    },
+    {
+      "label": "r0-zip-records-v1-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v1-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v1-plan.json",
+        "--container-aware"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.898630+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015908897999906912
+    },
+    {
+      "label": "r0-zip-records-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r0-zip-records-v1",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v1-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.920402+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.06405195300010291
+    },
+    {
+      "label": "r0-zip-records-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-zip-records-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:30.990095+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0077035010000372495
+    },
+    {
+      "label": "r0-zip-records-v2-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v2-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v2-plan.json",
+        "--container-aware"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.004344+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015837094999938017
+    },
+    {
+      "label": "r0-zip-records-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-zip-records-v2",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r0-zip-records-v2-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.025677+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.06396478099998149
+    },
+    {
+      "label": "r0-zip-records-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-zip-records-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.095297+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007697959999973136
+    },
+    {
+      "label": "r0-zip-records-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-zip-records-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.108152+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16418934700004684
+    },
+    {
+      "label": "r0-generic-fixed-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v1",
+        "--chunker",
+        "fixed"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.292729+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.03192156199997953
+    },
+    {
+      "label": "r0-generic-fixed-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.334292+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0076777530000526895
+    },
+    {
+      "label": "r0-generic-fixed-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v2",
+        "--chunker",
+        "fixed"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.348576+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031879703999948106
+    },
+    {
+      "label": "r0-generic-fixed-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.387437+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.00774448700008179
+    },
+    {
+      "label": "r0-generic-fixed-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r0-generic-fixed-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.401974+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1641978239999844
+    },
+    {
+      "label": "r1-measured-codec-v1-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v1-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v1-plan.json",
+        "--experimental-skip-compression"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.584659+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.01587341300000844
+    },
+    {
+      "label": "r1-measured-codec-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r1-measured-codec-v1",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v1-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.608608+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.03189705500005857
+    },
+    {
+      "label": "r1-measured-codec-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-measured-codec-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.647865+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007650581000007151
+    },
+    {
+      "label": "r1-measured-codec-v2-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v2-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v2-plan.json",
+        "--experimental-skip-compression"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.665391+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.01578761200005374
+    },
+    {
+      "label": "r1-measured-codec-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-measured-codec-v2",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-measured-codec-v2-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.688931+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.03183056100010617
+    },
+    {
+      "label": "r1-measured-codec-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-measured-codec-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.728915+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.00764059300001918
+    },
+    {
+      "label": "r1-measured-codec-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-measured-codec-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.743716+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16418275399996674
+    },
+    {
+      "label": "r1-zip-records-v1-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v1-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v1-plan.json",
+        "--container-aware"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.927673+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015928164999991168
+    },
+    {
+      "label": "r1-zip-records-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r1-zip-records-v1",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v1-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:31.953283+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.06401844000004075
+    },
+    {
+      "label": "r1-zip-records-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-zip-records-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.026578+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007783900000049471
+    },
+    {
+      "label": "r1-zip-records-v2-inspect",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "--scanner",
+        "generic",
+        "--output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v2-profile.json",
+        "--plan-output",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v2-plan.json",
+        "--container-aware"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.043614+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.015814092000027813
+    },
+    {
+      "label": "r1-zip-records-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-zip-records-v2",
+        "--plan",
+        "/tmp/playsparse-experiment05-ci/evidence/r1-zip-records-v2-plan.json"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.069063+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.06402987100000246
+    },
+    {
+      "label": "r1-zip-records-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-zip-records-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.142671+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.00781887599998754
+    },
+    {
+      "label": "r1-zip-records-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-zip-records-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.159896+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16425362699999368
+    },
+    {
+      "label": "r1-generic-fixed-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v1",
+        "--chunker",
+        "fixed"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.345392+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031925008000030175
+    },
+    {
+      "label": "r1-generic-fixed-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.387994+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007754326000053879
+    },
+    {
+      "label": "r1-generic-fixed-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v2",
+        "--chunker",
+        "fixed"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.406069+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.03185363199997937
+    },
+    {
+      "label": "r1-generic-fixed-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.448515+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007746580000002723
+    },
+    {
+      "label": "r1-generic-fixed-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-generic-fixed-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.466698+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16428185600000234
+    },
+    {
+      "label": "r1-generic-cdc-v1-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v1",
+        "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v1",
+        "--chunker",
+        "cdc"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.653573+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031958644000042113
+    },
+    {
+      "label": "r1-generic-cdc-v1-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v1"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.697371+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007834935000005316
+    },
+    {
+      "label": "r1-generic-cdc-v2-pack",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "pack",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v2",
+        "--chunker",
+        "cdc"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.716681+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.031939879000105975
+    },
+    {
+      "label": "r1-generic-cdc-v2-old-reader-verify",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "verify",
+        "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v2"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.760042+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.007766928000023654
+    },
+    {
+      "label": "r1-generic-cdc-v2-benchmark",
+      "command": [
+        "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+        "benchmark",
+        "/tmp/playsparse-experiment05-ci/v2",
+        "/tmp/playsparse-experiment05-ci/r1-generic-cdc-v2",
+        "--iterations",
+        "64",
+        "--cache",
+        "16M"
+      ],
+      "cwd": "/home/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-05T13:53:32.782950+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16421106400002827
+    }
+  ],
+  "query_bytes_equal": true,
+  "summary": {
+    "generic-cdc": {
+      "physical_bytes": {
+        "median": 6647635.0,
+        "variance": 0,
+        "min": 6647635,
+        "max": 6647635,
+        "trials": 2
+      },
+      "object_bytes": {
+        "median": 6643581.0,
+        "variance": 0,
+        "min": 6643581,
+        "max": 6643581,
+        "trials": 2
+      },
+      "metadata_bytes": {
+        "median": 4054.0,
+        "variance": 0,
+        "min": 4054,
+        "max": 4054,
+        "trials": 2
+      },
+      "allocated_bytes": {
+        "median": 6672384.0,
+        "variance": 0,
+        "min": 6672384,
+        "max": 6672384,
+        "trials": 2
+      },
+      "pack_wall_seconds": {
+        "median": 0.03189203300001964,
+        "variance": 2.2892397242618445e-09,
+        "min": 0.0318441869999333,
+        "max": 0.031939879000105975,
+        "trials": 2
+      },
+      "pack_cpu_seconds": {
+        "median": 0.02435999999999995,
+        "variance": 2.1904000000015057e-08,
+        "min": 0.0242119999999999,
+        "max": 0.024508000000000002,
+        "trials": 2
+      },
+      "inspect_plan_wall_seconds": {
+        "median": 0.0,
+        "variance": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "trials": 2
+      },
+      "inspect_plan_cpu_seconds": {
+        "median": 0.0,
+        "variance": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "trials": 2
+      },
+      "end_to_end_wall_seconds": {
+        "median": 0.03189203300001964,
+        "variance": 2.2892397242618445e-09,
+        "min": 0.0318441869999333,
+        "max": 0.031939879000105975,
+        "trials": 2
+      },
+      "end_to_end_cpu_seconds": {
+        "median": 0.02435999999999995,
+        "variance": 2.1904000000015057e-08,
+        "min": 0.0242119999999999,
+        "max": 0.024508000000000002,
+        "trials": 2
+      },
+      "unique_objects": {
+        "median": 20.0,
+        "variance": 0,
+        "min": 20,
+        "max": 20,
+        "trials": 2
+      },
+      "reused_chunks_within_v2": {
+        "median": 0.0,
+        "variance": 0,
+        "min": 0,
+        "max": 0,
+        "trials": 2
+      },
+      "update_new_physical_bytes": {
+        "median": 2442906.0,
+        "variance": 0,
+        "min": 2442906,
+        "max": 2442906,
+        "trials": 2
+      },
+      "cross_version_reused_bytes": {
+        "median": 4908635.0,
+        "variance": 0,
+        "min": 4908635,
+        "max": 4908635,
+        "trials": 2
+      },
+      "cold_p50_ms": {
+        "median": 0.17484650000000002,
+        "variance": 2.893902024999995e-05,
+        "min": 0.169467,
+        "max": 0.180226,
+        "trials": 2
+      },
+      "cold_p95_ms": {
+        "median": 0.41054199999999996,
+        "variance": 9.186960999999868e-06,
+        "min": 0.407511,
+        "max": 0.41357299999999997,
+        "trials": 2
+      },
+      "cold_p99_ms": {
+        "median": 0.6031964999999999,
+        "variance": 1.092302499999708e-07,
+        "min": 0.602866,
+        "max": 0.6035269999999999,
+        "trials": 2
+      },
+      "warm_p50_ms": {
+        "median": 0.0005965,
+        "variance": 4.160249999999999e-09,
+        "min": 0.000532,
+        "max": 0.000661,
+        "trials": 2
+      },
+      "warm_p95_ms": {
+        "median": 0.000857,
+        "variance": 4.225000000000008e-09,
+        "min": 0.000792,
+        "max": 0.0009220000000000001,
+        "trials": 2
+      },
+      "warm_p99_ms": {
+        "median": 0.0010119999999999999,
+        "variance": 3.239999999999997e-08,
+        "min": 0.0008320000000000001,
+        "max": 0.001192,
+        "trials": 2
+      },
+      "sequential_mib_s": {
+        "median": 1274.0339671567554,
+        "variance": 51.52021845672657,
+        "min": 1266.8562085611543,
+        "max": 1281.2117257523566,
+        "trials": 2
+      },
+      "read_benchmark_cpu_seconds": {
+        "median": 0.1558485,
+        "variance": 6.880702499999949e-07,
+        "min": 0.15501900000000002,
+        "max": 0.156678,
+        "trials": 2
+      },
+      "peak_rss_bytes": {
+        "median": 33411072.0,
+        "variance": 0,
+        "min": 33411072,
+        "max": 33411072,
+        "trials": 2
+      },
+      "cold_raw_read_amplification_4k": {
+        "median": 125.96236038208008,
+        "variance": 0.0,
+        "min": 125.96236038208008,
+        "max": 125.96236038208008,
+        "trials": 2
+      },
+      "warm_cache_hit_ratio": {
+        "median": 0.9676375404530745,
+        "variance": 0.0,
+        "min": 0.9676375404530745,
+        "max": 0.9676375404530745,
+        "trials": 2
+      }
+    },
+    "measured-codec": {
+      "physical_bytes": {
+        "median": 6647635.0,
+        "variance": 0,
+        "min": 6647635,
+        "max": 6647635,
+        "trials": 2
+      },
+      "object_bytes": {
+        "median": 6643581.0,
+        "variance": 0,
+        "min": 6643581,
+        "max": 6643581,
+        "trials": 2
+      },
+      "metadata_bytes": {
+        "median": 4054.0,
+        "variance": 0,
+        "min": 4054,
+        "max": 4054,
+        "trials": 2
+      },
+      "allocated_bytes": {
+        "median": 6672384.0,
+        "variance": 0,
+        "min": 6672384,
+        "max": 6672384,
+        "trials": 2
+      },
+      "pack_wall_seconds": {
+        "median": 0.031901293500084194,
+        "variance": 5.003086553140772e-09,
+        "min": 0.03183056100010617,
+        "max": 0.031972026000062215,
+        "trials": 2
+      },
+      "pack_cpu_seconds": {
+        "median": 0.02557899999999999,
+        "variance": 5.759999999999531e-08,
+        "min": 0.025339,
+        "max": 0.02581899999999998,
+        "trials": 2
+      },
+      "inspect_plan_wall_seconds": {
+        "median": 0.015796799000042938,
+        "variance": 8.44009688015042e-11,
+        "min": 0.01578761200005374,
+        "max": 0.015805986000032135,
+        "trials": 2
+      },
+      "inspect_plan_cpu_seconds": {
+        "median": 0.01071799999999995,
+        "variance": 2.2090000000070274e-09,
+        "min": 0.010670999999999875,
+        "max": 0.010765000000000025,
+        "trials": 2
+      },
+      "end_to_end_wall_seconds": {
+        "median": 0.04769809250012713,
+        "variance": 6.387126475010181e-09,
+        "min": 0.047618173000159913,
+        "max": 0.04777801200009435,
+        "trials": 2
+      },
+      "end_to_end_cpu_seconds": {
+        "median": 0.03629699999999994,
+        "variance": 8.23690000000373e-08,
+        "min": 0.036009999999999875,
+        "max": 0.036584000000000005,
+        "trials": 2
+      },
+      "unique_objects": {
+        "median": 20.0,
+        "variance": 0,
+        "min": 20,
+        "max": 20,
+        "trials": 2
+      },
+      "reused_chunks_within_v2": {
+        "median": 0.0,
+        "variance": 0,
+        "min": 0,
+        "max": 0,
+        "trials": 2
+      },
+      "update_new_physical_bytes": {
+        "median": 2442906.0,
+        "variance": 0,
+        "min": 2442906,
+        "max": 2442906,
+        "trials": 2
+      },
+      "cross_version_reused_bytes": {
+        "median": 4908635.0,
+        "variance": 0,
+        "min": 4908635,
+        "max": 4908635,
+        "trials": 2
+      },
+      "cold_p50_ms": {
+        "median": 0.17915950000000003,
+        "variance": 0.00011013453025000008,
+        "min": 0.168665,
+        "max": 0.18965400000000002,
+        "trials": 2
+      },
+      "cold_p95_ms": {
+        "median": 0.411809,
+        "variance": 9.25443999999982e-07,
+        "min": 0.410847,
+        "max": 0.412771,
+        "trials": 2
+      },
+      "cold_p99_ms": {
+        "median": 0.5911945000000001,
+        "variance": 5.733630250000103e-06,
+        "min": 0.5888,
+        "max": 0.593589,
+        "trials": 2
+      },
+      "warm_p50_ms": {
+        "median": 0.000706,
+        "variance": 5.625000000000005e-09,
+        "min": 0.0006309999999999999,
+        "max": 0.000781,
+        "trials": 2
+      },
+      "warm_p95_ms": {
+        "median": 0.000967,
+        "variance": 1.822499999999998e-08,
+        "min": 0.0008320000000000001,
+        "max": 0.001102,
+        "trials": 2
+      },
+      "warm_p99_ms": {
+        "median": 0.0011524999999999999,
+        "variance": 1.2210250000000007e-08,
+        "min": 0.001042,
+        "max": 0.001263,
+        "trials": 2
+      },
+      "sequential_mib_s": {
+        "median": 1272.4162660157613,
+        "variance": 32.388119701127714,
+        "min": 1266.7252099010207,
+        "max": 1278.107322130502,
+        "trials": 2
+      },
+      "read_benchmark_cpu_seconds": {
+        "median": 0.156854,
+        "variance": 8.537759999999894e-07,
+        "min": 0.15593,
+        "max": 0.157778,
+        "trials": 2
+      },
+      "peak_rss_bytes": {
+        "median": 33411072.0,
+        "variance": 0,
+        "min": 33411072,
+        "max": 33411072,
+        "trials": 2
+      },
+      "cold_raw_read_amplification_4k": {
+        "median": 125.96236038208008,
+        "variance": 0.0,
+        "min": 125.96236038208008,
+        "max": 125.96236038208008,
+        "trials": 2
+      },
+      "warm_cache_hit_ratio": {
+        "median": 0.9676375404530745,
+        "variance": 0.0,
+        "min": 0.9676375404530745,
+        "max": 0.9676375404530745,
+        "trials": 2
+      }
+    },
+    "zip-records": {
+      "physical_bytes": {
+        "median": 6648111.0,
+        "variance": 0,
+        "min": 6648111,
+        "max": 6648111,
+        "trials": 2
+      },
+      "object_bytes": {
+        "median": 6643396.0,
+        "variance": 0,
+        "min": 6643396,
+        "max": 6643396,
+        "trials": 2
+      },
+      "metadata_bytes": {
+        "median": 4715.0,
+        "variance": 0,
+        "min": 4715,
+        "max": 4715,
+        "trials": 2
+      },
+      "allocated_bytes": {
+        "median": 6672384.0,
+        "variance": 0,
+        "min": 6672384,
+        "max": 6672384,
+        "trials": 2
+      },
+      "pack_wall_seconds": {
+        "median": 0.06399732599999197,
+        "variance": 1.0591770256825693e-09,
+        "min": 0.06396478099998149,
+        "max": 0.06402987100000246,
+        "trials": 2
+      },
+      "pack_cpu_seconds": {
+        "median": 0.034778500000000045,
+        "variance": 7.3102499999932635e-09,
+        "min": 0.034693000000000085,
+        "max": 0.034864000000000006,
+        "trials": 2
+      },
+      "inspect_plan_wall_seconds": {
+        "median": 0.015825593499982915,
+        "variance": 1.3228450121721568e-10,
+        "min": 0.015814092000027813,
+        "max": 0.015837094999938017,
+        "trials": 2
+      },
+      "inspect_plan_cpu_seconds": {
+        "median": 0.010895499999999947,
+        "variance": 3.4222499999954793e-09,
+        "min": 0.010836999999999986,
+        "max": 0.010953999999999908,
+        "trials": 2
+      },
+      "end_to_end_wall_seconds": {
+        "median": 0.07982291949997489,
+        "variance": 4.428288945809614e-10,
+        "min": 0.0798018759999195,
+        "max": 0.07984396300003027,
+        "trials": 2
+      },
+      "end_to_end_cpu_seconds": {
+        "median": 0.04567399999999999,
+        "variance": 7.289999999999593e-10,
+        "min": 0.04564699999999999,
+        "max": 0.04570099999999999,
+        "trials": 2
+      },
+      "unique_objects": {
+        "median": 24.0,
+        "variance": 0,
+        "min": 24,
+        "max": 24,
+        "trials": 2
+      },
+      "reused_chunks_within_v2": {
+        "median": 0.0,
+        "variance": 0,
+        "min": 0,
+        "max": 0,
+        "trials": 2
+      },
+      "update_new_physical_bytes": {
+        "median": 1403515.0,
+        "variance": 0,
+        "min": 1403515,
+        "max": 1403515,
+        "trials": 2
+      },
+      "cross_version_reused_bytes": {
+        "median": 5948502.0,
+        "variance": 0,
+        "min": 5948502,
+        "max": 5948502,
+        "trials": 2
+      },
+      "cold_p50_ms": {
+        "median": 0.1791495,
+        "variance": 1.2243422500000227e-06,
+        "min": 0.17804299999999998,
+        "max": 0.180256,
+        "trials": 2
+      },
+      "cold_p95_ms": {
+        "median": 0.4251395,
+        "variance": 5.081551225000014e-05,
+        "min": 0.41801099999999997,
+        "max": 0.432268,
+        "trials": 2
+      },
+      "cold_p99_ms": {
+        "median": 0.6292655,
+        "variance": 0.0004214193122499979,
+        "min": 0.6087370000000001,
+        "max": 0.649794,
+        "trials": 2
+      },
+      "warm_p50_ms": {
+        "median": 0.000706,
+        "variance": 1.2249999999999988e-09,
+        "min": 0.000671,
+        "max": 0.000741,
+        "trials": 2
+      },
+      "warm_p95_ms": {
+        "median": 0.000972,
+        "variance": 4.899999999999995e-09,
+        "min": 0.000902,
+        "max": 0.001042,
+        "trials": 2
+      },
+      "warm_p99_ms": {
+        "median": 0.0012925,
+        "variance": 2.9070250000000028e-08,
+        "min": 0.001122,
+        "max": 0.001463,
+        "trials": 2
+      },
+      "sequential_mib_s": {
+        "median": 1281.7029880560992,
+        "variance": 12.69682336249259,
+        "min": 1278.1397278407217,
+        "max": 1285.2662482714768,
+        "trials": 2
+      },
+      "read_benchmark_cpu_seconds": {
+        "median": 0.15541500000000003,
+        "variance": 3.1790889999999747e-06,
+        "min": 0.15363200000000002,
+        "max": 0.157198,
+        "trials": 2
+      },
+      "peak_rss_bytes": {
+        "median": 33411072.0,
+        "variance": 0,
+        "min": 33411072,
+        "max": 33411072,
+        "trials": 2
+      },
+      "cold_raw_read_amplification_4k": {
+        "median": 123.52020645141602,
+        "variance": 0.0,
+        "min": 123.52020645141602,
+        "max": 123.52020645141602,
+        "trials": 2
+      },
+      "warm_cache_hit_ratio": {
+        "median": 0.9637462235649547,
+        "variance": 0.0,
+        "min": 0.9637462235649547,
+        "max": 0.9637462235649547,
+        "trials": 2
+      }
+    },
+    "generic-fixed": {
+      "physical_bytes": {
+        "median": 6648884.0,
+        "variance": 0,
+        "min": 6648884,
+        "max": 6648884,
+        "trials": 2
+      },
+      "object_bytes": {
+        "median": 6643330.0,
+        "variance": 0,
+        "min": 6643330,
+        "max": 6643330,
+        "trials": 2
+      },
+      "metadata_bytes": {
+        "median": 5554.0,
+        "variance": 0,
+        "min": 5554,
+        "max": 5554,
+        "trials": 2
+      },
+      "allocated_bytes": {
+        "median": 6672384.0,
+        "variance": 0,
+        "min": 6672384,
+        "max": 6672384,
+        "trials": 2
+      },
+      "pack_wall_seconds": {
+        "median": 0.03186666799996374,
+        "variance": 1.6993729559243371e-10,
+        "min": 0.03185363199997937,
+        "max": 0.031879703999948106,
+        "trials": 2
+      },
+      "pack_cpu_seconds": {
+        "median": 0.01831849999999996,
+        "variance": 1.3322499999955732e-09,
+        "min": 0.01828200000000002,
+        "max": 0.0183549999999999,
+        "trials": 2
+      },
+      "inspect_plan_wall_seconds": {
+        "median": 0.0,
+        "variance": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "trials": 2
+      },
+      "inspect_plan_cpu_seconds": {
+        "median": 0.0,
+        "variance": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "trials": 2
+      },
+      "end_to_end_wall_seconds": {
+        "median": 0.03186666799996374,
+        "variance": 1.6993729559243371e-10,
+        "min": 0.03185363199997937,
+        "max": 0.031879703999948106,
+        "trials": 2
+      },
+      "end_to_end_cpu_seconds": {
+        "median": 0.01831849999999996,
+        "variance": 1.3322499999955732e-09,
+        "min": 0.01828200000000002,
+        "max": 0.0183549999999999,
+        "trials": 2
+      },
+      "unique_objects": {
+        "median": 29.0,
+        "variance": 0,
+        "min": 29,
+        "max": 29,
+        "trials": 2
+      },
+      "reused_chunks_within_v2": {
+        "median": 0.0,
+        "variance": 0,
+        "min": 0,
+        "max": 0,
+        "trials": 2
+      },
+      "update_new_physical_bytes": {
+        "median": 3502801.0,
+        "variance": 0,
+        "min": 3502801,
+        "max": 3502801,
+        "trials": 2
+      },
+      "cross_version_reused_bytes": {
+        "median": 3850240.0,
+        "variance": 0,
+        "min": 3850240,
+        "max": 3850240,
+        "trials": 2
+      },
+      "cold_p50_ms": {
+        "median": 0.0956535,
+        "variance": 4.6440249999997185e-08,
+        "min": 0.09543800000000001,
+        "max": 0.095869,
+        "trials": 2
+      },
+      "cold_p95_ms": {
+        "median": 0.219605,
+        "variance": 1.4568490000000329e-06,
+        "min": 0.21839799999999998,
+        "max": 0.220812,
+        "trials": 2
+      },
+      "cold_p99_ms": {
+        "median": 0.288534,
+        "variance": 1.3118884000000102e-05,
+        "min": 0.284912,
+        "max": 0.292156,
+        "trials": 2
+      },
+      "warm_p50_ms": {
+        "median": 0.0006709999999999999,
+        "variance": 3.999999999999999e-10,
+        "min": 0.000651,
+        "max": 0.000691,
+        "trials": 2
+      },
+      "warm_p95_ms": {
+        "median": 0.0010270000000000001,
+        "variance": 2.131599999999999e-08,
+        "min": 0.0008810000000000001,
+        "max": 0.001173,
+        "trials": 2
+      },
+      "warm_p99_ms": {
+        "median": 0.0011874999999999998,
+        "variance": 7.3102499999999934e-09,
+        "min": 0.001102,
+        "max": 0.0012729999999999998,
+        "trials": 2
+      },
+      "sequential_mib_s": {
+        "median": 1530.0854563245446,
+        "variance": 35.81657395392142,
+        "min": 1524.1007613486981,
+        "max": 1536.070151300391,
+        "trials": 2
+      },
+      "read_benchmark_cpu_seconds": {
+        "median": 0.136488,
+        "variance": 6.150399999999912e-08,
+        "min": 0.13624,
+        "max": 0.136736,
+        "trials": 2
+      },
+      "peak_rss_bytes": {
+        "median": 33411072.0,
+        "variance": 0,
+        "min": 33411072,
+        "max": 33411072,
+        "trials": 2
+      },
+      "cold_raw_read_amplification_4k": {
+        "median": 62.8125,
+        "variance": 0.0,
+        "min": 62.8125,
+        "max": 62.8125,
+        "trials": 2
+      },
+      "warm_cache_hit_ratio": {
+        "median": 0.9602739726027397,
+        "variance": 0.0,
+        "min": 0.9602739726027397,
+        "max": 0.9602739726027397,
+        "trials": 2
+      }
+    }
+  },
+  "sources_after": [
+    {
+      "files": [
+        {
+          "path": "content.pk3",
+          "size": 4196070,
+          "sha256": "c7f871f4ac08b3e4b8099d172a78592ca3b86a53feb4f6ce5c96d5f6792e02b4",
+          "mode": 420
+        },
+        {
+          "path": "raw.dat",
+          "size": 2097152,
+          "sha256": "9a263ef3e8f06fa5273762a1db0439e94a0d7b7fc542ae005c56a764ce2ae5ba",
+          "mode": 420
+        },
+        {
+          "path": "script.lua",
+          "size": 704512,
+          "sha256": "6c5fd76ab1f0a09cfe554d60fceec41b84d05093a4b0c36b71a45cac30b0746d",
+          "mode": 420
+        }
+      ],
+      "sha256": "aead7bb19e23c7c89185a92306adff30a62d521091ef47d5bb278e0ace93b461"
+    },
+    {
+      "files": [
+        {
+          "path": "content.pk3",
+          "size": 4545823,
+          "sha256": "e59e8b2e3251004c6661d964eb08f0c7c3c19a9214ffa937e254362adfb01891",
+          "mode": 420
+        },
+        {
+          "path": "raw.dat",
+          "size": 2097152,
+          "sha256": "9a263ef3e8f06fa5273762a1db0439e94a0d7b7fc542ae005c56a764ce2ae5ba",
+          "mode": 420
+        },
+        {
+          "path": "script.lua",
+          "size": 704512,
+          "sha256": "6c5fd76ab1f0a09cfe554d60fceec41b84d05093a4b0c36b71a45cac30b0746d",
+          "mode": 420
+        }
+      ],
+      "sha256": "990731bd429584d6a26f13bfa874f9a26fa6073c77ae1b664fabe17c2eb08d7b"
+    }
+  ],
+  "source_unchanged": true
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "generated_by": "playsparse-game-v1",
+  "source_identity": {
+    "algorithm": "playsparse-source-blake3-v1",
+    "digest": "932e7725950f69ee087445a9891650db900453a5da38a662c527384b136a92fb",
+    "directories": []
+  },
+  "container_aware": false,
+  "experimental_skip_compression": true,
+  "files": [
+    {
+      "path": "content.pk3",
+      "size": 4196070,
+      "mode": 420,
+      "blake3": "d63fd0afb9724d97d3777c9a88bf804fd6aaa79d9bca03514597b7020a706746",
+      "class": "container",
+      "container_hint": "zip-family",
+      "measurement": {
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 65536,
+            "blake3": "1536dcbef35d9703832ad1b7f187b7486cdccfcd9b5302275ac3bed90adbc3ad",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7997,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 2065267,
+            "bytes": 65536,
+            "blake3": "3f2973a75e41a9f60948dc7b13308b56019b6b96c974678e4ebf29f49f5813ac",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7997,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 4130534,
+            "bytes": 65536,
+            "blake3": "b5a4ba35e6239651ae89b0725fc8cb5adcccec79e04d109dc03771641bc9d08c",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7996,
+            "cdc_chunks": 1
+          }
+        ],
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 196638,
+        "repeated_sample_blocks": 0,
+        "incompressible_candidate": true
+      },
+      "chunk_strategy": "cdc",
+      "target_chunk_bytes": 262144,
+      "zstd_level": 3,
+      "compression_strategy": "measured-raw",
+      "boundaries": [],
+      "reason": "three bounded Zstd probes failed to shrink; raw is experimental, unsampled bytes may compress"
+    },
+    {
+      "path": "raw.dat",
+      "size": 2097152,
+      "mode": 420,
+      "blake3": "4c4f8c4f148c44272d015a21cd1a9d704e8bd755109a7c3f0c162d6e9dd908f2",
+      "class": "binary",
+      "container_hint": null,
+      "measurement": {
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 65536,
+            "blake3": "5ffaead4aeb71ade397e2476dafb01b184061ee6407405eed28ae7003a8f1dc8",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7997,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 1015808,
+            "bytes": 65536,
+            "blake3": "2f9a6f663c99a97ac7ba9c20295b4fabdf9f8c77425687fed06345567cef9f8c",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7997,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 2031616,
+            "bytes": 65536,
+            "blake3": "e78153fc648195f073664b4805e1b056c366680dcbe302fa3267745b7c4c7fcb",
+            "zstd_bytes": 65546,
+            "entropy_millibits_per_byte": 7997,
+            "cdc_chunks": 1
+          }
+        ],
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 196638,
+        "repeated_sample_blocks": 0,
+        "incompressible_candidate": true
+      },
+      "chunk_strategy": "cdc",
+      "target_chunk_bytes": 262144,
+      "zstd_level": 3,
+      "compression_strategy": "measured-raw",
+      "boundaries": [],
+      "reason": "three bounded Zstd probes failed to shrink; raw is experimental, unsampled bytes may compress"
+    },
+    {
+      "path": "script.lua",
+      "size": 704512,
+      "mode": 420,
+      "blake3": "f14bd9ca1f999341ae66e79c0f2edf8270830a34864209c61f730a042498529f",
+      "class": "scripts-text",
+      "container_hint": null,
+      "measurement": {
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 65536,
+            "blake3": "1f4c3ffa1c88f0a9e5f7b8130fdb982876f8e44fc0d1d3b7c4e9c593c6fbca90",
+            "zstd_bytes": 97,
+            "entropy_millibits_per_byte": 4544,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 319488,
+            "bytes": 65536,
+            "blake3": "9971f2b1aef5da17101e0040e183af9fb9d1a2d49749a78f1d7745db3079b9e5",
+            "zstd_bytes": 97,
+            "entropy_millibits_per_byte": 4544,
+            "cdc_chunks": 1
+          },
+          {
+            "offset": 638976,
+            "bytes": 65536,
+            "blake3": "4be02954e389ee1419a4d0a4cd94193106240c9aded7145aef5322ecc46b22a4",
+            "zstd_bytes": 97,
+            "entropy_millibits_per_byte": 4544,
+            "cdc_chunks": 1
+          }
+        ],
+        "sampled_bytes": 196608,
+        "sampled_zstd_bytes": 291,
+        "repeated_sample_blocks": 0,
+        "incompressible_candidate": false
+      },
+      "chunk_strategy": "cdc",
+      "target_chunk_bytes": 262144,
+      "zstd_level": 3,
+      "compression_strategy": "try-zstd",
+      "boundaries": [],
+      "reason": "retain generic Zstd with per-object raw fallback"
+    }
+  ]
+}

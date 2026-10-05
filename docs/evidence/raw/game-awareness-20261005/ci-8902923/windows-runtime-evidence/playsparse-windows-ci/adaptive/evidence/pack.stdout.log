@@ -1,0 +1,17 @@
+{
+  "logical_bytes": 46271084,
+  "physical_bytes": 5845452,
+  "object_bytes": 5726055,
+  "metadata_bytes": 119397,
+  "allocated_bytes": null,
+  "filesystem_entries": 8,
+  "files": 11,
+  "unique_objects": 702,
+  "reused_chunks": 8,
+  "pack_seconds": 0.2457646,
+  "pack_cpu_seconds": 0.25,
+  "zstd_attempted_objects": 702,
+  "measured_raw_objects": 0,
+  "measured_raw_bytes": 0,
+  "verified_before_publish": true
+}

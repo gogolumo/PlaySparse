@@ -1,0 +1,225 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 15 tests
+test tests::invalid_known_sizes_do_not_load_and_mismatched_size_fails_closed ... ok
+test tests::errors_wake_waiters_and_allow_retry ... ok
+test tests::speculation_checks_every_variable_size_victim_without_partial_eviction ... ok
+test tests::prefetch_useful_wasted_and_final_accounting_are_conserved ... ok
+test tests::admission_is_rechecked_after_racing_demand_without_evicting_protected_bytes ... ok
+test tests::adaptive_priority_changes_eviction_and_decays_under_new_traffic ... ok
+test tests::speculative_errors_do_not_strand_demand_or_count_loaded_bytes ... ok
+test tests::panicking_loader_releases_flight_and_permit ... ok
+test tests::weighted_lru_and_oversized_bypass ... ok
+test tests::speculative_hits_do_not_age_demand_priority_or_refresh_lru_recency ... ok
+test tests::racing_demand_claims_prefetch_once_and_preserves_loaded_tier ... ok
+test tests::racing_demand_makes_a_known_size_prefetch_flight_demand_admission ... ok
+test tests::speculation_does_not_wait_behind_saturated_demand_loads ... ok
+test tests::sixteen_threads_share_one_load_even_with_zero_cache ... ok
+test tests::speculative_entry_pressure_and_search_limits_do_not_start_loads ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+
+running 5 tests
+test diagnostics::tests::passive_diagnostics_do_not_claim_mount_approval ... ok
+test diagnostics::tests::blocked_probe_never_runs_when_prerequisites_are_missing ... ok
+test diagnostics::tests::probe_requires_exact_bytes_and_refuses_longer_or_shorter_content ... ok
+test game::tests::refuse_nested_output_without_mutating_source ... ok
+test diagnostics::tests::exact_bytes_on_an_ordinary_directory_cannot_pass_mount_probe ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 4 tests
+test tests::reject_unsafe_paths ... ok
+test tests::official_blake3_vectors ... ok
+test resources::tests::native_process_measurements_are_present_and_monotonic ... ok
+test tests::large_offsets ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 11 tests
+test tests::bounded_artifact_read ... ok
+test tests::extension_is_not_compression_proof ... ok
+test tests::zip_valid_boundaries_and_malformed_count_offset_flags ... ok
+test tests::forged_decision_is_remeasured ... ok
+test tests::scanner_unknown_and_multiple_signals_no_path_leak ... ok
+test tests::scanner_malformed_oversized_and_wrong_source ... ok
+test tests::absent_scanner_falls_back_without_changing_plan ... ok
+test tests::deterministic_measurement_and_plan ... ok
+test tests::artifact_validation_and_source_mismatch ... ok
+test tests::scanner_literal_argv ... ok
+test tests::scanner_deadline_and_bounded_streams ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.43s
+
+
+running 15 tests
+test tests::retained_directory_identity_prevents_storage_redirect_after_open ... ok
+test tests::interrupted_metadata_and_copy_up_orphans_are_collected_without_data_loss ... ok
+test tests::exclusive_lock_is_retained_by_handles_and_discard_preserves_base ... ok
+test tests::rename_empty_directory_replace_and_file_replace_remount ... ok
+test tests::renamed_base_tree_directory_handles_and_tombstones_persist ... ok
+test tests::handle_delete_preserves_replacements_and_follows_live_renames ... ok
+test tests::metadata_corruption_missing_objects_and_wrong_base_fail_closed ... ok
+test tests::refuses_overlap_unrecognized_roots_and_foreign_handles ... ok
+test tests::strict_paths_read_permissions_limits_and_wrong_types ... ok
+test tests::symlink_root_ancestor_data_metadata_and_object_escapes_are_rejected ... ok
+test tests::truncate_zero_skips_copy_and_large_sparse_offsets_stay_u64 ... ok
+test tests::per_file_serialization_shared_reads_and_atomic_append ... ok
+test tests::stable_file_handles_survive_rename_replace_and_unlink ... ok
+test tests::syntactically_valid_corrupt_metadata_is_rejected ... ok
+test tests::create_partial_append_truncate_modes_and_remount ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.07s
+
+
+running 6 tests
+test tests::sequence_confidence_random_rejection_and_expiry ... ok
+test tests::forward_coverage_counts_unique_bytes_and_resets_for_tiny_bursts_and_gaps ... ok
+test tests::migrating_dispatch_workers_and_forward_overlap_are_sequential ... ok
+test tests::strict_invalid_configuration_and_roundtrip ... ok
+test tests::optimizer_uses_forward_overlap_confidence_and_rejects_random_stream ... ok
+test tests::hotness_decays_and_tracking_is_bounded ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 10 tests
+test prefetch::tests::expired_requests_never_execute_loader ... ok
+test prefetch::tests::reservations_dedup_queue_and_cancellation_stay_bounded ... ok
+test prefetch::tests::worker_rechecks_queued_admission_after_demand_changes_the_cache ... ok
+test prefetch::tests::failed_objects_are_not_requeued_by_repeated_subchunk_predictions ... ok
+test prefetch::tests::rejected_admission_history_is_bounded_without_source_io ... ok
+test tests::traced_reads_preserve_bytes_and_record_failure ... ok
+test tests::tiny_sequential_burst_does_not_predict_whole_chunks_until_chunk_coverage ... ok
+test tests::loads_only_intersecting_chunks_and_handles_overflow ... ok
+test replay::tests::deterministic_replay_and_prefetch_accounting ... ok
+test tests::ranges_equal_source ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.19s
+
+
+running 24 tests
+test tests::index_rejects_length_codec_reserved_and_duplicate ... ok
+test publication_tests::rejects_nested_destination_without_mutating_the_source ... ok
+test publication_tests::rejects_alias_into_source_before_creating_destination_parents ... ok
+test tests::exclusive_publish_never_replaces_existing_empty_directory ... ok
+test game_tests::forged_plan_refused_before_creating_destination_parent ... ok
+test publication_tests::creates_nested_destination_only_outside_the_source ... ok
+test tests::corrupt_missing_and_partial_are_errors ... ok
+test tests::object_corruption_detected ... ok
+test tests::arbitrary_index_never_panics ... ok
+test tiers::tests::concurrent_atomic_promotion_is_single_object_and_never_replaces_peer_data ... ok
+test tests::deterministic_chunker_index_manifest_and_pack ... ok
+test tiers::tests::config_versions_fields_bounds_relative_paths_and_credentials_are_checked ... ok
+test tiers::tests::metadata_only_open_retains_seal_index_and_available_pack_checks ... ok
+test tiers::tests::promotion_rejects_symlink_escapes_overlap_and_destination_links ... ok
+test tiers::tests::local_corruption_is_hard_error_and_missing_secondary_identity_falls_remote ... ok
+test tiers::tests::remote_promotion_is_persistent_verified_and_offline_readable ... ok
+test tiers::tests::primary_and_metadata_only_remote_ranges_preserve_identity_and_bounds ... ok
+test tiers::tests::unreachable_remote_is_sanitized_and_local_fallback_avoids_http ... ok
+test tiers::tests::secondary_own_locator_promotion_and_reopen_without_upstream ... ok
+test tiers::tests::remote_protocol_and_integrity_failures_never_return_unverified_bytes ... ok
+test tests::pack_verify_dedup_both_layouts ... ok
+test tiers::tests::header_and_body_timeouts_have_bounded_retry_and_metrics ... ok
+test tiers::tests::promotion_startup_never_follows_a_concurrently_substituted_ancestor ... ok
+test game_tests::measured_codec_byte_identity_and_generic_regression ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.59s
+
+
+running 10 tests
+test tests::full_queue_drops_without_blocking_producer ... ok
+test tests::preserves_operation_specific_request_and_return_values ... ok
+test tests::failed_writer_and_invalid_destination_are_safe ... ok
+test tests::rejects_unknown_schema_and_oversized_line ... ok
+test tests::rejects_overflowing_read_and_write_totals ... ok
+test tests::rejects_oversized_imported_fields_in_all_event_consumers ... ok
+test tests::shutdown_racing_producers_accounts_every_event ... ok
+test tests::concurrent_schema_shutdown_and_summary ... ok
+test tests::rejects_unbounded_distinct_read_workers ... ok
+test tests::rejects_retained_string_keys_before_identity_limit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.98s
+
+
+running 15 tests
+test fuse::tests::real_mount_random_concurrent_mmap_and_native_execution ... ignored, requires real /dev/fuse or installed macFUSE, mount permission, and cc
+test macos_diagnostic::tests::installation_and_feature_are_independent_gates ... ok
+test macos_diagnostic::tests::unsupported_transition_releases_and_future_major_are_blocked ... ok
+test macos_diagnostic::tests::reports_all_missing_prerequisites_without_inventing_approval ... ok
+test macos::tests::requires_supported_channel_ownership_and_descriptor_api ... ok
+test fuse::tests::namespace_preserves_empty_directories_and_large_sizes ... ok
+test macos::tests::duplicate_preserves_channel_owned_descriptor ... ok
+test writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base ... ignored, requires /dev/fuse or approved macFUSE and mount permission
+test writable::tests::overlay_errors_preserve_useful_posix_statuses ... ok
+test fuse::tests::namespace_rejects_path_collisions_and_unsupported_names ... ok
+test macos::tests::rejects_transport_switch_and_option_injection ... ok
+test fuse::tests::rejects_nonempty_and_overlapping_mountpoints ... ok
+test fuse::tests::callbacks_resolve_only_requested_chunks_and_report_corruption ... ok
+test writable::tests::writable_namespace_rejects_escape_names_and_overlapping_storage ... ok
+test writable::tests::open_handles_retain_inode_and_data_across_rename_replace_unlink ... ok
+
+test result: ok. 13 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

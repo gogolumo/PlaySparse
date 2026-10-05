@@ -1,0 +1,9 @@
+{
+  "asset_root": "/private/tmp/playsparse-game-aware-native-extra-01/tiers/mounted",
+  "executable": "/private/tmp/playsparse-game-aware-native-extra-01/tiers/mounted/testgame",
+  "read_and_mmap_samples": 169,
+  "sample_blake3": "d5eedb3431594e29c6b1cf7f450bc11ec0b9f887c4aef8635bb8602f52754f19",
+  "schema": 1,
+  "self_test": "PASS",
+  "verified_bytes": 598371
+}

@@ -1,0 +1,135 @@
+{
+  "status": "PASS",
+  "repository": {
+    "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "4dea236864a353dc6bbba1e25727e3fae6e75e4c112c8a3b72cb32519f36bfa8",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "commands": [
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:00:43.867625+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.4007586670013552
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:00:44.269861+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.3828970419999678
+    },
+    {
+      "label": "test",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace",
+        "--all-features"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:00:45.653916+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 13.158150457999
+    },
+    {
+      "label": "release",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-features"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:00:58.813494+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 7.996783124999638
+    },
+    {
+      "label": "research",
+      "command": [
+        "bash",
+        "tools/check.sh"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:07.015421+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 14.911083041000893
+    },
+    {
+      "label": "doctor-human",
+      "command": [
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "doctor",
+        "--human",
+        "--mount-test"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:21.927650+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.5729574590004631
+    },
+    {
+      "label": "doctor-json",
+      "command": [
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "doctor",
+        "--mount-test"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:22.503154+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.5727547920014331
+    },
+    {
+      "label": "upstream-scanner",
+      "command": [
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "inspect-game",
+        "/tmp/playsparse-game-aware-mac-01/v1",
+        "--scanner",
+        "universal-modder",
+        "--scanner-program",
+        "/tmp/playsparse-universal-modder-20261005-01/bin/um",
+        "--output",
+        "/private/tmp/playsparse-game-aware-checks-02/um-profile.json"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:23.079532+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.17997612500039395
+    }
+  ]
+}

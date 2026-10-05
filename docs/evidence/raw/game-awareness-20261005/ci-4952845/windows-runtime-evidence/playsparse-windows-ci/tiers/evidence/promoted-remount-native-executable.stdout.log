@@ -1,0 +1,9 @@
+{
+  "asset_root": "D:\\a\\_temp\\playsparse-windows-ci\\tiers\\mounted",
+  "executable": "D:\\a\\_temp\\playsparse-windows-ci\\tiers\\mounted\\testgame.exe",
+  "read_and_mmap_samples": 169,
+  "sample_blake3": "8a7c615682205020288b4cb68c4a2671b926f07079c5877e6b38fb393cbd0aea",
+  "schema": 1,
+  "self_test": "PASS",
+  "verified_bytes": 598374
+}

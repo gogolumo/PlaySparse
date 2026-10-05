@@ -1,0 +1,176 @@
+{
+  "allocated_bytes": 6672384,
+  "arch": "x86_64",
+  "cold_cache": {
+    "decompressions": 394,
+    "decompressions_avoided": 0,
+    "evictions": 0,
+    "hit_ratio": 0.0,
+    "hits": 0,
+    "in_flight_waits": 0,
+    "misses": 394,
+    "peak_resident_bytes": 0,
+    "prefetch_bytes_loaded": 0,
+    "prefetch_chunks_loaded": 0,
+    "prefetch_dropped": 0,
+    "prefetch_duplicates": 0,
+    "prefetch_errors": 0,
+    "prefetch_expired": 0,
+    "prefetch_hits": 0,
+    "prefetch_peak_reserved_bytes": 0,
+    "prefetch_queue_high_watermark": 0,
+    "prefetch_requests": 0,
+    "prefetch_reserved_bytes": 0,
+    "prefetch_resident_unconsumed_bytes": 0,
+    "prefetch_skipped": 0,
+    "prefetch_useful_bytes": 0,
+    "prefetch_wasted_bytes": 0,
+    "raw_bytes_loaded": 99126233,
+    "resident_bytes": 0,
+    "resident_entries": 0
+  },
+  "cold_definition": "decompressed chunk cache disabled; OS page cache is uncontrolled, not disk-cold",
+  "filesystem_entries": 8,
+  "iterations": 64,
+  "kind": "direct range resolver benchmark (not mounted I/O)",
+  "logical_bytes": 7347487,
+  "native_filesystem_compression_baseline": "Windows WOF measurement required; not available on this OS",
+  "object_lookup": {
+    "p50_ms": 0.000114,
+    "p95_ms": 0.000153,
+    "p99_ms": 0.00031,
+    "samples": 64
+  },
+  "os": "linux",
+  "peak_rss_bytes": 33411072,
+  "physical_bytes": 6648884,
+  "physical_bytes_definition": "sum of encoded store file lengths; allocated_bytes measures POSIX blocks separately",
+  "process_cpu_seconds": 0.107985,
+  "random_chunk_read": {
+    "p50_ms": 0.06293599999999999,
+    "p95_ms": 0.07177700000000001,
+    "p99_ms": 0.10472200000000001,
+    "samples": 64
+  },
+  "requested_random_bytes": 48066002,
+  "sequential": {
+    "blake3": "cf59050fd42fc35add74b7f9e2fdb01c8f1c14f952982c3d2566b37d5199a2a0",
+    "bytes_equal": true,
+    "original_mib_s": 3440.4230579019045,
+    "playsparse_mib_s": 1991.323128408296
+  },
+  "store_open_first_ms": 0.11934,
+  "store_open_repeat_ms": 0.060025999999999996,
+  "wall_seconds": 0.10795858,
+  "warm_cache": {
+    "decompressions": 29,
+    "decompressions_avoided": 701,
+    "evictions": 0,
+    "hit_ratio": 0.9602739726027397,
+    "hits": 701,
+    "in_flight_waits": 0,
+    "misses": 29,
+    "peak_resident_bytes": 7347487,
+    "prefetch_bytes_loaded": 0,
+    "prefetch_chunks_loaded": 0,
+    "prefetch_dropped": 0,
+    "prefetch_duplicates": 0,
+    "prefetch_errors": 0,
+    "prefetch_expired": 0,
+    "prefetch_hits": 0,
+    "prefetch_peak_reserved_bytes": 0,
+    "prefetch_queue_high_watermark": 0,
+    "prefetch_requests": 0,
+    "prefetch_reserved_bytes": 0,
+    "prefetch_resident_unconsumed_bytes": 0,
+    "prefetch_skipped": 0,
+    "prefetch_useful_bytes": 0,
+    "prefetch_wasted_bytes": 0,
+    "raw_bytes_loaded": 7347487,
+    "resident_bytes": 7347487,
+    "resident_entries": 29
+  },
+  "workloads": [
+    {
+      "aggregate_read_blake3": "a1e74a9d6597b7b3158bffa4e01f5508bf03d54979e7f64994e1d03fca58ab22",
+      "original": {
+        "p50_ms": 0.001076,
+        "p95_ms": 0.002288,
+        "p99_ms": 0.005361,
+        "samples": 64
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.079789,
+        "p95_ms": 0.178845,
+        "p99_ms": 0.204193,
+        "samples": 64
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.00082,
+        "p95_ms": 0.001128,
+        "p99_ms": 0.001259,
+        "samples": 64
+      },
+      "raw_bytes_loaded": 16465920,
+      "read_amplification": 62.8125,
+      "read_bytes": 4096,
+      "requested_bytes": 262144,
+      "verified_cold_reads": 64,
+      "verified_warm_reads": 64
+    },
+    {
+      "aggregate_read_blake3": "89687f3c1c1b21b327cd6f33ebe6389ee4800354764e536353608aad469f1fb3",
+      "original": {
+        "p50_ms": 0.006732999999999999,
+        "p95_ms": 0.008252,
+        "p99_ms": 0.024551,
+        "samples": 64
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.070387,
+        "p95_ms": 0.149978,
+        "p99_ms": 0.270223,
+        "samples": 64
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.0038940000000000003,
+        "p95_ms": 0.0055060000000000005,
+        "p99_ms": 0.013463,
+        "samples": 64
+      },
+      "raw_bytes_loaded": 19176735,
+      "read_amplification": 4.665679278472666,
+      "read_bytes": 65536,
+      "requested_bytes": 4110170,
+      "verified_cold_reads": 64,
+      "verified_warm_reads": 64
+    },
+    {
+      "aggregate_read_blake3": "fe76ec75fa2e3005ad791512f97fdac95259585a861ce942ed4e32abeaa47cc6",
+      "original": {
+        "p50_ms": 0.055761,
+        "p95_ms": 0.094751,
+        "p99_ms": 0.403458,
+        "samples": 64
+      },
+      "playsparse_chunk_cache_cold": {
+        "p50_ms": 0.463494,
+        "p95_ms": 0.732892,
+        "p99_ms": 0.833505,
+        "samples": 64
+      },
+      "playsparse_warm_replay": {
+        "p50_ms": 0.065915,
+        "p95_ms": 0.314506,
+        "p99_ms": 0.326087,
+        "samples": 64
+      },
+      "raw_bytes_loaded": 56136091,
+      "read_amplification": 1.2847643119527927,
+      "read_bytes": 1048576,
+      "requested_bytes": 43693688,
+      "verified_cold_reads": 64,
+      "verified_warm_reads": 64
+    }
+  ]
+}

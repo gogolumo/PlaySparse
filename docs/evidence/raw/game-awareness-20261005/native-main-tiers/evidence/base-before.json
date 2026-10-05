@@ -1,0 +1,48 @@
+{
+  "definition": "SHA-256 of ordered path, size, mode, mtime, extent positions and contents; allocation accounting excluded; not a whole-file SHA-256",
+  "tree_fingerprint_sha256": "640838bd21c08dc9094cef36df34119fbacd1bd0b97fba1de4378b7a426fbbd1",
+  "files": [
+    {
+      "path": "COMMITTED.json",
+      "size": 180,
+      "mode": 33188,
+      "mtime_ns": 1791209013075164295,
+      "allocated_bytes": 4096,
+      "extents": [
+        [
+          0,
+          180
+        ]
+      ],
+      "extent_sha256": "3aac6c8387b62d8e98f8d212766dca860de8dbda361d9c3125fb37e19612b188"
+    },
+    {
+      "path": "index/objects.idx",
+      "size": 9928,
+      "mode": 33188,
+      "mtime_ns": 1791209013058912321,
+      "allocated_bytes": 12288,
+      "extents": [
+        [
+          0,
+          9928
+        ]
+      ],
+      "extent_sha256": "9be0822cb0368227af710343504ae68cee98a6bdbf4034fbcc50d425bb553823"
+    },
+    {
+      "path": "manifest.json",
+      "size": 21547,
+      "mode": 33188,
+      "mtime_ns": 1791209013054684097,
+      "allocated_bytes": 24576,
+      "extents": [
+        [
+          0,
+          21547
+        ]
+      ],
+      "extent_sha256": "ffac81a7be90dc0c4762cde984d4e22dd0255918b9f8b9f905353e312919734d"
+    }
+  ]
+}
