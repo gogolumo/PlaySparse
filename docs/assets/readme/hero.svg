@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 620" role="img" aria-labelledby="title desc">
+  <title id="title">PlaySparse virtual storage overview</title>
+  <desc id="desc">An application sees ordinary files while PlaySparse resolves byte ranges through cache and verified compressed storage tiers.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1400" height="620" rx="28" fill="url(#bg)"/>
+  <circle cx="1230" cy="90" r="180" fill="#8b5cf6" opacity=".08"/>
+  <circle cx="190" cy="520" r="220" fill="#22d3ee" opacity=".06"/>
+  <text x="72" y="92" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="48" font-weight="700">PlaySparse</text>
+  <text x="72" y="136" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22">Adaptive virtual storage for massive game installations</text>
+  <rect x="72" y="198" width="300" height="122" rx="18" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="222" y="240" text-anchor="middle" fill="#e2e8f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" font-weight="600">GAME / APP</text>
+  <text x="222" y="275" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18">ordinary files</text>
+  <text x="222" y="302" text-anchor="middle" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14">no PlaySparse-specific API</text>
+  <line x1="372" y1="259" x2="505" y2="259" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="438" y="242" text-anchor="middle" fill="#94a3b8" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13">read(offset,len)</text>
+  <rect x="520" y="180" width="360" height="158" rx="22" fill="#101827" stroke="url(#accent)" stroke-width="3" filter="url(#glow)"/>
+  <text x="700" y="228" text-anchor="middle" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="18" font-weight="700">VIRTUAL FILESYSTEM</text>
+  <text x="700" y="264" text-anchor="middle" fill="#22d3ee" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18">RangeResolver</text>
+  <text x="700" y="294" text-anchor="middle" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14">manifest → intersecting chunks → verified bytes</text>
+  <text x="700" y="320" text-anchor="middle" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13">FUSE / WinFsp · bounded reads · 64-bit offsets</text>
+  <line x1="880" y1="259" x2="1008" y2="259" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1024" y="198" width="304" height="122" rx="18" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="1176" y="238" text-anchor="middle" fill="#e2e8f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" font-weight="600">BYTE CACHE</text>
+  <text x="1176" y="272" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17">static LRU by default</text>
+  <text x="1176" y="299" text-anchor="middle" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13">single-flight · byte bounded</text>
+  <line x1="1176" y1="320" x2="1176" y2="400" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="700" y1="338" x2="700" y2="400" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="510" y="416" width="380" height="120" rx="18" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+  <text x="700" y="456" text-anchor="middle" fill="#e2e8f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" font-weight="600">CONTENT-ADDRESSED STORE</text>
+  <text x="700" y="488" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17">BLAKE3 · raw / Zstd · packfiles</text>
+  <text x="700" y="515" text-anchor="middle" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13">verified before cache admission</text>
+  <line x1="890" y1="476" x2="1005" y2="476" stroke="#64748b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="1024" y="404" width="304" height="144" rx="18" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+  <text x="1176" y="442" text-anchor="middle" fill="#e2e8f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" font-weight="600">OPTIONAL TIERS</text>
+  <text x="1176" y="476" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">primary local</text>
+  <text x="1176" y="502" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">secondary local</text>
+  <text x="1176" y="528" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">HTTP byte ranges</text>
+  <rect x="72" y="420" width="310" height="108" rx="18" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+  <text x="227" y="457" text-anchor="middle" fill="#e2e8f0" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="16" font-weight="600">RESEARCH LOOP</text>
+  <text x="227" y="488" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">trace → policy → measure</text>
+  <text x="227" y="514" text-anchor="middle" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13">failures stay in the evidence</text>
+  <path d="M382 473 C430 473 445 312 520 302" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#arrow)"/>
+  <text x="72" y="580" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14">STORE LESS. SERVE THE SAME FILES.  //  SPACE × LATENCY × CPU</text>
+</svg>

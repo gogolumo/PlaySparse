@@ -1,443 +1,345 @@
-# PlaySparse
+<p align="center">
+  <img src="docs/assets/readme/hero.svg" alt="PlaySparse architecture: ordinary game files served from chunked, compressed and verified storage" width="100%">
+</p>
 
-**Experimental adaptive virtual storage runtime for very large games.**
+<h1 align="center">PlaySparse</h1>
 
-Modern games can occupy 100–200+ GB. PlaySparse investigates a different question from ordinary compression:
+<p align="center">
+  <strong>Adaptive virtual storage for massive game installations.</strong><br>
+  Store less. Serve the same files.
+</p>
 
-> Can an unmodified game see the normal files it expects while the bytes underneath are stored in a more efficient, adaptive physical representation?
+<p align="center">
+  <a href="https://github.com/gogolumo/PlaySparse/actions/workflows/rust-runtime.yml"><img alt="Rust runtime CI" src="https://github.com/gogolumo/PlaySparse/actions/workflows/rust-runtime.yml/badge.svg"></a>
+  <a href="https://github.com/gogolumo/PlaySparse/actions/workflows/ci.yml"><img alt="Research CI" src="https://github.com/gogolumo/PlaySparse/actions/workflows/ci.yml/badge.svg"></a>
+  <img alt="Rust 1.99" src="https://img.shields.io/badge/Rust-1.99-000000?logo=rust&logoColor=white">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/github/license/gogolumo/PlaySparse"></a>
+  <img alt="Experimental research" src="https://img.shields.io/badge/status-experimental%20research-7c3aed">
+</p>
 
-PlaySparse is **not** claiming a magical `150 GB -> 10 GB` lossless compressor. Transparent filesystem compression already exists, and modern game data is often already compressed. The research target is a storage runtime that combines content-addressed chunks, on-demand reconstruction, caching, tiering and access-trace-driven policy decisions.
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#status">Status</a> ·
+  <a href="#benchmarks--evidence">Benchmarks</a> ·
+  <a href="#roadmap">Roadmap</a> ·
+  <a href="#documentation">Docs</a>
+</p>
 
-## Current status
+> [!IMPORTANT]
+> PlaySparse is **not** claiming arbitrary 10×–15× lossless compression for already-compressed game assets. The project explores a different storage representation: chunked, compressed, verified objects served through a virtual filesystem while applications continue reading ordinary files.
 
-The Rust runtime serves file ranges directly from compressed CAS through real
-Linux FUSE and Windows WinFsp mounts. Generated native programs and the
-open-source Zstd CLI have run from the mounted view. A generated 10 GiB file
-passed mounted reads beyond 4/8 GiB, mmap and concurrent I/O. **Native macOS
-validation is the current priority**, with Linux as another target.
+## What is PlaySparse?
 
-| Platform | Verified behavior | Remaining validation |
-|---|---|---|
-| macOS arm64 | Native macFUSE 5.4.0 SDK compile/link, fmt, clippy, 76 tests and release build | Actual mounting is **BLOCKED** on the development Mac because macFUSE is absent; kernel approval and mounted application tests remain open |
-| Linux | Real FUSE mounts in a Linux VM and hosted CI: large/mapped reads, executable launch, writable updater/remount/commit/discard, adaptive replay and local/HTTP tiers |   hardware and real game/launcher compatibility are **NOT RUN** |
-| Windows | Native WinFsp mounts in hosted CI, including readonly, writable, adaptive and tiered/HTTP workflows | Physical desktop, real game/launcher and WOF comparisons remain open |
+Modern games can occupy enormous amounts of storage, but simply turning the compression level up is not a solution. Assets may already be compressed, random reads still need low latency, updates can shift large regions of data, and decompression consumes CPU.
 
-All eight push/PR checks passed at `0c85fe2`, now merged through
-[PR #5](https://github.com/gogolumo/PlaySparse/pull/5). See the
-[runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37197365426)
-and [retained macOS/Linux evidence](docs/evidence/posix-runtime.md).
-The macOS SDK checks do not establish that a volume can mount.
+PlaySparse investigates whether an unmodified application can keep seeing the normal filesystem it expects while the physical representation underneath is more flexible: **content-addressed chunks, Zstd/raw objects, indexed packfiles, bounded caches, tracing, writable overlays and optional local/HTTP tiers**.
 
-The optional persistent writable overlay, generated updater, bounded JSONL
-tracing, adaptive cache/prefetch policy, local tiers and verified HTTP object
-ranges are implemented as **EXPERIMENTAL** capabilities. Linux driver-backed
-tests cover writable operations and updater/remount behavior, traced byte
-comparisons, and tiered reads/failures. These development and hosted-CI results
-do not establish compatibility with a physical gaming desktop or a launcher.
+The goal is not maximum compression at any cost. The goal is a better **space × latency × CPU** frontier without requiring the application to understand PlaySparse.
 
-### Current capabilities
+## How it works
 
-- [x] **WORKING:** directory → Rust BLAKE3/raw/Zstd CAS; originals remain untouched
-- [x] **WORKING:** deterministic v1 manifests, indexed packfiles and loose comparison layout
-- [x] **WORKING:** per-object and streaming whole-file verification
-- [x] **WORKING:** binary-search byte-range reads; only intersecting chunks loaded
-- [x] **WORKING:** byte-bounded LRU, metrics and concurrent single-flight loads
-- [x] **WORKING:** Linux FUSE mount, normal reads, directories, mmap and executable launch
-- [x] **WORKING:** analyze, pack, verify, mount, unmount, benchmark, doctor and io-probe
-- [x] **WORKING:** generated 10 GiB mounted test corpus and reproducible evidence
-- [x] **WORKING:** native WinFsp mounted I/O and executable launch in hosted Windows CI
-- [x] **EXPERIMENTAL:** persistent writable overlay, stable open handles, remount, status/discard/commit
-- [x] **EXPERIMENTAL:** generated mounted updater; native Windows overlay baseline passed hosted CI
-- [x] **EXPERIMENTAL:** bounded JSONL tracing and trace summaries
-- [x] **EXPERIMENTAL:** versioned policy, decaying hotness, bounded sequential prefetch and static/adaptive replay
-- [x] **EXPERIMENTAL:** verified secondary local objects and persistent promotion cache
-- [x] **EXPERIMENTAL:** HTTP 206 object ranges; corrupt remote reads fail
-- [x] **EXPERIMENTAL:** macFUSE 5.3.3+ kernel channel transport, compiled/tested against the signed 5.4.0 SDK
-- [x] **WORKING:** native POSIX validation runner and macOS SDK checks without driver installation
-- [ ] **BLOCKED:** native macOS mounted runtime; macFUSE installation and kernel approval required
-- [ ] **HARDWARE REQUIRED:** physical Linux validation
-- [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
-- [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
-- [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
+<p align="center">
+  <img src="docs/assets/readme/architecture.svg" alt="PlaySparse read path and adaptive control loop" width="100%">
+</p>
 
-Adaptive performance benefit is unproven. The retained initial Linux benchmark
-issued zero prefetch requests and had a lower adaptive cache hit ratio than the
-static baseline. The corrected detector activates bounded prefetch, but the final
-three-trial replay still loses: median p95 69 → 108 µs, CPU 0.095 → 0.170 s,
-and raw bytes loaded 61 → 146 MB. The production-readiness changes prevent
-speculative cache pollution and subchunk bursts from loading whole chunks ahead.
-A new identical-trace comparison reduced adaptive raw reads from 153.35 MB to
-62.52 MB, but adaptive still loses to static: median p95 47.46 → 52.08 µs and
-CPU 0.0826 → 0.0887 s. Both negative results and all trials remain available in
-[readiness policy evidence](docs/evidence/production-readiness-policy.md).
-Static LRU remains the default.
+A read such as `Data/Textures/world_03.pak` at a particular byte range follows a bounded path:
 
-Native macOS mounting is the next validation gate. Physical Windows validation
-also remains open; hosted CI does not establish desktop/game compatibility.
-See [production readiness validation](docs/evidence/production-readiness.md),
-[first mounted run](docs/evidence/first-mounted-run.md),
-[adaptive writable runtime evidence](docs/evidence/adaptive-writable-runtime.md),
-[macOS/Linux runtime evidence](docs/evidence/posix-runtime.md),
-[writable overlay](docs/writable-overlay.md),
-[adaptive policy](docs/adaptive-policy.md),
-[tiered storage](docs/tiered-storage.md),
-[FUSE backend](docs/fuse-backend.md), [macOS/Linux validation](docs/posix-validation.md),
-[Windows backend](docs/windows-backend.md),
-[disposable Windows WOF comparison](docs/windows-comparison.md),
-[format v1](docs/storage-format-v1.md) and
-[Experiment 04](experiments/04-loose-vs-packfiles).
+1. the mounted filesystem receives the application's normal read request;
+2. `RangeResolver` finds only the manifest chunks intersecting that range;
+3. the byte-bounded cache is checked;
+4. missing objects are resolved from verified local, secondary-local or HTTP sources;
+5. raw/Zstd objects are bounded, decompressed when required and verified by BLAKE3;
+6. the requested bytes are returned through FUSE or WinFsp.
 
-Experiments 01–03 and the Python `playsparse_lab` remain research/reference
-implementations. Their earlier reconstruction and synthetic reuse results below
-are preserved; production reads use Rust in-process BLAKE3/Zstd.
+Optional tracing records access patterns. An experimental policy can alter cache retention and bounded sequential prefetch, but **static LRU remains the default because the current adaptive benchmark does not beat it**.
 
-## Run on macOS or Linux
-
-Use Python 3.9+ and the Rust toolchain pinned in `rust-toolchain.toml`.
-Run these commands from the repository root; every `--work` directory must be
-new. The tools preserve commands, environment, hashes, results and failure logs.
-
-### macOS first
-
-SDK compilation requires `pkg-config` (for example, Homebrew's `pkgconf`) and a
-C linker. To compile, link and test without installing a driver:
-
-```bash
-python3 tools/macos-sdk-check.py --work /tmp/playsparse-macos-sdk-01
-```
-
-This verifies the checksum and Apple installer signature/notarization of the
-official macFUSE 5.4.0 SDK and uses its extracted libraries in temporary storage.
-It does not run mounted tests. Default builds provide driver-independent,
-structured diagnostics:
-
-```bash
-cargo build --locked --release --workspace
-target/release/playsparse doctor --human --mount-test
-```
-
-On a Mac without macFUSE this exits 2 (`BLOCKED`), lists `NOT_INSTALLED` and
-`NOT_COMPILED`, and leaves kernel approval `UNKNOWN`. Omit `--human` for JSON.
-With an installed driver and a `macfuse` build, the probe checks an exact file
-read from a different filesystem device and ordinary unmount. `PASS` validates
-that tiny runtime path; it does not establish application compatibility.
-
-For real mounted validation, install macFUSE **5.3.3+ in the 5.x series** and
-complete its kernel-extension approval/restart steps. The current transport
-uses the kernel backend; **FSKit is unsupported**. Then run:
-
-```bash
-python3 tools/posix-runtime-validation.py --work /tmp/playsparse-macos-01 --build
-```
-
-The runner enables `macfuse` during the build, records a local source/binary
-build receipt, and performs the doctor's actual mount probe before the four
-runtime stages. A missing driver returns exit 2 with a `BLOCKED` report. A dirty
-checkout, mismatched receipt, or reused work directory is refused by default;
-explicit development overrides and timeout/cleanup behavior are documented in
-the [POSIX guide](docs/posix-validation.md).
-
-### Linux
-
-Provide a `/dev/fuse` character device that the testing user can open for reading
-and writing, `fusermount3` or `fusermount`, Git, Python, Rust and a C linker.
-The current Linux build does not require a libfuse development package. Run:
-
-```bash
-python3 tools/posix-runtime-validation.py --work /tmp/playsparse-linux-01 --build
-```
-
-The mounted runner tests readonly 10 GiB/mmap/executable behavior, writable
-updater/remount/commit/discard, identical-trace adaptive replay, and verified
-local/HTTP tiers. It does not install packages, drivers or change mount
-privileges. An owned native application can also be tested with `--source` and
-`--executable`; see the [macOS/Linux guide](docs/posix-validation.md) for
-prerequisites, application commands and evidence interpretation.
-
-## Validation that can run now
-
-| Can run with this checkout and available software | Requires physical/manual evidence |
-|---|---|
-| Mac CAS/CLI tests and signed macFUSE SDK compilation | Mac driver installation, kernel approval/restart and mounted runtime |
-| Genuine Linux VM FUSE, writable, adaptive, tiers and crash/ENOSPC checks | Physical Linux storage/performance measurements |
-| Hosted native Windows WinFsp and disposable WOF software checks | Physical Windows desktop and original/WOF/PlaySparse comparison |
-| Generated executable and byte-integrity checks | An owned real game; separate Steam/Epic/launcher testing |
-
-The canonical Windows harness and independent WOF comparison are ready to run
-with PowerShell 7 and WinFsp 2.1; see the [Windows guide](docs/windows-backend.md).
-Every generated/hosted run preserves its separate physical/game gates. Evidence
-reports label uncontrolled OS/device caches; a userspace cache reset is not a
-cold physical disk. Source installations and base stores are fingerprinted
-before and after application/comparison runs; work and copies stay outside Git.
-
-## Rust CLI
-
-Build with the pinned Rust toolchain. On macOS, after macFUSE installation and
-kernel approval, enable the mount backend:
-
-```bash
-cargo build --locked --release --workspace --features macfuse
-```
-
-On Linux:
-
-```bash
-cargo build --locked --release --workspace
-```
-
-Put `target/release` on PATH, then use the common CLI:
-
-```bash
-playsparse doctor
-playsparse analyze ./TestGame
-playsparse pack ./TestGame ./TestGame.playsparse
-playsparse verify ./TestGame.playsparse
-mkdir ./mounted
-playsparse mount ./TestGame.playsparse ./mounted --cache 256M --trace ./reads.jsonl
-```
-
-Linux requires FUSE (`/dev/fuse` and mount permission or `fusermount3`). In a
-second terminal, ordinary programs can read the virtual files:
-
-```bash
-cat ./mounted/readme.txt
-./mounted/testgame --self-test
-io-probe ./TestGame ./mounted --iterations 64 --output io-probe.json
-playsparse unmount ./mounted
-playsparse benchmark ./TestGame ./TestGame.playsparse --output benchmark.json
-```
-
-`pack` defaults to packfiles, CDC target 256 KiB (64 KiB–1 MiB chunks), and Zstd
-level 3, retaining raw objects if compression expands them. `--chunker fixed`
-and `--layout loose` remain measured baselines. Cache accepts `64M`, `256M`, `1G`
-or integer bytes. Mount stays in the foreground. Stores must stay immutable.
-Omitting `--overlay` keeps the mount read-only.
-
-To enable writable files and directories, use a separate overlay and trace
-destination. Start the mount in one terminal:
-
-```bash
-playsparse mount ./TestGame.playsparse ./mounted --cache 256M \
-  --overlay ./TestGame.overlay --trace ./update.jsonl
-```
-
-Run the application or updater through `./mounted`, then manage the inactive
-overlay after unmounting:
-
-```bash
-playsparse unmount ./mounted
-playsparse overlay status ./TestGame.overlay
-playsparse overlay commit ./TestGame.playsparse ./TestGame.overlay ./TestGame-updated.playsparse
-playsparse verify ./TestGame-updated.playsparse
-playsparse overlay discard ./TestGame.overlay
-```
-
-`commit` writes a new store and leaves the base intact. It first streams the
-entire merged tree into a disposable staging directory: enough temporary disk
-space for its full logical size, plus the new encoded store, is required.
-`discard` resets the overlay's changes. A one-byte edit to a base file can also
-copy that whole file into the overlay; see the [copy-up limits](docs/writable-overlay.md).
-
-Summarize a read-only trace, generate a policy, and compare it with static LRU
-using identical recorded requests:
-
-```bash
-playsparse trace summarize ./reads.jsonl
-playsparse optimize ./reads.jsonl --output ./policy.json
-playsparse replay ./TestGame.playsparse ./reads.jsonl --cache 256M \
-  --policy ./policy.json --repetitions 3 --output ./replay.json
-playsparse mount ./TestGame.playsparse ./mounted --cache 256M \
-  --policy ./policy.json --tiers ./tiers.json --trace ./tiered-reads.jsonl
-```
-
-Create `tiers.json` using the [versioned local/HTTP schema](docs/tiered-storage.md).
-Policy and tiers are independent optional mount flags; they can also accompany
-`--overlay`. Trace destinations and writable tier caches must be outside the
-base, overlay and mount. Replay accepts base-file read traces; it cannot replay
-mutable overlay versions. Fresh-process CPU/RSS comparisons use `replay-one`;
-neither replay command establishes a cold physical-disk baseline.
-
-Default macOS builds support CAS/range/CLI without a driver; mounting requires
-the `macfuse` build above and the approved kernel backend. Windows uses WinFsp
-with an installed driver and SDK; choose an unused drive letter or a nonexistent directory path,
-following [native Windows commands](docs/windows-backend.md).
-
-`analyze` performs two full measured temporary pack passes (fixed and CDC), with
-exact duplicate/reuse and encoded-size results; it makes no sampled game-saving
-prediction. Benchmark JSON labels cache state explicitly: chunk-cache-cold is
-not disk-cold. Physical allocated blocks and encoded store bytes are separate.
-
-## What already exists elsewhere
-
-PlaySparse does not claim novelty for:
-
-- Windows WOF/CompactOS/CompactGUI-style transparent compression;
-- btrfs/ZFS/filesystem compression;
-- WinFsp/ProjFS virtual filesystems;
-- Cloud Files hydration;
-- FastCDC/content-defined chunking;
-- content-addressed storage;
-- game codecs such as Oodle Kraken/Leviathan.
-
-See [`docs/prior-art.md`](docs/prior-art.md).
-
-## Research hypothesis
-
-The candidate differentiator is the **control loop**, not any one primitive:
-
-```text
-unmodified game
-      |
-      v
-virtual filesystem
-      |
-      v
-range resolver <--------- access trace
-      |                        |
-      v                        v
-cache / prefetch <------ policy optimizer
-      |
-      v
-content-addressed compressed store
-      |
-      +---- primary local / secondary local / HTTP objects
-```
-
-The long-term hypothesis is that PlaySparse can choose, per file or byte range:
-
-- chunk size;
-- codec / compression level;
-- compressed vs decompressed cache state;
-- prefetch behavior;
-- storage tier;
-
-based on observed game I/O, and thereby find a better **space × latency × CPU** Pareto frontier than a static filesystem-compression policy.
-
-That hypothesis is not proven yet.
-
-## M0 baseline — random-access compression
-
-The original synthetic benchmark established the expected chunk-size trade-off: smaller independent chunks reduce random-read amplification while preserving almost the same ratio on that generated dataset. Those numbers are synthetic and are not a claim about GTA, Dota, or any other game.
-
-See [`experiments/01-zstd-random-access`](experiments/01-zstd-random-access).
-
-## Experiment 02 — update reuse
-
-Default synthetic run (`24 MiB`, target `256 KiB`, Zstd level 3):
-
-| Chunker | v2 bytes reused from v1 | Compressed unique store / two versions |
-|---|---:|---:|
-| fixed offsets | ~33.16% | ~16.86% |
-| FastCDC-style | ~92.91% | ~10.89% |
-
-On this insertion-heavy **synthetic** update, CDC recovered content boundaries after the insertion and improved reuse by about **59.75 percentage points**. The Python reference CDC implementation is far too slow for production; the result supports the *storage behavior*, not the implementation performance.
-
-See [`experiments/02-fixed-vs-fastcdc`](experiments/02-fixed-vs-fastcdc).
-
-## Experiment 03 — working content-addressed store
-
-The current lab prototype implements:
+### Storage pipeline
 
 ```text
 source directory
-    ↓
-content-defined chunks
-    ↓
-BLAKE3-256 IDs
-    ↓
-Zstd immutable objects
-    ↓
-manifest
-    ↓
-verified reconstruction
+      │
+      ▼
+ content-defined chunking
+      │
+      ▼
+ BLAKE3-256 object IDs
+      │
+      ▼
+ raw / Zstd objects
+      │
+      ▼
+ indexed packfiles + manifest
+      │
+      ▼
+ RangeResolver + bounded cache
+      │
+      ▼
+ virtual mounted filesystem
 ```
 
-A generated ~2.97 MB corpus was reconstructed with an identical whole-tree SHA-256. The corpus deliberately contains duplicate/compressible data, so its ~60% synthetic saving is **not** an AAA-game estimate.
+The production read path does not reconstruct whole files before serving a range.
 
-See [`experiments/03-blake3-cas`](experiments/03-blake3-cas) and [`docs/storage-format-v0.md`](docs/storage-format-v0.md).
+## Status
 
-## Lab CLI
+PlaySparse is **experimental systems research**, not production-ready game storage software.
 
-Today the research implementation can already pack and verify ordinary directories:
+| Capability | Current evidence | Status |
+|---|---|---|
+| Immutable v1 CAS, BLAKE3 verification, raw/Zstd objects | Rust implementation and correctness tests | ✅ Working |
+| Indexed packfiles and deterministic manifest | Default production layout with loose-object baseline retained | ✅ Working |
+| Byte-range reads | Binary-search range resolver loads only intersecting chunks | ✅ Working |
+| Linux virtual filesystem | Real FUSE mounts in Linux VM/hosted CI, including 10 GiB offsets, mmap and executable reads | ✅ Software validated |
+| Windows virtual filesystem | Native WinFsp mounts and generated executable validation in hosted Windows CI | ✅ Hosted CI validated |
+| macOS backend | Signed macFUSE 5.4.0 SDK compile/link/tests pass | 🧪 Backend validated |
+| Native mounted macOS runtime | Development Mac does not have approved macFUSE installed | 🚧 Blocked |
+| Persistent writable overlay | Create/write/rename/remount/commit/discard tested with generated updater | 🧪 Experimental |
+| Tracing + adaptive cache/prefetch | Functional and reproducible, but current synthetic comparison loses to static LRU | 🧪 Experimental |
+| Secondary local + HTTP tiers | Verified promotion, offline promoted reads, exact HTTP ranges and corruption failure paths | 🧪 Experimental |
+| Physical Linux/Windows performance | No physical runner evidence yet | 🔬 Required |
+| Real game / launcher compatibility | No owned real-game workload supplied yet | 🔬 Not run |
+
+### Platform matrix
+
+| Platform | Build | Virtual mount | CI evidence | Physical validation | Real game |
+|---|---|---|---|---|---|
+| macOS arm64 | ✅ | 🚧 pending approved macFUSE | ✅ SDK compile/link/tests | 🚧 blocked on current Mac | Not run |
+| Linux | ✅ | ✅ FUSE | ✅ mounted validation | Hardware required | Not run |
+| Windows | ✅ | ✅ WinFsp | ✅ hosted Server validation | Hardware required | Not run |
+
+Hosted CI is not treated as equivalent to a physical gaming desktop. Synthetic workloads are not treated as AAA-game evidence.
+
+## Quick start
+
+PlaySparse uses the Rust toolchain pinned in [`rust-toolchain.toml`](rust-toolchain.toml). The validation helpers also use Python 3.9+.
+
+### Build
 
 ```bash
-python3 -m playsparse_lab analyze ./some-directory
-python3 -m playsparse_lab pack ./some-directory ./some-directory.playsparse
-python3 -m playsparse_lab verify ./some-directory.playsparse
-python3 -m playsparse_lab unpack ./some-directory.playsparse ./reconstructed
+git clone https://github.com/gogolumo/PlaySparse.git
+cd PlaySparse
+
+cargo build --locked --release --workspace
+./target/release/playsparse doctor --human
 ```
 
-Requirements for the lab implementation:
+### Analyze, pack and verify a directory
 
-- Python 3.10+;
-- `zstd` CLI in `PATH`.
-
-This remains the Python research CLI. The Rust production path above uses
-in-process BLAKE3/Zstd and platform filesystem callbacks. V0 and v1 stores are
-different formats; repack from source to migrate.
-
-## Correctness
+Keep the source directory read-only and write the PlaySparse store somewhere else.
 
 ```bash
-bash tools/check.sh
+./target/release/playsparse analyze ./TestGame
+./target/release/playsparse pack ./TestGame ./TestGame.playsparse
+./target/release/playsparse verify ./TestGame.playsparse
 ```
 
-The suite checks:
+The default Rust pack path uses content-defined chunks, indexed packfiles and Zstd level 3, retaining raw objects when compression would make an object larger.
 
-- official BLAKE3 empty and `abc` vectors;
-- deterministic CDC behavior;
-- chunk concatenation round trip;
-- CAS deduplication;
-- per-object BLAKE3 verification;
-- per-file SHA-256 verification;
-- byte-identical directory reconstruction.
+### Mount on Linux
 
-## Next milestone
+Linux needs an accessible `/dev/fuse` plus `fusermount3` or `fusermount`.
 
-The Linux development implementation now proves this **range-serving virtual
-filesystem path**:
+```bash
+mkdir ./mounted
 
-```text
-original directory
-      ↓
-PlaySparse pack
-      ↓
-compressed CAS
-      ↓
-virtual mounted/projected directory
-      ↓
-arbitrary reader receives identical bytes
+./target/release/playsparse mount \
+  ./TestGame.playsparse \
+  ./mounted \
+  --cache 256M
 ```
 
-The next step is a real macOS kernel-backed mount after macFUSE installation
-and approval, followed by an owned native application and physical Linux validation.
-The [POSIX runner](docs/posix-validation.md) is ready; native SDK success and
-Linux VM mounts are separate evidence from that pending Mac run.
+In another terminal, ordinary programs can read the virtual tree:
 
-Windows remains supported through WinFsp and hosted native runtime checks.
-WinFsp was selected because its read callbacks return bytes directly, while
-ProjFS's file-data contract materializes retrieved bytes in local files.
-Physical desktop/game validation and WOF comparisons remain open. Writable
-operations and the trace/policy/tier implementations extend the shared runtime;
-their experimental status and measured limitations are recorded in the
-[adaptive writable sprint evidence](docs/evidence/adaptive-writable-runtime.md).
+```bash
+cat ./mounted/readme.txt
+./target/release/playsparse unmount ./mounted
+```
 
-## Breakthrough policy
+For the canonical mounted validation suite:
 
-A feature is interesting only when it produces a reproducible, non-dominated improvement versus meaningful baselines. Negative results stay in the repository. Synthetic results never become game claims.
+```bash
+python3 tools/posix-runtime-validation.py \
+  --work /tmp/playsparse-linux-01 \
+  --build
+```
 
-See [`docs/breakthrough-criteria.md`](docs/breakthrough-criteria.md).
+See the [POSIX validation guide](docs/posix-validation.md) for prerequisites and evidence interpretation.
 
-## Safety / legal scope
+### macOS
 
-- source installations are read-only inputs;
-- PlaySparse does not bypass DRM, anti-cheat or license checks;
-- commercial game assets are never committed to the repository;
+Without installing a driver, the repository can verify and compile against the signed macFUSE SDK:
+
+```bash
+python3 tools/macos-sdk-check.py \
+  --work /tmp/playsparse-macos-sdk-01
+```
+
+A real mount requires supported macFUSE 5.3.3+ in the 5.x series, kernel-extension approval/restart, and a `macfuse` build. **FSKit is not supported by the current backend.**
+
+```bash
+cargo build --locked --release --workspace --features macfuse
+
+python3 tools/posix-runtime-validation.py \
+  --work /tmp/playsparse-macos-01 \
+  --build
+```
+
+The current development Mac is still blocked at the driver/approval gate; SDK success is not presented as mounted-runtime proof.
+
+### Windows
+
+The Windows backend uses WinFsp. Native hosted validation covers readonly, writable, adaptive and tiered flows, while physical desktop and real-game validation remain separate gates.
+
+See [`docs/windows-backend.md`](docs/windows-backend.md) and [`docs/windows-comparison.md`](docs/windows-comparison.md) for the exact PowerShell/WinFsp workflow.
+
+## Benchmarks & evidence
+
+PlaySparse is measurement-first. A technique is interesting only if it produces a reproducible, non-dominated improvement against meaningful baselines.
+
+<p align="center">
+  <img src="docs/assets/readme/benchmark-summary.svg" alt="Synthetic PlaySparse benchmark summary showing CDC reuse and a negative adaptive-policy result" width="100%">
+</p>
+
+### Update reuse: promising, but synthetic
+
+Experiment 02 uses a generated 24 MiB insertion-heavy update workload:
+
+| Chunking | v2 bytes reusing v1 chunks | Compressed unique store / two versions |
+|---|---:|---:|
+| Fixed offsets | ~33.16% | ~16.86% |
+| FastCDC-style | ~92.91% | ~10.89% |
+
+CDC recovered content boundaries after insertion and improved reuse by about **59.75 percentage points** on that synthetic workload. It is evidence for the storage behavior, **not** a claim about GTA, Dota, Steam or any other real game.
+
+See [`experiments/02-fixed-vs-fastcdc`](experiments/02-fixed-vs-fastcdc).
+
+### Adaptive policy: the current result is negative
+
+The 2026-10-04 same-input `AFTER` comparison used three trials per mode with the same sealed store, trace and 4 MiB PlaySparse cache:
+
+| Median of three trials | Static | Adaptive |
+|---|---:|---:|
+| p95 latency | **47.458 µs** | 52.083 µs |
+| Process CPU | **0.082633 s** | 0.088748 s |
+| Raw bytes loaded | **60,817,408** | 62,521,344 |
+| Prefetch wasted bytes | 0 | **0** |
+
+The newer admission logic eliminated measured prefetch waste on this trace, but adaptive still lost on p95 latency, CPU and raw bytes loaded. **Static LRU remains the default.**
+
+See [`docs/evidence/production-readiness-policy.md`](docs/evidence/production-readiness-policy.md).
+
+> [!NOTE]
+> **Negative results stay.** PlaySparse does not turn a passing implementation into a performance claim. Failed optimizations, limitations and blocked hardware gates remain part of the evidence trail.
+
+### Reproducible evidence
+
+The repository retains evidence for:
+
+- generated 10 GiB reads beyond 4/8 GiB, mmap and concurrent I/O;
+- Linux FUSE mounted readonly/writable/adaptive/tiered stages;
+- hosted Windows WinFsp readonly/writable/adaptive/tiered stages;
+- corruption and ENOSPC failure handling;
+- loose objects vs indexed packfiles;
+- source/base fingerprints and command provenance;
+- unsuccessful experiments and regression reproductions.
+
+Start with [`docs/evidence/production-readiness.md`](docs/evidence/production-readiness.md) and the raw evidence under [`docs/evidence/`](docs/evidence/).
+
+## Architecture
+
+The Rust workspace separates storage, range serving, caching, filesystem adapters and policy logic instead of hiding them behind one monolith.
+
+| Area | Workspace component |
+|---|---|
+| Storage primitives / shared types | `playsparse-core`, `playsparse-store` |
+| Byte-range serving | `playsparse-range` |
+| Bounded object cache | `playsparse-cache` |
+| CLI | `playsparse-cli` |
+| Linux/macOS virtual filesystem | `playsparse-vfs-fuse` |
+| Windows virtual filesystem | `playsparse-vfs-win` |
+| Access tracing | `playsparse-trace` |
+| Writable copy-on-write layer | `playsparse-overlay` |
+| Experimental adaptive policy | `playsparse-policy` |
+| Independent I/O comparison | `io-probe` |
+
+The immutable v1 store remains the data plane. Overlay, tracing, adaptive policy and tiers sit above or beside it. See [`docs/architecture-v2.md`](docs/architecture-v2.md) and [`docs/storage-format-v1.md`](docs/storage-format-v1.md).
+
+## Why this is not just filesystem compression
+
+PlaySparse does not claim novelty for Zstd, FastCDC, content-addressed storage, FUSE, WinFsp, WOF or transparent filesystem compression.
+
+The research hypothesis is the **control loop** around those known primitives:
+
+- keep application-visible files ordinary;
+- choose a chunked physical representation underneath;
+- observe real byte-range access;
+- cache and prefetch within explicit bounds;
+- reuse content across versions;
+- resolve verified objects from different storage tiers;
+- measure every candidate against space, tail latency, CPU, RAM and amplification.
+
+The project only earns a stronger claim when it beats meaningful baselines under the criteria in [`docs/breakthrough-criteria.md`](docs/breakthrough-criteria.md). Prior-art notes live in [`docs/prior-art.md`](docs/prior-art.md).
+
+## Roadmap
+
+| Phase | State | Next proof |
+|---|---|---|
+| Rust storage format + range resolver | ✅ | Broader fault injection / durability |
+| Linux FUSE + hosted Windows WinFsp software path | ✅ / 🟡 | Physical desktop validation |
+| Writable overlay, tracing and storage tiers | 🧪 | Representative application workloads |
+| Adaptive cache/prefetch policy | 🧪 | Reproducible non-dominated win vs static baselines |
+| Representative workloads | 🔬 | L1 open game-like → L2 owned real game → L3 replication |
+| Productization | Future | Only after correctness and benchmark gates justify it |
+
+The detailed milestone history and acceptance criteria are in [`ROADMAP.md`](ROADMAP.md).
+
+## Documentation
+
+| Area | Guides |
+|---|---|
+| **Architecture** | [Architecture v2](docs/architecture-v2.md) · [Storage format v1](docs/storage-format-v1.md) |
+| **Runtime** | [POSIX validation](docs/posix-validation.md) · [FUSE backend](docs/fuse-backend.md) · [Windows backend](docs/windows-backend.md) · [Windows comparison](docs/windows-comparison.md) |
+| **Mutable layer** | [Writable overlay](docs/writable-overlay.md) |
+| **Observability & policy** | [Access tracing](docs/access-tracing.md) · [Adaptive policy](docs/adaptive-policy.md) |
+| **Tiering** | [Tiered storage](docs/tiered-storage.md) |
+| **Research standard** | [Breakthrough criteria](docs/breakthrough-criteria.md) · [Prior art](docs/prior-art.md) · [Limitations](docs/limitations.md) |
+| **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) |
+
+## Contributing
+
+PlaySparse is a good fit for contributors interested in **Rust, filesystems, storage engines, benchmarking, FUSE/WinFsp, workload analysis and reproducible systems research**.
+
+The project has a few non-negotiable rules:
+
+- never claim a savings ratio without a reproducible dataset and benchmark;
+- keep original test data read-only;
+- retain negative results;
+- describe synthetic data as synthetic;
+- do not add DRM, anti-cheat, license-circumvention or piracy tooling.
+
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before submitting benchmark or architecture changes.
+
+## Safety & legal scope
+
+PlaySparse is experimental software and should not be pointed at irreplaceable data.
+
+- source installations are treated as read-only inputs;
+- packed stores and overlays live on separate paths;
+- no DRM, anti-cheat or license-check bypass is in scope;
+- commercial game assets are not committed to the repository;
 - destructive source deletion is out of scope until reconstruction and crash safety are mature.
+
+See [`SECURITY.md`](SECURITY.md).
 
 ## License
 
-PlaySparse's own code is MIT. The Windows build also links the GPL-3.0 WinFsp
-Rust bindings and uses the separately licensed WinFsp driver. Review the
-[Windows dependency licensing notes](docs/windows-backend.md#dependency-licenses)
-before distributing a combined Windows executable.
+PlaySparse's own code is licensed under the [MIT License](LICENSE).
+
+The Windows build also links GPL-3.0 WinFsp Rust bindings and uses the separately licensed WinFsp driver. Review the dependency notes in [`docs/windows-backend.md`](docs/windows-backend.md#dependency-licenses) before distributing a combined Windows executable.
+
+---
+
+<p align="center">
+  <strong>Store less. Serve the same files.</strong><br>
+  <sub>Measure first. Keep the failures. Earn the claim.</sub>
+</p>
