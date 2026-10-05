@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "experiment": "project-zomboid-macos-hybrid-runtime",
+  "date": "2026-10-05",
+  "evidence_level": "L2",
+  "status": "PASS",
+  "scope": "local legally owned real-game filesystem/runtime compatibility on one native Apple Silicon Mac",
+  "repository_revision_tested": "f96d76748cca48b0a4baae5b275c05014acc6add",
+  "host": {
+    "os": "macOS 26.6.2",
+    "build": "25G83",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "ram_bytes": 17179869184,
+    "macfuse_version": "5.4.0"
+  },
+  "game": {
+    "name": "Project Zomboid",
+    "steam_app_id": 108600,
+    "version": "42.21.0",
+    "revision": "4a0e9546ec",
+    "files": 48091,
+    "logical_bytes": 10529753899,
+    "original_allocated_mib": 10163.27
+  },
+  "store": {
+    "chunker": "cdc",
+    "chunk_target": "1M",
+    "zstd_level": 6,
+    "physical_bytes": 5125650458,
+    "object_bytes": 5108185904,
+    "metadata_bytes": 17464554,
+    "allocated_bytes": 5188616192,
+    "allocated_mib": 4948.25,
+    "unique_objects": 39711,
+    "reused_chunks": 12592,
+    "verified_before_publish": true,
+    "verify": {
+      "ok": true,
+      "checked_files": 48091,
+      "checked_bytes": 10529753899,
+      "checked_objects": 39711
+    }
+  },
+  "hybrid_runtime": {
+    "apfs_shadow_mib": 869.80,
+    "effective_allocated_mib": 5818.05,
+    "saved_mib": 4345.23,
+    "reduction_percent": 42.75,
+    "effective_ratio": 0.572,
+    "materialized_categories": [
+      "native/runtime code required by macOS signed-code loading",
+      "selected fonts",
+      "Lua"
+    ],
+    "virtualized_categories_examples": [
+      "maps",
+      "textures",
+      "music",
+      "UI",
+      "other large media assets"
+    ]
+  },
+  "runtime": {
+    "launch": "PASS",
+    "steam_api_init": "PASS",
+    "main_menu": "PASS",
+    "new_character": "PASS",
+    "new_world": "PASS",
+    "world_loading": "PASS",
+    "live_gameplay": "PASS",
+    "movement": "PASS",
+    "door_interaction": "PASS_USER_ATTESTED",
+    "building_entry": "PASS_USER_ATTESTED",
+    "save_activity": "PASS_LOGGED",
+    "normal_game_thread_exit": "PASS_LOGGED"
+  },
+  "signed_code_discriminator": {
+    "library": "libsteam_api.dylib",
+    "sha256": "b2260d2b2ff6ac8d2d10770047967ceb18022fc5c27f94e3246bd7d2a1da82c0",
+    "original_apfs_dlopen": "PASS",
+    "playsparse_fuse_dlopen": "FAIL_CODE_SIGNATURE_INVALID_ERRNO_1",
+    "mounted_bytes_copied_to_apfs_dlopen": "PASS",
+    "codesign_verify_strict_on_mount": "PASS"
+  },
+  "development_trace": {
+    "benchmark_scope": "development session, not clean gameplay-only benchmark",
+    "events": 156566,
+    "bad_lines": 0,
+    "sessions": 1,
+    "successful_events": 156566,
+    "failed_events": 0,
+    "read_operations": 156566,
+    "write_operations": 0,
+    "read_bytes": 2411273285,
+    "read_gib": 2.2456732438877225,
+    "unique_files": 11087,
+    "unique_ranges": 141154,
+    "sequential_read_percentage": 85.59904449241853,
+    "reread_ratio": 0.09843771955597001,
+    "cache_hit_ratio": 0.9298187345911628,
+    "cache_miss_ratio": 0.07018126540883717,
+    "latency_ns": {
+      "p50": 1125,
+      "p95": 16125,
+      "p99": 477833
+    },
+    "sources": {
+      "primary-local": 10167,
+      "memory-cache": 145578,
+      "mixed": 821
+    },
+    "builtin_summary_result": "trace analysis exceeds identity limits",
+    "builtin_identity_limit": 100000
+  },
+  "limitations": [
+    "one title and one host",
+    "hybrid APFS compatibility shadow required",
+    "not a multiplayer/anti-cheat compatibility claim",
+    "not a universal DRM/launcher compatibility claim",
+    "development trace is not a clean gameplay-only performance benchmark",
+    "no cold-start comparison against original install",
+    "no L3 cross-game replication"
+  ],
+  "copyrighted_game_payload_committed": false
+}
