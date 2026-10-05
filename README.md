@@ -90,14 +90,14 @@ PlaySparse is **experimental systems research**, not production-ready game stora
 | Indexed packfiles and deterministic manifest | Default production layout with loose-object baseline retained | ✅ Working |
 | Byte-range reads | Binary-search range resolver loads only intersecting chunks | ✅ Working |
 | Linux virtual filesystem | Real FUSE mounts in Linux VM/hosted CI, including 10 GiB offsets, mmap and executable reads | ✅ Software validated |
-| Windows virtual filesystem | Native WinFsp mounts and generated executable validation in hosted Windows CI | ✅ Hosted CI validated |
+| Windows virtual filesystem | Native WinFsp mounts validated in hosted CI and on physical Windows 11 x64 hardware | ✅ Physical hardware validated |
 | macOS backend | Signed macFUSE 5.4.0 SDK compile/link/tests pass | ✅ Backend validated |
 | Native mounted macOS runtime | Native Apple Silicon macFUSE 5.4.0 mount/read/unmount plus readonly/writable/adaptive/tiered validation | ✅ Software validated |
 | Persistent writable overlay | Create/write/rename/remount/commit/discard tested with generated updater | 🧪 Experimental |
 | Tracing + adaptive cache/prefetch | Functional and reproducible, but current synthetic comparison loses to static LRU | 🧪 Experimental |
 | Secondary local + HTTP tiers | Verified promotion, offline promoted reads, exact HTTP ranges and corruption failure paths | 🧪 Experimental |
-| Physical Linux/Windows performance | No physical runner evidence yet | 🔬 Required |
-| Real game / launcher compatibility | No owned real-game workload supplied yet | 🔬 Not run |
+| Physical Linux/Windows performance | Windows warm-read measurements captured on physical hardware; physical Linux evidence still required | 🧪 Windows measured |
+| Real-game filesystem compatibility | Elden Ring executable reached the main menu and ran normally from a PlaySparse mount; Steam/DRM/EAC were not tested | 🧪 One workload validated |
 
 ### Platform matrix
 
@@ -105,9 +105,9 @@ PlaySparse is **experimental systems research**, not production-ready game stora
 |---|---|---|---|---|---|
 | macOS arm64 | ✅ | ✅ macFUSE 5.4.0 | ✅ SDK + native mounted validation | ✅ native Apple Silicon generated-fixture validation | Not run |
 | Linux | ✅ | ✅ FUSE | ✅ mounted validation | Hardware required | Not run |
-| Windows | ✅ | ✅ WinFsp | ✅ hosted Server validation | Hardware required | Not run |
+| Windows | ✅ | ✅ WinFsp | ✅ hosted Server validation | ✅ Windows 11 x64 physical hardware | ✅ Elden Ring executable path; launcher/DRM/EAC not tested |
 
-Hosted CI is not treated as equivalent to a physical gaming desktop. Synthetic workloads are not treated as AAA-game evidence.
+Hosted CI is not treated as equivalent to a physical gaming desktop. Physical Windows testing now exists for one owned Elden Ring workload, but that does not establish universal game, launcher, DRM, anti-cheat or multiplayer compatibility. See the [physical Windows / Elden Ring validation report](docs/evidence/windows-physical-elden-ring-2026-10-05.md).
 
 ## Quick start
 
@@ -207,9 +207,9 @@ Native Apple Silicon validation has now passed with macFUSE 5.4.0: the disposabl
 
 ### Windows
 
-The Windows backend uses WinFsp. Native hosted validation covers readonly, writable, adaptive and tiered flows, while physical desktop and real-game validation remain separate gates.
+The Windows backend uses WinFsp. Native hosted validation covers readonly, writable, adaptive and tiered flows. Physical Windows 11 x64 validation has also passed those stages on real hardware, and an Elden Ring executable launched from the mounted representation, reached the main menu, remained running normally and exited normally. That test covers filesystem compatibility for the tested executable path only; Steam launcher integration, DRM, Easy Anti-Cheat and protected multiplayer were not tested.
 
-See [`docs/windows-backend.md`](docs/windows-backend.md) and [`docs/windows-comparison.md`](docs/windows-comparison.md) for the exact PowerShell/WinFsp workflow.
+See [`docs/windows-backend.md`](docs/windows-backend.md), [`docs/windows-comparison.md`](docs/windows-comparison.md) and the [2026-10-05 physical Windows / Elden Ring report](docs/evidence/windows-physical-elden-ring-2026-10-05.md).
 
 ## Benchmarks & evidence
 
@@ -250,6 +250,24 @@ See [`docs/evidence/production-readiness-policy.md`](docs/evidence/production-re
 > [!NOTE]
 > **Negative results stay.** PlaySparse does not turn a passing implementation into a performance claim. Failed optimizations, limitations and blocked hardware gates remain part of the evidence trail.
 
+### Physical Windows + Elden Ring: first real-game evidence
+
+A physical Windows 11 x64 run at tested revision `7783946b1bde21f78a40ac6711bab3e47caedf65` passed build, doctor, readonly, writable, adaptive and tiered validation with real WinFsp mounts. An owned Elden Ring installation also launched through the tested PlaySparse path, reached the main menu, remained running normally and exited normally.
+
+For that ~66.36 GiB installation:
+
+| Representation | Allocated | Saving vs original |
+|---|---:|---:|
+| Original | ~66.36 GiB | — |
+| WOF XPRESS4K | ~66.29 GiB | ~0.06 GiB |
+| PlaySparse CDC | ~64.21 GiB | ~2.15 GiB (~3.2%) |
+
+The full analyzer measured ~1.58 GiB of CDC duplicate reuse, while ~57.29 GiB of unique raw input was not beneficially compressed by the current generic codec. That makes archive/container structure—especially the large `.bdt` files—the main next storage research target rather than simply raising the compression level.
+
+The read comparison was a **warm workload**, not a disk-cold benchmark: mean wall time was ~49.6 ms original, ~52.3 ms WOF and ~57.2 ms PlaySparse for the tested trials.
+
+See the [full physical Windows / Elden Ring validation and storage analysis](docs/evidence/windows-physical-elden-ring-2026-10-05.md).
+
 ### Reproducible evidence
 
 The repository retains evidence for:
@@ -258,6 +276,7 @@ The repository retains evidence for:
 - Linux FUSE mounted readonly/writable/adaptive/tiered stages;
 - native Apple Silicon macFUSE readonly/writable/adaptive/tiered stages;
 - hosted Windows WinFsp readonly/writable/adaptive/tiered stages;
+- physical Windows 11 x64 WinFsp validation and one owned Elden Ring executable workload;
 - corruption and ENOSPC failure handling;
 - loose objects vs indexed packfiles;
 - source/base fingerprints and command provenance;
@@ -305,7 +324,7 @@ The project only earns a stronger claim when it beats meaningful baselines under
 | Phase | State | Next proof |
 |---|---|---|
 | Rust storage format + range resolver | ✅ | Broader fault injection / durability |
-| Linux FUSE + macOS macFUSE + hosted Windows WinFsp software paths | ✅ / 🟡 | Physical Linux/Windows desktop validation |
+| Linux FUSE + macOS macFUSE + Windows WinFsp software paths | ✅ / 🟡 | Physical Linux desktop validation; broaden physical Windows workloads |
 | Writable overlay, tracing and storage tiers | 🧪 | Representative application workloads |
 | Adaptive cache/prefetch policy | 🧪 | Reproducible non-dominated win vs static baselines |
 | Representative workloads | 🔬 | L1 open game-like → L2 owned real game → L3 replication |
@@ -324,7 +343,7 @@ The detailed milestone history and acceptance criteria are in [`ROADMAP.md`](ROA
 | **Tiering** | [Tiered storage](docs/tiered-storage.md) |
 | **Offline analysis** | [Game awareness](docs/game-awareness.md) · [Pre-code audit](docs/game-awareness-audit.md) |
 | **Research standard** | [Breakthrough criteria](docs/breakthrough-criteria.md) · [Prior art](docs/prior-art.md) · [Limitations](docs/limitations.md) |
-| **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) |
+| **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) · [Physical Windows + Elden Ring](docs/evidence/windows-physical-elden-ring-2026-10-05.md) |
 
 ## Contributing
 
