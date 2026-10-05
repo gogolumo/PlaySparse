@@ -56,3 +56,14 @@ See [overlay](writable-overlay.md), [trace](access-tracing.md),
 [policy](adaptive-policy.md), [tiers](tiered-storage.md) and
 [sprint evidence](evidence/adaptive-writable-runtime.md). The last document
 separates Linux mounts, hosted Windows execution and unavailable physical gates.
+
+## Offline game-awareness layer
+
+`playsparse-game` sits before the immutable data plane: optional bounded scanner
+→ normalized GameProfile → measured probes → versioned PackingPlan → existing
+pack transaction. Profile/plan sidecars remain outside the store. Pack recomputes
+source identity, decisions and ZIP offsets before writing, then verifies exact
+streamed bytes against the plan. Original ZIP records can reset CDC; only the
+explicit negative-result compression-skip experiment bypasses Zstd for measured
+candidates. Ordinary v1 readers need no engine metadata or scanner. Runtime
+policy and startup priors are unchanged. See [game awareness](game-awareness.md).

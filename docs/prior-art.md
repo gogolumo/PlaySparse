@@ -52,3 +52,15 @@ The research hypothesis worth testing is the **integration and automatic control
 > Can a transparent storage runtime for an unmodified game use observed byte-range access traces to choose chunk boundaries, codec, cache representation, prefetch behavior and storage tier per region, and thereby move the space/latency/CPU Pareto frontier beyond static filesystem compression?
 
 This is a hypothesis, not a novelty claim. A broader literature/patent review is required before any formal claim of invention.
+
+## Game-structure research source (2026-10-05)
+
+[Universal-modder](https://github.com/rehan-remade/universal-modder) is MIT-licensed
+engine/game discovery and modding research tooling. PlaySparse reviewed current
+`main` at `0f5dcdfdcd8ed420f8413815bd6647586ab894a2` and uses only an optional
+read-only scan adapter plus engine/container knowledge as research hints. Modding,
+injection, asset extraction, loaders and the network knowledge workflow are not
+integrated. See the [audit](game-awareness-audit.md) and [notice](../THIRD_PARTY_NOTICES.md).
+Engine identification, compression sampling and stable archive boundaries are
+not claimed as inventions. Experiment 05 isolates whether these known ideas
+improve the existing generic frontier; discovery alone has no measured codec gain.

@@ -9,6 +9,24 @@
 - Perceptual asset recompression can break checksums and content formats and is outside Safe mode.
 - Filesystem correctness includes metadata, locking, memory mapping, sparse semantics and unusual access patterns—not just `read()`.
 
+## Offline game awareness
+
+- Engine/scanner confidence is advisory; it can identify a launcher or several
+  engines, and anti-cheat absence proves no compatibility or ownership.
+- Sampling can miss compressible regions. The retained skip-compression candidate
+  worsens CPU/space on L0 data; profiles keep Zstd unless the experimental skip
+  flag is explicitly supplied. All bytes still pass hash verification.
+- Only a restricted ZIP structural reader exists. Other engine archives receive
+  descriptive hints, no extraction/parser/support claim. Unsupported ZIP variants
+  use CDC. Source analysis has a separate 8192-entry/16 MiB artifact limit.
+- Engine-aware startup/prefetch is deferred; actual traces and static defaults
+  remain authoritative. No runtime dependency on the optional scanner exists.
+- Update byte budgets count absent cross-version CAS objects and complete metadata;
+  incremental/shared-store update publication is not implemented. L0 results do
+  not establish L1/L2 games, launchers, disk-cold or mounted performance.
+
+See [game-awareness contract](game-awareness.md) and its retained experiment.
+
 
 ## Writable and adaptive runtime v1
 
