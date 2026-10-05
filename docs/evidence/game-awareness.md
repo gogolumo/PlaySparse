@@ -273,5 +273,6 @@ but the measured reuse gain comes from original-byte container boundaries.
 See [experiment commands](../../experiments/05-game-aware-packing/README.md),
 [profile/plan contract](../game-awareness.md), [pre-code audit](../game-awareness-audit.md)
 and [exact changed-file inventory](raw/game-awareness-20261005/files-changed.txt).
-The raw collection contains JSON/logs/traces/hashes, no fixture, game asset,
+The raw collection preserves original bytes and Windows CRLF through scoped Git
+attributes; whitespace checks apply to authored code/docs. It contains JSON/logs/traces/hashes, no fixture, game asset,
 store, overlay data or executable payload. A SHA-256 inventory accompanies it.

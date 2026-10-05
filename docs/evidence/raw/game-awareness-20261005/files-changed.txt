@@ -25,6 +25,7 @@ experiments/05-game-aware-packing/run_benchmark.py
 tests/test_game_awareness.py
 
 Evidence follow-up files (relative to f108e02 main):
+.gitattributes
 docs/evidence/game-awareness.md
 docs/evidence/raw/game-awareness-20261005/baseline-and-pilot-build/baseline-provenance.json
 docs/evidence/raw/game-awareness-20261005/baseline-and-pilot-build/build.log
