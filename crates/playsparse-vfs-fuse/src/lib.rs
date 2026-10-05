@@ -154,28 +154,61 @@ pub fn unmount(mountpoint: &Path) -> Result<()> {
 
         let mountpoint = mountpoint.canonicalize().context("resolve mountpoint")?;
         #[cfg(target_os = "linux")]
-        let helpers = ["fusermount3", "fusermount"];
-        #[cfg(target_os = "macos")]
-        let helpers = ["/sbin/umount"];
-        for helper in helpers {
-            let mut command = Command::new(helper);
-            #[cfg(target_os = "linux")]
-            command.args(["-u", "--"]);
-            command.arg(&mountpoint);
-            match command.output() {
-                Ok(output) if output.status.success() => return Ok(()),
-                Ok(output) => {
-                    bail!(
-                        "{helper} could not unmount {}: {}",
-                        mountpoint.display(),
-                        String::from_utf8_lossy(&output.stderr).trim()
-                    );
+        {
+            for helper in ["fusermount3", "fusermount"] {
+                let output = match Command::new(helper)
+                    .args(["-u", "--"])
+                    .arg(&mountpoint)
+                    .output()
+                {
+                    Ok(output) => output,
+                    Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
+                    Err(error) => return Err(error).context("run unmount helper"),
+                };
+
+                if output.status.success() {
+                    return Ok(());
                 }
-                Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
-                Err(error) => return Err(error).context("run unmount helper"),
+
+                bail!(
+                    "{helper} could not unmount {}: {}",
+                    mountpoint.display(),
+                    String::from_utf8_lossy(&output.stderr).trim()
+                );
             }
+
+            bail!("No unmount helper is installed")
         }
-        bail!("No unmount helper is installed")
+
+        #[cfg(target_os = "macos")]
+        {
+            // Use Disk Arbitration on macOS. A raw unmount(2) can detach the
+            // filesystem without notifying macFUSE's userspace channel in the
+            // way required for the blocked FUSE reader to terminate cleanly.
+            let output = Command::new("/usr/sbin/diskutil")
+                .arg("unmount")
+                .arg(&mountpoint)
+                .output()
+                .context("run diskutil unmount")?;
+
+            if output.status.success() {
+                return Ok(());
+            }
+
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            let stdout = String::from_utf8_lossy(&output.stdout);
+
+            bail!(
+                "diskutil could not unmount {}: {}{}",
+                mountpoint.display(),
+                stderr.trim(),
+                if stderr.trim().is_empty() {
+                    stdout.trim()
+                } else {
+                    ""
+                }
+            );
+        }
     }
     #[cfg(not(any(target_os = "linux", target_os = "macos")))]
     {

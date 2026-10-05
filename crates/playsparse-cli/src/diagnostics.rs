@@ -331,7 +331,14 @@ fn mount_test() -> Value {
         report["error"] = json!(format!("{error:#}"));
     }
     if let Some(temp) = work {
-        let root = temp.path();
+        // tempfile may report /var/... while macOS mount tables expose the
+        // canonical /private/var/... path. Use the canonical root during
+        // cleanup so mount detection addresses the same filesystem path that
+        // was used when the provider was started.
+        let root = temp
+            .path()
+            .canonicalize()
+            .unwrap_or_else(|_| temp.path().to_path_buf());
         let mounted = root.join("mounted");
         let observed = mount_present(&mounted);
         let mounted_now = observed.as_ref().copied().unwrap_or(true);
