@@ -91,8 +91,8 @@ PlaySparse is **experimental systems research**, not production-ready game stora
 | Byte-range reads | Binary-search range resolver loads only intersecting chunks | ✅ Working |
 | Linux virtual filesystem | Real FUSE mounts in Linux VM/hosted CI, including 10 GiB offsets, mmap and executable reads | ✅ Software validated |
 | Windows virtual filesystem | Native WinFsp mounts and generated executable validation in hosted Windows CI | ✅ Hosted CI validated |
-| macOS backend | Signed macFUSE 5.4.0 SDK compile/link/tests pass | 🧪 Backend validated |
-| Native mounted macOS runtime | Development Mac does not have approved macFUSE installed | 🚧 Blocked |
+| macOS backend | Signed macFUSE 5.4.0 SDK compile/link/tests pass | ✅ Backend validated |
+| Native mounted macOS runtime | Native Apple Silicon macFUSE 5.4.0 mount/read/unmount plus readonly/writable/adaptive/tiered validation | ✅ Software validated |
 | Persistent writable overlay | Create/write/rename/remount/commit/discard tested with generated updater | 🧪 Experimental |
 | Tracing + adaptive cache/prefetch | Functional and reproducible, but current synthetic comparison loses to static LRU | 🧪 Experimental |
 | Secondary local + HTTP tiers | Verified promotion, offline promoted reads, exact HTTP ranges and corruption failure paths | 🧪 Experimental |
@@ -103,7 +103,7 @@ PlaySparse is **experimental systems research**, not production-ready game stora
 
 | Platform | Build | Virtual mount | CI evidence | Physical validation | Real game |
 |---|---|---|---|---|---|
-| macOS arm64 | ✅ | 🚧 pending approved macFUSE | ✅ SDK compile/link/tests | 🚧 blocked on current Mac | Not run |
+| macOS arm64 | ✅ | ✅ macFUSE 5.4.0 | ✅ SDK + native mounted validation | ✅ native Apple Silicon generated-fixture validation | Not run |
 | Linux | ✅ | ✅ FUSE | ✅ mounted validation | Hardware required | Not run |
 | Windows | ✅ | ✅ WinFsp | ✅ hosted Server validation | Hardware required | Not run |
 
@@ -184,7 +184,7 @@ python3 tools/posix-runtime-validation.py \
   --build
 ```
 
-The current development Mac is still blocked at the driver/approval gate; SDK success is not presented as mounted-runtime proof.
+Native Apple Silicon validation has now passed with macFUSE 5.4.0: the disposable doctor probe mounts, reads exact bytes from a different filesystem device, unmounts cleanly, and the full POSIX suite passes readonly, writable, adaptive and tiered generated-fixture stages. This is mounted-runtime evidence, not real-game or launcher compatibility evidence.
 
 ### Windows
 
@@ -237,6 +237,7 @@ The repository retains evidence for:
 
 - generated 10 GiB reads beyond 4/8 GiB, mmap and concurrent I/O;
 - Linux FUSE mounted readonly/writable/adaptive/tiered stages;
+- native Apple Silicon macFUSE readonly/writable/adaptive/tiered stages;
 - hosted Windows WinFsp readonly/writable/adaptive/tiered stages;
 - corruption and ENOSPC failure handling;
 - loose objects vs indexed packfiles;
@@ -285,7 +286,7 @@ The project only earns a stronger claim when it beats meaningful baselines under
 | Phase | State | Next proof |
 |---|---|---|
 | Rust storage format + range resolver | ✅ | Broader fault injection / durability |
-| Linux FUSE + hosted Windows WinFsp software path | ✅ / 🟡 | Physical desktop validation |
+| Linux FUSE + macOS macFUSE + hosted Windows WinFsp software paths | ✅ / 🟡 | Physical Linux/Windows desktop validation |
 | Writable overlay, tracing and storage tiers | 🧪 | Representative application workloads |
 | Adaptive cache/prefetch policy | 🧪 | Reproducible non-dominated win vs static baselines |
 | Representative workloads | 🔬 | L1 open game-like → L2 owned real game → L3 replication |
