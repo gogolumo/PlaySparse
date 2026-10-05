@@ -12,6 +12,8 @@ use std::{
     time::Instant,
 };
 
+#[cfg(test)]
+mod game_tests;
 pub mod tiers;
 pub use tiers::{HttpTier, SourceKind, TierConfig, TierMetrics};
 
@@ -50,6 +52,10 @@ pub struct PackStats {
     pub unique_objects: usize,
     pub reused_chunks: u64,
     pub pack_seconds: f64,
+    pub pack_cpu_seconds: Option<f64>,
+    pub zstd_attempted_objects: u64,
+    pub measured_raw_objects: u64,
+    pub measured_raw_bytes: u64,
     pub verified_before_publish: bool,
 }
 #[derive(Clone, Debug)]
@@ -599,17 +605,27 @@ struct Writer {
     pack_id: u32,
     pack_end: u64,
     reused: u64,
+    zstd_attempted: u64,
+    measured_raw: u64,
+    measured_raw_bytes: u64,
 }
 impl Writer {
-    fn put(&mut self, raw: &[u8]) -> Result<String> {
+    fn put(&mut self, raw: &[u8], measured_raw: bool) -> Result<String> {
         let hash = *blake3::hash(raw).as_bytes();
         let hex = blake3::Hash::from_bytes(hash).to_string();
         if self.index.contains_key(&hash) {
             self.reused += 1;
             return Ok(hex);
         }
-        let compressed = zstd::bulk::compress(raw, self.options.level)?;
-        let (codec, data) = if compressed.len() < raw.len() {
+        let compressed = if measured_raw {
+            self.measured_raw += 1;
+            self.measured_raw_bytes += raw.len() as u64;
+            Vec::new()
+        } else {
+            self.zstd_attempted += 1;
+            zstd::bulk::compress(raw, self.options.level)?
+        };
+        let (codec, data) = if !measured_raw && compressed.len() < raw.len() {
             (Codec::Zstd, compressed.as_slice())
         } else {
             (Codec::Raw, raw)
@@ -675,7 +691,34 @@ pub fn pack_directory(
     destination: &Path,
     options: &PackOptions,
 ) -> Result<PackStats> {
+    pack_directory_inner(source, destination, options, None)
+}
+/// Experimental offline plan; the runtime still reads the unchanged v1 format.
+pub fn pack_directory_with_plan(
+    source: &Path,
+    destination: &Path,
+    options: &PackOptions,
+    plan: &playsparse_game::PackingPlan,
+) -> Result<PackStats> {
+    pack_directory_inner(source, destination, options, Some(plan))
+}
+fn pack_directory_inner(
+    source: &Path,
+    destination: &Path,
+    options: &PackOptions,
+    plan: Option<&playsparse_game::PackingPlan>,
+) -> Result<PackStats> {
     let start = Instant::now();
+    let cpu_start = playsparse_core::process_resources().0;
+    if let Some(plan) = plan {
+        if options.chunker != Chunker::Cdc
+            || options.chunk_size != playsparse_game::TARGET_BYTES
+            || options.level != 3
+        {
+            return Err(invalid("game-aware v1 requires CDC 256K and Zstd level 3"));
+        }
+        plan.verify_source(source)?;
+    }
     if !(4096..=MAX_CHUNK_BYTES / 4).contains(&options.chunk_size)
         || !options.chunk_size.is_power_of_two()
         || !zstd::compression_level_range().contains(&options.level)
@@ -731,6 +774,9 @@ pub fn pack_directory(
         pack_id: 0,
         pack_end: 0,
         reused: 0,
+        zstd_attempted: 0,
+        measured_raw: 0,
+        measured_raw_bytes: 0,
     };
     let mut manifest = Manifest {
         format: "playsparse-store".into(),
@@ -784,7 +830,25 @@ pub fn pack_directory(
     }
     entries.sort_by(|a, b| a.0.cmp(&b.0));
     manifest.directories.sort();
+    if let Some(plan) = plan
+        && (entries.len() != plan.files.len()
+            || manifest.directories != plan.source_identity.directories)
+    {
+        return Err(invalid("source namespace changed after plan validation"));
+    }
     for (path, fullpath) in entries {
+        let planned = if let Some(plan) = plan {
+            let index = plan
+                .files
+                .binary_search_by(|f| f.path.cmp(&path))
+                .map_err(|_| invalid("source path absent from plan"))?;
+            Some(&plan.files[index])
+        } else {
+            None
+        };
+        let measured_raw = planned.is_some_and(|f| {
+            f.compression_strategy == playsparse_game::CompressionStrategy::MeasuredRaw
+        });
         let input = File::open(&fullpath)?;
         let before = input.metadata()?;
         let mode = source_file_mode(&before);
@@ -803,7 +867,7 @@ pub fn pack_directory(
                 return Err(invalid("chunk metadata exceeds bounded format limit"));
             }
             hasher.update(raw);
-            let hash = writer.put(raw)?;
+            let hash = writer.put(raw, measured_raw)?;
             file.chunks.push(ChunkRef {
                 hash,
                 offset,
@@ -815,11 +879,30 @@ pub fn pack_directory(
         match options.chunker {
             Chunker::Cdc => {
                 let size = options.chunk_size as usize;
-                let cdc =
-                    fastcdc::v2020::StreamCDC::new(input.try_clone()?, size / 4, size, size * 4);
-                for chunk in cdc {
-                    let chunk = chunk.map_err(|e| invalid(e.to_string()))?;
-                    add(&chunk.data)?;
+                if let Some(planned) = planned
+                    .filter(|p| p.chunk_strategy == playsparse_game::ChunkStrategy::ZipRecordsCdc)
+                {
+                    let mut reader = input.try_clone()?;
+                    let mut previous = 0;
+                    for end in &planned.boundaries {
+                        let segment = (&mut reader).take(end - previous);
+                        let cdc = fastcdc::v2020::StreamCDC::new(segment, size / 4, size, size * 4);
+                        for chunk in cdc {
+                            add(&chunk.map_err(|e| invalid(e.to_string()))?.data)?;
+                        }
+                        previous = *end;
+                    }
+                } else {
+                    let cdc = fastcdc::v2020::StreamCDC::new(
+                        input.try_clone()?,
+                        size / 4,
+                        size,
+                        size * 4,
+                    );
+                    for chunk in cdc {
+                        let chunk = chunk.map_err(|e| invalid(e.to_string()))?;
+                        add(&chunk.data)?;
+                    }
                 }
             }
             Chunker::Fixed => {
@@ -849,6 +932,11 @@ pub fn pack_directory(
             return Err(invalid("source changed during pack"));
         }
         file.hash = hasher.finalize().to_string();
+        if planned
+            .is_some_and(|p| p.size != file.size || p.blake3 != file.hash || p.mode != file.mode)
+        {
+            return Err(invalid("source content changed after plan validation"));
+        }
         manifest.files.push(file);
     }
     if let Some(pack) = writer.pack.take() {
@@ -897,6 +985,13 @@ pub fn pack_directory(
         unique_objects: writer.index.len(),
         reused_chunks: writer.reused,
         pack_seconds: start.elapsed().as_secs_f64(),
+        pack_cpu_seconds: playsparse_core::process_resources()
+            .0
+            .zip(cpu_start)
+            .map(|(end, start)| end - start),
+        zstd_attempted_objects: writer.zstd_attempted,
+        measured_raw_objects: writer.measured_raw,
+        measured_raw_bytes: writer.measured_raw_bytes,
         verified_before_publish: true,
     };
     // TempDir is still owned until publication succeeds, so failures remove only staging.
