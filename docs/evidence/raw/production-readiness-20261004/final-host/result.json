@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "repository": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "checks": [
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "wall_seconds": 0.41839229204924777
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "wall_seconds": 0.5093171249609441
+    },
+    {
+      "label": "test",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "wall_seconds": 13.792018540960271
+    },
+    {
+      "label": "release",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "wall_seconds": 0.6498358329990879
+    },
+    {
+      "label": "research",
+      "command": [
+        "bash",
+        "tools/check.sh"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "wall_seconds": 17.657850874995347
+    }
+  ],
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged": true,
+  "binaries": {
+    "playsparse": "f98e39a3843ecf24008b8251de7518c6390944bb0647865e48341dfcca718c0f",
+    "io-probe": "9c46dac636534f08d136d50aa89a83a06b3c36bc63439b29df308869d369772e"
+  }
+}

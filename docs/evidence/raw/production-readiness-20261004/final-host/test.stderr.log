@@ -1,0 +1,21 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running unittests src/main.rs (target/debug/deps/io_probe-39ac0dd967d1c682)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_cache-e5437e28a1914880)
+     Running unittests src/main.rs (target/debug/deps/playsparse-297be190cd09fa3d)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_core-0ed2f2c65fc23026)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_overlay-9483f8c5f9fdddf2)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_policy-600bfdc13e703df2)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_range-0d2a71d843c8ba9b)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_store-385c55b0fcfa6d67)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_trace-759d7211ae41ae9a)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_vfs_fuse-414738c2f81ac670)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_vfs_win-c0a49fdeaf13fcfd)
+   Doc-tests playsparse_cache
+   Doc-tests playsparse_core
+   Doc-tests playsparse_overlay
+   Doc-tests playsparse_policy
+   Doc-tests playsparse_range
+   Doc-tests playsparse_store
+   Doc-tests playsparse_trace
+   Doc-tests playsparse_vfs_fuse
+   Doc-tests playsparse_vfs_win

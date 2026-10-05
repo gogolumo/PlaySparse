@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-04T19:33:52.816342+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "commands": [
+    {
+      "label": "attach",
+      "command": [
+        "hdiutil",
+        "attach",
+        "-readonly",
+        "-nobrowse",
+        "-noautoopen",
+        "-mountpoint",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/image",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/macfuse-5.4.0.dmg"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:33:58.290586+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.3143656669999473
+    },
+    {
+      "label": "signature",
+      "command": [
+        "pkgutil",
+        "--check-signature",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/image/Install macFUSE.pkg"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:33:58.614294+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.08621908299392089
+    },
+    {
+      "label": "extract",
+      "command": [
+        "pkgutil",
+        "--expand-full",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/image/Install macFUSE.pkg",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/sdk"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:33:58.701997+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.0304561670054682
+    },
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:33:59.736622+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.4233419169904664
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--features",
+        "macfuse",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:34:00.165248+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 3.7891881249961443
+    },
+    {
+      "label": "tests",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace",
+        "--features",
+        "macfuse"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:34:03.956433+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 20.810763042012695
+    },
+    {
+      "label": "release",
+      "command": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--features",
+        "macfuse"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:34:24.769035+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 13.418992791965138
+    },
+    {
+      "label": "detach",
+      "command": [
+        "hdiutil",
+        "detach",
+        "/private/tmp/playsparse-readiness-macos-sdk-final-20261004-01/image"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse",
+      "timestamp": "2026-10-04T19:34:38.195915+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.08527679200051352
+    }
+  ],
+  "sdk_version": "5.4.0",
+  "url": "https://github.com/macfuse/macfuse/releases/download/macfuse-5.4.0/macfuse-5.4.0.dmg",
+  "expected_sha256": "861814f0ac7fa8f6547ea40cdd49a36ac84bcc7d34f38a1fa74e8cf68b0401c5",
+  "driver_installed_by_this_run": false,
+  "mount_validation": "NOT RUN",
+  "allow_dirty": false,
+  "image_cleanup": "PASS",
+  "repository": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+  "working_tree_status": "",
+  "source_hashes": {
+    "crates/playsparse-vfs-fuse/src/macos.rs": "8f064707f5176b1e5cc97ac0f3f2f1658c6d7103db8bcb753ba74de18a5ac29f",
+    "crates/playsparse-vfs-fuse/src/lib.rs": "71ad25282cbe6a0c79843d3417f54cad7988f8a16ddf589925ec8e9c17bf2d89",
+    "crates/playsparse-vfs-fuse/src/fuse.rs": "2d922f3682b080e65e0adfdbe8d361496e84f0a65716b2be252e0f7190dc62a0",
+    "crates/playsparse-vfs-fuse/src/writable.rs": "1da858e66bb1b40f96852e00661ba08e09853fd4032469f6d839a4c27c48fc4d",
+    "crates/playsparse-vfs-fuse/src/macos_diagnostic.rs": "82e20c6456790b8667e6710b613c9535e7a31c31617d47ded2ccdf86379ef548",
+    "crates/playsparse-vfs-fuse/src/fuse/tests.rs": "9286bf8ee974bc0eda7c9002caf30b18a5d73d83927e0e7be36fe206fa2ea501",
+    "crates/playsparse-vfs-fuse/src/writable/tests.rs": "ae37bc4db7be6527ab303aee3ae25ef6e4d3973e4169865eca65fa150356f5cb"
+  },
+  "download_bytes": 16512456,
+  "actual_sha256": "861814f0ac7fa8f6547ea40cdd49a36ac84bcc7d34f38a1fa74e8cf68b0401c5",
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": true,
+  "wall_seconds": 45.67234983301023
+}

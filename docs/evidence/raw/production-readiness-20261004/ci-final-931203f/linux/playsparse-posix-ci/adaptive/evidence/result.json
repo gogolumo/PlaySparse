@@ -1,0 +1,787 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T20:11:22.561131+00:00",
+  "commit": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+  "working_tree_status": "",
+  "os": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "architecture": "x86_64",
+  "binary_sha256": "7081fb158725c041ada2786cb36388b96248dce09cac8f1ecdaa0edb69882588",
+  "status": "PASS",
+  "commands": [
+    [
+      "/usr/bin/python3",
+      "/home/runner/work/PlaySparse/PlaySparse/tools/generate-testgame.py",
+      "/tmp/playsparse-posix-ci/adaptive/source",
+      "--io-probe",
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/io-probe",
+      "--world-bytes",
+      "4194304"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "pack",
+      "/tmp/playsparse-posix-ci/adaptive/source",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "64K"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "optimize",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/static-0.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/adaptive-0.json",
+      "--policy",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/adaptive-1.json",
+      "--policy",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/static-1.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/static-2.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/adaptive-2.json",
+      "--policy",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/adaptive/base",
+      "/tmp/playsparse-posix-ci/adaptive/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/adaptive.trace.jsonl",
+      "--cache",
+      "4M",
+      "--policy",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl"
+    ]
+  ],
+  "cache_bytes": 4194304,
+  "cache_state": "fresh PlaySparse cache per replay subprocess; OS/device caches uncontrolled; not disk-cold",
+  "dataset": "synthetic sequential + hot/churn + random; kernel callbacks captured, not a game benchmark",
+  "original": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.30637263199997733,
+    "latency_ns": {
+      "p50": 242925,
+      "p95": 367468,
+      "p99": 551863
+    }
+  },
+  "capture_mount_record": {
+    "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/adaptive/mounted ro,nosuid,nodev,noatime shared:316 - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_static": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.16304809600001136,
+    "latency_ns": {
+      "p50": 116628,
+      "p95": 146034,
+      "p99": 172973
+    }
+  },
+  "capture_metrics": [
+    {
+      "cache": {
+        "decompressions": 928,
+        "decompressions_avoided": 811,
+        "evictions": 864,
+        "hit_ratio": 0.46635997699827486,
+        "hits": 811,
+        "in_flight_waits": 0,
+        "misses": 928,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 60817408,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 6463363,
+        "primary_cache_hits": 0,
+        "primary_hits": 928,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "evaluation_policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "replay_trials": {
+    "static": [
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.05533099999999999,
+        "latency_ns": {
+          "p50": 26470,
+          "p95": 51106,
+          "p99": 59000
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.055327901
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.056596999999999995,
+        "latency_ns": {
+          "p50": 26439,
+          "p95": 51386,
+          "p99": 60584
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.056610651
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.054693000000000006,
+        "latency_ns": {
+          "p50": 25928,
+          "p95": 50404,
+          "p99": 55724
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.054698524
+      }
+    ],
+    "adaptive": [
+      {
+        "cache": {
+          "decompressions": 954,
+          "decompressions_avoided": 845,
+          "evictions": 890,
+          "hit_ratio": 0.48591144335825187,
+          "hits": 845,
+          "in_flight_waits": 36,
+          "misses": 894,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3932160,
+          "prefetch_chunks_loaded": 60,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 1010,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 60,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 448,
+          "prefetch_useful_bytes": 3932160,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 62521344,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.060316,
+        "latency_ns": {
+          "p50": 28063,
+          "p95": 53691,
+          "p99": 71654
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.6127167630057804,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.057541744
+      },
+      {
+        "cache": {
+          "decompressions": 954,
+          "decompressions_avoided": 846,
+          "evictions": 890,
+          "hit_ratio": 0.4864864864864865,
+          "hits": 846,
+          "in_flight_waits": 54,
+          "misses": 893,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3997696,
+          "prefetch_chunks_loaded": 61,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 1010,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 61,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 3997696,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 62521344,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.059483999999999995,
+        "latency_ns": {
+          "p50": 27562,
+          "p95": 52348,
+          "p99": 67847
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.6127167630057804,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.056628956
+      },
+      {
+        "cache": {
+          "decompressions": 954,
+          "decompressions_avoided": 846,
+          "evictions": 890,
+          "hit_ratio": 0.4864864864864865,
+          "hits": 846,
+          "in_flight_waits": 37,
+          "misses": 893,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3997696,
+          "prefetch_chunks_loaded": 61,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 1010,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 61,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 3997696,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 62521344,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.059458000000000004,
+        "latency_ns": {
+          "p50": 27903,
+          "p95": 54151,
+          "p99": 64361
+        },
+        "process_peak_rss_bytes": 27426816,
+        "queries": 960,
+        "read_amplification": 0.6127167630057804,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.05664765
+      }
+    ]
+  },
+  "adaptive_mount_record": {
+    "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/adaptive/mounted ro,nosuid,nodev,noatime shared:316 - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_adaptive": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.1635025100000007,
+    "latency_ns": {
+      "p50": 118292,
+      "p95": 155050,
+      "p99": 178124
+    }
+  },
+  "adaptive_metrics": [
+    {
+      "cache": {
+        "decompressions": 956,
+        "decompressions_avoided": 844,
+        "evictions": 892,
+        "hit_ratio": 0.48533640023001723,
+        "hits": 844,
+        "in_flight_waits": 0,
+        "misses": 895,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 3997696,
+        "prefetch_chunks_loaded": 61,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 951,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 59,
+        "prefetch_peak_reserved_bytes": 131072,
+        "prefetch_queue_high_watermark": 2,
+        "prefetch_requests": 61,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 447,
+        "prefetch_useful_bytes": 3866624,
+        "prefetch_wasted_bytes": 131072,
+        "raw_bytes_loaded": 62652416,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 8236954,
+        "primary_cache_hits": 0,
+        "primary_hits": 956,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "trace_summary": {
+    "cache_hit_ratio": 0.04479166666666667,
+    "cache_miss_ratio": 0.9552083333333333,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 960,
+    "hot_files": [
+      {
+        "events": 896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 64,
+        "path": "hot.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 4,
+        "length": 8192,
+        "offset": 348160,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 704512,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 712704,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 970752,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 15622144,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16842752,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16908288,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16973824,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17039360,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17104896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17170432,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17235968,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17301504,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17367040,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17432576,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17498112,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17563648,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17629184,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17694720,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17760256,
+        "path": "stream.bin"
+      }
+    ],
+    "latency_ns": {
+      "p50": 32851,
+      "p95": 60753,
+      "p99": 77735
+    },
+    "operations": {
+      "read": 960
+    },
+    "read_bytes": 102039552,
+    "read_operations": 960,
+    "reread_ratio": 0.27291666666666664,
+    "sequential_read_percentage": 0.10416666666666667,
+    "sessions": [
+      "4293-1791144683091329925"
+    ],
+    "sources": {
+      "memory-cache": 43,
+      "mixed": 767,
+      "primary-local": 150
+    },
+    "version": 1,
+    "write_bytes": 0,
+    "write_operations": 0
+  },
+  "source_unchanged": true,
+  "base_unchanged": true
+}

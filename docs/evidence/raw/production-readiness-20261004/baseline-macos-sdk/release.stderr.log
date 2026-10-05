@@ -1,0 +1,13 @@
+   Compiling playsparse-core v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-core)
+   Compiling fuser v0.18.0
+   Compiling playsparse-vfs-win v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-win)
+   Compiling playsparse-cli v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cli)
+   Compiling io-probe v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/tools/io-probe)
+   Compiling playsparse-trace v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-trace)
+   Compiling playsparse-cache v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cache)
+   Compiling playsparse-store v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-store)
+   Compiling playsparse-policy v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-policy)
+   Compiling playsparse-range v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-fuse)
+    Finished `release` profile [optimized] target(s) in 14.77s

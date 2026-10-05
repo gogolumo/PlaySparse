@@ -1,0 +1,12 @@
+
+running 2 tests
+test fuse::tests::real_mount_random_concurrent_mmap_and_native_execution ... ok
+test writable::tests::real_writable_mount_update_remount_mmap_and_immutable_base ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 10 filtered out; finished in 1.14s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

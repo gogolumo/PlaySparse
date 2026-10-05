@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "evidence": "/tmp/playsparse-readiness-linux-full-20261004-01/crash/evidence",
+  "error": null,
+  "disk_full": {
+    "status": "PASS",
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-linux-full-20261004-01/enospc rw,relatime - tmpfs tmpfs rw,size=1024k",
+    "capacity_bytes": 1048576,
+    "pack": {
+      "command": [
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/enospc/store",
+        "--chunker",
+        "fixed"
+      ],
+      "returncode": 1,
+      "stderr": "Error: I/O: No space left on device (os error 28)\n\nCaused by:\n    No space left on device (os error 28)\n"
+    },
+    "destination_absent": true
+  }
+}

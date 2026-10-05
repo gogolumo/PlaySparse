@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "status": "FAIL",
+  "commands": [
+    {
+      "label": "build",
+      "command": [
+        "/usr/local/cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:32:49.261015+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 7.897771837000619
+    }
+  ],
+  "stages": {
+    "readonly": {
+      "status": "NOT RUN",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-01/readonly/evidence"
+    },
+    "writable": {
+      "status": "NOT RUN",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-01/writable/evidence"
+    },
+    "adaptive": {
+      "status": "NOT RUN",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-01/adaptive/evidence"
+    },
+    "tiers": {
+      "status": "NOT RUN",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-01/tiers/evidence"
+    }
+  },
+  "real_game_validation": "NOT RUN",
+  "game_evidence_gate": "GAME EVIDENCE REQUIRED",
+  "application_validation": "NOT RUN",
+  "evidence_type": "native POSIX generated mounted fixtures",
+  "evidence": "/tmp/playsparse-readiness-posix-final-20261004-01",
+  "scope": "generated fixtures on real FUSE/macFUSE mounts; one optional application only",
+  "repository": {
+    "git_sha": "813352c05812d9c84c5cf3736a05139d2436561f",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "0a153da40194e4cf8d712da6ffd27bd92501c7b1e70d951b80a458a00f553bac",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "allow_dirty": false,
+  "disk_preflight": {
+    "available_bytes": 444465668096,
+    "required_minimum_bytes": 536870912
+  },
+  "error": "Repository changed during the build; rebuild from a stable checkout",
+  "repository_after": {
+    "git_sha": "813352c05812d9c84c5cf3736a05139d2436561f",
+    "dirty": true,
+    "working_tree_status": " M docs/windows-comparison.md\n M tools/windows-comparison.py\n",
+    "source_digest_sha256": "6cd4592a10d3ae03f46ef6a99beac776d9b16c34adce95243aedcfa5acd6244b",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": false,
+  "provenance_error": "Repository changed during validation; repeat from a stable checkout",
+  "wall_seconds": 8.777622795998468
+}

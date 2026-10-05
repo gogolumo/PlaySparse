@@ -1,0 +1,72 @@
+{
+  "git_sha": "e7d90c7f48e988607ed6b29f4838efdafd3eaa1e",
+  "dirty": false,
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "commands": [
+    {
+      "name": "fmt",
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.3497162499697879,
+      "status": "PASS"
+    },
+    {
+      "name": "clippy",
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.0816297080018558,
+      "status": "PASS"
+    },
+    {
+      "name": "tests",
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 21.148194457986392,
+      "status": "PASS"
+    },
+    {
+      "name": "release",
+      "argv": [
+        "/Users/bogdan_dron/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.539241749967914,
+      "status": "PASS"
+    },
+    {
+      "name": "research",
+      "argv": [
+        "bash",
+        "tools/check.sh"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.958537333994173,
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

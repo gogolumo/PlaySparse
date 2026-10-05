@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-10-04T19:32:12.9236800Z",
+  "is_windows": false,
+  "platform": "Darwin 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132",
+  "process_architecture": "Arm64",
+  "architecture": "Arm64",
+  "powershell": "7.5.4",
+  "virtual_machine_detected": null,
+  "physical_machine_attested": false,
+  "python": "3.14.6",
+  "python_is_windows": false
+}

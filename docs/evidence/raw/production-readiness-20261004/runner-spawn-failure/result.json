@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "commands": [
+    {
+      "label": "missing-binary",
+      "command": [
+        "/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T/playsparse-runner-audit-yhi8qf3e/missing-binary"
+      ],
+      "status": "RUNNING"
+    }
+  ]
+}

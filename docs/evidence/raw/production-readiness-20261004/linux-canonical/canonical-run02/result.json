@@ -1,0 +1,593 @@
+{
+  "version": 2,
+  "status": "PASS",
+  "commands": [
+    {
+      "label": "build",
+      "command": [
+        "/usr/local/cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:33:44.129305+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.16767816701030824
+    },
+    {
+      "label": "doctor",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "doctor",
+        "--path",
+        "/tmp/playsparse-readiness-posix-final-20261004-02",
+        "--mount-test"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:33:44.715125+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.17750862499815412
+    },
+    {
+      "label": "readonly",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/mounted-smoke.py",
+        "--work",
+        "/tmp/playsparse-readiness-posix-final-20261004-02/readonly",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe",
+        "--world-bytes",
+        "10737418240",
+        "--iterations",
+        "32",
+        "--cache",
+        "64M"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:33:44.896058+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 51.77497423099703
+    },
+    {
+      "label": "writable",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/mounted-update.py",
+        "--work",
+        "/tmp/playsparse-readiness-posix-final-20261004-02/writable",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:36.687564+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.8450855010014493
+    },
+    {
+      "label": "adaptive",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/adaptive-smoke.py",
+        "--work",
+        "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:38.539621+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.3137611669953912
+    },
+    {
+      "label": "tiers",
+      "command": [
+        "/usr/bin/python3",
+        "/src/tools/tiered-smoke.py",
+        "--work",
+        "/tmp/playsparse-readiness-posix-final-20261004-02/tiers",
+        "--playsparse",
+        "/src/target-linux/release/playsparse",
+        "--io-probe",
+        "/src/target-linux/release/io-probe"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:39.856448+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 3.4754921270068735
+    }
+  ],
+  "stages": {
+    "readonly": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-02/readonly/evidence",
+      "reported_status": "PASS",
+      "integrity": {}
+    },
+    "writable": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-02/writable/evidence",
+      "reported_status": "PASS",
+      "integrity": {
+        "source_unchanged": true,
+        "base_unchanged": true
+      }
+    },
+    "adaptive": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence",
+      "reported_status": "PASS",
+      "integrity": {
+        "source_unchanged": true,
+        "base_unchanged": true
+      }
+    },
+    "tiers": {
+      "status": "PASS",
+      "evidence": "/tmp/playsparse-readiness-posix-final-20261004-02/tiers/evidence",
+      "reported_status": "PASS",
+      "integrity": {
+        "source_unchanged": true,
+        "base_unchanged": true,
+        "secondary_unchanged": true
+      }
+    }
+  },
+  "real_game_validation": "NOT RUN",
+  "game_evidence_gate": "GAME EVIDENCE REQUIRED",
+  "application_validation": "NOT RUN",
+  "evidence_type": "native POSIX generated mounted fixtures",
+  "evidence": "/tmp/playsparse-readiness-posix-final-20261004-02",
+  "scope": "generated fixtures on real FUSE/macFUSE mounts; one optional application only",
+  "repository": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "allow_dirty": false,
+  "disk_preflight": {
+    "available_bytes": 444465647616,
+    "required_minimum_bytes": 536870912
+  },
+  "binary_provenance": {
+    "repository": {
+      "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+      "dirty": false,
+      "working_tree_status": "",
+      "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+      "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+    },
+    "binaries": {
+      "playsparse": {
+        "path": "/src/target-linux/release/playsparse",
+        "sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c"
+      },
+      "io-probe": {
+        "path": "/src/target-linux/release/io-probe",
+        "sha256": "c6b11cabaf1a7b83166e42d151e45db95d701e8222d3d25c7ab1a4bcbad07417"
+      }
+    },
+    "allow_dirty": false,
+    "allow_unverified_binaries": false,
+    "status": "VERIFIED_LOCAL_BUILD_RECEIPT",
+    "manifest": "/src/target-linux/release/playsparse-build-provenance.json"
+  },
+  "binaries": {
+    "playsparse": {
+      "path": "/src/target-linux/release/playsparse",
+      "sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c"
+    },
+    "io-probe": {
+      "path": "/src/target-linux/release/io-probe",
+      "sha256": "c6b11cabaf1a7b83166e42d151e45db95d701e8222d3d25c7ab1a4bcbad07417"
+    }
+  },
+  "mount_backend": {
+    "available": true,
+    "backend": "FUSE",
+    "detail": "Linux /dev/fuse can be opened; mounting still requires mount permission or fusermount3."
+  },
+  "mount_diagnostic": {
+    "kernel_backend": "AVAILABLE",
+    "mount_test": "PASS",
+    "status": "MOUNT_TEST_PASSED"
+  },
+  "mount_preflight": {
+    "cleanup": "PASS",
+    "commands": [
+      [
+        "/src/target-linux/release/playsparse",
+        "mount",
+        "/tmp/playsparse-doctor-SdOYPi/store",
+        "/tmp/playsparse-doctor-SdOYPi/mounted",
+        "--cache",
+        "1M"
+      ],
+      [
+        {
+          "Unix": [
+            47,
+            115,
+            114,
+            99,
+            47,
+            116,
+            97,
+            114,
+            103,
+            101,
+            116,
+            45,
+            108,
+            105,
+            110,
+            117,
+            120,
+            47,
+            114,
+            101,
+            108,
+            101,
+            97,
+            115,
+            101,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101
+          ]
+        },
+        {
+          "Unix": [
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            112,
+            114,
+            111,
+            98,
+            101,
+            45,
+            114,
+            101,
+            97,
+            100
+          ]
+        },
+        {
+          "Unix": [
+            47,
+            116,
+            109,
+            112,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101,
+            45,
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            83,
+            100,
+            79,
+            89,
+            80,
+            105,
+            47,
+            109,
+            111,
+            117,
+            110,
+            116,
+            101,
+            100,
+            47,
+            112,
+            114,
+            111,
+            98,
+            101,
+            46,
+            116,
+            120,
+            116
+          ]
+        },
+        {
+          "Unix": [
+            45,
+            45,
+            100,
+            105,
+            102,
+            102,
+            101,
+            114,
+            101,
+            110,
+            116,
+            45,
+            100,
+            101,
+            118,
+            105,
+            99,
+            101,
+            45,
+            102,
+            114,
+            111,
+            109
+          ]
+        },
+        {
+          "Unix": [
+            47,
+            116,
+            109,
+            112,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101,
+            45,
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            83,
+            100,
+            79,
+            89,
+            80,
+            105
+          ]
+        }
+      ],
+      [
+        {
+          "Unix": [
+            47,
+            115,
+            114,
+            99,
+            47,
+            116,
+            97,
+            114,
+            103,
+            101,
+            116,
+            45,
+            108,
+            105,
+            110,
+            117,
+            120,
+            47,
+            114,
+            101,
+            108,
+            101,
+            97,
+            115,
+            101,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101
+          ]
+        },
+        {
+          "Unix": [
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            112,
+            114,
+            111,
+            98,
+            101,
+            45,
+            114,
+            101,
+            97,
+            100
+          ]
+        },
+        {
+          "Unix": [
+            47,
+            116,
+            109,
+            112,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101,
+            45,
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            83,
+            100,
+            79,
+            89,
+            80,
+            105,
+            47,
+            109,
+            111,
+            117,
+            110,
+            116,
+            101,
+            100,
+            47,
+            112,
+            114,
+            111,
+            98,
+            101,
+            46,
+            116,
+            120,
+            116
+          ]
+        },
+        {
+          "Unix": [
+            45,
+            45,
+            100,
+            105,
+            102,
+            102,
+            101,
+            114,
+            101,
+            110,
+            116,
+            45,
+            100,
+            101,
+            118,
+            105,
+            99,
+            101,
+            45,
+            102,
+            114,
+            111,
+            109
+          ]
+        },
+        {
+          "Unix": [
+            47,
+            116,
+            109,
+            112,
+            47,
+            112,
+            108,
+            97,
+            121,
+            115,
+            112,
+            97,
+            114,
+            115,
+            101,
+            45,
+            100,
+            111,
+            99,
+            116,
+            111,
+            114,
+            45,
+            83,
+            100,
+            79,
+            89,
+            80,
+            105
+          ]
+        }
+      ],
+      [
+        "/src/target-linux/release/playsparse",
+        "unmount",
+        "/tmp/playsparse-doctor-SdOYPi/mounted"
+      ]
+    ],
+    "elapsed_seconds": 0.141027334,
+    "provider_exit_code": 0,
+    "provider_log": "{\"cache\":{\"decompressions\":1,\"decompressions_avoided\":0,\"evictions\":0,\"hit_ratio\":0.0,\"hits\":0,\"in_flight_waits\":0,\"misses\":1,\"peak_resident_bytes\":21,\"prefetch_bytes_loaded\":0,\"prefetch_chunks_loaded\":0,\"prefetch_dropped\":0,\"prefetch_duplicates\":0,\"prefetch_errors\":0,\"prefetch_expired\":0,\"prefetch_hits\":0,\"prefetch_peak_reserved_bytes\":0,\"prefetch_queue_high_watermark\":0,\"prefetch_requests\":0,\"prefetch_reserved_bytes\":0,\"prefetch_resident_unconsumed_bytes\":0,\"prefetch_skipped\":0,\"prefetch_useful_bytes\":0,\"prefetch_wasted_bytes\":0,\"raw_bytes_loaded\":21,\"resident_bytes\":21,\"resident_entries\":1},\"event\":\"fuse_unmounted\",\"read_errors\":0,\"read_requests\":1,\"requested_bytes\":4096,\"returned_bytes\":21,\"tiers\":{\"errors\":0,\"integrity_errors\":0,\"primary_bytes\":21,\"primary_cache_hits\":0,\"primary_hits\":1,\"promotion_bytes\":0,\"promotions\":0,\"remote_bytes\":0,\"remote_errors\":0,\"remote_hits\":0,\"remote_ranges\":0,\"remote_requests\":0,\"secondary_bytes\":0,\"secondary_hits\":0,\"timeouts\":0},\"trace\":null}\n",
+    "read_exact_probe": true,
+    "scope": "tiny disposable readonly mount; not physical/game/launcher evidence",
+    "status": "PASS"
+  },
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": true,
+  "binaries_unchanged_during_run": true,
+  "wall_seconds": 59.846404025985976
+}

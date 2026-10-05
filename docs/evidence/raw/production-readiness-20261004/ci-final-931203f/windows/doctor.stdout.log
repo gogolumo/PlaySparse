@@ -1,0 +1,38 @@
+{
+  "arch": "x86_64",
+  "available_disk_bytes": 234136948736,
+  "available_ram_bytes": 14089465856,
+  "codecs": [
+    "raw",
+    "zstd (in-process)"
+  ],
+  "exit_code": 0,
+  "filesystem_support": "readonly native callbacks and experimental writable overlays; actual driver mount test required on each platform",
+  "hash": "BLAKE3 raw bytes",
+  "memory_note": "Linux MemAvailable; Windows ullAvailPhys; macOS free+speculative pages (excludes reclaimable inactive/compressed pages); null on measurement failure",
+  "mount_backend": {
+    "available": true,
+    "backend": "WinFsp",
+    "detail": "WinFsp DLL loaded; driver mounting still requires a runtime mount test"
+  },
+  "mount_test": {
+    "scope": "tiny disposable readonly mount; not physical/game/launcher evidence",
+    "status": "NOT RUN"
+  },
+  "os": "windows",
+  "permissions": {
+    "exists": true,
+    "note": "actual mount privilege is checked by backend at mount time",
+    "path": "D:\\a\\_temp\\playsparse-windows-ci",
+    "readonly_flag": false
+  },
+  "store_health": null,
+  "windows_physical_test": "REQUIRED",
+  "windows_resources": {
+    "available_disk_bytes": 234136948736,
+    "available_ram_bytes": 14089465856,
+    "disk_measurement_path": "D:\\a\\_temp\\playsparse-windows-ci",
+    "elevated": true,
+    "winfsp": "WinFsp DLL loaded; driver mounting still requires a runtime mount test"
+  }
+}

@@ -1,0 +1,38 @@
+   Compiling playsparse-core v0.1.0 (/src/crates/playsparse-core)
+   Compiling ureq-proto v0.6.4
+   Compiling rustls v0.23.45
+   Compiling nix v0.31.3
+   Compiling playsparse-vfs-win v0.1.0 (/src/crates/playsparse-vfs-win)
+   Compiling playsparse-cli v0.1.0 (/src/crates/playsparse-cli)
+   Compiling playsparse-trace v0.1.0 (/src/crates/playsparse-trace)
+   Compiling playsparse-cache v0.1.0 (/src/crates/playsparse-cache)
+   Compiling io-probe v0.1.0 (/src/tools/io-probe)
+   Compiling playsparse-policy v0.1.0 (/src/crates/playsparse-policy)
+   Compiling fuser v0.18.0
+   Compiling ctrlc v3.5.2
+   Compiling ureq v3.4.2
+   Compiling playsparse-store v0.1.0 (/src/crates/playsparse-store)
+   Compiling playsparse-range v0.1.0 (/src/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/src/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/src/crates/playsparse-vfs-fuse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.16s
+     Running unittests src/main.rs (target-linux/debug/deps/io_probe-50fbc38fb35ad574)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_cache-c4920ef6da09e6be)
+     Running unittests src/main.rs (target-linux/debug/deps/playsparse-b5ad6ff337e3cb0d)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_core-e0f5622d737a87ff)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_overlay-b6eb2118917a0e1a)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_policy-afa4943585d6560e)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_range-e1e30fa0fe02ef1e)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_store-5dc8b8535f3a7260)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_trace-913c1d99f26c1a19)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_vfs_fuse-2708d4e0325aa444)
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_vfs_win-4ad408bf306b5843)
+   Doc-tests playsparse_cache
+   Doc-tests playsparse_core
+   Doc-tests playsparse_overlay
+   Doc-tests playsparse_policy
+   Doc-tests playsparse_range
+   Doc-tests playsparse_store
+   Doc-tests playsparse_trace
+   Doc-tests playsparse_vfs_fuse
+   Doc-tests playsparse_vfs_win

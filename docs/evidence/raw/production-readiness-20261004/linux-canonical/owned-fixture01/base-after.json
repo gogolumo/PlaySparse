@@ -1,0 +1,84 @@
+{
+  "definition": "SHA-256 of ordered path, size, mode, mtime, extent positions and contents; allocation accounting excluded; not a whole-file SHA-256; includes directory names, permissions and modification timestamps",
+  "tree_fingerprint_sha256": "6ab848870283f8de05690e423e0ad931febca6e43107deb19c5faeeead72fe9e",
+  "files": [
+    {
+      "path": "COMMITTED.json",
+      "size": 180,
+      "mode": 33188,
+      "mtime_ns": 1791142521988147008,
+      "allocated_bytes": 4096,
+      "extents": [
+        [
+          0,
+          180
+        ]
+      ],
+      "extent_sha256": "a25ba8d2c83e35259fa38f2372b20a362365a0cb4905df20983ff1b549fd39a3"
+    },
+    {
+      "path": "index/objects.idx",
+      "size": 5336,
+      "mode": 33188,
+      "mtime_ns": 1791142511422147003,
+      "allocated_bytes": 8192,
+      "extents": [
+        [
+          0,
+          5336
+        ]
+      ],
+      "extent_sha256": "06f6ab15d5d08cf574dc5686d9d8be05354b67d181a53977de7e121bba635402"
+    },
+    {
+      "path": "manifest.json",
+      "size": 1180975,
+      "mode": 33188,
+      "mtime_ns": 1791142511420147003,
+      "allocated_bytes": 1183744,
+      "extents": [
+        [
+          0,
+          1180975
+        ]
+      ],
+      "extent_sha256": "f56efbf30a7a0fa4d84feeeafbad68cd9c7c625f6a71db2eff60b7099b727247"
+    },
+    {
+      "path": "packs/pack-0000.psp",
+      "size": 2636726,
+      "mode": 33188,
+      "mtime_ns": 1791142511415147003,
+      "allocated_bytes": 2637824,
+      "extents": [
+        [
+          0,
+          2636726
+        ]
+      ],
+      "extent_sha256": "4e053a99da3de5a7f2ada1474ad08c9e51ee405e59b9c65afeac1d9144a894eb"
+    }
+  ],
+  "directories": [
+    {
+      "path": ".",
+      "mode": 16877,
+      "mtime_ns": 1791142521988147008
+    },
+    {
+      "path": "index",
+      "mode": 16877,
+      "mtime_ns": 1791142511422147003
+    },
+    {
+      "path": "objects",
+      "mode": 16877,
+      "mtime_ns": 1791142489741747007
+    },
+    {
+      "path": "packs",
+      "mode": 16877,
+      "mtime_ns": 1791142489746747007
+    }
+  ]
+}

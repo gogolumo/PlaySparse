@@ -1,0 +1,892 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-04T20:13:41.361651+00:00",
+  "commands": [
+    {
+      "label": "compact",
+      "command": [
+        "C:\\Windows\\System32\\compact.exe",
+        "/C",
+        "/A",
+        "/F",
+        "/Q",
+        "/EXE:XPRESS4K",
+        "/S:C:\\playsparse-wof-ci-37231044516-1\\wof-copy",
+        "*"
+      ],
+      "cwd": "C:\\playsparse-wof-ci-37231044516-1\\wof-copy",
+      "timestamp": "2026-10-04T20:13:42.298044+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.022955499999966378
+    },
+    {
+      "label": "pack",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "pack",
+        "C:\\playsparse-wof-source-37231044516-1",
+        "C:\\playsparse-wof-ci-37231044516-1\\base"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:42.352557+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.07424129999998286
+    },
+    {
+      "label": "verify",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "verify",
+        "C:\\playsparse-wof-ci-37231044516-1\\base"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:42.529520+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.013695500000039829
+    },
+    {
+      "label": "trial-0-original",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-source-37231044516-1",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:42.618083+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1269104000000425
+    },
+    {
+      "label": "trial-0-wof",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\wof-copy",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:42.761544+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1337090000000103
+    },
+    {
+      "label": "trial-0-playsparse-mount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "mount",
+        "C:\\playsparse-wof-ci-37231044516-1\\base",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--cache",
+        "64M"
+      ],
+      "status": "PASS",
+      "kind": "read-only mount",
+      "exit_code": 0,
+      "wall_seconds": 0.2540764999999965
+    },
+    {
+      "label": "trial-0-playsparse",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json",
+        "--provider-pid",
+        "3212"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:42.966139+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.13528889999997773
+    },
+    {
+      "label": "trial-0-playsparse-mount-unmount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "unmount",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.121960+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.00915789999999106
+    },
+    {
+      "label": "trial-1-wof",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\wof-copy",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.179094+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.13163309999998773
+    },
+    {
+      "label": "trial-1-playsparse-mount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "mount",
+        "C:\\playsparse-wof-ci-37231044516-1\\base",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--cache",
+        "64M"
+      ],
+      "status": "PASS",
+      "kind": "read-only mount",
+      "exit_code": 0,
+      "wall_seconds": 0.24357680000002802
+    },
+    {
+      "label": "trial-1-playsparse",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json",
+        "--provider-pid",
+        "9968"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.384268+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.13573039999999992
+    },
+    {
+      "label": "trial-1-playsparse-mount-unmount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "unmount",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.543952+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.008774300000027324
+    },
+    {
+      "label": "trial-1-original",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-source-37231044516-1",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.575048+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.12895869999999832
+    },
+    {
+      "label": "trial-2-playsparse-mount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "mount",
+        "C:\\playsparse-wof-ci-37231044516-1\\base",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--cache",
+        "64M"
+      ],
+      "status": "PASS",
+      "kind": "read-only mount",
+      "exit_code": 0,
+      "wall_seconds": 0.26007090000001654
+    },
+    {
+      "label": "trial-2-playsparse",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json",
+        "--provider-pid",
+        "5192"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.788762+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1428973999999812
+    },
+    {
+      "label": "trial-2-playsparse-mount-unmount",
+      "command": [
+        "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "unmount",
+        "C:\\playsparse-wof-ci-37231044516-1\\mounted"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.959523+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.012871800000027633
+    },
+    {
+      "label": "trial-2-original",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-source-37231044516-1",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:43.997038+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.12924110000000155
+    },
+    {
+      "label": "trial-2-wof",
+      "command": [
+        "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+        "D:\\a\\PlaySparse\\PlaySparse\\tools\\windows-comparison.py",
+        "--worker-root",
+        "C:\\playsparse-wof-ci-37231044516-1\\wof-copy",
+        "--worker-queries",
+        "C:\\playsparse-wof-ci-37231044516-1\\queries.json",
+        "--worker-expected",
+        "C:\\playsparse-wof-ci-37231044516-1\\expected.json"
+      ],
+      "cwd": "D:\\a\\PlaySparse\\PlaySparse",
+      "timestamp": "2026-10-04T20:13:44.150619+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.13412579999999252
+    }
+  ],
+  "trials": [
+    {
+      "trial": 0,
+      "order": [
+        "original",
+        "wof",
+        "playsparse"
+      ],
+      "modes": {
+        "original": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 2.9,
+            "p95_us": 223.5,
+            "p99_us": 252.5
+          },
+          "workload_wall_seconds": 0.035047999999960666,
+          "client_cpu_seconds": 0.046875,
+          "client_peak_rss_bytes": 24113152,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        },
+        "wof": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 3.2,
+            "p95_us": 252.3,
+            "p99_us": 291.3
+          },
+          "workload_wall_seconds": 0.03667019999994636,
+          "client_cpu_seconds": 0.03125,
+          "client_peak_rss_bytes": 24055808,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        },
+        "playsparse": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 2.8,
+            "p95_us": 237.1,
+            "p99_us": 293.3
+          },
+          "workload_wall_seconds": 0.03596020000003364,
+          "client_cpu_seconds": 0.046875,
+          "client_peak_rss_bytes": 23973888,
+          "provider_cpu_seconds": 0.0,
+          "provider_peak_rss_bytes": 15974400,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "mount_record": {
+            "filesystem_type": "PlaySparse",
+            "volume_label": "PlaySparse",
+            "api": "GetVolumeInformationByHandleW",
+            "real_mount": true
+          },
+          "provider_metrics": {
+            "cache": {
+              "decompressions": 5,
+              "decompressions_avoided": 29,
+              "evictions": 0,
+              "hit_ratio": 0.8529411764705882,
+              "hits": 29,
+              "in_flight_waits": 0,
+              "misses": 5,
+              "peak_resident_bytes": 4054300,
+              "prefetch_bytes_loaded": 0,
+              "prefetch_chunks_loaded": 0,
+              "prefetch_dropped": 0,
+              "prefetch_duplicates": 0,
+              "prefetch_errors": 0,
+              "prefetch_expired": 0,
+              "prefetch_hits": 0,
+              "prefetch_peak_reserved_bytes": 0,
+              "prefetch_queue_high_watermark": 0,
+              "prefetch_requests": 0,
+              "prefetch_reserved_bytes": 0,
+              "prefetch_resident_unconsumed_bytes": 0,
+              "prefetch_skipped": 0,
+              "prefetch_useful_bytes": 0,
+              "prefetch_wasted_bytes": 0,
+              "raw_bytes_loaded": 4054300,
+              "resident_bytes": 4054300,
+              "resident_entries": 5
+            },
+            "event": "winfsp_unmounted",
+            "overlay": null,
+            "tiers": {
+              "errors": 0,
+              "integrity_errors": 0,
+              "primary_bytes": 528,
+              "primary_cache_hits": 0,
+              "primary_hits": 5,
+              "promotion_bytes": 0,
+              "promotions": 0,
+              "remote_bytes": 0,
+              "remote_errors": 0,
+              "remote_hits": 0,
+              "remote_ranges": 0,
+              "remote_requests": 0,
+              "secondary_bytes": 0,
+              "secondary_hits": 0,
+              "timeouts": 0
+            },
+            "trace": null
+          },
+          "read_amplification_returned_bytes": 92668896,
+          "read_amplification": 0.0437503863216413,
+          "driver_read_errors": null
+        }
+      }
+    },
+    {
+      "trial": 1,
+      "order": [
+        "wof",
+        "playsparse",
+        "original"
+      ],
+      "modes": {
+        "wof": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 3.2,
+            "p95_us": 247.1,
+            "p99_us": 291.2
+          },
+          "workload_wall_seconds": 0.036839400000019396,
+          "client_cpu_seconds": 0.03125,
+          "client_peak_rss_bytes": 24104960,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        },
+        "playsparse": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 2.6,
+            "p95_us": 238.8,
+            "p99_us": 277.8
+          },
+          "workload_wall_seconds": 0.03609719999997196,
+          "client_cpu_seconds": 0.046875,
+          "client_peak_rss_bytes": 24190976,
+          "provider_cpu_seconds": 0.0,
+          "provider_peak_rss_bytes": 16023552,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "mount_record": {
+            "filesystem_type": "PlaySparse",
+            "volume_label": "PlaySparse",
+            "api": "GetVolumeInformationByHandleW",
+            "real_mount": true
+          },
+          "provider_metrics": {
+            "cache": {
+              "decompressions": 5,
+              "decompressions_avoided": 29,
+              "evictions": 0,
+              "hit_ratio": 0.8529411764705882,
+              "hits": 29,
+              "in_flight_waits": 0,
+              "misses": 5,
+              "peak_resident_bytes": 4054300,
+              "prefetch_bytes_loaded": 0,
+              "prefetch_chunks_loaded": 0,
+              "prefetch_dropped": 0,
+              "prefetch_duplicates": 0,
+              "prefetch_errors": 0,
+              "prefetch_expired": 0,
+              "prefetch_hits": 0,
+              "prefetch_peak_reserved_bytes": 0,
+              "prefetch_queue_high_watermark": 0,
+              "prefetch_requests": 0,
+              "prefetch_reserved_bytes": 0,
+              "prefetch_resident_unconsumed_bytes": 0,
+              "prefetch_skipped": 0,
+              "prefetch_useful_bytes": 0,
+              "prefetch_wasted_bytes": 0,
+              "raw_bytes_loaded": 4054300,
+              "resident_bytes": 4054300,
+              "resident_entries": 5
+            },
+            "event": "winfsp_unmounted",
+            "overlay": null,
+            "tiers": {
+              "errors": 0,
+              "integrity_errors": 0,
+              "primary_bytes": 528,
+              "primary_cache_hits": 0,
+              "primary_hits": 5,
+              "promotion_bytes": 0,
+              "promotions": 0,
+              "remote_bytes": 0,
+              "remote_errors": 0,
+              "remote_hits": 0,
+              "remote_ranges": 0,
+              "remote_requests": 0,
+              "secondary_bytes": 0,
+              "secondary_hits": 0,
+              "timeouts": 0
+            },
+            "trace": null
+          },
+          "read_amplification_returned_bytes": 92668896,
+          "read_amplification": 0.0437503863216413,
+          "driver_read_errors": null
+        },
+        "original": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 3.2,
+            "p95_us": 248.4,
+            "p99_us": 323.2
+          },
+          "workload_wall_seconds": 0.03681269999998449,
+          "client_cpu_seconds": 0.03125,
+          "client_peak_rss_bytes": 24342528,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        }
+      }
+    },
+    {
+      "trial": 2,
+      "order": [
+        "playsparse",
+        "original",
+        "wof"
+      ],
+      "modes": {
+        "playsparse": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 3.4,
+            "p95_us": 276.3,
+            "p99_us": 309.7
+          },
+          "workload_wall_seconds": 0.03818010000003369,
+          "client_cpu_seconds": 0.03125,
+          "client_peak_rss_bytes": 24305664,
+          "provider_cpu_seconds": 0.0,
+          "provider_peak_rss_bytes": 16015360,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "mount_record": {
+            "filesystem_type": "PlaySparse",
+            "volume_label": "PlaySparse",
+            "api": "GetVolumeInformationByHandleW",
+            "real_mount": true
+          },
+          "provider_metrics": {
+            "cache": {
+              "decompressions": 5,
+              "decompressions_avoided": 29,
+              "evictions": 0,
+              "hit_ratio": 0.8529411764705882,
+              "hits": 29,
+              "in_flight_waits": 0,
+              "misses": 5,
+              "peak_resident_bytes": 4054300,
+              "prefetch_bytes_loaded": 0,
+              "prefetch_chunks_loaded": 0,
+              "prefetch_dropped": 0,
+              "prefetch_duplicates": 0,
+              "prefetch_errors": 0,
+              "prefetch_expired": 0,
+              "prefetch_hits": 0,
+              "prefetch_peak_reserved_bytes": 0,
+              "prefetch_queue_high_watermark": 0,
+              "prefetch_requests": 0,
+              "prefetch_reserved_bytes": 0,
+              "prefetch_resident_unconsumed_bytes": 0,
+              "prefetch_skipped": 0,
+              "prefetch_useful_bytes": 0,
+              "prefetch_wasted_bytes": 0,
+              "raw_bytes_loaded": 4054300,
+              "resident_bytes": 4054300,
+              "resident_entries": 5
+            },
+            "event": "winfsp_unmounted",
+            "overlay": null,
+            "tiers": {
+              "errors": 0,
+              "integrity_errors": 0,
+              "primary_bytes": 528,
+              "primary_cache_hits": 0,
+              "primary_hits": 5,
+              "promotion_bytes": 0,
+              "promotions": 0,
+              "remote_bytes": 0,
+              "remote_errors": 0,
+              "remote_hits": 0,
+              "remote_ranges": 0,
+              "remote_requests": 0,
+              "secondary_bytes": 0,
+              "secondary_hits": 0,
+              "timeouts": 0
+            },
+            "trace": null
+          },
+          "read_amplification_returned_bytes": 92668896,
+          "read_amplification": 0.0437503863216413,
+          "driver_read_errors": null
+        },
+        "original": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 2.6,
+            "p95_us": 244.0,
+            "p99_us": 259.2
+          },
+          "workload_wall_seconds": 0.03539880000005269,
+          "client_cpu_seconds": 0.03125,
+          "client_peak_rss_bytes": 24383488,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        },
+        "wof": {
+          "read_latency": {
+            "samples": 300,
+            "p50_us": 2.8,
+            "p95_us": 236.7,
+            "p99_us": 277.0
+          },
+          "workload_wall_seconds": 0.03558700000002091,
+          "client_cpu_seconds": 0.046875,
+          "client_peak_rss_bytes": 24207360,
+          "provider_cpu_seconds": null,
+          "provider_peak_rss_bytes": null,
+          "requested_bytes": 46334448,
+          "verified_reads": 300,
+          "query_digest_sha256": "19444e3649a8d06ba33ecaaa97d74bc991473b53aba3024ea5894f0f77d2c56b",
+          "cache_state": "warm requested ranges: one explicit identical preload; OS/device caches retained and uncontrolled; not disk-cold",
+          "client_memory_scope": "fresh worker process lifetime peak including preload; excludes parent fingerprint/copy/pack allocations",
+          "read_amplification": null
+        }
+      }
+    }
+  ],
+  "wof_validation": {
+    "status": "VERIFIED",
+    "api": "WofIsExternalFile",
+    "algorithm": "XPRESS4K",
+    "wof_files": [
+      {
+        "path": "compressible.bin",
+        "externally_backed": true,
+        "provider": 2,
+        "algorithm": 0,
+        "flags": 0
+      }
+    ],
+    "uncompressed_files": [
+      {
+        "path": "small.txt",
+        "externally_backed": false,
+        "provider": 0,
+        "algorithm": null,
+        "flags": null
+      }
+    ],
+    "note": "zero-length/ineligible files can remain ordinary files; all counts are reported"
+  },
+  "physical_wof_validation": {
+    "status": "BLOCKED",
+    "user_attested_physical_machine": false,
+    "virtual_machine_detected": true,
+    "evidence_basis": "explicit user attestation, Windows client OS, hardware report and no detected VM hints; not automatic physical proof"
+  },
+  "scope": "file-system read workload; no game/application startup or launcher execution",
+  "cache_state": "repeated warm trials; no disk-cold claim",
+  "application_startup": "NOT RUN",
+  "read_latency_definition": "seek + read only; file opens and SHA-256 comparison excluded; wall/CPU include verification",
+  "cpu_definition": "client process user+kernel CPU and WinFsp process CPU; not total system/driver CPU",
+  "read_amplification_definition": "PlaySparse raw loaded bytes / application bytes returned for preload+timed replay; includes possible OS read-ahead demand; WOF/native kernel amplification unmeasured/null",
+  "allocation_definition": "all file data streams, including WOF backing data; directory and filesystem metadata excluded",
+  "environment": {
+    "timestamp": "2026-10-04T20:12:13.4523827Z",
+    "is_windows": true,
+    "platform": "Microsoft Windows 10.0.26100",
+    "process_architecture": "X64",
+    "architecture": "X64",
+    "powershell": "7.6.6",
+    "virtual_machine_detected": true,
+    "physical_machine_attested": false,
+    "windows": "Microsoft Windows Server 2025 Datacenter",
+    "windows_version": "10.0.26100",
+    "windows_build": "26100",
+    "windows_product_type": 3,
+    "cpu": [
+      {
+        "Name": "AMD EPYC 9V45 96-Core Processor                ",
+        "NumberOfCores": 2,
+        "NumberOfLogicalProcessors": 4
+      }
+    ],
+    "ram_bytes": 17174360064,
+    "manufacturer": "Microsoft Corporation",
+    "model": "Virtual Machine",
+    "virtualization_basis": "CIM manufacturer/model/BIOS hints; absence is not proof of a physical machine",
+    "filesystems": [
+      {
+        "DriveLetter": null,
+        "FileSystem": "FAT32",
+        "FileSystemLabel": "",
+        "Size": 99614720,
+        "SizeRemaining": 63645184
+      },
+      {
+        "DriveLetter": "C",
+        "FileSystem": "NTFS",
+        "FileSystemLabel": "Windows",
+        "Size": 160467759104,
+        "SizeRemaining": 30535680000
+      },
+      {
+        "DriveLetter": "D",
+        "FileSystem": "NTFS",
+        "FileSystemLabel": "Temp",
+        "Size": 236205371392,
+        "SizeRemaining": 234137010176
+      },
+      {
+        "DriveLetter": null,
+        "FileSystem": "NTFS",
+        "FileSystemLabel": "Recovery",
+        "Size": 471855104,
+        "SizeRemaining": 457297920
+      }
+    ],
+    "disks": [
+      {
+        "Number": 1,
+        "FriendlyName": "Microsoft NVMe Direct Disk v2",
+        "BusType": "NVMe",
+        "PartitionStyle": "GPT",
+        "Size": 236223201280,
+        "IsBoot": false,
+        "IsSystem": false
+      },
+      {
+        "Number": 0,
+        "FriendlyName": "Virtual_Disk NVME Premium",
+        "BusType": "NVMe",
+        "PartitionStyle": "GPT",
+        "Size": 161061273600,
+        "IsBoot": true,
+        "IsSystem": true
+      }
+    ],
+    "winfsp": [
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      },
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      },
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      },
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      },
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      },
+      {
+        "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+        "version": "2.1.25156.ddca7bd",
+        "sdk_headers_present": true
+      }
+    ],
+    "python": "3.12.10",
+    "python_is_windows": true
+  },
+  "repository": {
+    "git_sha": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "86364520f50c4b9f3dac5b0c8e50cd0da016cbed2764401c54ec011767b0d9b0",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "provenance": {
+    "repository": {
+      "git_sha": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+      "dirty": false,
+      "working_tree_status": "",
+      "source_digest_sha256": "86364520f50c4b9f3dac5b0c8e50cd0da016cbed2764401c54ec011767b0d9b0",
+      "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+    },
+    "binaries": {
+      "playsparse": {
+        "path": "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+        "sha256": "78f853839b0ed585976c19ac5a927e6f20b8132e60ceec1e37039273b5f87af1"
+      }
+    },
+    "allow_dirty": false,
+    "allow_unverified_binaries": false,
+    "status": "VERIFIED_LOCAL_BUILD_RECEIPT",
+    "manifest": "D:\\a\\_temp\\playsparse-windows-ci\\binary-build-manifest.json"
+  },
+  "source_volume": {
+    "root": "C:\\",
+    "serial": 742408122,
+    "filesystem": "NTFS",
+    "flags": 65482495,
+    "drive_type": 3
+  },
+  "work_volume": {
+    "root": "C:\\",
+    "serial": 742408122,
+    "filesystem": "NTFS",
+    "flags": 65482495,
+    "drive_type": 3
+  },
+  "disk_space": {
+    "available_bytes": 30459322368,
+    "required_bytes": 1088141880
+  },
+  "storage": {
+    "original": {
+      "logical_bytes": 7200028,
+      "allocated_data_bytes": 7200800
+    },
+    "wof": {
+      "logical_bytes": 7200028,
+      "allocated_data_bytes": 495648
+    },
+    "playsparse": {
+      "logical_bytes": 7200028,
+      "encoded_bytes": 2292,
+      "allocated_data_bytes": 5112
+    }
+  },
+  "cleanup": {
+    "status": "PASS",
+    "mountpoint": "C:\\playsparse-wof-ci-37231044516-1\\mounted"
+  },
+  "source_unchanged": true,
+  "base_unchanged": true
+}

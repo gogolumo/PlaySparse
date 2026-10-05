@@ -1,0 +1,787 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T19:34:38.560537+00:00",
+  "commit": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+  "working_tree_status": "",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "architecture": "aarch64",
+  "binary_sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c",
+  "status": "PASS",
+  "commands": [
+    [
+      "/usr/bin/python3",
+      "/src/tools/generate-testgame.py",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/source",
+      "--io-probe",
+      "/src/target-linux/release/io-probe",
+      "--world-bytes",
+      "4194304"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "pack",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/source",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "64K"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/mounted",
+      "--trace",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "optimize",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/static-0.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/adaptive-0.json",
+      "--policy",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/adaptive-1.json",
+      "--policy",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/static-1.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/static-2.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/adaptive-2.json",
+      "--policy",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/base",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/mounted",
+      "--trace",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/adaptive.trace.jsonl",
+      "--cache",
+      "4M",
+      "--policy",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-readiness-posix-final-20261004-02/adaptive/evidence/capture.trace.jsonl"
+    ]
+  ],
+  "cache_bytes": 4194304,
+  "cache_state": "fresh PlaySparse cache per replay subprocess; OS/device caches uncontrolled; not disk-cold",
+  "dataset": "synthetic sequential + hot/churn + random; kernel callbacks captured, not a game benchmark",
+  "original": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.05511533400567714,
+    "latency_ns": {
+      "p50": 26500,
+      "p95": 38958,
+      "p99": 308250
+    }
+  },
+  "capture_mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-posix-final-20261004-02/adaptive/mounted ro,nosuid,nodev,noatime - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_static": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.10068416698777582,
+    "latency_ns": {
+      "p50": 79250,
+      "p95": 98791,
+      "p99": 334291
+    }
+  },
+  "capture_metrics": [
+    {
+      "cache": {
+        "decompressions": 928,
+        "decompressions_avoided": 811,
+        "evictions": 864,
+        "hit_ratio": 0.46635997699827486,
+        "hits": 811,
+        "in_flight_waits": 0,
+        "misses": 928,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 60817408,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 6463363,
+        "primary_cache_hits": 0,
+        "primary_hits": 928,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "evaluation_policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "replay_trials": {
+    "static": [
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.08494700000000001,
+        "latency_ns": {
+          "p50": 36250,
+          "p95": 45584,
+          "p99": 67000
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.084947292
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.084861,
+        "latency_ns": {
+          "p50": 36292,
+          "p95": 44667,
+          "p99": 67042
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.084861416
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.085318,
+        "latency_ns": {
+          "p50": 36375,
+          "p95": 44625,
+          "p99": 67125
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.085317084
+      }
+    ],
+    "adaptive": [
+      {
+        "cache": {
+          "decompressions": 956,
+          "decompressions_avoided": 844,
+          "evictions": 892,
+          "hit_ratio": 0.48533640023001723,
+          "hits": 844,
+          "in_flight_waits": 0,
+          "misses": 895,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3997696,
+          "prefetch_chunks_loaded": 61,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 953,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 59,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 3866624,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 62652416,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.08812500000000001,
+        "latency_ns": {
+          "p50": 37208,
+          "p95": 46666,
+          "p99": 72500
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.6140012845215157,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.085145708
+      },
+      {
+        "cache": {
+          "decompressions": 956,
+          "decompressions_avoided": 844,
+          "evictions": 892,
+          "hit_ratio": 0.48533640023001723,
+          "hits": 844,
+          "in_flight_waits": 0,
+          "misses": 895,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3997696,
+          "prefetch_chunks_loaded": 61,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 953,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 59,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 3866624,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 62652416,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.088255,
+        "latency_ns": {
+          "p50": 37292,
+          "p95": 45708,
+          "p99": 72416
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.6140012845215157,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.085313334
+      },
+      {
+        "cache": {
+          "decompressions": 956,
+          "decompressions_avoided": 844,
+          "evictions": 892,
+          "hit_ratio": 0.48533640023001723,
+          "hits": 844,
+          "in_flight_waits": 0,
+          "misses": 895,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 3997696,
+          "prefetch_chunks_loaded": 61,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 954,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 59,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 61,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 3866624,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 62652416,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.08809600000000001,
+        "latency_ns": {
+          "p50": 37333,
+          "p95": 46708,
+          "p99": 68166
+        },
+        "process_peak_rss_bytes": 23232512,
+        "queries": 960,
+        "read_amplification": 0.6140012845215157,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.085133084
+      }
+    ]
+  },
+  "adaptive_mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-posix-final-20261004-02/adaptive/mounted ro,nosuid,nodev,noatime - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_adaptive": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.10301816700666677,
+    "latency_ns": {
+      "p50": 86625,
+      "p95": 102834,
+      "p99": 127417
+    }
+  },
+  "adaptive_metrics": [
+    {
+      "cache": {
+        "decompressions": 956,
+        "decompressions_avoided": 844,
+        "evictions": 892,
+        "hit_ratio": 0.48533640023001723,
+        "hits": 844,
+        "in_flight_waits": 0,
+        "misses": 895,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 3997696,
+        "prefetch_chunks_loaded": 61,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 952,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 59,
+        "prefetch_peak_reserved_bytes": 131072,
+        "prefetch_queue_high_watermark": 2,
+        "prefetch_requests": 61,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 447,
+        "prefetch_useful_bytes": 3866624,
+        "prefetch_wasted_bytes": 131072,
+        "raw_bytes_loaded": 62652416,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 8236954,
+        "primary_cache_hits": 0,
+        "primary_hits": 956,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "trace_summary": {
+    "cache_hit_ratio": 0.04479166666666667,
+    "cache_miss_ratio": 0.9552083333333333,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 960,
+    "hot_files": [
+      {
+        "events": 896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 64,
+        "path": "hot.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 4,
+        "length": 8192,
+        "offset": 348160,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 704512,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 712704,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 970752,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 15622144,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16842752,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16908288,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16973824,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17039360,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17104896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17170432,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17235968,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17301504,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17367040,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17432576,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17498112,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17563648,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17629184,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17694720,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17760256,
+        "path": "stream.bin"
+      }
+    ],
+    "latency_ns": {
+      "p50": 40209,
+      "p95": 52208,
+      "p99": 74833
+    },
+    "operations": {
+      "read": 960
+    },
+    "read_bytes": 102039552,
+    "read_operations": 960,
+    "reread_ratio": 0.27291666666666664,
+    "sequential_read_percentage": 0.10416666666666667,
+    "sessions": [
+      "24953-1791142478983571627"
+    ],
+    "sources": {
+      "memory-cache": 43,
+      "mixed": 767,
+      "primary-local": 150
+    },
+    "version": 1,
+    "write_bytes": 0,
+    "write_operations": 0
+  },
+  "source_unchanged": true,
+  "base_unchanged": true
+}

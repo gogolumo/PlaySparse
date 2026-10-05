@@ -1,0 +1,2828 @@
+{
+  "github_run": 37231044516,
+  "head_sha": "931203ff634d19d13a11bd4040d69ddc4bf4065a",
+  "scope": "Exact selected raw artifacts from successful pull_request jobs. Checkout can be a synthetic PR merge; actual built Git SHA remains verbatim in each source receipt. No payload/store/binary artifacts retained.",
+  "files": [
+    {
+      "path": "macos-sdk/attach.stdout.log",
+      "sha256": "09b36409020e67f6bec9e76ec29d1a09678c08560a2edc6b6faedd2f1c28fffc",
+      "bytes": 242
+    },
+    {
+      "path": "macos-sdk/clippy.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/result.json",
+      "sha256": "f4011809569b4a0699feed002fe60dd44b1cf4ce088dde75b9c082f959ce96c6",
+      "bytes": 5851
+    },
+    {
+      "path": "macos-sdk/extract.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/release.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/tests.stderr.log",
+      "sha256": "4571d7cb45b26aaf731c64808c1b248ab5a0b0146a05dd82390c43c62e127380",
+      "bytes": 7881
+    },
+    {
+      "path": "macos-sdk/fmt.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/signature.stdout.log",
+      "sha256": "c76741c81a3c7fb58feea487de6e6b2e6373a34fabc6fe5cea857127351ed3b4",
+      "bytes": 1098
+    },
+    {
+      "path": "macos-sdk/detach.stdout.log",
+      "sha256": "e2e7e4de75aa32d2268acd6fb9074177fbb16c94025e0b863e444f72f183a2e4",
+      "bytes": 17
+    },
+    {
+      "path": "macos-sdk/attach.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/clippy.stderr.log",
+      "sha256": "31d28fb1890999d5702722923dd4c46b9f91c1f934722a0b4b288b939b1fb952",
+      "bytes": 7200
+    },
+    {
+      "path": "macos-sdk/extract.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/release.stderr.log",
+      "sha256": "e674f01ba4a7100c880d364f5c7cb1879fb3b1d1e0e4124fd6bdbc0d29efa6a0",
+      "bytes": 6504
+    },
+    {
+      "path": "macos-sdk/detach.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/fmt.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/signature.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "macos-sdk/tests.stdout.log",
+      "sha256": "ecd43b0748c17b3b6843bf9319f370e13877633d7d9648c60c84b80727da05f1",
+      "bytes": 10198
+    },
+    {
+      "path": "windows/adaptive.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/build.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/doctor.stdout.log",
+      "sha256": "c4d23e43e3cb43147ad360d1089da028f8985fa6d5f2e1c844e9f11ea3ac3f92",
+      "bytes": 1371
+    },
+    {
+      "path": "windows/cargo-version.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers.stderr.log",
+      "sha256": "f4929eaf26d0002356d1a21e53dfa8584bce8715e3832ebc6a68d7b159ef4cb6",
+      "bytes": 1254
+    },
+    {
+      "path": "windows/result.json",
+      "sha256": "375c4530b004c8b52e7b69aa7da4107c740fad3f66b9d0feb5b2914c7c6123fc",
+      "bytes": 8709
+    },
+    {
+      "path": "windows/rustc-version.stdout.log",
+      "sha256": "5477f9bad65b15c4c5b31fc050fc72feba651ea1b330bc75cf356a4d6b0fbc80",
+      "bytes": 194
+    },
+    {
+      "path": "windows/writable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/cargo-metadata.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/doctor.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive.stdout.log",
+      "sha256": "0b9b6955ca01cd3f16ec5a3bb12c881a55f35172bb1aa2983677f14ea3bae032",
+      "bytes": 118
+    },
+    {
+      "path": "windows/build.stderr.log",
+      "sha256": "56362c6538207d2546afb7d4b77a2b5c54b9238ee9c14157e8e33ec9c1c51b23",
+      "bytes": 75
+    },
+    {
+      "path": "windows/rustc-version.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers.stdout.log",
+      "sha256": "8267933028ff5d269ebef0bb4476b7fdf1fa0cb25ad06f692e61fcbe6b5f28d0",
+      "bytes": 115
+    },
+    {
+      "path": "windows/cargo-version.stdout.log",
+      "sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566",
+      "bytes": 36
+    },
+    {
+      "path": "windows/writable.stdout.log",
+      "sha256": "3b2a7fbaee319c9c466fb696b737c3757adbde6aa909c84702ca4d50374ccec0",
+      "bytes": 118
+    },
+    {
+      "path": "windows/environment.json",
+      "sha256": "684ab7625742ec8458a06acaa4bfbeafb9fe262862451fc44949bb1df33fc546",
+      "bytes": 3014
+    },
+    {
+      "path": "windows/cargo-metadata.stdout.log",
+      "sha256": "76c8de3255a0d6a3931ea3677bf61a0295e3a97e4c303d7bdd15f1f456c38976",
+      "bytes": 33577
+    },
+    {
+      "path": "windows/readonly.stdout.log",
+      "sha256": "f1c1bc8a6efba0758be6e3694284f83f17f13e68e9a57bd1a97de91ed113faac",
+      "bytes": 118
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse-mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-original.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-wof.stdout.log",
+      "sha256": "f2ccd0a68cf45fae43d541c8ba51ba4f2f0888ed7e68a79f64246ffb50ed9b63",
+      "bytes": 665
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-original.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/compact.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-original.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/expected.json",
+      "sha256": "c5675aba8061fb00a0a4679a20b65a8db3a6da5fffffb44fa2754e7de29a3eec",
+      "bytes": 21305
+    },
+    {
+      "path": "windows/wof-system-volume/result.json",
+      "sha256": "87e996894091de1560681806c9fccd419b93c879fc978732ed3ab7c7fb69bc63",
+      "bytes": 32669
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-wof.stdout.log",
+      "sha256": "4219e4b4fb8009db2cfe55cab023ea66cf170f206e3ea2ade7df24edf5b7fdbb",
+      "bytes": 664
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse-mount.stderr.log",
+      "sha256": "e03cc58b363403a2c7469bd7a59fa355fc47f9b0ad14bcf7d80e62cd72a3edf2",
+      "bytes": 1191
+    },
+    {
+      "path": "windows/wof-system-volume/source-before.json",
+      "sha256": "d8d7015276bb1201eed9e9f51b40d2f823676a539ee7aa24e16906b9dba0ce41",
+      "bytes": 1007
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-wof.stdout.log",
+      "sha256": "bc578e7a783092e3ac35d5b2523f1a242bdab7b487a36d101cccbcb176e7628e",
+      "bytes": 665
+    },
+    {
+      "path": "windows/wof-system-volume/source-after.json",
+      "sha256": "d8d7015276bb1201eed9e9f51b40d2f823676a539ee7aa24e16906b9dba0ce41",
+      "bytes": 1007
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse-mount-unmount.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse-mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse.stdout.log",
+      "sha256": "82de3b4ddca85faedf4c50a466ed4a687daba57bc21fcbcd0fb310005a4a998a",
+      "bytes": 668
+    },
+    {
+      "path": "windows/wof-system-volume/pack.stdout.log",
+      "sha256": "ac163c052c5a0e18df2bbfdc743cab87ff5a66386ac13f67a1d939607be982e7",
+      "bytes": 283
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse-mount-unmount.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/verify.stdout.log",
+      "sha256": "723dfb9929301824bd8435e33ecc2442189281bdd6a4ba1f7e88260b05e0a129",
+      "bytes": 91
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse-mount-unmount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse.stdout.log",
+      "sha256": "7d01f7330082c81c21cbdcfe2db3894f2e8bc61313526a51ce3d3a66a45e439f",
+      "bytes": 667
+    },
+    {
+      "path": "windows/wof-system-volume/queries.json",
+      "sha256": "db278c324f10949a5ee349e525bc45d591f919a05eff99afd374b42c5715b21d",
+      "bytes": 24091
+    },
+    {
+      "path": "windows/wof-system-volume/compact.stdout.log",
+      "sha256": "8cc49dc4e199c2a331dd3d99db174c8330fef200190a4bb7dc4f8d0c0a557742",
+      "bytes": 218
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-original.stdout.log",
+      "sha256": "c5e02547ac6aad7448f9c8e3dc019a1aa30dbb0c4c975c1ee9847bde21329966",
+      "bytes": 664
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse-mount.stderr.log",
+      "sha256": "e03cc58b363403a2c7469bd7a59fa355fc47f9b0ad14bcf7d80e62cd72a3edf2",
+      "bytes": 1191
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-original.stdout.log",
+      "sha256": "c249e892eaf783d9cbf5ed3ebf15234299751308e3def383a6d4d4d1c459d8b4",
+      "bytes": 664
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-original.stdout.log",
+      "sha256": "00d131676d4d6e0629b91e905b13b92f5c2bfe7fee95c7924d8e5015da3805be",
+      "bytes": 666
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-wof.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse-mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-wof.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/wof-copy.json",
+      "sha256": "2dfa3e1e998e14190346deaa25dab006912ef28781734ba3769087980e10b410",
+      "bytes": 1006
+    },
+    {
+      "path": "windows/wof-system-volume/base-before.json",
+      "sha256": "eaa213ba82845d1f629dc020a95f5dd006cbadcb71671e6d5e0c406cd6a922f1",
+      "bytes": 1981
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse-mount.stderr.log",
+      "sha256": "e03cc58b363403a2c7469bd7a59fa355fc47f9b0ad14bcf7d80e62cd72a3edf2",
+      "bytes": 1191
+    },
+    {
+      "path": "windows/wof-system-volume/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse.stdout.log",
+      "sha256": "b4c6caac6c75cc2ad87d8665eaf4af04870338484781030fc5383f8a2d186f15",
+      "bytes": 668
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-wof.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse-mount-unmount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/base-after.json",
+      "sha256": "eaa213ba82845d1f629dc020a95f5dd006cbadcb71671e6d5e0c406cd6a922f1",
+      "bytes": 1981
+    },
+    {
+      "path": "windows/wof-system-volume/trial-2-playsparse.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-0-playsparse-mount-unmount.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/wof-system-volume/trial-1-playsparse-mount-unmount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-2.json",
+      "sha256": "613b5308b07f4c885815e8d881c771bbc4675dc1c09780288543a28e639fb84a",
+      "bytes": 1406
+    },
+    {
+      "path": "windows/adaptive/evidence/pack.json",
+      "sha256": "6a95662964730caa04d84862094d1c8d1d1203b8a0324ee34a9f46c624e46fd6",
+      "bytes": 306
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive.stderr.log",
+      "sha256": "a0afb2a3c584777804085c42140f89e4c1747019531fa166e878fc91ff80f635",
+      "bytes": 1476
+    },
+    {
+      "path": "windows/adaptive/evidence/policy.json",
+      "sha256": "e03c78e98337feadce58ff6be101945e4176202a810196941145dd8c9be26da5",
+      "bytes": 319
+    },
+    {
+      "path": "windows/adaptive/evidence/static-1.json",
+      "sha256": "b49e2339acac5f378219bbdaabc824189e9c88431a1c64799a4180768ebe9813",
+      "bytes": 1380
+    },
+    {
+      "path": "windows/adaptive/evidence/static-2.stdout.log",
+      "sha256": "716026bfcba035d93d39f3e8a392471ff973b82bb1a6c3e26fa0197dfdd80914",
+      "bytes": 1382
+    },
+    {
+      "path": "windows/adaptive/evidence/capture.trace.jsonl",
+      "sha256": "5e51b1a970181445123b143389664d9ba4503a69f59dfebc534e2ec30e1dea3b",
+      "bytes": 141586
+    },
+    {
+      "path": "windows/adaptive/evidence/static-0.json",
+      "sha256": "b34ecc40ecc726b4dba92d35bdecbc6f9863c0b6b1bafbfb4a7a7d9660d732d6",
+      "bytes": 1379
+    },
+    {
+      "path": "windows/adaptive/evidence/result.json",
+      "sha256": "083512c66c5a23fec1554daaf17b6308449e41cbe500c42f2bfac0b763bf52d0",
+      "bytes": 24576
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/optimize.stdout.log",
+      "sha256": "8e00633a421fb663d843032d22d6be03ddf87cc4c5ced1c168d964e85a71efff",
+      "bytes": 337
+    },
+    {
+      "path": "windows/adaptive/evidence/trace-summary.stdout.log",
+      "sha256": "4f76e993f33128905f6d0c1d2207c051454dce4933184f3d6593108b0d82a225",
+      "bytes": 2976
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-1.stdout.log",
+      "sha256": "faa94db3abca284faaf8d13297030bbe3af1befdab5f7eff796e0a05d353da79",
+      "bytes": 1409
+    },
+    {
+      "path": "windows/adaptive/evidence/capture.stderr.log",
+      "sha256": "87ef6aace6a0365c223c8c356773f9e664a330dda56e05ea2c6dfa30ff1e5f8b",
+      "bytes": 1447
+    },
+    {
+      "path": "windows/adaptive/evidence/static-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/pack.stdout.log",
+      "sha256": "c5f576e20e7c571ae7656e450e9d8a22da5ad6f540a2260bfbe56ab24e643dbb",
+      "bytes": 308
+    },
+    {
+      "path": "windows/adaptive/evidence/static-0.stdout.log",
+      "sha256": "6f5cb0bd617bbb4b818b14d51a932a6a1bd8cfea99144ae71ddde6b905a5e222",
+      "bytes": 1381
+    },
+    {
+      "path": "windows/adaptive/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-0.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/generate.json",
+      "sha256": "2ecefd89965a45796f526d9b3c4142da46e6062c1bab66ecc40b3f9628c4303c",
+      "bytes": 277
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive.trace.jsonl",
+      "sha256": "1d7bc936b2508c0c47f52c34fe79228a826ab26af94564af0625245e2e0f1f1d",
+      "bytes": 141538
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-2.stdout.log",
+      "sha256": "019593683a9f8e7da529bf426b6bbe2626511a301824155f29e7c3174eed73b2",
+      "bytes": 1408
+    },
+    {
+      "path": "windows/adaptive/evidence/optimize.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/static-2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/optimize.json",
+      "sha256": "d824f676273921b53dbfd99357b1600e0b6c34df2cf07df3ab8752f57e66505f",
+      "bytes": 335
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-0.json",
+      "sha256": "0c4f81c7c2ff4c1d742687fda90a2eaa90628731af0249901bc0115c4b0be357",
+      "bytes": 1407
+    },
+    {
+      "path": "windows/adaptive/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/static-1.stdout.log",
+      "sha256": "85888dd28cd81dd3a935703ff9dfbee036406a86257b0433964c03162020e44a",
+      "bytes": 1382
+    },
+    {
+      "path": "windows/adaptive/evidence/capture.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/trace-summary.json",
+      "sha256": "01dd4e6747e2e9be72e51a8ec884dfef992a2b02b7289a5e7bc93d7bda9a2b24",
+      "bytes": 2974
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/adaptive/evidence/static-2.json",
+      "sha256": "8f33e5ff078ad1ea251d92af3b3fe3b13458c7c2ecfc10411f0d19d77dba2927",
+      "bytes": 1380
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-0.stdout.log",
+      "sha256": "bb05b3844cdbd116caba002d99de47b8a8a4dc48c075b554cd02cdb6fba6ddd2",
+      "bytes": 1409
+    },
+    {
+      "path": "windows/adaptive/evidence/adaptive-1.json",
+      "sha256": "b2bc21d82686d03f9f8c2145a366b9aa3dd1692cb4a878669a79f1714ec4ec04",
+      "bytes": 1407
+    },
+    {
+      "path": "windows/adaptive/evidence/generate.stdout.log",
+      "sha256": "a728b70e367263a3e6b991e184c861aed23f567f87f14a9f2d692d62285ba695",
+      "bytes": 279
+    },
+    {
+      "path": "windows/adaptive/evidence/static-0.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion.stderr.log",
+      "sha256": "4056748d4d3bde9cb3b010418c796bbd2f2916503547f6fa7d7952980cf7b435",
+      "bytes": 1667
+    },
+    {
+      "path": "windows/tiers/evidence/http-requests.json",
+      "sha256": "7d3422e21ac5ab6cef9cc0c7667c2ea82a029815fd7a0ad2facfbe7007186805",
+      "bytes": 47030
+    },
+    {
+      "path": "windows/tiers/evidence/pack-secondary.json",
+      "sha256": "a64d55def4ecedbb10371f6450ff184adddd0ee08224f9650e36f8e9ecc6b43a",
+      "bytes": 305
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-after.json",
+      "sha256": "8152079374c85a82d88eac98999d797751c0b6d316c29ec138afc87d77b964ea",
+      "bytes": 1631
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt-trace-summary.json",
+      "sha256": "a30ed615173247320ee2bf725ebc3c35fd4d2b31b3873bf6addc29ad2102ab98",
+      "bytes": 912
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-trace-summary.json",
+      "sha256": "7d4213c589183b9b6b9272f2bc3c06a683f1f2595a236491e93f300128b62db2",
+      "bytes": 3836
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-native-executable.stdout.log",
+      "sha256": "67cabe54b630ae3539451348682f70dd0ac9ad983f2d6a432ff3603005e1db23",
+      "bytes": 353
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges.trace.jsonl",
+      "sha256": "a4ab48ac26afdfc7f5e8a8768dad87d572b9043516dba42aad15e60026636415",
+      "bytes": 87243
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-native-executable.json",
+      "sha256": "cc33b3b17a1255687f0c370d2415395b573a96f9ce66ea984223bdcc6cf67c84",
+      "bytes": 351
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-after.stdout.log",
+      "sha256": "19e4c60242d17580cf9d358f24ddb4e632f2875e4e7c1fb180716443ec7b63eb",
+      "bytes": 100
+    },
+    {
+      "path": "windows/tiers/evidence/pack-secondary.stdout.log",
+      "sha256": "263ec04906fa894860651094ca36f9ee445a04a6f7eb686890975098b4868377",
+      "bytes": 307
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-native-executable.json",
+      "sha256": "cc33b3b17a1255687f0c370d2415395b573a96f9ce66ea984223bdcc6cf67c84",
+      "bytes": 351
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-trace-summary.stdout.log",
+      "sha256": "cd0fe619fb67525c276fd94b014421c31df63db1e43ea39b578460cddba2cc15",
+      "bytes": 3868
+    },
+    {
+      "path": "windows/tiers/evidence/result.json",
+      "sha256": "7b4c87e0dc6abb0d30adbb1de1977de4ea4bf5f4ddb4c8eb2501a842c14b1e8b",
+      "bytes": 36542
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-trace-summary.stdout.log",
+      "sha256": "3ac46fd2c5f8f9f58ecf24d57a7612e7a705924ec0b50012e751ecf59d7fb0ca",
+      "bytes": 3793
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/optimize-policy.json",
+      "sha256": "651a5739395efba96722475b53d157a18847c56282aafea98e93194310ce6e57",
+      "bytes": 575
+    },
+    {
+      "path": "windows/tiers/evidence/source-before.json",
+      "sha256": "512a72542e084ca100d38a80cbfaf340e8a713541c6fb0b0a5caafa5a96c9389",
+      "bytes": 3250
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/source-after.json",
+      "sha256": "512a72542e084ca100d38a80cbfaf340e8a713541c6fb0b0a5caafa5a96c9389",
+      "bytes": 3250
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion.trace.jsonl",
+      "sha256": "1931daba72b7cb5c3788d40de987d160bf3ef42cff91b806798bca78da428cc7",
+      "bytes": 316828
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-native-executable.stdout.log",
+      "sha256": "67cabe54b630ae3539451348682f70dd0ac9ad983f2d6a432ff3603005e1db23",
+      "bytes": 353
+    },
+    {
+      "path": "windows/tiers/evidence/optimize-policy.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-native-executable.stdout.log",
+      "sha256": "67cabe54b630ae3539451348682f70dd0ac9ad983f2d6a432ff3603005e1db23",
+      "bytes": 353
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-native-executable.json",
+      "sha256": "cc33b3b17a1255687f0c370d2415395b573a96f9ce66ea984223bdcc6cf67c84",
+      "bytes": 351
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-before.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount.stderr.log",
+      "sha256": "da0bd1666370b07390a9bcaf6df68cac498cbdf0b9f13adb3738ea51f30f4634",
+      "bytes": 1643
+    },
+    {
+      "path": "windows/tiers/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/generate.json",
+      "sha256": "f05a416ea0f3f6da2303e56494a84a20a8fac2d51651e8e4cc51078ff1362ac7",
+      "bytes": 274
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-trace-summary.json",
+      "sha256": "64c53fa13a36967ab4a9d2d17658422f773d5f92ad2ec2816dca6621e8f4cbe6",
+      "bytes": 3866
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt-trace-summary.stdout.log",
+      "sha256": "0a792924219e0f69a500eb917115b57e147a5b9f5e0796a41f1a6b58e59c45b2",
+      "bytes": 914
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-trace-summary.json",
+      "sha256": "3d42893bd4a3fa1bee7e58451cebc717b2353dde927fa8f09aff68211bff7115",
+      "bytes": 3791
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt.stderr.log",
+      "sha256": "d30ce1dc0979de46d20f8f5d99ae13fbd505af1c28b6c81ebc062f04d0e706d7",
+      "bytes": 1716
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-io-probe.json",
+      "sha256": "fef773280ecd9092bdb78f929a9d33744a9df710029b680f90022f040f659ecb",
+      "bytes": 19891
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-after.json",
+      "sha256": "b0831bd808f971ac4269d5e1978d8f4ee018426b16a5feb530ce1a4ebd50297f",
+      "bytes": 98
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount.trace.jsonl",
+      "sha256": "ad10cba31378f404d3d7fb51bde38d2d754b54b7e1a398492a786a3792722df7",
+      "bytes": 88538
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-after.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/pack-secondary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/base-before.json",
+      "sha256": "bc80577e3387a2c7fc30ff535b88a18b6666f0e96fad6358277abd9be00f451c",
+      "bytes": 1284
+    },
+    {
+      "path": "windows/tiers/evidence/optimize-policy.stdout.log",
+      "sha256": "9946790039f3299d342f60651a2b03b3fa20e7c68827bded2c8b7696734d0e89",
+      "bytes": 577
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/tiers/evidence/http-corrupt.trace.jsonl",
+      "sha256": "9b802fc873b17ddf519229e4fae425551c8bbd21b96f024b997eb9d5b07299a3",
+      "bytes": 1150
+    },
+    {
+      "path": "windows/tiers/evidence/http-ranges.stderr.log",
+      "sha256": "9063de9a83344bf78e23621b469ad0f82faca05fc663f47a95b5be291d5cdf8f",
+      "bytes": 1643
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-trace-summary.stdout.log",
+      "sha256": "f2bb25ac0ec6839c34496d3b4e0cca4035e8cf4c3c80df042686eef00728dca2",
+      "bytes": 3838
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-promotion-io-probe.stdout.log",
+      "sha256": "abc372997c5b652c8e1c59b3721f356ae68d07cd5a1ca8fb4645196cfc23c446",
+      "bytes": 19894
+    },
+    {
+      "path": "windows/tiers/evidence/base-after.json",
+      "sha256": "bc80577e3387a2c7fc30ff535b88a18b6666f0e96fad6358277abd9be00f451c",
+      "bytes": 1284
+    },
+    {
+      "path": "windows/tiers/evidence/secondary-before.json",
+      "sha256": "8152079374c85a82d88eac98999d797751c0b6d316c29ec138afc87d77b964ea",
+      "bytes": 1631
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-before.json",
+      "sha256": "b0831bd808f971ac4269d5e1978d8f4ee018426b16a5feb530ce1a4ebd50297f",
+      "bytes": 98
+    },
+    {
+      "path": "windows/tiers/evidence/verify-secondary-before.stdout.log",
+      "sha256": "19e4c60242d17580cf9d358f24ddb4e632f2875e4e7c1fb180716443ec7b63eb",
+      "bytes": 100
+    },
+    {
+      "path": "windows/tiers/evidence/generate.stdout.log",
+      "sha256": "356a6e7c76fe79c80f5dc85cf940ecae3ed7ad795e30d3177676cb3a7bc10ae5",
+      "bytes": 276
+    },
+    {
+      "path": "windows/tiers/evidence/promoted-remount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/commit.trace.jsonl",
+      "sha256": "f550ac441c6ec1b26ae8eb844242ac3320f4568653fa0fd0322ceb43290bf2ee",
+      "bytes": 9376
+    },
+    {
+      "path": "windows/writable/evidence/verify-before.stdout.log",
+      "sha256": "f34db16bf2ab1e04946fb6c9c66af7c4ca8ecdffe7026d1176a57264eed83653",
+      "bytes": 100
+    },
+    {
+      "path": "windows/writable/evidence/pack.json",
+      "sha256": "369182d039814e046adf149b6584c8970fd48c2dd254ba9d28be7066c7f4b652",
+      "bytes": 306
+    },
+    {
+      "path": "windows/writable/evidence/update-mount.stderr.log",
+      "sha256": "5383d06c17b1b6aa3050159a647f69128316345c77868db67b058736cca1b99b",
+      "bytes": 1666
+    },
+    {
+      "path": "windows/writable/evidence/overlay-commit.json",
+      "sha256": "ce92ba4baff52e7cf67033b9341806487ac710f75fd9e5e33a1a424077b7d5cf",
+      "bytes": 620
+    },
+    {
+      "path": "windows/writable/evidence/overlay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/result.json",
+      "sha256": "929ff1ae08c17df024c518a00f4f0ea7352acda2793cf895a0443f8269a41079",
+      "bytes": 18938
+    },
+    {
+      "path": "windows/writable/evidence/overlay-discard.stdout.log",
+      "sha256": "d1787239ddecc71a634a5b5843f62a930c7a0edc8082621d159e3f8b41859783",
+      "bytes": 31
+    },
+    {
+      "path": "windows/writable/evidence/remount.stderr.log",
+      "sha256": "aa8e4acbbf67be81133e220fe9c2d27be22618610ca19dc1f538cd9f79be20e5",
+      "bytes": 1644
+    },
+    {
+      "path": "windows/writable/evidence/verify-before.json",
+      "sha256": "7393d893717ab9007c371f51d5f6906a7ce91aad747731b2d0829f875e01854c",
+      "bytes": 98
+    },
+    {
+      "path": "windows/writable/evidence/overlay.json",
+      "sha256": "c43a3802e20a8824facb0213251946d10998a52fe5e11274a4d18aa25ef25f37",
+      "bytes": 223
+    },
+    {
+      "path": "windows/writable/evidence/verify-after.stdout.log",
+      "sha256": "f34db16bf2ab1e04946fb6c9c66af7c4ca8ecdffe7026d1176a57264eed83653",
+      "bytes": 100
+    },
+    {
+      "path": "windows/writable/evidence/source-before.json",
+      "sha256": "067bdb6a2236db4bbfe6cd2b71c9f29a392002c6ae5d96bdcaae2c36bee425b6",
+      "bytes": 4958
+    },
+    {
+      "path": "windows/writable/evidence/source-after.json",
+      "sha256": "067bdb6a2236db4bbfe6cd2b71c9f29a392002c6ae5d96bdcaae2c36bee425b6",
+      "bytes": 4958
+    },
+    {
+      "path": "windows/writable/evidence/verify-committed.json",
+      "sha256": "f0b525c43dbf9965110323b1fd8818c7b8cf60c542a275889bf54f52c09823e0",
+      "bytes": 98
+    },
+    {
+      "path": "windows/writable/evidence/trace-summary.stdout.log",
+      "sha256": "461ca9d9adff4d81076bead6d565ac056165d8bf3efd3ab1f08f52c885a87518",
+      "bytes": 4482
+    },
+    {
+      "path": "windows/writable/evidence/reset.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/discarded-status.stdout.log",
+      "sha256": "60546ce91114411a9974091e39353edf2c4f42c147c2e5d858743cb55ae50664",
+      "bytes": 218
+    },
+    {
+      "path": "windows/writable/evidence/overlay-commit.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/verify-after.json",
+      "sha256": "7393d893717ab9007c371f51d5f6906a7ce91aad747731b2d0829f875e01854c",
+      "bytes": 98
+    },
+    {
+      "path": "windows/writable/evidence/committed.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/pack.stdout.log",
+      "sha256": "0aacd65c9a95679c4a56aee6e18a1a2109863cc77aed79ab088b2ac1b0cd3bcc",
+      "bytes": 308
+    },
+    {
+      "path": "windows/writable/evidence/remount.trace.jsonl",
+      "sha256": "de66102cf96b2eeda6cabf80c0217c7e365344880d459d78eef5be1d0c3bf19e",
+      "bytes": 38414
+    },
+    {
+      "path": "windows/writable/evidence/io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/mounted-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/verify-committed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/generate.json",
+      "sha256": "65490544e5efafc4fcc06eccc610b11997dbbf8eed9c19a3eb7b61a0fb9e185a",
+      "bytes": 278
+    },
+    {
+      "path": "windows/writable/evidence/overlay-discard.json",
+      "sha256": "ab49d01857a036e5887083fa41675ecfb92ce6b7692b67e016f85cb8042c65f9",
+      "bytes": 29
+    },
+    {
+      "path": "windows/writable/evidence/verify-before.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/update-mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/remount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/overlay-discard.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/verify-after.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/discarded-status.json",
+      "sha256": "f821b7d034c96610806d60b59be05dba113f4a6991360884a77c3ec44c1e97ce",
+      "bytes": 216
+    },
+    {
+      "path": "windows/writable/evidence/overlay.stdout.log",
+      "sha256": "6c6c1a73a071803192bad6b73ad34aaf1bd30eef5a93ecf55fc89e43a14dfa5d",
+      "bytes": 225
+    },
+    {
+      "path": "windows/writable/evidence/reset.trace.jsonl",
+      "sha256": "a8f86e9c64d6d6a515c3ee7ce5d26bdd53b53cb5c0d17b4704d65c93de300655",
+      "bytes": 37296
+    },
+    {
+      "path": "windows/writable/evidence/base-before.json",
+      "sha256": "136737863fefdeb7a4c9bbce9abf21be3804d40bcd1bf4a356949ea40325935a",
+      "bytes": 1629
+    },
+    {
+      "path": "windows/writable/evidence/mounted-executable.json",
+      "sha256": "d11648ad2a887f58d36140111a86faa3750a6877e0361d174d1dac52aae1c617",
+      "bytes": 357
+    },
+    {
+      "path": "windows/writable/evidence/io-probe.json",
+      "sha256": "0ae24c69b01bba34ca0bdadcd4cc377b514ca9a67b89616395bb6737f5818129",
+      "bytes": 19895
+    },
+    {
+      "path": "windows/writable/evidence/committed.stderr.log",
+      "sha256": "587cde00d73371019378b30659693e29df12252abc17e2e8a4b4524000d1cf14",
+      "bytes": 1423
+    },
+    {
+      "path": "windows/writable/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/trace-summary.json",
+      "sha256": "e7db4ebea6d63a4e4e6f8ba524e02df523206739d7532f708c44b2dc79fe17d3",
+      "bytes": 4480
+    },
+    {
+      "path": "windows/writable/evidence/discarded-status.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/overlay-commit.stdout.log",
+      "sha256": "3f1d3b96c238b5fd6d1aa7500ca6ae1134177e209a2998f33e9734095e7d44c0",
+      "bytes": 622
+    },
+    {
+      "path": "windows/writable/evidence/trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/writable/evidence/reset.stderr.log",
+      "sha256": "165c235c5126a700291ea6cd3fb982efbba7360ea055c746df3b33b18017ee78",
+      "bytes": 1635
+    },
+    {
+      "path": "windows/writable/evidence/base-after.json",
+      "sha256": "136737863fefdeb7a4c9bbce9abf21be3804d40bcd1bf4a356949ea40325935a",
+      "bytes": 1629
+    },
+    {
+      "path": "windows/writable/evidence/verify-committed.stdout.log",
+      "sha256": "0a65aa7cf1b6314db3a0330b73c2f9dc88009dab735e6028dc8f45702f1a0fe7",
+      "bytes": 100
+    },
+    {
+      "path": "windows/writable/evidence/mounted-executable.stdout.log",
+      "sha256": "d991b001b338fa405cf1b8c047c7ae2235e0fd15658e8b7a710dd55d7fe5ad5d",
+      "bytes": 359
+    },
+    {
+      "path": "windows/writable/evidence/generate.stdout.log",
+      "sha256": "149a3ba4d9686e88c16c4a0fc59a89c701faff05f066345c121772c5c49b65a4",
+      "bytes": 280
+    },
+    {
+      "path": "windows/writable/evidence/update.trace.jsonl",
+      "sha256": "dc07fae52c75ec725b42cae049679d8874291ff612400ffa8d811403c42e6efd",
+      "bytes": 396975
+    },
+    {
+      "path": "windows/writable/evidence/io-probe.stdout.log",
+      "sha256": "3e0e7dce622fce937b0e26bd1630b068daef9477023d841687feadc1e465230c",
+      "bytes": 19898
+    },
+    {
+      "path": "windows/readonly/evidence/pack.json",
+      "sha256": "56b8ac9bd5067705c4ce4eeca9d39a6c1bdd8e8e7f0ed09121b8253af35e7cd1",
+      "bytes": 314
+    },
+    {
+      "path": "windows/readonly/evidence/verify.json",
+      "sha256": "5b15bb0a52e89cb486479d7a355812727cda23c74ff7735bdd5d06493f0f6f6c",
+      "bytes": 101
+    },
+    {
+      "path": "windows/readonly/evidence/result.json",
+      "sha256": "78c2f7a4eef7ae69ecc5ee80c617a294097f2892e5ada3aefa0ff46269479719",
+      "bytes": 25994
+    },
+    {
+      "path": "windows/readonly/evidence/unmount.json",
+      "sha256": "7503ad5bf35815ea6e5ab3351b5dbaaab026515968fc50587aa2587a4c85ebc8",
+      "bytes": 20
+    },
+    {
+      "path": "windows/readonly/evidence/source-before.json",
+      "sha256": "ce71f2e0c106d709e3d341472125dedfdf3f673312a93afcb2969627dd119d49",
+      "bytes": 3256
+    },
+    {
+      "path": "windows/readonly/evidence/source-after.json",
+      "sha256": "ce71f2e0c106d709e3d341472125dedfdf3f673312a93afcb2969627dd119d49",
+      "bytes": 3256
+    },
+    {
+      "path": "windows/readonly/evidence/unmount.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/pack.stdout.log",
+      "sha256": "87f7e6b96d54f222bb2df1e531ec8e7b9a7be23740538918ab5461dfdb635650",
+      "bytes": 316
+    },
+    {
+      "path": "windows/readonly/evidence/mounted-self-test.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/original-self-test.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/verify.stdout.log",
+      "sha256": "cde2886cf5f6eaf3bb4a36da2d0f201b5b038c48427e9bcf9602574f7850a9b1",
+      "bytes": 103
+    },
+    {
+      "path": "windows/readonly/evidence/mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/generate.json",
+      "sha256": "69cc0056f9562daaf81f2e4b8d282ae9dc275c7adb76d61b0884b5bbedc3c758",
+      "bytes": 286
+    },
+    {
+      "path": "windows/readonly/evidence/mounted-self-test.json",
+      "sha256": "884700b2a900532e7defa199cc2b5b6c328af53f337221d6782f6d4704d12ab0",
+      "bytes": 357
+    },
+    {
+      "path": "windows/readonly/evidence/original-self-test.json",
+      "sha256": "a82382d431c11451f24a2ae64770a2612bd9aee8e666025da7c904fd3d3dba33",
+      "bytes": 359
+    },
+    {
+      "path": "windows/readonly/evidence/unmount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/io-probe.json",
+      "sha256": "d8b9ca2dbba09619b1241c21b92e0112ef3ba2401c019c43da2901f602dc972e",
+      "bytes": 19953
+    },
+    {
+      "path": "windows/readonly/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/mount.stderr.log",
+      "sha256": "9a057d410fb9b7c92bf07d1301d3d4fdf06fccbb1c1e552d4632668492b0c605",
+      "bytes": 1216
+    },
+    {
+      "path": "windows/readonly/evidence/mounted-self-test.stdout.log",
+      "sha256": "00c05a91e487a0802b6ffef03f5593975ccd1c6d6ebe6e5754887fbabcc22cd8",
+      "bytes": 359
+    },
+    {
+      "path": "windows/readonly/evidence/generate.stdout.log",
+      "sha256": "aabea2d29a4c8f47f169dff4d2cf3cdaec3f3330ca7a06d90996505b1aad1844",
+      "bytes": 288
+    },
+    {
+      "path": "windows/readonly/evidence/verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "windows/readonly/evidence/original-self-test.stdout.log",
+      "sha256": "ecb148f62b0349bbe6667a1ab0f1bc9de5bb19588415ab376d2eb9ab623f25cc",
+      "bytes": 361
+    },
+    {
+      "path": "windows/readonly/evidence/io-probe.stdout.log",
+      "sha256": "cc02d2f5c80101e252eb72e06a1000af905716ef0c34e4b57da541b31f24db74",
+      "bytes": 19955
+    },
+    {
+      "path": "linux/playsparse-posix-ci/environment.json",
+      "sha256": "30018823fcfc88497acf4887f73f4805d98b042780dcff8c9070703ebfe2a2e9",
+      "bytes": 2027,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/result.json",
+      "sha256": "a2e7609c642125c10a9315d0469926a7256311c8059bd36c7f05d3ffeb83c695",
+      "bytes": 15936,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/build.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/doctor.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly.stdout.log",
+      "sha256": "b78701c5770454d4f783d9c87e432001c51d001463c97b43caab511b08bb50ad",
+      "bytes": 100,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/build.stderr.log",
+      "sha256": "7a7bb64a28cdda9b91e6e27f41be455104d929b5d7ad6dd5beca75fc5a47f1f4",
+      "bytes": 62,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/doctor.stdout.log",
+      "sha256": "716e10d1b6567e631b320834ada77d9b9f0542941c6751376a2b4c3172925241",
+      "bytes": 9463,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable.stdout.log",
+      "sha256": "e36aa7044185835322270cf9976aaca6b93afbb37eb36ae263316bb94aa0dc0d",
+      "bytes": 100,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers.stdout.log",
+      "sha256": "80a422400b7f980df297ed277f47733312981f0b7d37db84c628eac13b5c2d84",
+      "bytes": 97,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive.stdout.log",
+      "sha256": "5f27543ceb042eb0ebe83a0a0c410aa87f5a3a62fa06349d6fbdffe0e35c52c6",
+      "bytes": 100,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/base-after.json",
+      "sha256": "626b8d4abfaed319d95bdb8ac9cac9bd2b06c4460c572675b8838064680c60c2",
+      "bytes": 1240,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/base-before.json",
+      "sha256": "626b8d4abfaed319d95bdb8ac9cac9bd2b06c4460c572675b8838064680c60c2",
+      "bytes": 1240,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/generate.json",
+      "sha256": "477b8570caacc2522793c1e8fa2ca70175b2c3dbc52431b33097dfc4e4f794c3",
+      "bytes": 252,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/generate.stdout.log",
+      "sha256": "71751ef8e2f7f6f58c963d72fc26dae3bcf7cf91da2dd1b8f0c246fe6db7457a",
+      "bytes": 253,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt-trace-summary.json",
+      "sha256": "886cbdf8a544007f846a2856c51248c4dd5b3b1736cfeda8c2036404975a77f5",
+      "bytes": 757,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt-trace-summary.stdout.log",
+      "sha256": "e16d7abf0591e70400f793602f517a39bd38a2254987b7ec7ebfa2e70b351050",
+      "bytes": 758,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt.stderr.log",
+      "sha256": "5ed7c1e5dcc948a9c06c5a74287bf4b1d09980d529d0b159bcab25e1500bdea0",
+      "bytes": 1444,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-corrupt.trace.jsonl",
+      "sha256": "f679a7d07fa2dc574fa89d009de6a1d9e74df35a717f747b556583ae7d402bdd",
+      "bytes": 938,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-native-executable.json",
+      "sha256": "30a046732b9dc4cfd0628aa2d869b53455fc16d8ba598e998d2781645e03d93e",
+      "bytes": 312,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-native-executable.stdout.log",
+      "sha256": "8853b162d9ffc402c93c64ed1e32e7168a2dbb422caca3ed790114650807ecb6",
+      "bytes": 313,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-trace-summary.json",
+      "sha256": "e970c1e7a20869e8f7d28f273b78eb3065092479e71c0800cabf1241b96d56c0",
+      "bytes": 3473,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges-trace-summary.stdout.log",
+      "sha256": "6bfebd3eec1beaa0a78d6d8e3719933a79e506b19d781e3ee0ae2d8763c1220e",
+      "bytes": 3474,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges.stderr.log",
+      "sha256": "8b1dd9ed4c0e854c8528da3fd2ee5304004beb3330a7e44969e10935e2056bdf",
+      "bytes": 1529,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-ranges.trace.jsonl",
+      "sha256": "293edbe399a1ee60a22cb8427370f6c8ab68db323281c9b9480f29b3894c091e",
+      "bytes": 58373,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/http-requests.json",
+      "sha256": "161fe7f31f0f22a6b92af5afffc20c5d9ddbe409d7f735d11764827612d3d3cf",
+      "bytes": 47031,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/optimize-policy.json",
+      "sha256": "469518bbf5e55473772ed175fb27f28dec3ea0d2a54ea14da236ae3181c51537",
+      "bytes": 527,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/optimize-policy.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/optimize-policy.stdout.log",
+      "sha256": "13bcb52d2d9a2be8f7a71903e8b4f8df842cde7aacc575a5fe914e4e8713e9e0",
+      "bytes": 528,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/pack-secondary.json",
+      "sha256": "1c487099b33c1160da873e541ecd78c1636885e6df7a410713d58939c34400af",
+      "bytes": 297,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/pack-secondary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/pack-secondary.stdout.log",
+      "sha256": "b16df3faa8185df861fb51f3560028333c009d9783fd0e97845b14a77d2d58ca",
+      "bytes": 298,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-native-executable.json",
+      "sha256": "30a046732b9dc4cfd0628aa2d869b53455fc16d8ba598e998d2781645e03d93e",
+      "bytes": 312,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-native-executable.stdout.log",
+      "sha256": "8853b162d9ffc402c93c64ed1e32e7168a2dbb422caca3ed790114650807ecb6",
+      "bytes": 313,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-trace-summary.json",
+      "sha256": "c7222bff045c4823dd6891997368405bd9207faab1ef5f28abb1b1e974553832",
+      "bytes": 3538,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount-trace-summary.stdout.log",
+      "sha256": "c626a79b1e7cf65d340c6005beb212739c8076d184a33672f6e0d605cc4e8874",
+      "bytes": 3539,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount.stderr.log",
+      "sha256": "3b1e01dec3a70cf733e3801f3df6b1bc65d046a13c5bba2790af9d712dbcce4b",
+      "bytes": 1532,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/promoted-remount.trace.jsonl",
+      "sha256": "1a7886f6a4693401fe5fba954009f69c257caf43746dac860778d90629faa534",
+      "bytes": 58683,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/result.json",
+      "sha256": "401d44164785d44be2677bbcd1aa5c47db72507460927b58a138f5b1b8b8f259",
+      "bytes": 35153,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-after.json",
+      "sha256": "f68e85fb7af0eb49fa77f264f38d0f78bb5a3e6443a87ceb018f99c20a6217e6",
+      "bytes": 1576,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-before.json",
+      "sha256": "f68e85fb7af0eb49fa77f264f38d0f78bb5a3e6443a87ceb018f99c20a6217e6",
+      "bytes": 1576,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-io-probe.json",
+      "sha256": "9367cd06840d4d8b6e09767a9e306dbaf878c773eb6e99b764af0124004f6e65",
+      "bytes": 19621,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-io-probe.stdout.log",
+      "sha256": "d826c9a29d9cf1990d4977bc8fed456eea8a1e26955021e50e28c5c2d7d8ecea",
+      "bytes": 19626,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-native-executable.json",
+      "sha256": "30a046732b9dc4cfd0628aa2d869b53455fc16d8ba598e998d2781645e03d93e",
+      "bytes": 312,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-native-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-native-executable.stdout.log",
+      "sha256": "8853b162d9ffc402c93c64ed1e32e7168a2dbb422caca3ed790114650807ecb6",
+      "bytes": 313,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-trace-summary.json",
+      "sha256": "c9b5629b3a5b92cba5a68312596d32565156c32e6655cff19078af1c416c5346",
+      "bytes": 3532,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion-trace-summary.stdout.log",
+      "sha256": "7eead204e813c132a4d40c0b81b82dbab6009741b977ded99a0b0da7b27f1c86",
+      "bytes": 3533,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion.stderr.log",
+      "sha256": "471111b27096902707c8566da699b3e96329395b6d86d9e374289aa292a22b8b",
+      "bytes": 1543,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/secondary-promotion.trace.jsonl",
+      "sha256": "4bfa3d92e5c1d2a42b45f6186e86882d67211ef0f9a68d7fd4c45455ed2c401b",
+      "bytes": 248394,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/source-after.json",
+      "sha256": "8e9f134905e4d5b48242705facc982874bc6d3923636aae92b024694ab48127b",
+      "bytes": 4230,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/source-before.json",
+      "sha256": "8e9f134905e4d5b48242705facc982874bc6d3923636aae92b024694ab48127b",
+      "bytes": 4230,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-after.json",
+      "sha256": "4e9343ba4c856a6b121ef7dfa53bb63c1f42974ac168ca88dfef4f1f90f57362",
+      "bytes": 93,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-after.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-after.stdout.log",
+      "sha256": "71505747e9670f816d65e69be1b52655a6e149dccc175dc151f5848df13c5f91",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-before.json",
+      "sha256": "4e9343ba4c856a6b121ef7dfa53bb63c1f42974ac168ca88dfef4f1f90f57362",
+      "bytes": 93,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-before.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/tiers/evidence/verify-secondary-before.stdout.log",
+      "sha256": "71505747e9670f816d65e69be1b52655a6e149dccc175dc151f5848df13c5f91",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/generate.json",
+      "sha256": "bacbd084363c6eb2c7237471b617f9f13e1a5338e8b6b4be7b1bc742dc21e6d8",
+      "bytes": 264,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/generate.stdout.log",
+      "sha256": "5ef8414bf6bff98e1e51f26d29772b39207705f2413feb9765a226a4e9af1c2f",
+      "bytes": 265,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/io-probe.json",
+      "sha256": "22346701f4dafc6d5b21372150ae21f261e1956c053e98625b97e644a9f87678",
+      "bytes": 19691,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/io-probe.stdout.log",
+      "sha256": "b3e7d6ad70f7d1f6f9ea1e53e42579a32095dd1b1bd9bb5b3d9bed36e2301678",
+      "bytes": 19693,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/mount.stderr.log",
+      "sha256": "14707500408fd97b6351f8ecf9177f7b77917e32fd844ac9f2471ec78b25415f",
+      "bytes": 1062,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/mounted-self-test.json",
+      "sha256": "ac5025e7a7587e81c023d9c6ef85cc42ef35f3a3f1c6c0dddb86ef45b8a6faa4",
+      "bytes": 318,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/mounted-self-test.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/mounted-self-test.stdout.log",
+      "sha256": "a1c8f1478aa892578d4ad02b8af015584633213cb85cf2067dfab412499afd2b",
+      "bytes": 319,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/original-self-test.json",
+      "sha256": "d5d1a0f27857ebb6d3bdfec438757c1d773854d36d57b0fc0e50c519987de778",
+      "bytes": 320,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/original-self-test.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/original-self-test.stdout.log",
+      "sha256": "252ecc1a6d86c8a57d3c990b0b2803a484b7335efbf1ddb071d44edbc8a72e5f",
+      "bytes": 321,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/pack.json",
+      "sha256": "78fcebdaacbf2730b77dfad1c034653eac2a2a37daa534ddd8245ba625a6e945",
+      "bytes": 308,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/pack.stdout.log",
+      "sha256": "d5eedcf34f3aeb52bd01e846c7f1cc984617f2351134a011890820775797f95e",
+      "bytes": 309,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/result.json",
+      "sha256": "f2a5c1bd7a5d18f90b76dee26c307eb25f8d8e81c92cf474d1ebea96bb507d38",
+      "bytes": 25519,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/source-after.json",
+      "sha256": "904f6b310caac5d42e30592ff83354ab70aaaff3358a31dbc4d5395f4b4eb052",
+      "bytes": 7535,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/source-before.json",
+      "sha256": "c752871526e35c5be52bdcde769a6626bb9bb70847c78bbfc5b130798e731c41",
+      "bytes": 7535,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/unmount.json",
+      "sha256": "2a1557a892ba935a087599e8c62e5115ccde5683abe2d5375f47ef61f27616a3",
+      "bytes": 18,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/unmount.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/unmount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/verify.json",
+      "sha256": "b117184464809d9b73f911484de07e4ec9b2aea1f962e60c2d95fffd50e9e4ba",
+      "bytes": 96,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/readonly/evidence/verify.stdout.log",
+      "sha256": "9adf7033799e7a9d393acce3e7bb440a9dda9f87488d70b1cd88d9c0ff01c0fd",
+      "bytes": 97,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/base-after.json",
+      "sha256": "75e188ebeb294840dc5d4393478fbd3c0d7adb1ea0e63510b996a804e075ed6d",
+      "bytes": 1572,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/base-before.json",
+      "sha256": "75e188ebeb294840dc5d4393478fbd3c0d7adb1ea0e63510b996a804e075ed6d",
+      "bytes": 1572,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/commit.trace.jsonl",
+      "sha256": "df9905d5c776c63e81a1120e309672cf97584bcf1703c4780a43da7a08b64c58",
+      "bytes": 59351,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/committed.stderr.log",
+      "sha256": "80524ad541aa52cbcb5e486462d66f677517dfaef6a2dbd25a47f3994b4803a3",
+      "bytes": 1285,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/committed.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/discarded-status.json",
+      "sha256": "d6bdce44c8b0fab37da548093174f3e082e0da97fa5486827c09f3b30cae60e2",
+      "bytes": 204,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/discarded-status.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/discarded-status.stdout.log",
+      "sha256": "3334d04bc7b30136e6a3a3d9f032f95c1f9de9f2621e9fc9fd90124f51c521af",
+      "bytes": 205,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/generate.json",
+      "sha256": "4f804918455de971efa05e78957ed984c43534862155fda2d11ce9b0ef6edcce",
+      "bytes": 256,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/generate.stdout.log",
+      "sha256": "c8235b6e2d6c8bb2daab7a053c13db146b290355ff703ee7995d63c217e65cfd",
+      "bytes": 257,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/io-probe.json",
+      "sha256": "2840e8ef10586e1ea2a2afa71796164e8c76770c5d26be8a0fa91285d96c2de6",
+      "bytes": 19630,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/io-probe.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/io-probe.stdout.log",
+      "sha256": "2e754ab7fcc718ce6b2776887740476eb5b3278b3104bc0225e409b45a06a0cd",
+      "bytes": 19635,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/mounted-executable.json",
+      "sha256": "4b29514ed6d8b3c87a955e333e6a1fe2883a3acb06f0d37b3f9749c73e8f57fe",
+      "bytes": 318,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/mounted-executable.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/mounted-executable.stdout.log",
+      "sha256": "d91604d50907024706b0d3d8b67f6f9079556b78fae75f6e6b102250d038bede",
+      "bytes": 319,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-commit.json",
+      "sha256": "803e144f74dd5d19eaa5c7c55a31040fe7731f5fb2a4159fdb9851b7fe12bd37",
+      "bytes": 603,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-commit.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-commit.stdout.log",
+      "sha256": "ca7582d7d862832ffdab782248b38a6c7f21f14df0eb1c4f3354a938149c8c28",
+      "bytes": 604,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-discard.json",
+      "sha256": "5b03e6c0d69a6da4be8a68705322cb000484e9c5e3039f2651b28bfab288b603",
+      "bytes": 27,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-discard.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay-discard.stdout.log",
+      "sha256": "fd4ad24ad857456b140c30a7fb28daf1be278a690d673de1acc977f8ade54671",
+      "bytes": 28,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay.json",
+      "sha256": "5fed3d086c5bf663753c4febbe651ab1d58a33f3cdc0f458e6b45b25312d0edb",
+      "bytes": 217,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/overlay.stdout.log",
+      "sha256": "87c30bd6e19caaa42c0fdbe6784d1486e3011ae59824d1d8ea11aaaef7ed6595",
+      "bytes": 218,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/pack.json",
+      "sha256": "169760cf98ca52073bfa61b509eb073d64c0dcc01db49d3f277912d20c04a19e",
+      "bytes": 299,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/pack.stdout.log",
+      "sha256": "fe9f304cf7f084c43b61123e786d226ace77eaefbf17755fdfcd6dd97734a6e8",
+      "bytes": 300,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/remount.stderr.log",
+      "sha256": "0281dc1be45757308fde5b1ea81e8f31ca19b164c28182cf7a8383392e8993e7",
+      "bytes": 1523,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/remount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/remount.trace.jsonl",
+      "sha256": "f67c426e95a063d52d9b8d29d91734640e7247f1a1c05190e5e5200fccfc6f85",
+      "bytes": 66268,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/reset.stderr.log",
+      "sha256": "3dd6d7f8a4ab4326091556a2477a6b2f23b6be3fa31a9a33772a9a2986af093f",
+      "bytes": 1509,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/reset.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/reset.trace.jsonl",
+      "sha256": "1ae270952747a48ee834f76a3f711083bf5e0d499d74c619832196ff03ef5bd5",
+      "bytes": 65999,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/result.json",
+      "sha256": "53edfdc92b688d1d2c3c9523d135bb1ecebb651311aa113690e4e2e54cf7a50a",
+      "bytes": 18477,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/source-after.json",
+      "sha256": "91de1d8c787be7b87957e947085e6c41d06a29fced7aba3c43226e012f464f6a",
+      "bytes": 7713,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/source-before.json",
+      "sha256": "91de1d8c787be7b87957e947085e6c41d06a29fced7aba3c43226e012f464f6a",
+      "bytes": 7713,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/trace-summary.json",
+      "sha256": "41da1adb9f13671986aab6a654d44b29b7b37d8ce05cfc7873bc4ec98f61870a",
+      "bytes": 4261,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/trace-summary.stdout.log",
+      "sha256": "b84a500eda51fe818abc0cf52f60a3d2f6c06197ac2392f897c2a41c82fe31b7",
+      "bytes": 4262,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/update-mount.stderr.log",
+      "sha256": "f38d8b097d37040bb514103451cae900fddd704fc0a2c3d52ddffa2db02f3fab",
+      "bytes": 1549,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/update-mount.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/update.trace.jsonl",
+      "sha256": "97614aabf04b91b775d92ff32a7dd66d5dd1fdf6172dc2bca574c9c0840751a4",
+      "bytes": 428280,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-after.json",
+      "sha256": "2560172e638a39d636c3e28035d48279d9ff0f21a781f8828ec437a5b95c1da6",
+      "bytes": 93,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-after.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-after.stdout.log",
+      "sha256": "b5029bac745a076a66e5f3cf09da7cb775b98d357d60412a3937c1891db59b01",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-before.json",
+      "sha256": "2560172e638a39d636c3e28035d48279d9ff0f21a781f8828ec437a5b95c1da6",
+      "bytes": 93,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-before.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-before.stdout.log",
+      "sha256": "b5029bac745a076a66e5f3cf09da7cb775b98d357d60412a3937c1891db59b01",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-committed.json",
+      "sha256": "679650effe970aaeb752a0f1ae358f1968daebb031e4dd5c47c9a0f8db5043a6",
+      "bytes": 93,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-committed.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/writable/evidence/verify-committed.stdout.log",
+      "sha256": "321b3b6ade5a263477e34be55fd1deaeafc2511130eb80e82609eebed2b3ff5e",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-0.json",
+      "sha256": "dbae582e2458efa4e36a6505e2122b28af6c34451959f85f25b78a940dda8ee7",
+      "bytes": 1370,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-0.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-0.stdout.log",
+      "sha256": "62428b04b740745562b59961064d745430bd3e2f246d3ab542e632ef7ffb9a2f",
+      "bytes": 1371,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-1.json",
+      "sha256": "164c1d26321bde62bd727df348b5825b0121cbde0fb1cd98ba90bfba83dcdade",
+      "bytes": 1381,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-1.stdout.log",
+      "sha256": "1ec94aac628e726b733a72971aedbb2b95e0d3975e3300f60f9cd7c380468ebd",
+      "bytes": 1382,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-2.json",
+      "sha256": "6cf6c507a397619d60423517327bfcfc9fb29055d214188ff1b7fb20897fc781",
+      "bytes": 1380,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive-2.stdout.log",
+      "sha256": "39f9202818eda93157b3d878bf8f7085ae1b2e89b4c06f9757b09b35c61f5692",
+      "bytes": 1381,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive.stderr.log",
+      "sha256": "e3418dc1fbce782f29aa2dc30df141632b5fff09d5c40cd2683f1788f9d1b40e",
+      "bytes": 1321,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/adaptive.trace.jsonl",
+      "sha256": "0f7aaf2e0edd65c25b74c6428a48fb580322da8b6bece0a7b99d8511f30cc0eb",
+      "bytes": 236079,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/capture.stderr.log",
+      "sha256": "bbcd75a6c78c10a1bde5f71a7ab2131ce8110056be935c8822aacf5008eb5743",
+      "bytes": 1292,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/capture.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/capture.trace.jsonl",
+      "sha256": "e27f3262650ab7324d46585893e9feb73c521aeb018998eb29f2c4321fc095c6",
+      "bytes": 235680,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/generate.json",
+      "sha256": "cf3c17d0b67f549de36d37473f8b66f8356cf85e9e118b09eca6271cdb52274f",
+      "bytes": 255,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/generate.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/generate.stdout.log",
+      "sha256": "45c740c412caf91085a8a3bb59ede45d4e25adc8114b4eb06efc021c9bdbe8c0",
+      "bytes": 256,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/optimize.json",
+      "sha256": "398fd3fb77d96c2da51523963dae77b6787e670c0210597006b1db05a229265f",
+      "bytes": 318,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/optimize.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/optimize.stdout.log",
+      "sha256": "cab6b3dc88e46dc238fe176f529a2dbdf4deb225f80325ea54af6cf7bd394dbe",
+      "bytes": 319,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/pack.json",
+      "sha256": "73ac1e82c1fc116c6ba827281cebf0695533733fc20fd88922e4c858af5de1ff",
+      "bytes": 300,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/pack.stdout.log",
+      "sha256": "732122c319e02aea9c8609f6a909f13271898a9382de30075c8ca65328027075",
+      "bytes": 301,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/policy.json",
+      "sha256": "0e52665418a64e6262ee380a254f95a98982f346c66beca90b28a55cb6ee1eaa",
+      "bytes": 319,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/result.json",
+      "sha256": "f2c0e716db13fad0e9b90c66aa62a011f1b439ca80df093b870bd596da17fa29",
+      "bytes": 23909,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-0.json",
+      "sha256": "ef10dcd375a0e41c87b38ba0774b233827227ed0ca7edffcccc10b37020a37cc",
+      "bytes": 1355,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-0.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-0.stdout.log",
+      "sha256": "b0f802d29716e5c6e92aebdd8a74e38dae33c63cdf2f0acca060ca5e5107217c",
+      "bytes": 1356,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-1.json",
+      "sha256": "ae26f54cd76f475131d3737869cbd5ec676084c744941bc724293d4f10bff859",
+      "bytes": 1356,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-1.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-1.stdout.log",
+      "sha256": "605a5cc222eae0fa3ac4d7270c879d945eaa8e0f1a0bd23fd50345cd03e06ee6",
+      "bytes": 1357,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-2.json",
+      "sha256": "22c7d9763908c694621558f96583d140b7138ceb982866a25fd87d3726153b7d",
+      "bytes": 1356,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-2.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/static-2.stdout.log",
+      "sha256": "b03dce2099df1e91851eab62baa313ee17dec8f844138f58aee62d36edc67e4f",
+      "bytes": 1357,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/trace-summary.json",
+      "sha256": "699fdd36c7c460e32ed68d1509d43b6df9c6c3843c722abe17e5251993ed76a6",
+      "bytes": 2951,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/trace-summary.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-posix-ci/adaptive/evidence/trace-summary.stdout.log",
+      "sha256": "891ee78559f9810ced8a0b1a9fb3475b855663e619fd9c1d6bf09f4f3674bbcd",
+      "bytes": 2952,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/compile-hook.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/compile-hook.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-index.stderr.log",
+      "sha256": "f49a582af3f5d925653de4cf92b11aa366dfd9b11f95181fd3583d61d52bdee9",
+      "bytes": 61,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-index.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-manifest.stderr.log",
+      "sha256": "f49a582af3f5d925653de4cf92b11aa366dfd9b11f95181fd3583d61d52bdee9",
+      "bytes": 61,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-manifest.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-object.stderr.log",
+      "sha256": "dca547cc7079a2e799cb98d4c71a8f50cb5f9710289db1edec671fc95c4b408b",
+      "bytes": 88,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/corrupt-object.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/disk-full.stderr.log",
+      "sha256": "58b1cab12512ca57c89499d905056bfa49340e9825e71935c3fbc272858471f4",
+      "bytes": 104,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/disk-full.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write-reject.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write-stage-reject.stderr.log",
+      "sha256": "f0eb5306ac4797139549817102f48d4fc1a31bf49d7b70d5d327d998a545dbf2",
+      "bytes": 69,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write-stage-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-commit-write.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write-reject.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write-stage-reject.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write-stage-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-manifest-write.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write-reject.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write-stage-reject.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write-stage-reject.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/kill-object-write.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/missing-commit.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/missing-commit.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/missing-object.stderr.log",
+      "sha256": "659c7edec58c59b446d6ce9de97b872da7bd6d45c61e001a71f2e5dd3e723393",
+      "bytes": 106,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/missing-object.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/result.json",
+      "sha256": "bd3ddfe513cd1eee2e4520451972c6837cbda036ca0aab91185e0831adb5ea48",
+      "bytes": 7289,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/retry-pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/retry-pack.stdout.log",
+      "sha256": "76523d7cc985230c954177e2e9b6d87b7bcc7b35229b4c00e4d3993a1725686f",
+      "bytes": 302,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/retry-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-crash-ci/evidence/retry-verify.stdout.log",
+      "sha256": "17760cdcee30468da4908ec98bc23b5c93c15846ad129a30ac03e21b44075061",
+      "bytes": 94,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-benchmark.stdout.log",
+      "sha256": "cc39086ad4d7e662b1a95dfe5e3032d81b9333b71ff0b5b735c9f9e23eed3dc3",
+      "bytes": 5234,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-benchmark.stdout.log",
+      "sha256": "fe1eecd371240dc9fd0d42ea0be3e923d94c418d5a5b6d91704754e050a6582d",
+      "bytes": 5201,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-pack.stdout.log",
+      "sha256": "930cf1cf2a60a29d89069fe96a877112ea76b31f379e503a555671511facea2a",
+      "bytes": 305,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-benchmark.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-benchmark.stdout.log",
+      "sha256": "5f20caa1570ad2e32a6546dcafc02f697b0499a6d355e83f7d6f24e5ef0786ee",
+      "bytes": 5198,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-pack.stdout.log",
+      "sha256": "d413dcb9b4309e94dfae4a84a56795729ae5ba497fe8fb230f836454fed1525c",
+      "bytes": 305,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-benchmark.json",
+      "sha256": "0d8e042fe4cafc128bf5699f8d56632b1747ea7f9cc93fba034be4864ac04a4f",
+      "bytes": 5200,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-verify.stdout.log",
+      "sha256": "2eb026c229d65774fb507d9332097e0f38b893b0e322140c3f970c19ae481045",
+      "bytes": 96,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-benchmark.json",
+      "sha256": "360a3d194149001cb9c170c3266f1dc0376432da9cfc321810a623a015c950a9",
+      "bytes": 5233,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-benchmark.json",
+      "sha256": "f9cc2a52d482a13b4346fbbd177d6eaaf7f11d5a9e6916f4b5ea418c5f96862a",
+      "bytes": 5197,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-benchmark.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-benchmark.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-benchmark.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-verify.stdout.log",
+      "sha256": "2eb026c229d65774fb507d9332097e0f38b893b0e322140c3f970c19ae481045",
+      "bytes": 96,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-pack.stdout.log",
+      "sha256": "ca4eba1fc50f28271def1f1db3fc3ed85c05e0b31ec2d0e07820f26f63281c2f",
+      "bytes": 307,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-verify.stdout.log",
+      "sha256": "2eb026c229d65774fb507d9332097e0f38b893b0e322140c3f970c19ae481045",
+      "bytes": 96,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-benchmark.stdout.log",
+      "sha256": "cb6ceabc7f5518317c7c026dcdebc7a4af4761430ba04977d333a80ee9b58ca6",
+      "bytes": 5234,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/result.json",
+      "sha256": "06fd02b77f478e0203ffa104465ff3fba225ec8ade02e4e5a60cc418e6989106",
+      "bytes": 35448,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-pack.stdout.log",
+      "sha256": "55445670ae014209b937e6d19876da732fb26c2c5d3ff167f5e7f5c23067b0ad",
+      "bytes": 307,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-1-pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-0-verify.stdout.log",
+      "sha256": "2eb026c229d65774fb507d9332097e0f38b893b0e322140c3f970c19ae481045",
+      "bytes": 96,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/packs-0-pack.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    },
+    {
+      "path": "linux/playsparse-experiment04-ci/loose-1-benchmark.json",
+      "sha256": "9d5bd30f5f7ca53c36362c3551d1ab92dcf83eabe0ac1ca8f2cfeade247c8985",
+      "bytes": 5233,
+      "tar_source": "/tmp/playsparse-readiness-ci-final-931203f/linux-runtime-evidence/linux-runtime-evidence.tar.gz"
+    }
+  ]
+}

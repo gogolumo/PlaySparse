@@ -1,0 +1,195 @@
+{
+  "cache_hit_ratio": 0.5074626865671642,
+  "cache_miss_ratio": 0.4925373134328358,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 239,
+  "hot_files": [
+    {
+      "events": 102,
+      "path": "world.dat"
+    },
+    {
+      "events": 31,
+      "path": "testgame"
+    },
+    {
+      "events": 24,
+      "path": "audio.dat"
+    },
+    {
+      "events": 24,
+      "path": "fixture.json"
+    },
+    {
+      "events": 23,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 16,
+      "path": "assets/texture.dat"
+    },
+    {
+      "events": 6,
+      "path": "config.json"
+    },
+    {
+      "events": 6,
+      "path": "readme.txt"
+    },
+    {
+      "events": 4,
+      "path": "assets/empty.bin"
+    },
+    {
+      "events": 3,
+      "path": "overlay-created.txt"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 2,
+      "length": 4096,
+      "offset": 0,
+      "path": "config.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 0,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 131072,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 262144,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 393216,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 524288,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 655360,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 786432,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 917504,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 131072,
+      "offset": 1048576,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 24576,
+      "offset": 1179648,
+      "path": "fixture.json"
+    },
+    {
+      "events": 2,
+      "length": 4096,
+      "offset": 0,
+      "path": "readme.txt"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 0,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 0,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 131072,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 262144,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 393216,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 524288,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 655360,
+      "path": "assets/entropy.dat"
+    },
+    {
+      "events": 1,
+      "length": 131072,
+      "offset": 786432,
+      "path": "assets/entropy.dat"
+    }
+  ],
+  "latency_ns": {
+    "p50": 9938,
+    "p95": 208140,
+    "p99": 251180
+  },
+  "operations": {
+    "flush": 37,
+    "read": 202
+  },
+  "read_bytes": 15049320,
+  "read_operations": 202,
+  "reread_ratio": 0.0594059405940594,
+  "sequential_read_percentage": 2.9702970297029703,
+  "sessions": [
+    "4436-1791144684480645086"
+  ],
+  "sources": {
+    "memory-cache": 102,
+    "mixed": 10,
+    "overlay": 38,
+    "primary-local": 89
+  },
+  "version": 1,
+  "write_bytes": 0,
+  "write_operations": 0
+}

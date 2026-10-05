@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "status": "BLOCKED",
+  "commands": [],
+  "stages": {
+    "readonly": {
+      "status": "NOT RUN",
+      "evidence": "/private/tmp/playsparse-readiness-macos-runtime-final-20261004-01/readonly/evidence"
+    },
+    "writable": {
+      "status": "NOT RUN",
+      "evidence": "/private/tmp/playsparse-readiness-macos-runtime-final-20261004-01/writable/evidence"
+    },
+    "adaptive": {
+      "status": "NOT RUN",
+      "evidence": "/private/tmp/playsparse-readiness-macos-runtime-final-20261004-01/adaptive/evidence"
+    },
+    "tiers": {
+      "status": "NOT RUN",
+      "evidence": "/private/tmp/playsparse-readiness-macos-runtime-final-20261004-01/tiers/evidence"
+    }
+  },
+  "real_game_validation": "NOT RUN",
+  "game_evidence_gate": "GAME EVIDENCE REQUIRED",
+  "application_validation": "NOT RUN",
+  "evidence_type": "native POSIX generated mounted fixtures",
+  "evidence": "/private/tmp/playsparse-readiness-macos-runtime-final-20261004-01",
+  "scope": "generated fixtures on real FUSE/macFUSE mounts; one optional application only",
+  "repository": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "allow_dirty": false,
+  "disk_preflight": {
+    "available_bytes": 26670305280,
+    "required_minimum_bytes": 536870912
+  },
+  "error": "Native macOS requires installed and approved macFUSE; no driver was installed or approved",
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": true,
+  "wall_seconds": 0.4321222080034204
+}

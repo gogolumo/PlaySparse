@@ -1,0 +1,16 @@
+{
+  "status": "FAIL",
+  "command": [
+    "/Users/bogdan_dron/.cargo/bin/cargo",
+    "clippy",
+    "--locked",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "source": "tool output captured before correction",
+  "error": "crates/playsparse-cache/src/lib.rs:718 bool_assert_comparison: assert_eq!(skipped.unwrap(), true)",
+  "fix": "replace with assert!(skipped.unwrap()); subsequent locked workspace clippy PASS"
+}

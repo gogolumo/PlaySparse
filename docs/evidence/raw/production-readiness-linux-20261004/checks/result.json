@@ -1,0 +1,208 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T19:34:41.515767+00:00",
+  "status": "PASS",
+  "scope": "Linux VM software and real FUSE/tmpfs kernel validation, not physical hardware or a user-owned game",
+  "environment": {
+    "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+    "architecture": "aarch64",
+    "container": "playsparse-runtime-dev",
+    "cargo_target_dir": "/src/target-linux",
+    "python": "3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0]"
+  },
+  "repository_before": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "binary_sha256": {
+    "playsparse": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c",
+    "io_probe": "c6b11cabaf1a7b83166e42d151e45db95d701e8222d3d25c7ab1a4bcbad07417"
+  },
+  "stages": {
+    "fmt": {
+      "status": "PASS",
+      "wall_seconds": 0.17353391599317547
+    },
+    "clippy": {
+      "status": "PASS",
+      "wall_seconds": 2.26414491799369
+    },
+    "tests": {
+      "status": "PASS",
+      "wall_seconds": 14.890117924005608
+    },
+    "ignored-fuse-tests": {
+      "status": "PASS",
+      "wall_seconds": 4.884846044005826
+    },
+    "mount-enospc-tmpfs": {
+      "status": "PASS",
+      "wall_seconds": 0.005438457999844104
+    },
+    "crash-enospc": {
+      "status": "PASS",
+      "wall_seconds": 1.1879102509992663
+    },
+    "unmount-enospc-tmpfs": {
+      "status": "PASS",
+      "wall_seconds": 0.004063416999997571
+    },
+    "experiment04": {
+      "status": "PASS",
+      "wall_seconds": 2.1385189180000452
+    }
+  },
+  "commands": [
+    {
+      "label": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:41.520946+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.17353391599317547
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:41.697198+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 2.26414491799369
+    },
+    {
+      "label": "tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--workspace"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:43.968496+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 14.890117924005608
+    },
+    {
+      "label": "ignored-fuse-tests",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "-p",
+        "playsparse-vfs-fuse",
+        "--",
+        "--ignored",
+        "--test-threads=1"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:58.875999+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 4.884846044005826
+    },
+    {
+      "label": "mount-enospc-tmpfs",
+      "command": [
+        "mount",
+        "-t",
+        "tmpfs",
+        "-o",
+        "size=1M",
+        "tmpfs",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/enospc"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:35:03.765260+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.005438457999844104
+    },
+    {
+      "label": "crash-enospc",
+      "command": [
+        "python3",
+        "tools/crash-smoke.py",
+        "--work",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash",
+        "--playsparse",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "--disk-full-dir",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/enospc"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:35:03.773548+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.1879102509992663
+    },
+    {
+      "label": "unmount-enospc-tmpfs",
+      "command": [
+        "umount",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/enospc"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:35:04.965640+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.004063416999997571
+    },
+    {
+      "label": "experiment04",
+      "command": [
+        "python3",
+        "experiments/04-loose-vs-packfiles/run_benchmark.py",
+        "--playsparse",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "--output",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/experiment04",
+        "--repetitions",
+        "2",
+        "--iterations",
+        "64",
+        "--size-mib",
+        "32"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:35:04.976921+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 2.1385189180000452
+    }
+  ],
+  "source_unchanged": true,
+  "enospc_mountinfo": [
+    "83 137 0:65 / /tmp/playsparse-readiness-linux-full-20261004-01/enospc rw,relatime - tmpfs tmpfs rw,size=1024k"
+  ],
+  "enospc_detached": true,
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "binary_unchanged": true,
+  "finished_at": "2026-10-04T19:35:07.383337+00:00"
+}

@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "status": "BLOCKED",
+  "timestamp": "2026-10-04T19:32:13.011057+00:00",
+  "commands": [],
+  "stages": {
+    "build": {
+      "status": "NOT RUN"
+    },
+    "doctor": {
+      "status": "NOT RUN"
+    },
+    "readonly": {
+      "status": "NOT RUN"
+    },
+    "writable": {
+      "status": "NOT RUN"
+    },
+    "adaptive": {
+      "status": "NOT RUN"
+    },
+    "tiers": {
+      "status": "NOT RUN"
+    },
+    "application": {
+      "status": "NOT RUN"
+    },
+    "wof": {
+      "status": "NOT RUN"
+    }
+  },
+  "game_validation": "NOT RUN",
+  "launcher_validation": "NOT RUN",
+  "wof_physical_validation": "NOT RUN",
+  "binary_repository_match": "NOT RUN",
+  "windows_physical_validation": {
+    "status": "BLOCKED",
+    "user_attested_physical_machine": false,
+    "virtual_machine_detected": null,
+    "evidence_basis": "explicit user attestation, Windows client OS, hardware report and no detected VM hints; not automatic physical proof"
+  },
+  "evidence_type": "native Windows runtime; physical classification requires user attestation and recorded client hardware",
+  "repository": {
+    "git_sha": "5da3ff41e1bb7b5766369ee09b0ee00b7398f953",
+    "dirty": true,
+    "working_tree_status": " M .github/workflows/rust-runtime.yml\n M README.md\n M docs/adaptive-policy.md\n M docs/breakthrough-criteria.md\n M docs/evidence/posix-runtime.md\n M docs/windows-backend.md\n M tools/check.sh\n M tools/windows-hardware-validation.ps1\n?? docs/evidence/production-readiness-policy.md\n?? docs/evidence/raw/production-readiness-policy-20261004/\n?? docs/windows-comparison.md\n?? tests/test_windows_validation.py\n?? tools/windows-comparison.py\n?? tools/windows-validation.py\n?? tools/windows_support.py\n",
+    "source_digest_sha256": "0a153da40194e4cf8d712da6ffd27bd92501c7b1e70d951b80a458a00f553bac",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "arguments": [
+    "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "/Users/bogdan_dron/Documents/PlaySparse/tools/windows-validation.py",
+    "--work",
+    "/tmp/playsparse-readiness-windows-wrapper-blocked-20261004-01",
+    "--environment-stdin",
+    "--timeout",
+    "1800",
+    "--wof-algorithm",
+    "XPRESS4K"
+  ],
+  "error": "Native Windows is required; this host cannot provide Windows mounted or WOF evidence"
+}

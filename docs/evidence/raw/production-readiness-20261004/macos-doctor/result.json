@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "command": [
+        "target/release/playsparse",
+        "doctor"
+      ],
+      "exit_code": 0,
+      "status": "PASS",
+      "expected_exit_code": 0
+    },
+    {
+      "command": [
+        "target/release/playsparse",
+        "doctor",
+        "--mount-test"
+      ],
+      "exit_code": 2,
+      "status": "PASS",
+      "expected_exit_code": 2
+    },
+    {
+      "command": [
+        "target/release/playsparse",
+        "doctor",
+        "--human",
+        "--mount-test"
+      ],
+      "exit_code": 2,
+      "status": "PASS",
+      "expected_exit_code": 2
+    }
+  ],
+  "native_mount": "BLOCKED: macFUSE not installed"
+}

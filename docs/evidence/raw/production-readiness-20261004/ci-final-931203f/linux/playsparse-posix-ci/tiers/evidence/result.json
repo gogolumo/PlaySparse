@@ -1,0 +1,1281 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T20:11:23.995535+00:00",
+  "commit": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+  "working_tree_status": "",
+  "os": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "architecture": "x86_64",
+  "binary_sha256": "7081fb158725c041ada2786cb36388b96248dce09cac8f1ecdaa0edb69882588",
+  "status": "PASS",
+  "commands": [
+    [
+      "/usr/bin/python3",
+      "/home/runner/work/PlaySparse/PlaySparse/tools/generate-testgame.py",
+      "/tmp/playsparse-posix-ci/tiers/source",
+      "--io-probe",
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/io-probe",
+      "--world-bytes",
+      "4194304"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "pack",
+      "/tmp/playsparse-posix-ci/tiers/source",
+      "/tmp/playsparse-posix-ci/tiers/secondary",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "64K"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "verify",
+      "/tmp/playsparse-posix-ci/tiers/secondary"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/tiers/base",
+      "/tmp/playsparse-posix-ci/tiers/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/tiers/evidence/secondary-promotion.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-posix-ci/tiers/overlay",
+      "--tiers",
+      "/tmp/playsparse-posix-ci/tiers/secondary-tiers.json"
+    ],
+    [
+      "/tmp/playsparse-posix-ci/tiers/mounted/testgame",
+      "--self-test"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/io-probe",
+      "/tmp/playsparse-posix-ci/tiers/source",
+      "/tmp/playsparse-posix-ci/tiers/mounted",
+      "--iterations",
+      "4",
+      "--sequential-limit",
+      "1048576",
+      "--output",
+      "/tmp/playsparse-posix-ci/tiers/evidence/secondary-promotion-io-probe.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-posix-ci/tiers/evidence/secondary-promotion.trace.jsonl"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "optimize",
+      "/tmp/playsparse-posix-ci/tiers/evidence/secondary-promotion.trace.jsonl",
+      "--output",
+      "/tmp/playsparse-posix-ci/tiers/policy.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/tiers/base",
+      "/tmp/playsparse-posix-ci/tiers/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/tiers/evidence/promoted-remount.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-posix-ci/tiers/overlay",
+      "--tiers",
+      "/tmp/playsparse-posix-ci/tiers/promoted-tiers.json",
+      "--policy",
+      "/tmp/playsparse-posix-ci/tiers/policy.json"
+    ],
+    [
+      "/tmp/playsparse-posix-ci/tiers/mounted/testgame",
+      "--self-test"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-posix-ci/tiers/evidence/promoted-remount.trace.jsonl"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/tiers/base",
+      "/tmp/playsparse-posix-ci/tiers/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/tiers/evidence/http-ranges.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-posix-ci/tiers/remote-overlay",
+      "--tiers",
+      "/tmp/playsparse-posix-ci/tiers/remote-tiers.json",
+      "--policy",
+      "/tmp/playsparse-posix-ci/tiers/policy.json"
+    ],
+    [
+      "/tmp/playsparse-posix-ci/tiers/mounted/testgame",
+      "--self-test"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-posix-ci/tiers/evidence/http-ranges.trace.jsonl"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-posix-ci/tiers/base",
+      "/tmp/playsparse-posix-ci/tiers/mounted",
+      "--trace",
+      "/tmp/playsparse-posix-ci/tiers/evidence/http-corrupt.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-posix-ci/tiers/corrupt-overlay",
+      "--tiers",
+      "/tmp/playsparse-posix-ci/tiers/remote-tiers.json"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-posix-ci/tiers/evidence/http-corrupt.trace.jsonl"
+    ],
+    [
+      "/home/runner/work/PlaySparse/PlaySparse/target/release/playsparse",
+      "verify",
+      "/tmp/playsparse-posix-ci/tiers/secondary"
+    ]
+  ],
+  "scenarios": {
+    "secondary-promotion": {
+      "status": "PASS",
+      "mount_record": {
+        "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/tiers/mounted rw,nosuid,nodev,noatime shared:316 - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+        "filesystem_type": "fuse"
+      },
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 7172096,
+        "primary_cache_hits": 110,
+        "primary_hits": 110,
+        "promotion_bytes": 11474931,
+        "promotions": 179,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 2694209,
+        "secondary_hits": 179,
+        "timeouts": 0
+      },
+      "trace": {
+        "cache_hit_ratio": 0.7553648068669528,
+        "cache_miss_ratio": 0.2446351931330472,
+        "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+        "events": 1023,
+        "hot_files": [
+          {
+            "events": 751,
+            "path": "world.dat"
+          },
+          {
+            "events": 50,
+            "path": "testgame"
+          },
+          {
+            "events": 43,
+            "path": "audio.dat"
+          },
+          {
+            "events": 43,
+            "path": "fixture.json"
+          },
+          {
+            "events": 42,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 35,
+            "path": "assets/texture.dat"
+          },
+          {
+            "events": 17,
+            "path": "config.json"
+          },
+          {
+            "events": 17,
+            "path": "readme.txt"
+          },
+          {
+            "events": 14,
+            "path": "assets/empty.bin"
+          },
+          {
+            "events": 11,
+            "path": "overlay-created.txt"
+          }
+        ],
+        "hot_ranges": [
+          {
+            "events": 12,
+            "length": 4096,
+            "offset": 4190208,
+            "path": "world.dat"
+          },
+          {
+            "events": 10,
+            "length": 131072,
+            "offset": 0,
+            "path": "world.dat"
+          },
+          {
+            "events": 7,
+            "length": 8192,
+            "offset": 258048,
+            "path": "world.dat"
+          },
+          {
+            "events": 7,
+            "length": 131072,
+            "offset": 393216,
+            "path": "world.dat"
+          },
+          {
+            "events": 7,
+            "length": 131072,
+            "offset": 524288,
+            "path": "world.dat"
+          },
+          {
+            "events": 6,
+            "length": 16384,
+            "offset": 0,
+            "path": "world.dat"
+          },
+          {
+            "events": 6,
+            "length": 131072,
+            "offset": 262144,
+            "path": "world.dat"
+          },
+          {
+            "events": 6,
+            "length": 131072,
+            "offset": 655360,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 131072,
+            "offset": 131072,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 8192,
+            "offset": 327680,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 8192,
+            "offset": 430080,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 69632,
+            "offset": 430080,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 131072,
+            "offset": 786432,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 131072,
+            "offset": 917504,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 131072,
+            "offset": 1048576,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 8192,
+            "offset": 2269184,
+            "path": "world.dat"
+          },
+          {
+            "events": 5,
+            "length": 69632,
+            "offset": 2269184,
+            "path": "world.dat"
+          },
+          {
+            "events": 4,
+            "length": 8192,
+            "offset": 45056,
+            "path": "world.dat"
+          },
+          {
+            "events": 4,
+            "length": 126976,
+            "offset": 131072,
+            "path": "world.dat"
+          },
+          {
+            "events": 4,
+            "length": 131072,
+            "offset": 1179648,
+            "path": "world.dat"
+          }
+        ],
+        "latency_ns": {
+          "p50": 4960,
+          "p95": 1669006,
+          "p99": 2044396
+        },
+        "operations": {
+          "create": 1,
+          "flush": 320,
+          "read": 700,
+          "truncate": 1,
+          "write": 1
+        },
+        "read_bytes": 51184345,
+        "read_operations": 700,
+        "reread_ratio": 0.40714285714285714,
+        "sequential_read_percentage": 5.285714285714286,
+        "sessions": [
+          "4331-1791144684141712955"
+        ],
+        "sources": {
+          "memory-cache": 528,
+          "mixed": 31,
+          "overlay": 324,
+          "primary-local": 51,
+          "secondary-local": 89
+        },
+        "version": 1,
+        "write_bytes": 18,
+        "write_operations": 1
+      },
+      "unmount_events": [
+        {
+          "cache": {
+            "decompressions": 289,
+            "decompressions_avoided": 928,
+            "evictions": 159,
+            "hit_ratio": 0.76253081347576,
+            "hits": 928,
+            "in_flight_waits": 0,
+            "misses": 289,
+            "peak_resident_bytes": 8366067,
+            "prefetch_bytes_loaded": 0,
+            "prefetch_chunks_loaded": 0,
+            "prefetch_dropped": 0,
+            "prefetch_duplicates": 0,
+            "prefetch_errors": 0,
+            "prefetch_expired": 0,
+            "prefetch_hits": 0,
+            "prefetch_peak_reserved_bytes": 0,
+            "prefetch_queue_high_watermark": 0,
+            "prefetch_requests": 0,
+            "prefetch_reserved_bytes": 0,
+            "prefetch_resident_unconsumed_bytes": 0,
+            "prefetch_skipped": 0,
+            "prefetch_useful_bytes": 0,
+            "prefetch_wasted_bytes": 0,
+            "raw_bytes_loaded": 18647027,
+            "resident_bytes": 8351857,
+            "resident_entries": 130
+          },
+          "event": "fuse_unmounted",
+          "io_errors": 0,
+          "overlay": {
+            "copy_up_bytes": 0,
+            "copy_up_files": 0,
+            "metadata_bytes": 343,
+            "overlay_allocated_bytes": 4096,
+            "overlay_bytes_written": 18,
+            "overlay_files": 1,
+            "overlay_logical_bytes": 18,
+            "tombstones": 0
+          },
+          "read_requests": 700,
+          "returned_bytes": 51184345,
+          "sync_error": null,
+          "tiers": {
+            "errors": 0,
+            "integrity_errors": 0,
+            "primary_bytes": 7172096,
+            "primary_cache_hits": 110,
+            "primary_hits": 110,
+            "promotion_bytes": 11474931,
+            "promotions": 179,
+            "remote_bytes": 0,
+            "remote_errors": 0,
+            "remote_hits": 0,
+            "remote_ranges": 0,
+            "remote_requests": 0,
+            "secondary_bytes": 2694209,
+            "secondary_hits": 179,
+            "timeouts": 0
+          },
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 1023,
+            "events_written": 1023,
+            "queue_high_watermark": 21,
+            "writer_errors": 0
+          },
+          "writable": true,
+          "write_requests": 1,
+          "written_bytes": 18
+        },
+        {
+          "event": "trace_closed",
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 1023,
+            "events_written": 1023,
+            "queue_high_watermark": 21,
+            "writer_errors": 0
+          }
+        }
+      ]
+    },
+    "promoted-remount": {
+      "status": "PASS",
+      "mount_record": {
+        "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/tiers/mounted rw,nosuid,nodev,noatime shared:316 - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+        "filesystem_type": "fuse"
+      },
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 11831396,
+        "primary_cache_hits": 187,
+        "primary_hits": 187,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "cache_hit_ratio": 0.5074626865671642,
+        "cache_miss_ratio": 0.4925373134328358,
+        "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+        "events": 239,
+        "hot_files": [
+          {
+            "events": 102,
+            "path": "world.dat"
+          },
+          {
+            "events": 31,
+            "path": "testgame"
+          },
+          {
+            "events": 24,
+            "path": "audio.dat"
+          },
+          {
+            "events": 24,
+            "path": "fixture.json"
+          },
+          {
+            "events": 23,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 16,
+            "path": "assets/texture.dat"
+          },
+          {
+            "events": 6,
+            "path": "config.json"
+          },
+          {
+            "events": 6,
+            "path": "readme.txt"
+          },
+          {
+            "events": 4,
+            "path": "assets/empty.bin"
+          },
+          {
+            "events": 3,
+            "path": "overlay-created.txt"
+          }
+        ],
+        "hot_ranges": [
+          {
+            "events": 2,
+            "length": 4096,
+            "offset": 0,
+            "path": "config.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 0,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 131072,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 262144,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 393216,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 524288,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 655360,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 786432,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 917504,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 1048576,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 24576,
+            "offset": 1179648,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 4096,
+            "offset": 0,
+            "path": "readme.txt"
+          },
+          {
+            "events": 1,
+            "length": 16384,
+            "offset": 0,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 0,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 131072,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 262144,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 393216,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 524288,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 655360,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 786432,
+            "path": "assets/entropy.dat"
+          }
+        ],
+        "latency_ns": {
+          "p50": 9938,
+          "p95": 208140,
+          "p99": 251180
+        },
+        "operations": {
+          "flush": 37,
+          "read": 202
+        },
+        "read_bytes": 15049320,
+        "read_operations": 202,
+        "reread_ratio": 0.0594059405940594,
+        "sequential_read_percentage": 2.9702970297029703,
+        "sessions": [
+          "4436-1791144684480645086"
+        ],
+        "sources": {
+          "memory-cache": 102,
+          "mixed": 10,
+          "overlay": 38,
+          "primary-local": 89
+        },
+        "version": 1,
+        "write_bytes": 0,
+        "write_operations": 0
+      },
+      "unmount_events": [
+        {
+          "cache": {
+            "decompressions": 187,
+            "decompressions_avoided": 183,
+            "evictions": 56,
+            "hit_ratio": 0.571875,
+            "hits": 183,
+            "in_flight_waits": 39,
+            "misses": 137,
+            "peak_resident_bytes": 8366067,
+            "prefetch_bytes_loaded": 3213186,
+            "prefetch_chunks_loaded": 50,
+            "prefetch_dropped": 0,
+            "prefetch_duplicates": 0,
+            "prefetch_errors": 0,
+            "prefetch_expired": 0,
+            "prefetch_hits": 50,
+            "prefetch_peak_reserved_bytes": 196608,
+            "prefetch_queue_high_watermark": 3,
+            "prefetch_requests": 55,
+            "prefetch_reserved_bytes": 0,
+            "prefetch_resident_unconsumed_bytes": 0,
+            "prefetch_skipped": 69,
+            "prefetch_useful_bytes": 3213186,
+            "prefetch_wasted_bytes": 0,
+            "raw_bytes_loaded": 11831396,
+            "resident_bytes": 8329203,
+            "resident_entries": 131
+          },
+          "event": "fuse_unmounted",
+          "io_errors": 0,
+          "overlay": {
+            "copy_up_bytes": 0,
+            "copy_up_files": 0,
+            "metadata_bytes": 343,
+            "overlay_allocated_bytes": 4096,
+            "overlay_bytes_written": 0,
+            "overlay_files": 1,
+            "overlay_logical_bytes": 18,
+            "tombstones": 0
+          },
+          "read_requests": 202,
+          "returned_bytes": 15049320,
+          "sync_error": null,
+          "tiers": {
+            "errors": 0,
+            "integrity_errors": 0,
+            "primary_bytes": 11831396,
+            "primary_cache_hits": 187,
+            "primary_hits": 187,
+            "promotion_bytes": 0,
+            "promotions": 0,
+            "remote_bytes": 0,
+            "remote_errors": 0,
+            "remote_hits": 0,
+            "remote_ranges": 0,
+            "remote_requests": 0,
+            "secondary_bytes": 0,
+            "secondary_hits": 0,
+            "timeouts": 0
+          },
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 239,
+            "events_written": 239,
+            "queue_high_watermark": 2,
+            "writer_errors": 0
+          },
+          "writable": true,
+          "write_requests": 0,
+          "written_bytes": 0
+        },
+        {
+          "event": "trace_closed",
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 239,
+            "events_written": 239,
+            "queue_high_watermark": 2,
+            "writer_errors": 0
+          }
+        }
+      ]
+    },
+    "http-ranges": {
+      "status": "PASS",
+      "mount_record": {
+        "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/tiers/mounted rw,nosuid,nodev,noatime shared:316 - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+        "filesystem_type": "fuse"
+      },
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 0,
+        "primary_cache_hits": 0,
+        "primary_hits": 0,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 2826527,
+        "remote_errors": 0,
+        "remote_hits": 187,
+        "remote_ranges": 187,
+        "remote_requests": 187,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "cache_hit_ratio": 0.4925373134328358,
+        "cache_miss_ratio": 0.5074626865671642,
+        "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+        "events": 236,
+        "hot_files": [
+          {
+            "events": 102,
+            "path": "world.dat"
+          },
+          {
+            "events": 31,
+            "path": "testgame"
+          },
+          {
+            "events": 24,
+            "path": "audio.dat"
+          },
+          {
+            "events": 24,
+            "path": "fixture.json"
+          },
+          {
+            "events": 23,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 16,
+            "path": "assets/texture.dat"
+          },
+          {
+            "events": 6,
+            "path": "config.json"
+          },
+          {
+            "events": 6,
+            "path": "readme.txt"
+          },
+          {
+            "events": 4,
+            "path": "assets/empty.bin"
+          }
+        ],
+        "hot_ranges": [
+          {
+            "events": 2,
+            "length": 4096,
+            "offset": 0,
+            "path": "config.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 0,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 131072,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 262144,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 393216,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 524288,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 655360,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 786432,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 917504,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 131072,
+            "offset": 1048576,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 24576,
+            "offset": 1179648,
+            "path": "fixture.json"
+          },
+          {
+            "events": 2,
+            "length": 4096,
+            "offset": 0,
+            "path": "readme.txt"
+          },
+          {
+            "events": 1,
+            "length": 16384,
+            "offset": 0,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 0,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 131072,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 262144,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 393216,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 524288,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 655360,
+            "path": "assets/entropy.dat"
+          },
+          {
+            "events": 1,
+            "length": 131072,
+            "offset": 786432,
+            "path": "assets/entropy.dat"
+          }
+        ],
+        "latency_ns": {
+          "p50": 14126,
+          "p95": 81931693,
+          "p99": 82994205
+        },
+        "operations": {
+          "flush": 35,
+          "read": 201
+        },
+        "read_bytes": 15049302,
+        "read_operations": 201,
+        "reread_ratio": 0.05970149253731343,
+        "sequential_read_percentage": 0.4975124378109453,
+        "sessions": [
+          "4448-1791144684579628198"
+        ],
+        "sources": {
+          "memory-cache": 99,
+          "mixed": 10,
+          "overlay": 35,
+          "remote-http": 92
+        },
+        "version": 1,
+        "write_bytes": 0,
+        "write_operations": 0
+      },
+      "unmount_events": [
+        {
+          "cache": {
+            "decompressions": 187,
+            "decompressions_avoided": 171,
+            "evictions": 56,
+            "hit_ratio": 0.534375,
+            "hits": 171,
+            "in_flight_waits": 32,
+            "misses": 149,
+            "peak_resident_bytes": 8366067,
+            "prefetch_bytes_loaded": 2469264,
+            "prefetch_chunks_loaded": 38,
+            "prefetch_dropped": 0,
+            "prefetch_duplicates": 0,
+            "prefetch_errors": 0,
+            "prefetch_expired": 0,
+            "prefetch_hits": 38,
+            "prefetch_peak_reserved_bytes": 196608,
+            "prefetch_queue_high_watermark": 3,
+            "prefetch_requests": 39,
+            "prefetch_reserved_bytes": 0,
+            "prefetch_resident_unconsumed_bytes": 0,
+            "prefetch_skipped": 65,
+            "prefetch_useful_bytes": 2469264,
+            "prefetch_wasted_bytes": 0,
+            "raw_bytes_loaded": 11831396,
+            "resident_bytes": 8329203,
+            "resident_entries": 131
+          },
+          "event": "fuse_unmounted",
+          "io_errors": 0,
+          "overlay": {
+            "copy_up_bytes": 0,
+            "copy_up_files": 0,
+            "metadata_bytes": 275,
+            "overlay_allocated_bytes": 0,
+            "overlay_bytes_written": 0,
+            "overlay_files": 0,
+            "overlay_logical_bytes": 0,
+            "tombstones": 0
+          },
+          "read_requests": 201,
+          "returned_bytes": 15049302,
+          "sync_error": null,
+          "tiers": {
+            "errors": 0,
+            "integrity_errors": 0,
+            "primary_bytes": 0,
+            "primary_cache_hits": 0,
+            "primary_hits": 0,
+            "promotion_bytes": 0,
+            "promotions": 0,
+            "remote_bytes": 2826527,
+            "remote_errors": 0,
+            "remote_hits": 187,
+            "remote_ranges": 187,
+            "remote_requests": 187,
+            "secondary_bytes": 0,
+            "secondary_hits": 0,
+            "timeouts": 0
+          },
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 236,
+            "events_written": 236,
+            "queue_high_watermark": 2,
+            "writer_errors": 0
+          },
+          "writable": true,
+          "write_requests": 0,
+          "written_bytes": 0
+        },
+        {
+          "event": "trace_closed",
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 236,
+            "events_written": 236,
+            "queue_high_watermark": 2,
+            "writer_errors": 0
+          }
+        }
+      ]
+    },
+    "http-corrupt": {
+      "status": "PASS",
+      "read_status": "FAIL_EXPECTED",
+      "expected_read_failure": true,
+      "errno": 5,
+      "winerror": null,
+      "mount_record": {
+        "mountinfo": "151 27 0:49 / /tmp/playsparse-posix-ci/tiers/mounted rw,nosuid,nodev,noatime shared:316 - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+        "filesystem_type": "fuse"
+      },
+      "tiers": {
+        "errors": 2,
+        "integrity_errors": 2,
+        "primary_bytes": 0,
+        "primary_cache_hits": 0,
+        "primary_hits": 0,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 66,
+        "remote_errors": 2,
+        "remote_hits": 0,
+        "remote_ranges": 2,
+        "remote_requests": 2,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "unmount_events": [
+        {
+          "cache": {
+            "decompressions": 0,
+            "decompressions_avoided": 0,
+            "evictions": 0,
+            "hit_ratio": 0.0,
+            "hits": 0,
+            "in_flight_waits": 0,
+            "misses": 2,
+            "peak_resident_bytes": 0,
+            "prefetch_bytes_loaded": 0,
+            "prefetch_chunks_loaded": 0,
+            "prefetch_dropped": 0,
+            "prefetch_duplicates": 0,
+            "prefetch_errors": 0,
+            "prefetch_expired": 0,
+            "prefetch_hits": 0,
+            "prefetch_peak_reserved_bytes": 0,
+            "prefetch_queue_high_watermark": 0,
+            "prefetch_requests": 0,
+            "prefetch_reserved_bytes": 0,
+            "prefetch_resident_unconsumed_bytes": 0,
+            "prefetch_skipped": 0,
+            "prefetch_useful_bytes": 0,
+            "prefetch_wasted_bytes": 0,
+            "raw_bytes_loaded": 0,
+            "resident_bytes": 0,
+            "resident_entries": 0
+          },
+          "event": "fuse_unmounted",
+          "io_errors": 2,
+          "overlay": {
+            "copy_up_bytes": 0,
+            "copy_up_files": 0,
+            "metadata_bytes": 275,
+            "overlay_allocated_bytes": 0,
+            "overlay_bytes_written": 0,
+            "overlay_files": 0,
+            "overlay_logical_bytes": 0,
+            "tombstones": 0
+          },
+          "read_requests": 2,
+          "returned_bytes": 0,
+          "sync_error": null,
+          "tiers": {
+            "errors": 2,
+            "integrity_errors": 2,
+            "primary_bytes": 0,
+            "primary_cache_hits": 0,
+            "primary_hits": 0,
+            "promotion_bytes": 0,
+            "promotions": 0,
+            "remote_bytes": 66,
+            "remote_errors": 2,
+            "remote_hits": 0,
+            "remote_ranges": 2,
+            "remote_requests": 2,
+            "secondary_bytes": 0,
+            "secondary_hits": 0,
+            "timeouts": 0
+          },
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 4,
+            "events_written": 4,
+            "queue_high_watermark": 1,
+            "writer_errors": 0
+          },
+          "writable": true,
+          "write_requests": 0,
+          "written_bytes": 0
+        },
+        {
+          "event": "trace_closed",
+          "trace": {
+            "events_dropped": 0,
+            "events_seen": 4,
+            "events_written": 4,
+            "queue_high_watermark": 1,
+            "writer_errors": 0
+          }
+        }
+      ],
+      "trace": {
+        "cache_hit_ratio": 0.0,
+        "cache_miss_ratio": 1.0,
+        "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+        "events": 4,
+        "hot_files": [
+          {
+            "events": 4,
+            "path": "readme.txt"
+          }
+        ],
+        "hot_ranges": [
+          {
+            "events": 2,
+            "length": 4096,
+            "offset": 0,
+            "path": "readme.txt"
+          }
+        ],
+        "latency_ns": {
+          "p50": 4197,
+          "p95": 40450842,
+          "p99": 40450842
+        },
+        "operations": {
+          "flush": 2,
+          "read": 2
+        },
+        "read_bytes": 0,
+        "read_operations": 2,
+        "reread_ratio": 0.5,
+        "sequential_read_percentage": 0.0,
+        "sessions": [
+          "4650-1791144686896081037"
+        ],
+        "sources": {
+          "overlay": 2,
+          "unresolved": 2
+        },
+        "version": 1,
+        "write_bytes": 0,
+        "write_operations": 0
+      }
+    }
+  },
+  "configs": {
+    "secondary-tiers.json": {
+      "version": 1,
+      "primary_cache": "promoted",
+      "secondary": "secondary",
+      "promote": true
+    },
+    "promoted-tiers.json": {
+      "version": 1,
+      "primary_cache": "promoted",
+      "promote": false
+    },
+    "remote-tiers.json": {
+      "version": 1,
+      "promote": false,
+      "remote": {
+        "base_url": "http://127.0.0.1:35049",
+        "timeout_ms": 3000,
+        "retries": 0
+      }
+    }
+  },
+  "dataset": "generated TestGame, 4 MiB world; no real game compatibility claim",
+  "windows_physical_validation": "BLOCKED_ON_PHYSICAL_WINDOWS",
+  "policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "assets/empty.bin": 14,
+      "assets/entropy.dat": 42,
+      "assets/texture.dat": 35,
+      "audio.dat": 43,
+      "config.json": 17,
+      "fixture.json": 43,
+      "overlay-created.txt": 11,
+      "readme.txt": 17,
+      "testgame": 50,
+      "world.dat": 751
+    }
+  },
+  "http": {
+    "requests": 189,
+    "served_bytes": 2826593,
+    "all_requests_exact_object_ranges": true
+  },
+  "clean_unmount": true,
+  "source_unchanged": true,
+  "base_unchanged": true,
+  "secondary_unchanged": true,
+  "wall_seconds": 3.4455994789999522
+}

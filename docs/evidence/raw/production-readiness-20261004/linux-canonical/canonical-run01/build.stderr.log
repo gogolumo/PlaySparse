@@ -1,0 +1,7 @@
+   Compiling playsparse-cache v0.1.0 (/src/crates/playsparse-cache)
+   Compiling playsparse-cli v0.1.0 (/src/crates/playsparse-cli)
+   Compiling playsparse-range v0.1.0 (/src/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/src/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/src/crates/playsparse-vfs-fuse)
+   Compiling playsparse-vfs-win v0.1.0 (/src/crates/playsparse-vfs-win)
+    Finished `release` profile [optimized] target(s) in 7.78s
