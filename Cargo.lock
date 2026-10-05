@@ -743,6 +743,7 @@ dependencies = [
  "ctrlc",
  "libc",
  "playsparse-core",
+ "playsparse-game",
  "playsparse-overlay",
  "playsparse-policy",
  "playsparse-range",
@@ -766,6 +767,22 @@ dependencies = [
  "serde",
  "thiserror",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "playsparse-game"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "fastcdc",
+ "libc",
+ "playsparse-core",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "walkdir",
+ "windows-sys 0.61.2",
+ "zstd",
 ]
 
 [[package]]
@@ -821,6 +838,7 @@ dependencies = [
  "fastcdc",
  "libc",
  "playsparse-core",
+ "playsparse-game",
  "proptest",
  "serde",
  "serde_json",

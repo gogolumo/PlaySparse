@@ -27,6 +27,12 @@ Windows shell-folder discovery invokes literal PowerShell argv with a 30-second
 timeout. `scan` itself does not install, launch, modify, or use the network.
 The external executable remains user-trusted code, not a sandbox.
 
+The repository's `bin/um` launcher defaults to `uv run`, which can create a venv
+and install dependencies. The adapter must set `UM_NO_UV=1` and
+`PYTHONDONTWRITEBYTECODE=1` for its child; this uses an existing Python interpreter
+and disables that implicit install and bytecode writes. Missing interpreter or
+scanner failure is an actionable error, never an installation request.
+
 `um/kb.py` has local search plus optional network synchronization and PR actions.
 PlaySparse will invoke neither: repository notes were searched locally. The
 engine guides distinguish Unreal pak/IoStore, Unity layouts, Godot PCK, Source
