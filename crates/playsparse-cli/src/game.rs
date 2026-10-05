@@ -42,6 +42,7 @@ pub fn inspect(
     output: Option<&Path>,
     plan_output: Option<&Path>,
     container_aware: bool,
+    skip_compression: bool,
     mode: scanner::Mode,
     program: &Path,
 ) -> Result<Value> {
@@ -62,7 +63,7 @@ pub fn inspect(
         super::write_json_exclusive(output, &serde_json::to_value(&profile)?)?;
     }
     if let Some(output) = plan_output {
-        let plan = PackingPlan::from_profile(&profile, container_aware)?;
+        let plan = PackingPlan::experimental(&profile, container_aware, skip_compression)?;
         super::write_json_exclusive(output, &serde_json::to_value(&plan)?)?;
     }
     Ok(
@@ -74,6 +75,7 @@ pub fn analyze(
     profile_path: &Path,
     output: Option<&Path>,
     container_aware: bool,
+    skip_compression: bool,
 ) -> Result<Value> {
     if let Some(output) = output {
         outside_source(output, source)?;
@@ -83,7 +85,7 @@ pub fn analyze(
     let cpu = playsparse_core::process_resources().0;
     let measured = playsparse_game::inspect(source)?;
     imported.matches_source(&measured)?;
-    let plan = PackingPlan::from_profile(&measured, container_aware)?;
+    let plan = PackingPlan::experimental(&measured, container_aware, skip_compression)?;
     // Publish a separate versioned artifact before the pack transaction begins.
     if let Some(output) = output {
         super::write_json_exclusive(output, &serde_json::to_value(&plan)?)?;

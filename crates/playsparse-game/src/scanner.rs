@@ -257,7 +257,23 @@ pub fn normalize(bytes: &[u8], source: &Path, profile: &mut GameProfile) -> Resu
         .ok_or_else(|| invalid("invalid engine confidence"))? as u8;
     // The public label uses the stable key, not arbitrary scanner prose.
     profile.engine.key = k.into();
-    profile.engine.label = k.into();
+    profile.engine.label = match k {
+        "unity-mono" => "Unity (Mono)",
+        "unity-il2cpp" => "Unity (IL2CPP)",
+        "unreal" => "Unreal Engine",
+        "godot" => "Godot",
+        "gamemaker" => "GameMaker",
+        "source" => "Source 1",
+        "source2" => "Source 2",
+        "creation" => "Bethesda Creation",
+        "rage" => "Rockstar RAGE",
+        "redengine" => "REDengine",
+        "fromsoft" => "FromSoftware",
+        "idtech" => "id Tech",
+        "native" => "Unknown native engine",
+        _ => k,
+    }
+    .into();
     profile.engine.confidence = Some(confidence);
     profile.engine.version = opt_label(
         engine

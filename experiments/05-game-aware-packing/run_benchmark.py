@@ -203,6 +203,8 @@ def main():
                             inspect_argv = [str(binary), "inspect-game", str(source), "--scanner", "generic", "--output", str(profile), "--plan-output", str(plan)]
                             if mode == "zip-records":
                                 inspect_argv.append("--container-aware")
+                            if mode == "measured-codec":
+                                inspect_argv.append("--experimental-skip-compression")
                             inspection, inspect_row, inspect_cpu = command(inspect_argv, label + "-inspect")
                             inspect_wall = inspect_row["wall_seconds"]
                             argv += ["--plan", str(plan)]

@@ -34,7 +34,7 @@ fn deterministic_measurement_and_plan() {
     assert!(!a.files[1].measurement.incompressible_candidate);
     assert_eq!(a.files[0].measurement.samples.len(), 3);
     assert_eq!(a.files[0].container_hint.as_deref(), Some("ambiguous-pak"));
-    let p = PackingPlan::from_profile(&a, false).unwrap();
+    let p = PackingPlan::experimental(&a, false, true).unwrap();
     p.verify_source(t.path()).unwrap();
     assert_eq!(
         p.files[0].compression_strategy,
@@ -43,6 +43,13 @@ fn deterministic_measurement_and_plan() {
     assert_eq!(
         p.files[1].compression_strategy,
         CompressionStrategy::TryZstd
+    );
+    let default = PackingPlan::from_profile(&a, false).unwrap();
+    assert!(
+        default
+            .files
+            .iter()
+            .all(|f| f.compression_strategy == CompressionStrategy::TryZstd)
     );
 }
 #[test]
@@ -89,7 +96,7 @@ fn scanner_unknown_and_multiple_signals_no_path_leak() {
     assert_eq!(p.engine.evidence_paths, vec!["raw.pak"]);
     assert!(!serde_json::to_string(&p).unwrap().contains("/Users/"));
     assert_eq!(
-        PackingPlan::from_profile(&p, false).unwrap().files[0].compression_strategy,
+        PackingPlan::experimental(&p, false, true).unwrap().files[0].compression_strategy,
         CompressionStrategy::MeasuredRaw
     );
 }

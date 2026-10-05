@@ -49,6 +49,10 @@ jobs:
       - run: cargo clippy --locked --workspace --all-targets -- -D warnings
       - run: cargo test --locked --workspace
       - run: cargo build --locked --release --workspace
+      - name: Game-awareness CLI reconstruction and unchanged generic packing
+        run: PLAYSPARSE_GAME_TEST_BINARY=target/release/playsparse python3 -m unittest discover -s tests -p test_game_awareness.py -v
+      - name: L0 game-aware packing and update reuse (all trials retained)
+        run: python3 experiments/05-game-aware-packing/run_benchmark.py --work /tmp/playsparse-experiment05-ci --repetitions 2 --iterations 64 --size-mib 4
       - name: Canonical POSIX validation with build receipt and actual doctor mount
         run: sudo env "PATH=$PATH" "RUSTUP_HOME=${RUSTUP_HOME:-$HOME/.rustup}" "CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}" "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-target}" python3 tools/posix-runtime-validation.py --work /tmp/playsparse-posix-ci --build
       - name: Explicit driver-backed ignored Rust tests
@@ -70,14 +74,14 @@ jobs:
           sudo python3 - "$RUNNER_TEMP/linux-runtime-evidence.tar.gz" <<'PY'
           from pathlib import Path
           import sys, tarfile
-          roots = [Path('/tmp/playsparse-posix-ci'), Path('/tmp/playsparse-crash-ci'), Path('/tmp/playsparse-experiment04-ci')]
+          roots = [Path('/tmp/playsparse-posix-ci'), Path('/tmp/playsparse-crash-ci'), Path('/tmp/playsparse-experiment04-ci'), Path('/tmp/playsparse-experiment05-ci')]
           with tarfile.open(sys.argv[1], 'w:gz') as archive:
               for root in roots:
                   if not root.is_dir():
                       continue
                   if root.name == 'playsparse-posix-ci':
                       paths = list(root.glob('*.json')) + list(root.glob('*.log')) + list(root.glob('*/evidence'))
-                  elif root.name == 'playsparse-crash-ci':
+                  elif root.name in ('playsparse-crash-ci', 'playsparse-experiment05-ci'):
                       paths = [root / 'evidence']
                   else:
                       paths = list(root.iterdir())
@@ -123,6 +127,12 @@ jobs:
       - run: cargo clippy --locked --workspace --all-targets -- -D warnings
       - run: cargo test --locked --workspace
       - run: cargo build --locked --release --workspace
+      - name: Game-awareness CLI on native Windows
+        shell: pwsh
+        run: |
+          $env:PLAYSPARSE_GAME_TEST_BINARY = (Resolve-Path 'target/release/playsparse.exe').Path
+          python -m unittest discover -s tests -p test_game_awareness.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Game-awareness CLI regression failed' }
       - name: Portable validation and native Windows WOF API tests
         shell: pwsh
         run: |

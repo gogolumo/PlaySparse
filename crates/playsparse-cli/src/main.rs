@@ -63,6 +63,8 @@ enum Command {
         plan: Option<PathBuf>,
         #[arg(long, requires = "profile")]
         container_aware: bool,
+        #[arg(long, requires = "profile")]
+        experimental_skip_compression: bool,
     },
     Verify {
         store: PathBuf,
@@ -77,6 +79,8 @@ enum Command {
         plan_output: Option<PathBuf>,
         #[arg(long, requires = "profile")]
         container_aware: bool,
+        #[arg(long, requires = "profile")]
+        experimental_skip_compression: bool,
     },
     /// Read-only bounded file probes and optional engine discovery.
     InspectGame {
@@ -87,6 +91,8 @@ enum Command {
         plan_output: Option<PathBuf>,
         #[arg(long, requires = "plan_output")]
         container_aware: bool,
+        #[arg(long, requires = "plan_output")]
+        experimental_skip_compression: bool,
         #[arg(long, value_enum, default_value = "auto")]
         scanner: ScannerArg,
         /// Explicit trusted executable (literal argv, never a shell command).
@@ -244,6 +250,7 @@ fn main() -> Result<()> {
             profile,
             plan,
             container_aware,
+            experimental_skip_compression,
         } => {
             let options = PackOptions {
                 layout: match layout {
@@ -260,9 +267,10 @@ fn main() -> Result<()> {
             let plan = if let Some(path) = plan {
                 Some(playsparse_game::PackingPlan::load(&path)?)
             } else if let Some(path) = profile {
-                Some(playsparse_game::PackingPlan::from_profile(
+                Some(playsparse_game::PackingPlan::experimental(
                     &playsparse_game::GameProfile::load(&path)?,
                     container_aware,
+                    experimental_skip_compression,
                 )?)
             } else {
                 None
@@ -280,14 +288,20 @@ fn main() -> Result<()> {
             profile,
             plan_output,
             container_aware,
+            experimental_skip_compression,
         } => {
             let mut report = analyze(&source, u32::try_from(chunk_size)?)?;
             if let Some(profile) = profile {
                 if chunk_size != playsparse_game::TARGET_BYTES as usize {
                     bail!("profile analysis requires --chunk-size 256K");
                 }
-                let value =
-                    game::analyze(&source, &profile, plan_output.as_deref(), container_aware)?;
+                let value = game::analyze(
+                    &source,
+                    &profile,
+                    plan_output.as_deref(),
+                    container_aware,
+                    experimental_skip_compression,
+                )?;
                 report["game_aware"] = value;
             }
             print(&report)
@@ -297,6 +311,7 @@ fn main() -> Result<()> {
             output,
             plan_output,
             container_aware,
+            experimental_skip_compression,
             scanner,
             scanner_program,
         } => {
@@ -310,6 +325,7 @@ fn main() -> Result<()> {
                 output.as_deref(),
                 plan_output.as_deref(),
                 container_aware,
+                experimental_skip_compression,
                 mode,
                 &scanner_program,
             )?)

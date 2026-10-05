@@ -165,6 +165,7 @@ pub struct PackingPlan {
     pub generated_by: String,
     pub source_identity: SourceIdentity,
     pub container_aware: bool,
+    pub experimental_skip_compression: bool,
     pub files: Vec<PlannedFile>,
 }
 
@@ -330,6 +331,13 @@ impl GameProfile {
 }
 impl PackingPlan {
     pub fn from_profile(p: &GameProfile, container_aware: bool) -> Result<Self> {
+        Self::experimental(p, container_aware, false)
+    }
+    pub fn experimental(
+        p: &GameProfile,
+        container_aware: bool,
+        skip_compression: bool,
+    ) -> Result<Self> {
         p.validate()?;
         let files=p.files.iter().map(|f| {
             let use_zip=container_aware && f.zip_boundaries.is_some();
@@ -337,9 +345,9 @@ impl PackingPlan {
                 container_hint:f.container_hint.clone(), measurement:f.measurement.clone(),
                 chunk_strategy:if use_zip {ChunkStrategy::ZipRecordsCdc} else {ChunkStrategy::Cdc},
                 target_chunk_bytes:TARGET_BYTES,zstd_level:3,
-                compression_strategy:if f.measurement.incompressible_candidate {CompressionStrategy::MeasuredRaw} else {CompressionStrategy::TryZstd},
+                compression_strategy:if skip_compression && f.measurement.incompressible_candidate {CompressionStrategy::MeasuredRaw} else {CompressionStrategy::TryZstd},
                 boundaries:if use_zip {f.zip_boundaries.clone().unwrap_or_default()} else {vec![]},
-                reason:if f.measurement.incompressible_candidate {"three bounded Zstd probes failed to shrink; raw is experimental, unsampled bytes may compress"} else {"retain generic Zstd with per-object raw fallback"}.into(),
+                reason:if skip_compression && f.measurement.incompressible_candidate {"three bounded Zstd probes failed to shrink; raw is experimental, unsampled bytes may compress"} else {"retain generic Zstd with per-object raw fallback"}.into(),
             }
         }).collect();
         Ok(Self {
@@ -347,6 +355,7 @@ impl PackingPlan {
             generated_by: "playsparse-game-v1".into(),
             source_identity: p.source_identity.clone(),
             container_aware,
+            experimental_skip_compression: skip_compression,
             files,
         })
     }
@@ -386,6 +395,13 @@ impl PackingPlan {
                 }
                 _ => return Err(invalid("invalid planned chunk strategy")),
             }
+            if f.compression_strategy == CompressionStrategy::MeasuredRaw
+                && !self.experimental_skip_compression
+            {
+                return Err(invalid(
+                    "measured raw requires explicit experimental opt-in",
+                ));
+            }
         }
         Ok(())
     }
@@ -393,7 +409,11 @@ impl PackingPlan {
     pub fn verify_source(&self, source: &Path) -> Result<()> {
         self.validate()?;
         let measured = inspect(source)?;
-        let expected = Self::from_profile(&measured, self.container_aware)?;
+        let expected = Self::experimental(
+            &measured,
+            self.container_aware,
+            self.experimental_skip_compression,
+        )?;
         if self != &expected {
             return Err(invalid(
                 "source/plan mismatch or unverified packing decision",
@@ -610,7 +630,7 @@ pub fn inspect(source: &Path) -> Result<GameProfile> {
         let mode = if before.permissions().readonly() {
             0o444
         } else {
-            0o666
+            0o644
         };
         let analyzed = AnalyzedFile {
             path,

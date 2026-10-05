@@ -36,7 +36,7 @@ fn measured_codec_byte_identity_and_generic_regression() {
     fs::write(source.join("raw.pak"), random(2000000)).unwrap();
     fs::write(source.join("code.lua"), b"print('hello')\n".repeat(60000)).unwrap();
     let before = inspect(&source).unwrap();
-    let plan = PackingPlan::from_profile(&before, false).unwrap();
+    let plan = PackingPlan::experimental(&before, false, true).unwrap();
     for layout in [Layout::Packs, Layout::Loose] {
         let a = t.path().join(format!("{layout:?}-generic"));
         let b = t.path().join(format!("{layout:?}-aware"));
