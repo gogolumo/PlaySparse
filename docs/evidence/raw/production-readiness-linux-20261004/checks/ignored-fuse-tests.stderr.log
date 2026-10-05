@@ -1,0 +1,11 @@
+   Compiling playsparse-core v0.1.0 (/src/crates/playsparse-core)
+   Compiling playsparse-trace v0.1.0 (/src/crates/playsparse-trace)
+   Compiling playsparse-store v0.1.0 (/src/crates/playsparse-store)
+   Compiling playsparse-cache v0.1.0 (/src/crates/playsparse-cache)
+   Compiling playsparse-policy v0.1.0 (/src/crates/playsparse-policy)
+   Compiling playsparse-range v0.1.0 (/src/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/src/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/src/crates/playsparse-vfs-fuse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.61s
+     Running unittests src/lib.rs (target-linux/debug/deps/playsparse_vfs_fuse-5ceaa3a321a37994)
+   Doc-tests playsparse_vfs_fuse

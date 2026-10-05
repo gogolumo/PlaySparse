@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-10-04T19:33:43.916054+00:00",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "system": "Linux",
+  "kernel": "6.12.76-linuxkit",
+  "architecture": "aarch64",
+  "python": "3.11.2",
+  "cpu_count": 10,
+  "uid": 0,
+  "git": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/src",
+      "-C",
+      "/src",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "stderr": ""
+  },
+  "working_tree": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/src",
+      "-C",
+      "/src",
+      "status",
+      "--porcelain"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source_clean": true,
+  "available_disk_bytes": 444465647616,
+  "physical_hardware_status": "UNKNOWN; virtualization hints are not a physical-machine attestation",
+  "distribution": "PRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"",
+  "cpu_model": null,
+  "ram_bytes": 8321515520,
+  "virtualization_hints": {
+    "docker_marker": true,
+    "container_marker": false,
+    "system_vendor": null,
+    "product_name": null,
+    "linuxkit_kernel": true
+  },
+  "fuse_helper": {
+    "command": [
+      "/usr/bin/fusermount3",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "fusermount3 version: 3.14.0",
+    "stderr": ""
+  },
+  "fuse_device": {
+    "path": "/dev/fuse",
+    "exists": true,
+    "opened_read_write": true
+  }
+}

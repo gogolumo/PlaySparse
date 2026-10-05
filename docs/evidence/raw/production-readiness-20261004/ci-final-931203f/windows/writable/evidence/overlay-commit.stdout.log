@@ -1,0 +1,23 @@
+{
+  "base_opened_read_only": true,
+  "method": "bounded streaming merged tree into disposable staging directory; full temporary logical space required",
+  "pack": {
+    "allocated_bytes": null,
+    "files": 14,
+    "filesystem_entries": 8,
+    "logical_bytes": 29633187,
+    "metadata_bytes": 9974,
+    "object_bytes": 2541541,
+    "pack_seconds": 0.0862496,
+    "physical_bytes": 2551515,
+    "reused_chunks": 2,
+    "unique_objects": 45,
+    "verified_before_publish": true
+  },
+  "verify": {
+    "checked_bytes": 29633187,
+    "checked_files": 14,
+    "checked_objects": 45,
+    "ok": true
+  }
+}

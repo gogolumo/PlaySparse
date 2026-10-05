@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "repository": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "command": [
+    "/usr/local/cargo/bin/cargo",
+    "build",
+    "--locked",
+    "--release",
+    "--workspace"
+  ],
+  "timestamp": "2026-10-04T19:33:44.508140+00:00",
+  "binaries": {
+    "playsparse": {
+      "path": "/src/target-linux/release/playsparse",
+      "sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c"
+    },
+    "io-probe": {
+      "path": "/src/target-linux/release/io-probe",
+      "sha256": "c6b11cabaf1a7b83166e42d151e45db95d701e8222d3d25c7ab1a4bcbad07417"
+    }
+  },
+  "basis": "successful validation-runner build with unchanged repository identity; local receipt, not a signed attestation"
+}

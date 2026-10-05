@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "output": "/tmp/playsparse-readiness-linux-full-20261004-01/experiment04",
+  "summary": [
+    {
+      "layout": "loose",
+      "pack_seconds_median": 0.5391610625010799,
+      "physical_encoded_bytes": 11479686.0,
+      "allocated_file_bytes": 13901824.0,
+      "directory_metadata_allocated_bytes": 974848.0,
+      "filesystem_files": 643.0,
+      "object_lookup_p95_ms": 8.35e-05,
+      "random_chunk_read_p95_ms": 0.1443335,
+      "sequential_mib_s": 841.4337845926417,
+      "directory_enumeration_ms_median": 2.79936450169771
+    },
+    {
+      "layout": "packs",
+      "pack_seconds_median": 0.11514410399831831,
+      "physical_encoded_bytes": 11479694.0,
+      "allocated_file_bytes": 11489280.0,
+      "directory_metadata_allocated_bytes": 16384.0,
+      "filesystem_files": 4.0,
+      "object_lookup_p95_ms": 8.35e-05,
+      "random_chunk_read_p95_ms": 0.144729,
+      "sequential_mib_s": 871.2595018844403,
+      "directory_enumeration_ms_median": 0.028250000468688086
+    }
+  ],
+  "error": null
+}

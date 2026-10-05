@@ -1,0 +1,5 @@
+{
+  "status": "BLOCKED",
+  "evidence": "/private/tmp/playsparse-readiness-windows-wrapper-blocked-20261004-01",
+  "error": "Native Windows is required; this host cannot provide Windows mounted or WOF evidence"
+}

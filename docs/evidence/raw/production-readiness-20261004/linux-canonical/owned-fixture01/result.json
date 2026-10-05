@@ -1,0 +1,205 @@
+{
+  "version": 2,
+  "timestamp": "2026-10-04T19:34:48.459622+00:00",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "architecture": "aarch64",
+  "status": "PASS",
+  "evidence_type": "one user-supplied native application execution",
+  "scope": "filesystem compatibility for this executable and arguments only; no launcher/DRM/anti-cheat claim",
+  "real_game_validation": "NOT RUN",
+  "game_evidence_gate": "GAME EVIDENCE REQUIRED",
+  "application_kind_user_classification": "game",
+  "commands": [
+    {
+      "label": "pack",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-posix-final-20261004-02/readonly/TestGame",
+        "/tmp/playsparse-readiness-owned-final-20261004-01/base"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:34:49.736067+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 32.28137184800289
+    },
+    {
+      "label": "verify",
+      "command": [
+        "/src/target-linux/release/playsparse",
+        "verify",
+        "/tmp/playsparse-readiness-owned-final-20261004-01/base"
+      ],
+      "cwd": "/src",
+      "timestamp": "2026-10-04T19:35:22.025829+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 10.567423296000925
+    },
+    {
+      "label": "application",
+      "command": [
+        "/tmp/playsparse-readiness-owned-final-20261004-01/mounted/testgame",
+        "--self-test"
+      ],
+      "cwd": "/tmp/playsparse-readiness-owned-final-20261004-01/mounted",
+      "timestamp": "2026-10-04T19:35:32.628751+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1253321669937577
+    }
+  ],
+  "mount_commands": [
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-readiness-owned-final-20261004-01/base",
+      "/tmp/playsparse-readiness-owned-final-20261004-01/mounted",
+      "--trace",
+      "/tmp/playsparse-readiness-owned-final-20261004-01/evidence/trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-readiness-owned-final-20261004-01/overlay"
+    ]
+  ],
+  "source": "/tmp/playsparse-readiness-posix-final-20261004-02/readonly/TestGame",
+  "store": "/tmp/playsparse-readiness-owned-final-20261004-01/base",
+  "overlay": "/tmp/playsparse-readiness-owned-final-20261004-01/overlay",
+  "mountpoint": "/tmp/playsparse-readiness-owned-final-20261004-01/mounted",
+  "child_exit_code": 0,
+  "binary_provenance": {
+    "repository": {
+      "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+      "dirty": false,
+      "working_tree_status": "",
+      "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+      "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+    },
+    "binaries": {
+      "playsparse": {
+        "path": "/src/target-linux/release/playsparse",
+        "sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c"
+      }
+    },
+    "allow_dirty": false,
+    "allow_unverified_binaries": false,
+    "status": "VERIFIED_LOCAL_BUILD_RECEIPT",
+    "manifest": "/src/target-linux/release/playsparse-build-provenance.json"
+  },
+  "commit": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+  "binary_sha256": "bbca73e500173aaa0a4bce8be1be21649966197708d54fd0aed97c0836e18e2c",
+  "disk_preflight": {
+    "available_bytes": 443723698176,
+    "required_bytes": 21490490366,
+    "source_logical_bytes": 10745245183,
+    "basis": "two full logical copies plus configured scratch minimum; application writes may require more"
+  },
+  "source_before_sha256": "9dc0eec2701f9c3d295217d81ba941d8bd66a5b6d1addad00d3cf0ca071c4410",
+  "generated_fixture_detected": true,
+  "mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-owned-final-20261004-01/mounted rw,nosuid,nodev,noatime - fuse playsparse rw,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mount_backend": "FUSE",
+  "unmount_metrics": [
+    {
+      "cache": {
+        "decompressions": 87,
+        "decompressions_avoided": 24,
+        "evictions": 79,
+        "hit_ratio": 0.21621621621621623,
+        "hits": 24,
+        "in_flight_waits": 0,
+        "misses": 87,
+        "peak_resident_bytes": 8388608,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 81037542,
+        "resident_bytes": 8388608,
+        "resident_entries": 8
+      },
+      "event": "fuse_unmounted",
+      "io_errors": 0,
+      "overlay": {
+        "copy_up_bytes": 0,
+        "copy_up_files": 0,
+        "metadata_bytes": 275,
+        "overlay_allocated_bytes": 0,
+        "overlay_bytes_written": 0,
+        "overlay_files": 0,
+        "overlay_logical_bytes": 0,
+        "tombstones": 0
+      },
+      "read_requests": 105,
+      "returned_bytes": 2948423,
+      "sync_error": null,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 1579495,
+        "primary_cache_hits": 0,
+        "primary_hits": 87,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 122,
+        "events_written": 122,
+        "queue_high_watermark": 2,
+        "writer_errors": 0
+      },
+      "writable": true,
+      "write_requests": 0,
+      "written_bytes": 0
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 122,
+        "events_written": 122,
+        "queue_high_watermark": 2,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "clean_unmount": true,
+  "source_unchanged": true,
+  "source_after_sha256": "9dc0eec2701f9c3d295217d81ba941d8bd66a5b6d1addad00d3cf0ca071c4410",
+  "base_unchanged": true,
+  "base_after_sha256": "6ab848870283f8de05690e423e0ad931febca6e43107deb19c5faeeead72fe9e",
+  "repository_after": {
+    "git_sha": "7692d7bdb2527533e174e1a24320973d3192ec4e",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "09d735bee4a50254e693ad61e005e301a84232a92ef4b7df0f3923cf0dd9512a",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": true,
+  "binary_unchanged_during_run": true,
+  "wall_seconds": 44.56501322898839
+}

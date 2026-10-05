@@ -1,0 +1,32 @@
+   Compiling playsparse-core v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-core)
+   Compiling playsparse-vfs-win v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-win)
+   Compiling playsparse-cli v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cli)
+   Compiling io-probe v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/tools/io-probe)
+   Compiling playsparse-trace v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-trace)
+   Compiling playsparse-cache v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cache)
+   Compiling playsparse-store v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-store)
+   Compiling playsparse-policy v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-policy)
+   Compiling playsparse-range v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-range)
+   Compiling playsparse-overlay v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-overlay)
+   Compiling playsparse-vfs-fuse v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-vfs-fuse)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.38s
+     Running unittests src/main.rs (target/debug/deps/io_probe-219551a7a495d508)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_cache-a7bb2bf7d98cf252)
+     Running unittests src/main.rs (target/debug/deps/playsparse-689c81219f56d4e4)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_core-e13862447c83ba05)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_overlay-270acff43357e92d)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_policy-800cadb6b6f1ab9d)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_range-a9672abcc318edd0)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_store-f4077fb5b10c7ad9)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_trace-9d2246a7fe1fc3dd)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_vfs_fuse-e8219a3b4ef7fe08)
+     Running unittests src/lib.rs (target/debug/deps/playsparse_vfs_win-e836233af8d4850e)
+   Doc-tests playsparse_cache
+   Doc-tests playsparse_core
+   Doc-tests playsparse_overlay
+   Doc-tests playsparse_policy
+   Doc-tests playsparse_range
+   Doc-tests playsparse_store
+   Doc-tests playsparse_trace
+   Doc-tests playsparse_vfs_fuse
+   Doc-tests playsparse_vfs_win

@@ -1,0 +1,66 @@
+{
+  "definition": "SHA-256 of complete file/stream contents, sorted relative names/type/mode/mtime; allocation and atime excluded",
+  "tree_sha256": "9390aaf65dcaf92c273850d403fd8813138b768aa1e134191d0e45f2268bb208",
+  "entries": [
+    {
+      "path": "COMMITTED.json",
+      "directory": false,
+      "size": 180,
+      "mode": 33206,
+      "mtime_ns": 1791144822429797800,
+      "sha256": "fab58aee982f8cc8a0b37fc631c54fdcb41dcac985194cb81d1670ab9b0d96ea",
+      "named_streams": []
+    },
+    {
+      "path": "index",
+      "directory": true,
+      "size": 0,
+      "mode": 16895,
+      "mtime_ns": 1791144822415997000
+    },
+    {
+      "path": "index/objects.idx",
+      "directory": false,
+      "size": 296,
+      "mode": 33206,
+      "mtime_ns": 1791144822415997000,
+      "sha256": "c66579d173fb30d8075ab053b3b96d724207d3159bad29904abbf741a4fa1e2f",
+      "named_streams": []
+    },
+    {
+      "path": "manifest.json",
+      "directory": false,
+      "size": 1280,
+      "mode": 33206,
+      "mtime_ns": 1791144822409871900,
+      "sha256": "786097782eabec7b0ae8cb99c2dedcb662b56fbf5d73d5b55d066011257a56e1",
+      "named_streams": []
+    },
+    {
+      "path": "objects",
+      "directory": true,
+      "size": 0,
+      "mode": 16895,
+      "mtime_ns": 1791144822372395000
+    },
+    {
+      "path": "packs",
+      "directory": true,
+      "size": 0,
+      "mode": 16895,
+      "mtime_ns": 1791144822374150200
+    },
+    {
+      "path": "packs/pack-0000.psp",
+      "directory": false,
+      "size": 536,
+      "mode": 33206,
+      "mtime_ns": 1791144822380189100,
+      "sha256": "4c25df454346c0f87748d52a5c28bf92cf1125edbb21cb3e13bf49e4b3b88a09",
+      "named_streams": []
+    }
+  ],
+  "logical_bytes": 2292,
+  "allocated_data_bytes": 5112,
+  "allocation_definition": "sum FILE_STREAM_INFO.StreamAllocationSize for all file data streams including WOF backing stream; directory/MFT metadata excluded"
+}

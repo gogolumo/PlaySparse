@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "status": "PASS",
+  "timestamp": "2026-10-04T20:10:20.739781+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "commands": [
+    {
+      "label": "attach",
+      "command": [
+        "hdiutil",
+        "attach",
+        "-readonly",
+        "-nobrowse",
+        "-noautoopen",
+        "-mountpoint",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/image",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/macfuse-5.4.0.dmg"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:21.359820+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.3109756669999797
+    },
+    {
+      "label": "signature",
+      "command": [
+        "pkgutil",
+        "--check-signature",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/image/Install macFUSE.pkg"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:21.676885+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.5332151249999697
+    },
+    {
+      "label": "extract",
+      "command": [
+        "pkgutil",
+        "--expand-full",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/image/Install macFUSE.pkg",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/sdk"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:22.218606+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.18644266600000492
+    },
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/runner/.cargo/bin/cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:22.406441+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.2869208330000106
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/runner/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--workspace",
+        "--all-targets",
+        "--features",
+        "macfuse",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:22.694686+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 34.44351362500004
+    },
+    {
+      "label": "tests",
+      "command": [
+        "/Users/runner/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--workspace",
+        "--features",
+        "macfuse"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:10:57.142972+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 33.259064499999965
+    },
+    {
+      "label": "release",
+      "command": [
+        "/Users/runner/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--features",
+        "macfuse"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:11:30.412643+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 60.867787082999996
+    },
+    {
+      "label": "detach",
+      "command": [
+        "hdiutil",
+        "detach",
+        "/Users/runner/work/_temp/playsparse-macos-sdk/image"
+      ],
+      "cwd": "/Users/runner/work/PlaySparse/PlaySparse",
+      "timestamp": "2026-10-04T20:12:31.294043+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 10.467068124999969
+    }
+  ],
+  "sdk_version": "5.4.0",
+  "url": "https://github.com/macfuse/macfuse/releases/download/macfuse-5.4.0/macfuse-5.4.0.dmg",
+  "expected_sha256": "861814f0ac7fa8f6547ea40cdd49a36ac84bcc7d34f38a1fa74e8cf68b0401c5",
+  "driver_installed_by_this_run": false,
+  "mount_validation": "NOT RUN",
+  "allow_dirty": false,
+  "image_cleanup": "PASS",
+  "repository": {
+    "git_sha": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "32aac0d30eeb0dc2ffac6b2a0bedef285770cdd260dff193bf6fb720564e5772",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "git_sha": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+  "working_tree_status": "",
+  "source_hashes": {
+    "crates/playsparse-vfs-fuse/src/macos.rs": "8f064707f5176b1e5cc97ac0f3f2f1658c6d7103db8bcb753ba74de18a5ac29f",
+    "crates/playsparse-vfs-fuse/src/lib.rs": "71ad25282cbe6a0c79843d3417f54cad7988f8a16ddf589925ec8e9c17bf2d89",
+    "crates/playsparse-vfs-fuse/src/fuse.rs": "2d922f3682b080e65e0adfdbe8d361496e84f0a65716b2be252e0f7190dc62a0",
+    "crates/playsparse-vfs-fuse/src/writable.rs": "1da858e66bb1b40f96852e00661ba08e09853fd4032469f6d839a4c27c48fc4d",
+    "crates/playsparse-vfs-fuse/src/macos_diagnostic.rs": "82e20c6456790b8667e6710b613c9535e7a31c31617d47ded2ccdf86379ef548",
+    "crates/playsparse-vfs-fuse/src/fuse/tests.rs": "9286bf8ee974bc0eda7c9002caf30b18a5d73d83927e0e7be36fe206fa2ea501",
+    "crates/playsparse-vfs-fuse/src/writable/tests.rs": "0d99be00699e398035dbf7327a40b722ea3c2dd581adeaeba54b9ea97f98e840"
+  },
+  "download_bytes": 16512456,
+  "actual_sha256": "861814f0ac7fa8f6547ea40cdd49a36ac84bcc7d34f38a1fa74e8cf68b0401c5",
+  "repository_after": {
+    "git_sha": "e65e7a9dde01665078b5b40ce965f449b1e35cfe",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "32aac0d30eeb0dc2ffac6b2a0bedef285770cdd260dff193bf6fb720564e5772",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "repository_unchanged_during_run": true,
+  "wall_seconds": 141.20895779100005
+}

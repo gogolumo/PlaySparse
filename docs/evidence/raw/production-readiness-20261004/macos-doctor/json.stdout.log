@@ -1,0 +1,50 @@
+{
+  "arch": "aarch64",
+  "available_disk_bytes": 25926397952,
+  "available_ram_bytes": 237355008,
+  "codecs": [
+    "raw",
+    "zstd (in-process)"
+  ],
+  "exit_code": 0,
+  "filesystem_support": "readonly native callbacks and experimental writable overlays; actual driver mount test required on each platform",
+  "hash": "BLAKE3 raw bytes",
+  "memory_note": "Linux MemAvailable; Windows ullAvailPhys; macOS free+speculative pages (excludes reclaimable inactive/compressed pages); null on measurement failure",
+  "mount_backend": {
+    "available": false,
+    "backend": "macFUSE",
+    "detail": "NOT_INSTALLED: macFUSE mount prerequisites are incomplete; see problems and next_steps. Install official macFUSE 5.3.3+ in the 5.x series, then follow its kernel-backend approval/restart instructions: https://github.com/macfuse/macfuse/wiki/Getting-Started Rebuild: cargo build --locked --release --workspace --features macfuse"
+  },
+  "mount_diagnostic": {
+    "binary_support": false,
+    "can_attempt_mount": false,
+    "detail": "macFUSE mount prerequisites are incomplete; see problems and next_steps.",
+    "driver_installed": false,
+    "driver_version": null,
+    "kernel_approval": "UNKNOWN",
+    "mount_test": "NOT RUN",
+    "next_steps": [
+      "Install official macFUSE 5.3.3+ in the 5.x series, then follow its kernel-backend approval/restart instructions: https://github.com/macfuse/macfuse/wiki/Getting-Started",
+      "Rebuild: cargo build --locked --release --workspace --features macfuse"
+    ],
+    "problems": [
+      "NOT_INSTALLED",
+      "NOT_COMPILED"
+    ],
+    "status": "NOT_INSTALLED",
+    "version_supported": false
+  },
+  "mount_test": {
+    "scope": "tiny disposable readonly mount; not physical/game/launcher evidence",
+    "status": "NOT RUN"
+  },
+  "os": "macos",
+  "permissions": {
+    "exists": true,
+    "note": "actual mount privilege is checked by backend at mount time",
+    "path": ".",
+    "readonly_flag": false
+  },
+  "store_health": null,
+  "windows_physical_test": "REQUIRED"
+}

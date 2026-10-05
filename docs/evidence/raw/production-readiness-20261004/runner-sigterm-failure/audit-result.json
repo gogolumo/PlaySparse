@@ -1,0 +1,20 @@
+{
+  "defect": "SIGTERM exits parent without terminating child process group",
+  "parent_exit_code": -15,
+  "child_survived": true,
+  "persisted_report": {
+    "commands": [
+      {
+        "label": "child",
+        "command": [
+          "/opt/homebrew/opt/python@3.14/bin/python3.14",
+          "-c",
+          "import os,pathlib,time; pathlib.Path('/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T/playsparse-runner-sigterm-audit-9pxf3yoc/child.pid').write_text(str(os.getpid())); time.sleep(60)"
+        ],
+        "status": "RUNNING"
+      }
+    ],
+    "status": "FAIL"
+  },
+  "evidence": "/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T/playsparse-runner-sigterm-audit-9pxf3yoc"
+}

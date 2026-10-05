@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/Users/bogdan_dron/Documents/PlaySparse/target/release/playsparse",
+    "pack",
+    "/tmp/playsparse-readiness-pack-parent-20261004-01/source",
+    "/tmp/playsparse-readiness-pack-parent-20261004-01/source/new/nested/store"
+  ],
+  "exit_code": 1,
+  "before": [
+    "original.txt"
+  ],
+  "after": [
+    "new",
+    "new/nested",
+    "original.txt"
+  ],
+  "source_unchanged": false,
+  "expected": "pack rejects destination inside source without creating source directories",
+  "status": "FAIL"
+}

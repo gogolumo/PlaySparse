@@ -1,0 +1,7 @@
+PlaySparse doctor: macos / aarch64
+NOT_INSTALLED: macFUSE mount prerequisites are incomplete; see problems and next_steps. Install official macFUSE 5.3.3+ in the 5.x series, then follow its kernel-backend approval/restart instructions: https://github.com/macfuse/macfuse/wiki/Getting-Started Rebuild: cargo build --locked --release --workspace --features macfuse
+Mount readiness: NOT_INSTALLED; kernel approval: UNKNOWN
+  Install official macFUSE 5.3.3+ in the 5.x series, then follow its kernel-backend approval/restart instructions: https://github.com/macfuse/macfuse/wiki/Getting-Started
+  Rebuild: cargo build --locked --release --workspace --features macfuse
+Actual mount/read/unmount test: BLOCKED
+reason: NOT_INSTALLED: macFUSE mount prerequisites are incomplete; see problems and next_steps. Install official macFUSE 5.3.3+ in the 5.x series, then follow its kernel-backend approval/restart instructions: https://github.com/macfuse/macfuse/wiki/Getting-Started Rebuild: cargo build --locked --release --workspace --features macfuse

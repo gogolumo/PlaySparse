@@ -1,0 +1,18 @@
+{
+  "cache_bytes": null,
+  "decay_accesses": 64,
+  "eviction": "decaying-hotness",
+  "files": {
+    "hot.bin": 57,
+    "stream.bin": 512
+  },
+  "prefetch": {
+    "budget_bytes": 8388608,
+    "enabled": true,
+    "max_chunks": 2,
+    "queue_depth": 32,
+    "sequential_reads": 3,
+    "ttl_ms": 500
+  },
+  "version": 1
+}

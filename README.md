@@ -74,7 +74,8 @@ Static LRU remains the default.
 
 Native macOS mounting is the next validation gate. Physical Windows validation
 also remains open; hosted CI does not establish desktop/game compatibility.
-See [first mounted run](docs/evidence/first-mounted-run.md),
+See [production readiness validation](docs/evidence/production-readiness.md),
+[first mounted run](docs/evidence/first-mounted-run.md),
 [adaptive writable runtime evidence](docs/evidence/adaptive-writable-runtime.md),
 [macOS/Linux runtime evidence](docs/evidence/posix-runtime.md),
 [writable overlay](docs/writable-overlay.md),

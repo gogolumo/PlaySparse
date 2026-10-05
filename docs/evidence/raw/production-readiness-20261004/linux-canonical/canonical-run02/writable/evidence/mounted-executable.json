@@ -1,0 +1,9 @@
+{
+  "asset_root": "/tmp/playsparse-readiness-posix-final-20261004-02/writable/mounted",
+  "executable": "/tmp/playsparse-readiness-posix-final-20261004-02/writable/mounted/testgame",
+  "read_and_mmap_samples": 169,
+  "sample_blake3": "3decd257375faca3a2e33e960aa68ea0f80ce6684b4ecdb4a4be6529715e6ec7",
+  "schema": 1,
+  "self_test": "PASS",
+  "verified_bytes": 598371
+}

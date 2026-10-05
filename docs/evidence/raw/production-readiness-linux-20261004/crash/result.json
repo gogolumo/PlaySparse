@@ -1,0 +1,213 @@
+{
+  "schema": 1,
+  "os": "linux",
+  "method": "actual partial write syscall then SIGKILL; real tiny-tmpfs ENOSPC if supplied",
+  "source_sha256": "006536072f4945c4001c142ae2055952cfe0152087dcdd4c4a3f0a528a224a60",
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "kill-object-write",
+      "command": [
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-object-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-Iwk7fK/packs/pack-0000.psp",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-object-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-Iwk7fK"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "kill-manifest-write",
+      "command": [
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-manifest-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-pTAQny/manifest.json",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-manifest-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-pTAQny"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "kill-commit-write",
+      "command": [
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-commit-write",
+        "--chunker",
+        "fixed"
+      ],
+      "killed_write_path": "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-63ODRJ/COMMITTED.json",
+      "returncode": -9,
+      "destination_absent": true,
+      "verify_rejects_destination": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/kill-commit-write"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "verify_rejects_partial_stage": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/.playsparse-transaction-63ODRJ"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: EOF while parsing a string at line 1 column 90\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "missing-object",
+      "verify": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/missing-object"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-object",
+      "verify": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/corrupt-object"
+        ],
+        "returncode": 1,
+        "stderr": "Error: corrupt object: c91610d89e5b8b28b7e9173bba251fd589ac4b0f50f4ae5839653d9e70692fd0\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-manifest",
+      "verify": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/corrupt-manifest"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: commit marker metadata digest mismatch\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt-index",
+      "verify": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/corrupt-index"
+        ],
+        "returncode": 1,
+        "stderr": "Error: invalid store: commit marker metadata digest mismatch\n"
+      },
+      "status": "PASS"
+    },
+    {
+      "name": "missing-commit",
+      "verify": {
+        "command": [
+          "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+          "verify",
+          "/tmp/playsparse-readiness-linux-full-20261004-01/crash/missing-commit"
+        ],
+        "returncode": 1,
+        "stderr": "Error: I/O: No such file or directory (os error 2)\n\nCaused by:\n    No such file or directory (os error 2)\n"
+      },
+      "status": "PASS"
+    }
+  ],
+  "disk_full": {
+    "status": "PASS",
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-linux-full-20261004-01/enospc rw,relatime - tmpfs tmpfs rw,size=1024k",
+    "capacity_bytes": 1048576,
+    "pack": {
+      "command": [
+        "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+        "pack",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+        "/tmp/playsparse-readiness-linux-full-20261004-01/enospc/store",
+        "--chunker",
+        "fixed"
+      ],
+      "returncode": 1,
+      "stderr": "Error: I/O: No space left on device (os error 28)\n\nCaused by:\n    No space left on device (os error 28)\n"
+    },
+    "destination_absent": true
+  },
+  "retry_pack": {
+    "command": [
+      "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+      "pack",
+      "/tmp/playsparse-readiness-linux-full-20261004-01/crash/source",
+      "/tmp/playsparse-readiness-linux-full-20261004-01/crash/valid-store",
+      "--chunker",
+      "fixed"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  "retry_verify": {
+    "command": [
+      "/tmp/playsparse-readiness-linux-full-20261004-01/binaries/playsparse",
+      "verify",
+      "/tmp/playsparse-readiness-linux-full-20261004-01/crash/valid-store"
+    ],
+    "returncode": 0,
+    "stderr": ""
+  },
+  "source_untouched": true
+}
