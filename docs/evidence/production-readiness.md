@@ -1,5 +1,16 @@
 # Production readiness validation
 
+Native macOS runtime support was subsequently completed and merged through
+[PR #10](https://github.com/gogolumo/PlaySparse/pull/10). The two macOS runtime
+fix commits are `c6d7f2a` (single-threaded fuser session on macOS) and `e8c2dea`
+(clean Disk Arbitration unmount plus canonical doctor cleanup). Native Apple
+Silicon validation with macFUSE 5.4.0 then passed the bounded doctor
+mount/read/unmount probe and the full POSIX readonly, writable, adaptive and
+tiered generated-fixture suite. Local evidence was retained at
+`/private/tmp/playsparse-macos-native-01` on the validation machine; no generated
+fixture payload is committed to the repository. This establishes native mounted
+macOS software-path evidence, not real-game or launcher compatibility.
+
 The implementation sprint is merged through [PR #7](https://github.com/gogolumo/PlaySparse/pull/7)
 into main at `48a0779`. Its tested feature head was `931203f`. Local full
 validation used clean `7692d7b`; the subsequent fixes cover Windows structured
@@ -20,6 +31,8 @@ merely the feature head. Timestamps and source/binary hashes remain verbatim.
 | Baseline signed macFUSE SDK | [PASS](raw/production-readiness-20261004/baseline-macos-sdk/result.json); mount NOT RUN |
 | Native Mac fmt, locked clippy, workspace tests, release, research | [PASS](raw/production-readiness-20261004/final-host/result.json); 89 Rust tests |
 | Signed macFUSE 5.4.0 compile/link/tests and image cleanup | [PASS](raw/production-readiness-20261004/final-macos-sdk/result.json); 99 tests, 2 mount tests ignored |
+| Native Apple Silicon doctor mount/read/unmount | PASS after PR #10; exact probe bytes served through a different filesystem device and clean Disk Arbitration teardown |
+| Native Apple Silicon readonly/writable/adaptive/tiered POSIX validation | PASS; `tools/posix-runtime-validation.py --work /private/tmp/playsparse-macos-native-01 --build` completed all four generated-fixture stages |
 | Linux VM canonical build/doctor/four mounted stages | [PASS](raw/production-readiness-20261004/linux-canonical/canonical-run02/result.json), clean source and binaries unchanged |
 | Linux VM fmt/clippy/workspace and actual ignored FUSE tests | [PASS](raw/production-readiness-linux-20261004/checks/result.json); 96 ordinary tests plus 2 driver-backed tests |
 | Linux crash/corruption and actual 1 MiB tmpfs ENOSPC | [PASS](raw/production-readiness-linux-20261004/crash/result.json); destination absent and source unchanged |
@@ -30,10 +43,15 @@ merely the feature head. Timestamps and source/binary hashes remain verbatim.
 
 The SDK run checks the pinned checksum, Apple installer signature and
 notarization, attaches read-only, and uses extracted temporary libraries. It
-installs no driver. Mac doctor distinguishes installation, version and binary
-support from approval; its [blocked probe](raw/production-readiness-20261004/macos-doctor/result.json)
-keeps approval UNKNOWN. On Linux, the bounded tiny probe verifies exact bytes
-and a different filesystem device, then unmounts before the 10 GiB readonly,
+installs no driver. The earlier Mac doctor
+[blocked probe](raw/production-readiness-20261004/macos-doctor/result.json) is
+retained as historical evidence from before macFUSE installation/approval. After
+PR #10, native Apple Silicon doctor validation passed with macFUSE 5.4.0: exact
+probe bytes were read through an observed different filesystem device, the mount
+detached cleanly, and no stale PlaySparse mount remained. The full native macOS
+POSIX suite then passed readonly, writable/remount, adaptive and local/HTTP-tier
+generated-fixture stages. On Linux, the bounded tiny probe likewise verifies
+exact bytes and a different filesystem device before the 10 GiB readonly,
 writable/remount/commit/discard, adaptive and local/HTTP-tier stages.
 
 The generated owned-app self-test exited 0. Source, base, binary and repository
@@ -94,30 +112,26 @@ remain in the raw result; no fastest sample is selected.
 
 | Gate | Status |
 | --- | --- |
-| Native mounted Mac runtime | BLOCKED: macFUSE not installed/approved on the physical Mac |
+| Native mounted Mac runtime | PASS: Apple Silicon + macFUSE 5.4.0 generated-fixture doctor/readonly/writable/adaptive/tiered validation |
 | Physical Linux storage/performance | HARDWARE REQUIRED: available Linux validation is a VM |
 | Physical Windows desktop | HARDWARE REQUIRED: hosted WinFsp is separate evidence |
 | Physical Windows original/WOF/PlaySparse | HARDWARE REQUIRED: hosted generated comparison only |
 | Owned real game | GAME EVIDENCE REQUIRED: no workload supplied |
 | Steam/Epic/other launcher | NOT RUN: direct generated execution is not launcher testing |
 
-Next on the Mac, from a clean checkout:
+Next on the Mac is representative owned-application validation, followed by an
+owned game without DRM/anti-cheat if one is supplied. The canonical native
+runtime command remains:
 
 ```bash
-python3 tools/macos-sdk-check.py --work /tmp/playsparse-user-sdk-01
+python3 tools/posix-runtime-validation.py --work /private/tmp/playsparse-user-mac-02 --build
 ```
 
-After installing supported macFUSE 5.3.3+ in the 5.x series and completing its
-[official kernel approval/restart steps](https://github.com/macfuse/macfuse/wiki/Getting-Started):
-
-```bash
-python3 tools/posix-runtime-validation.py --work /tmp/playsparse-user-mac-01 --build
-```
-
-Each work path must be new. See the [POSIX guide](../posix-validation.md) for an
-owned application, and [Windows comparison guide](../windows-comparison.md) for a
-physical client. No system approval, SIP policy, original installation or
-copyrighted game content was changed by this sprint.
+For an owned application, use the POSIX runner's `--source` and `--executable`
+arguments as documented in the [POSIX guide](../posix-validation.md). Each work
+path must be new. Passing generated fixtures is not launcher, Steam/Epic,
+DRM/anti-cheat or commercial-game evidence. The [Windows comparison
+guide](../windows-comparison.md) remains the path for a physical Windows client.
 
 `origin/docs/macos-first-readme`, `origin/feat/adaptive-writable-runtime`,
 `origin/feat/macos-posix-runtime` and `origin/runtime-native-check` were verified
