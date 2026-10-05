@@ -97,7 +97,9 @@ exist for those names/headers. ZIP-generated evidence is not PK3 game execution.
 ## Profile/plan v1 contract
 
 All public records use serde `deny_unknown_fields`; unknown versions and unsafe
-paths fail. JSON input is limited to 16 MiB; analysis to 8192 total file/directory
+paths fail. JSON input and exact serialized sidecar output (including indentation
+and trailing newline) are limited to 16 MiB. Both requested inspect sidecars are
+bounded before either output is created. Analysis is limited to 8192 total file/directory
 entries, 1024-byte relative paths, three probes/file and bounded container tables.
 Modes use the existing store's POSIX/read-only mapping, including Windows 0644
 for writable files. Source identities are portable only when bytes, paths and

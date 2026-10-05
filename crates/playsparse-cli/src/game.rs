@@ -3,6 +3,54 @@ use playsparse_game::{GameProfile, PackingPlan, scanner};
 use serde_json::{Value, json};
 use std::{path::Path, time::Instant};
 
+/// Bound the exact bytes we publish, including pretty-printing and the trailing newline.
+fn artifact_bytes(value: &impl serde::Serialize) -> Result<Vec<u8>> {
+    bounded_artifact_bytes(value, playsparse_game::MAX_ARTIFACT_BYTES as usize)
+}
+fn bounded_artifact_bytes(value: &impl serde::Serialize, limit: usize) -> Result<Vec<u8>> {
+    use std::io::Write;
+    struct BoundedBytes {
+        bytes: Vec<u8>,
+        limit: usize,
+    }
+    impl Write for BoundedBytes {
+        fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+            if self
+                .bytes
+                .len()
+                .checked_add(bytes.len())
+                .is_none_or(|end| end > self.limit)
+            {
+                return Err(std::io::Error::other(
+                    "game artifact exceeds its serialized byte limit",
+                ));
+            }
+            self.bytes.extend_from_slice(bytes);
+            Ok(bytes.len())
+        }
+        fn flush(&mut self) -> std::io::Result<()> {
+            Ok(())
+        }
+    }
+    let mut output = BoundedBytes {
+        bytes: Vec::new(),
+        limit,
+    };
+    serde_json::to_writer_pretty(&mut output, value)?;
+    output.write_all(b"\n")?;
+    Ok(output.bytes)
+}
+fn write_artifact_exclusive(path: &Path, bytes: &[u8]) -> Result<()> {
+    use std::io::Write;
+    let mut file = std::fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)?;
+    file.write_all(bytes)?;
+    file.sync_all()?;
+    Ok(())
+}
+
 /// Refuse sidecars inside source before creating their parents (including symlink ancestors).
 fn outside_source(output: &Path, source: &Path) -> Result<()> {
     let source = source.canonicalize()?;
@@ -59,12 +107,23 @@ pub fn inspect(
     if mode != scanner::Mode::Generic {
         profile.matches_source(&playsparse_game::inspect(source)?)?;
     }
-    if let Some(output) = output {
-        super::write_json_exclusive(output, &serde_json::to_value(&profile)?)?;
+    // Validate both complete sidecars before creating either output file. The
+    // compact inventory budget does not include pretty-printing or plan fields.
+    let profile_bytes = output.map(|_| artifact_bytes(&profile)).transpose()?;
+    let plan_bytes = plan_output
+        .map(|_| {
+            artifact_bytes(&PackingPlan::experimental(
+                &profile,
+                container_aware,
+                skip_compression,
+            )?)
+        })
+        .transpose()?;
+    if let (Some(output), Some(bytes)) = (output, profile_bytes) {
+        write_artifact_exclusive(output, &bytes)?;
     }
-    if let Some(output) = plan_output {
-        let plan = PackingPlan::experimental(&profile, container_aware, skip_compression)?;
-        super::write_json_exclusive(output, &serde_json::to_value(&plan)?)?;
+    if let (Some(output), Some(bytes)) = (plan_output, plan_bytes) {
+        write_artifact_exclusive(output, &bytes)?;
     }
     Ok(
         json!({"profile":profile,"measurement_wall_seconds":start.elapsed().as_secs_f64(),"measurement_cpu_seconds":playsparse_core::process_resources().0.zip(cpu).map(|(end,start)|end-start),"measurement_note":"full identity hash and at most three 64 KiB Zstd level 3 probes per file; scanner hints are untrusted; no already-compressed byte attribution","source_unchanged":true,"startup":"NOT RUN"}),
@@ -88,7 +147,7 @@ pub fn analyze(
     let plan = PackingPlan::experimental(&measured, container_aware, skip_compression)?;
     // Publish a separate versioned artifact before the pack transaction begins.
     if let Some(output) = output {
-        super::write_json_exclusive(output, &serde_json::to_value(&plan)?)?;
+        write_artifact_exclusive(output, &artifact_bytes(&plan)?)?;
     }
     let work = tempfile::tempdir()?;
     let candidate = playsparse_store::pack_directory_with_plan(
@@ -121,6 +180,18 @@ pub fn analyze(
 mod tests {
     use super::*;
     use std::fs;
+    #[test]
+    fn artifact_limit_includes_exact_pretty_bytes_and_newline() {
+        let value = json!({"x": "é"});
+        let mut expected = serde_json::to_vec_pretty(&value).unwrap();
+        expected.push(b'\n');
+        assert_eq!(
+            bounded_artifact_bytes(&value, expected.len()).unwrap(),
+            expected
+        );
+        assert!(bounded_artifact_bytes(&value, expected.len() - 1).is_err());
+        assert!(bounded_artifact_bytes(&value, expected.len() - 2).is_err());
+    }
     #[test]
     fn refuse_nested_output_without_mutating_source() {
         let t = tempfile::tempdir().unwrap();
