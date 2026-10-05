@@ -514,29 +514,7 @@ fn write_result(value: &impl Serialize, output: Option<&Path>) -> Result<()> {
 }
 
 fn resources() -> (Option<f64>, Option<u64>) {
-    #[cfg(unix)]
-    {
-        let mut usage = std::mem::MaybeUninit::<libc::rusage>::zeroed();
-        // SAFETY: libc writes the initialized, appropriately sized rusage object.
-        if unsafe { libc::getrusage(libc::RUSAGE_SELF, usage.as_mut_ptr()) } != 0 {
-            return (None, None);
-        }
-        // SAFETY: getrusage returned success and initialized every field.
-        let usage = unsafe { usage.assume_init() };
-        let seconds = usage.ru_utime.tv_sec as f64
-            + usage.ru_utime.tv_usec as f64 / 1e6
-            + usage.ru_stime.tv_sec as f64
-            + usage.ru_stime.tv_usec as f64 / 1e6;
-        #[cfg(target_os = "macos")]
-        let rss = usage.ru_maxrss as u64;
-        #[cfg(not(target_os = "macos"))]
-        let rss = usage.ru_maxrss as u64 * 1024;
-        (Some(seconds), Some(rss))
-    }
-    #[cfg(not(unix))]
-    {
-        (None, None)
-    }
+    playsparse_core::process_resources()
 }
 
 fn run() -> Result<()> {

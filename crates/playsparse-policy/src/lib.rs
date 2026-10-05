@@ -180,12 +180,15 @@ pub fn optimize_trace(trace: &Path) -> Result<Policy> {
 pub struct Observation {
     pub sequential: bool,
     pub priority: u32,
+    /// Unique forward-covered bytes in the current contiguous/overlapping run.
+    pub forward_bytes: u64,
 }
 struct Sequence {
     start: u64,
     end: u64,
     confidence: u32,
     at_ms: u64,
+    forward_bytes: u64,
 }
 struct Heat {
     score: u32,
@@ -230,16 +233,18 @@ impl Tracker {
         // a single kernel read-ahead stream migrates between callback workers.
         let key = path.to_string();
         let end = offset.saturating_add(returned as u64);
-        let confidence = self
-            .sequences
-            .get(&key)
-            .filter(|sequence| {
-                offset > sequence.start
-                    && offset <= sequence.end
-                    && end > sequence.end
-                    && at_ms.saturating_sub(sequence.at_ms) <= policy.prefetch.ttl_ms
-            })
-            .map_or(1, |sequence| sequence.confidence.saturating_add(1));
+        let previous = self.sequences.get(&key).filter(|sequence| {
+            offset > sequence.start
+                && offset <= sequence.end
+                && end > sequence.end
+                && at_ms.saturating_sub(sequence.at_ms) <= policy.prefetch.ttl_ms
+        });
+        let (confidence, forward_bytes) = previous.map_or((1, returned as u64), |sequence| {
+            (
+                sequence.confidence.saturating_add(1),
+                sequence.forward_bytes.saturating_add(end - sequence.end),
+            )
+        });
         self.sequences.put(
             key,
             Sequence {
@@ -247,6 +252,7 @@ impl Tracker {
                 end,
                 confidence,
                 at_ms,
+                forward_bytes,
             },
         );
         Observation {
@@ -254,6 +260,7 @@ impl Tracker {
             priority: score
                 .saturating_add(policy.files.get(path).copied().unwrap_or(0))
                 .min(2048),
+            forward_bytes,
         }
     }
 }
@@ -265,6 +272,36 @@ pub fn decay(score: u32, elapsed: u64, interval: u64) -> u32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn forward_coverage_counts_unique_bytes_and_resets_for_tiny_bursts_and_gaps() {
+        let policy = Policy::default();
+        let mut tracker = Tracker::default();
+        assert_eq!(
+            tracker.observe(&policy, "file", "w", 0, 8, 0).forward_bytes,
+            8
+        );
+        assert_eq!(
+            tracker.observe(&policy, "file", "w", 4, 8, 1).forward_bytes,
+            12
+        );
+        let observation = tracker.observe(&policy, "file", "w", 8, 8, 2);
+        assert!(observation.sequential);
+        assert_eq!(observation.forward_bytes, 16);
+        let repeated = tracker.observe(&policy, "file", "w", 8, 8, 3);
+        assert!(!repeated.sequential);
+        assert_eq!(repeated.forward_bytes, 8);
+        assert_eq!(
+            tracker
+                .observe(&policy, "file", "w", 100, 1, 4)
+                .forward_bytes,
+            1
+        );
+        tracker.observe(&policy, "tiny", "w", 0, 1, 0);
+        tracker.observe(&policy, "tiny", "w", 1, 1, 1);
+        let tiny = tracker.observe(&policy, "tiny", "w", 2, 1, 2);
+        assert!(tiny.sequential);
+        assert_eq!(tiny.forward_bytes, 3);
+    }
     #[test]
     fn sequence_confidence_random_rejection_and_expiry() {
         let policy = Policy::default();

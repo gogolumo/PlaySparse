@@ -58,3 +58,30 @@ Negative results remain in the repository.
 - **L3 — cross-game replication:** same conclusion reproduced across several unrelated games/hardware profiles.
 
 No industry claim should be based on L0 alone.
+
+
+## Hardware and compatibility gates
+
+Evidence level and host type are separate. Linux VM FUSE success, hosted native
+WinFsp success, and macFUSE SDK compile/link success do not establish physical
+Linux/Windows desktop or native Mac mounted runtime evidence. Driver presence
+also does not establish kernel approval: the actual doctor mount/read/unmount
+probe must pass before the POSIX runtime stages.
+
+A direct owned executable launch records that application's result. Generated
+TestGame is L0 even if classified as a game by a caller. Launcher compatibility
+stays `NOT RUN` until that launcher itself has been validated. A passed single
+application never establishes general game compatibility.
+
+The [Windows comparison](windows-comparison.md) measures identical readonly
+requests across original files, a verified disposable WOF copy, and PlaySparse.
+It reports warm trials, allocated file streams, CPU/RSS and measurable latency;
+startup is `NOT RUN` and native/WOF physical read amplification is null when
+kernel/device bytes cannot be measured. No absent measurement becomes zero.
+Physical WOF evidence requires Windows client hardware attestation and successful
+software/integrity checks; hosted results retain a blocked physical gate.
+
+The [readiness policy replay](evidence/production-readiness-policy.md) reduces
+speculative bytes but still fails the static latency/CPU baseline. It does not
+qualify adaptive policy as preferred. Repeated wins on identical traces across
+representative workloads are required before changing the default.

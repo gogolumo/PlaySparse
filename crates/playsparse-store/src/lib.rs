@@ -187,6 +187,49 @@ fn source_file_mode(metadata: &fs::Metadata) -> u32 {
     }
 }
 
+// Check an as-yet nonexistent parent before mkdir can change the source tree.
+fn projected_parent(parent: &Path) -> Result<PathBuf> {
+    if parent.exists() {
+        return Ok(parent.canonicalize()?);
+    }
+    if parent
+        .components()
+        .any(|part| matches!(part, std::path::Component::ParentDir))
+    {
+        return Err(invalid(
+            "a nonexistent destination parent must not contain '..'; use an absolute normalized path",
+        ));
+    }
+    let mut existing = parent.to_path_buf();
+    let mut suffix = Vec::new();
+    loop {
+        if existing.as_os_str().is_empty() {
+            existing = PathBuf::from(".");
+        }
+        match fs::symlink_metadata(&existing) {
+            Ok(_) => break,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                suffix.push(
+                    existing
+                        .file_name()
+                        .ok_or_else(|| invalid("destination ancestor"))?
+                        .to_os_string(),
+                );
+                existing = existing
+                    .parent()
+                    .ok_or_else(|| invalid("destination ancestor"))?
+                    .to_path_buf();
+            }
+            Err(error) => return Err(error.into()),
+        }
+    }
+    let mut projected = existing.canonicalize()?;
+    for name in suffix.into_iter().rev() {
+        projected.push(name);
+    }
+    Ok(projected)
+}
+
 pub fn encode_index(records: &BTreeMap<[u8; 32], ObjectRecord>) -> Result<Vec<u8>> {
     let len = 16u64
         .checked_add(records.len() as u64 * RECORD_BYTES)
@@ -649,6 +692,11 @@ pub fn pack_directory(
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
         .unwrap_or(Path::new("."));
+    if projected_parent(parent)?.starts_with(&source) {
+        return Err(invalid(
+            "store must be new and outside source tree; no source directories were created",
+        ));
+    }
     fs::create_dir_all(parent)?;
     let parent = parent.canonicalize()?;
     let name = destination
@@ -1045,4 +1093,56 @@ mod tests {
         assert!(!dest.join("data").exists());
     }
     proptest::proptest! { #[test] fn arbitrary_index_never_panics(bytes in proptest::collection::vec(proptest::prelude::any::<u8>(),0..4096)) {let _=decode_index(&bytes);} }
+}
+#[cfg(test)]
+mod publication_tests {
+    use super::*;
+
+    #[test]
+    fn rejects_nested_destination_without_mutating_the_source() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        fs::create_dir(&source).unwrap();
+        fs::write(source.join("original"), b"original").unwrap();
+        assert!(
+            pack_directory(
+                &source,
+                &source.join("new/nested/store"),
+                &PackOptions::default()
+            )
+            .is_err()
+        );
+        assert!(!source.join("new").exists());
+        assert_eq!(fs::read(source.join("original")).unwrap(), b"original");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn rejects_alias_into_source_before_creating_destination_parents() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        fs::create_dir(&source).unwrap();
+        std::os::unix::fs::symlink(&source, tmp.path().join("alias")).unwrap();
+        assert!(
+            pack_directory(
+                &source,
+                &tmp.path().join("alias/new/store"),
+                &PackOptions::default()
+            )
+            .is_err()
+        );
+        assert_eq!(fs::read_dir(&source).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn creates_nested_destination_only_outside_the_source() {
+        let tmp = tempfile::tempdir().unwrap();
+        let source = tmp.path().join("source");
+        fs::create_dir(&source).unwrap();
+        fs::write(source.join("data"), b"data").unwrap();
+        let destination = tmp.path().join("output/nested/store");
+        pack_directory(&source, &destination, &PackOptions::default()).unwrap();
+        assert!(Store::open(&destination).unwrap().verify().unwrap().ok);
+        assert_eq!(fs::read_dir(source).unwrap().count(), 1);
+    }
 }

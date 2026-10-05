@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-10-04T19:28:56.949520+00:00",
+  "revision": "e7d90c7f48e988607ed6b29f4838efdafd3eaa1e",
+  "working_tree_status": " M Cargo.lock\n M crates/playsparse-cache/src/lib.rs\n M crates/playsparse-cli/Cargo.toml\n M crates/playsparse-cli/src/main.rs\n M crates/playsparse-core/Cargo.toml\n M crates/playsparse-core/src/lib.rs\n M crates/playsparse-policy/src/lib.rs\n M crates/playsparse-range/src/lib.rs\n M crates/playsparse-range/src/prefetch.rs\n M crates/playsparse-range/src/replay.rs\n M crates/playsparse-store/src/lib.rs\n M crates/playsparse-vfs-fuse/src/fuse.rs\n M crates/playsparse-vfs-fuse/src/lib.rs\n M crates/playsparse-vfs-fuse/src/macos.rs\n M docs/adaptive-policy.md\n M docs/posix-validation.md\n M tools/check.sh\n M tools/io-probe/Cargo.toml\n M tools/io-probe/src/main.rs\n M tools/macos-sdk-check.py\n M tools/owned-application.py\n M tools/posix-runtime-validation.py\n M tools/windows-hardware-validation.ps1\n?? crates/playsparse-cli/src/diagnostics.rs\n?? crates/playsparse-core/src/resources.rs\n?? crates/playsparse-vfs-fuse/src/macos_diagnostic.rs\n?? tests/test_posix_validation.py\n?? tests/test_windows_validation.py\n?? tools/validation_common.py\n?? tools/windows-comparison.py\n?? tools/windows-validation.py\n?? tools/windows_support.py\n",
+  "scoped_source_sha256": {
+    "Cargo.lock": "10199ad72dcf3d1a869f45303205d44e0402ec610f21211bd5f258644ea29a71",
+    "Cargo.toml": "620c7ff9354a3c14eb537c44855ca4391a4b324a3ac4ae9b98948f22986a8deb",
+    "crates/playsparse-cache/Cargo.toml": "41901bd98890b1615f4235bf0d7eac8ee578e6d5ac6bde0e932a4adf26e2adf8",
+    "crates/playsparse-cache/src/lib.rs": "9ae34171b223da0c0bc489cf6ebf9db7795ff304187d5c47b1ef53d94f81f915",
+    "crates/playsparse-policy/Cargo.toml": "431cda135989af34fe517fd78f7817310d156fc72f34ac8c6c09bf2e2e6a0288",
+    "crates/playsparse-policy/src/lib.rs": "307aeda3ba31e100a5f63001f4e75a112770ea0833efea42fd2c69ebb7361c21",
+    "crates/playsparse-range/Cargo.toml": "6a292a6a6cb48bb558b35f0a6695ec38f7e402820c518b6eecf0756ed6e45944",
+    "crates/playsparse-range/src/lib.rs": "f7f1b303b2728a738356dc0b8e785d9806783ab7f0131bd0044273059b879794",
+    "crates/playsparse-range/src/prefetch.rs": "2e2919afec9dfd9b3e6a92eb8e12ecef3e00de9bae9c6a18184d313fff2fd46e",
+    "crates/playsparse-range/src/replay.rs": "98c73b33006eef84de9e2369461c677f8395b83710e2273153262d2e142bc3af",
+    "crates/playsparse-core/src/resources.rs": "b8accc031e227cc378b626b90db6b660b4164a190bef75a15b045d8149271659"
+  },
+  "scope": "dirty worktree; scoped source snapshot during build, not a clean whole-binary source attestation"
+}

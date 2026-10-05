@@ -14,30 +14,20 @@ use std::{
         unix::ffi::OsStrExt,
     },
     path::Path,
-    process::Command,
     ptr::{self, NonNull},
 };
 
 pub(super) fn runtime_version() -> io::Result<String> {
-    let output = Command::new("/usr/libexec/PlistBuddy")
-        .args([
-            "-c",
-            "Print :CFBundleVersion",
-            "/Library/Filesystems/macfuse.fs/Contents/Info.plist",
-        ])
-        .output()?;
-    let version = String::from_utf8_lossy(&output.stdout).trim().to_string();
-    if !output.status.success() || !supported_version(&version) {
+    let facts = crate::macos_diagnostic::inspect(true);
+    if !facts.version_supported {
         return Err(io::Error::new(
             io::ErrorKind::Unsupported,
             "Install macFUSE 5.3.3 or newer in the 5.x series; this kernel transport requires its public borrowed-fd API",
         ));
     }
-    Ok(version)
-}
-fn supported_version(version: &str) -> bool {
-    let parts: Vec<_> = version.split('.').map(str::parse::<u32>).collect();
-    matches!(parts.as_slice(), [Ok(5), Ok(minor), Ok(patch)] if (*minor, *patch) >= (3, 3))
+    facts
+        .driver_version
+        .ok_or_else(|| io::Error::other("macFUSE version unavailable"))
 }
 
 #[repr(C)]
@@ -226,6 +216,7 @@ pub(super) fn spawn<FS: Filesystem>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::macos_diagnostic::supported_version;
     use std::os::fd::AsRawFd;
     #[test]
     fn duplicate_preserves_channel_owned_descriptor() {

@@ -18,6 +18,14 @@ mod writable;
 #[cfg(all(target_os = "macos", feature = "macfuse"))]
 mod macos;
 
+#[cfg(any(target_os = "macos", test))]
+mod macos_diagnostic;
+
+#[cfg(target_os = "macos")]
+pub fn macos_diagnostic() -> impl Serialize {
+    macos_diagnostic::inspect(cfg!(feature = "macfuse"))
+}
+
 #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
 fn run_session<FS: fuser::Filesystem>(
     filesystem: FS,
@@ -61,16 +69,22 @@ pub struct Availability {
 
 /// Report whether this binary can attempt a genuine mount on this machine.
 pub fn availability() -> Availability {
-    #[cfg(any(target_os = "linux", all(target_os = "macos", feature = "macfuse")))]
+    #[cfg(target_os = "linux")]
     {
         fuse::availability()
     }
-    #[cfg(all(target_os = "macos", not(feature = "macfuse")))]
+    #[cfg(target_os = "macos")]
     {
+        let facts = macos_diagnostic::inspect(cfg!(feature = "macfuse"));
         Availability {
             backend: "macFUSE",
-            available: false,
-            detail: "Mount support was not compiled. Install macFUSE, then rebuild with --features macfuse.".into(),
+            available: facts.can_attempt_mount,
+            detail: format!(
+                "{}: {} {}",
+                facts.status,
+                facts.detail,
+                facts.next_steps.join(" ")
+            ),
         }
     }
     #[cfg(not(any(target_os = "linux", target_os = "macos")))]

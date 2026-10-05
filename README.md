@@ -55,7 +55,7 @@ do not establish compatibility with a physical gaming desktop or a launcher.
 - [x] **EXPERIMENTAL:** macFUSE 5.3.3+ kernel channel transport, compiled/tested against the signed 5.4.0 SDK
 - [x] **WORKING:** native POSIX validation runner and macOS SDK checks without driver installation
 - [ ] **BLOCKED:** native macOS mounted runtime; macFUSE installation and kernel approval required
-- [ ] **HARDWARE REQUIRED:**   Linux validation
+- [ ] **HARDWARE REQUIRED:** physical Linux validation
 - [ ] **HARDWARE REQUIRED:** physical Windows desktop validation
 - [ ] **GAME EVIDENCE REQUIRED:** real game and real launcher compatibility
 - [ ] **HARDWARE REQUIRED:** Windows original/WOF/PlaySparse comparison
@@ -64,8 +64,13 @@ Adaptive performance benefit is unproven. The retained initial Linux benchmark
 issued zero prefetch requests and had a lower adaptive cache hit ratio than the
 static baseline. The corrected detector activates bounded prefetch, but the final
 three-trial replay still loses: median p95 69 → 108 µs, CPU 0.095 → 0.170 s,
-and raw bytes loaded 61 → 146 MB. All trials and the exact policy are retained;
-static LRU remains the default.
+and raw bytes loaded 61 → 146 MB. The production-readiness changes prevent
+speculative cache pollution and subchunk bursts from loading whole chunks ahead.
+A new identical-trace comparison reduced adaptive raw reads from 153.35 MB to
+62.52 MB, but adaptive still loses to static: median p95 47.46 → 52.08 µs and
+CPU 0.0826 → 0.0887 s. Both negative results and all trials remain available in
+[readiness policy evidence](docs/evidence/production-readiness-policy.md).
+Static LRU remains the default.
 
 Native macOS mounting is the next validation gate. Physical Windows validation
 also remains open; hosted CI does not establish desktop/game compatibility.
@@ -75,8 +80,9 @@ See [first mounted run](docs/evidence/first-mounted-run.md),
 [writable overlay](docs/writable-overlay.md),
 [adaptive policy](docs/adaptive-policy.md),
 [tiered storage](docs/tiered-storage.md),
-[FUSE backend](docs/fuse-backend.md), [macOS/  validation](docs/posix-validation.md),
+[FUSE backend](docs/fuse-backend.md), [macOS/Linux validation](docs/posix-validation.md),
 [Windows backend](docs/windows-backend.md),
+[disposable Windows WOF comparison](docs/windows-comparison.md),
 [format v1](docs/storage-format-v1.md) and
 [Experiment 04](experiments/04-loose-vs-packfiles).
 
@@ -101,7 +107,19 @@ python3 tools/macos-sdk-check.py --work /tmp/playsparse-macos-sdk-01
 
 This verifies the checksum and Apple installer signature/notarization of the
 official macFUSE 5.4.0 SDK and uses its extracted libraries in temporary storage.
-It does not run mounted tests.
+It does not run mounted tests. Default builds provide driver-independent,
+structured diagnostics:
+
+```bash
+cargo build --locked --release --workspace
+target/release/playsparse doctor --human --mount-test
+```
+
+On a Mac without macFUSE this exits 2 (`BLOCKED`), lists `NOT_INSTALLED` and
+`NOT_COMPILED`, and leaves kernel approval `UNKNOWN`. Omit `--human` for JSON.
+With an installed driver and a `macfuse` build, the probe checks an exact file
+read from a different filesystem device and ordinary unmount. `PASS` validates
+that tiny runtime path; it does not establish application compatibility.
 
 For real mounted validation, install macFUSE **5.3.3+ in the 5.x series** and
 complete its kernel-extension approval/restart steps. The current transport
@@ -111,25 +129,45 @@ uses the kernel backend; **FSKit is unsupported**. Then run:
 python3 tools/posix-runtime-validation.py --work /tmp/playsparse-macos-01 --build
 ```
 
-The runner enables `macfuse` during the build. If the driver is absent, it returns
-exit code 2 with a `BLOCKED` report.
+The runner enables `macfuse` during the build, records a local source/binary
+build receipt, and performs the doctor's actual mount probe before the four
+runtime stages. A missing driver returns exit 2 with a `BLOCKED` report. A dirty
+checkout, mismatched receipt, or reused work directory is refused by default;
+explicit development overrides and timeout/cleanup behavior are documented in
+the [POSIX guide](docs/posix-validation.md).
 
-###   / Linux
+### Linux
 
 Provide a `/dev/fuse` character device that the testing user can open for reading
 and writing, `fusermount3` or `fusermount`, Git, Python, Rust and a C linker.
 The current Linux build does not require a libfuse development package. Run:
 
 ```bash
-python3 tools/posix-runtime-validation.py --work /tmp/playsparse-rhel-01 --build
+python3 tools/posix-runtime-validation.py --work /tmp/playsparse-linux-01 --build
 ```
 
 The mounted runner tests readonly 10 GiB/mmap/executable behavior, writable
 updater/remount/commit/discard, identical-trace adaptive replay, and verified
 local/HTTP tiers. It does not install packages, drivers or change mount
 privileges. An owned native application can also be tested with `--source` and
-`--executable`; see the [macOS/  guide](docs/posix-validation.md) for
+`--executable`; see the [macOS/Linux guide](docs/posix-validation.md) for
 prerequisites, application commands and evidence interpretation.
+
+## Validation that can run now
+
+| Can run with this checkout and available software | Requires physical/manual evidence |
+|---|---|
+| Mac CAS/CLI tests and signed macFUSE SDK compilation | Mac driver installation, kernel approval/restart and mounted runtime |
+| Genuine Linux VM FUSE, writable, adaptive, tiers and crash/ENOSPC checks | Physical Linux storage/performance measurements |
+| Hosted native Windows WinFsp and disposable WOF software checks | Physical Windows desktop and original/WOF/PlaySparse comparison |
+| Generated executable and byte-integrity checks | An owned real game; separate Steam/Epic/launcher testing |
+
+The canonical Windows harness and independent WOF comparison are ready to run
+with PowerShell 7 and WinFsp 2.1; see the [Windows guide](docs/windows-backend.md).
+Every generated/hosted run preserves its separate physical/game gates. Evidence
+reports label uncontrolled OS/device caches; a userspace cache reset is not a
+cold physical disk. Source installations and base stores are fingerprinted
+before and after application/comparison runs; work and copies stay outside Git.
 
 ## Rust CLI
 
@@ -371,7 +409,7 @@ arbitrary reader receives identical bytes
 ```
 
 The next step is a real macOS kernel-backed mount after macFUSE installation
-and approval, followed by an owned native application and   validation.
+and approval, followed by an owned native application and physical Linux validation.
 The [POSIX runner](docs/posix-validation.md) is ready; native SDK success and
 Linux VM mounts are separate evidence from that pending Mac run.
 

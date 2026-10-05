@@ -1,0 +1,771 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-04T11:31:11.780839+00:00",
+  "commit": "e7d90c7f48e988607ed6b29f4838efdafd3eaa1e",
+  "working_tree_status": " M crates/playsparse-vfs-fuse/src/fuse.rs\n M crates/playsparse-vfs-fuse/src/lib.rs\n M crates/playsparse-vfs-fuse/src/macos.rs\n M tools/posix-runtime-validation.py\n?? crates/playsparse-vfs-fuse/src/macos_diagnostic.rs\n?? \"docs/access-tracing 2.md\"\n?? \"docs/evidence/raw/adaptive-historical-trace-final/policy 2.json\"\n?? \"docs/evidence/raw/adaptive-historical-trace-final/result 2.json\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-0 2.json\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-0.stderr 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-0.stdout 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-1 2.json\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-1.stderr 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-1.stdout 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-2 2.json\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-2.stderr 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive-2.stdout 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/adaptive.stdout 2.log\"\n?? \"docs/evidence/raw/adaptive-linux-final/result 2.json\"\n?? \"docs/evidence/raw/adaptive-linux-final/summary 2.json\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/0 2.log\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/1 2.log\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/2 2.log\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/3 2.log\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/4 2.log\"\n?? \"docs/evidence/raw/macos-adaptive-quality-final/result 2.json\"\n?? \"docs/evidence/raw/tier-startup-race/baseline 2.json\"\n?? \"docs/evidence/raw/tier-startup-race/post-fix 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/base-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/base-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/generate 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/generate.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/generate.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-corrupt.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/http-ranges.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-final/http-requests 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/optimize-policy 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/optimize-policy.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/optimize-policy.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/pack-secondary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/pack-secondary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/pack-secondary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/promoted-remount.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-final/result 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-io-probe 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-io-probe.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-io-probe.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/secondary-promotion.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-final/source-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/source-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-after.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-after.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-before.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-final/verify-secondary-before.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/base-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/base-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/generate 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/generate.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/generate.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-corrupt.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-ranges.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-initial/http-requests 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/optimize-policy 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/optimize-policy.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/optimize-policy.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/pack-secondary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/pack-secondary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/pack-secondary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/promoted-remount.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-initial/result 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-io-probe 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-io-probe.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-io-probe.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-native-executable 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-native-executable.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-native-executable.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-trace-summary 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion-trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/secondary-promotion.trace 2.jsonl\"\n?? \"docs/evidence/raw/tiered-linux-initial/source-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/source-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-after 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-after.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-after.stdout 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-before 2.json\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-before.stderr 2.log\"\n?? \"docs/evidence/raw/tiered-linux-initial/verify-secondary-before.stdout 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/0 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/1 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/2 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/3 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/4 2.log\"\n?? \"docs/evidence/raw/trace-quality-final/result 2.json\"\n?? \"docs/evidence/raw/windows-adaptive-final/ci-run 2.json\"\n?? \"docs/evidence/raw/windows-adaptive-final/winfsp-install 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/base-after 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/base-before 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/commit.trace 2.jsonl\"\n?? \"docs/evidence/raw/writable-linux-final/committed.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/committed.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/discarded-status 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/discarded-status.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/discarded-status.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/generate 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/generate.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/generate.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/io-probe 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/io-probe.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/io-probe.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/mounted-executable 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/mounted-executable.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/mounted-executable.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-commit 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-commit.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-commit.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-discard 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-discard.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay-discard.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/overlay.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/pack 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/pack.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/pack.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/remount.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/remount.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/remount.trace 2.jsonl\"\n?? \"docs/evidence/raw/writable-linux-final/reset.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/reset.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/reset.trace 2.jsonl\"\n?? \"docs/evidence/raw/writable-linux-final/result 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/source-after 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/source-before 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/trace-summary 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/trace-summary.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/trace-summary.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/update-mount.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/update-mount.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/update.trace 2.jsonl\"\n?? \"docs/evidence/raw/writable-linux-final/verify-after 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/verify-after.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/verify-after.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/verify-before 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/verify-before.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/verify-before.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/verify-committed 2.json\"\n?? \"docs/evidence/raw/writable-linux-final/verify-committed.stderr 2.log\"\n?? \"docs/evidence/raw/writable-linux-final/verify-committed.stdout 2.log\"\n?? \"docs/evidence/raw/writable-linux-initial/native-fuse-tests 2.log\"\n?? \"docs/evidence/raw/writable-linux-initial/result 2.json\"\n?? \"docs/evidence/raw/writable-linux-initial/unlinked-fstat-failure 2.log\"\n?? \"docs/evidence/raw/writable-linux-initial/unlinked-mode-failure 2.log\"\n?? \"docs/evidence/raw/writable-windows-failures/a2f001f-writable-callbacks 2.log\"\n?? \"docs/evidence/raw/writable-windows-failures/d6d4bea-overlay-open 2.log\"\n?? \"docs/posix-validation 2.md\"\n?? \"docs/tiered-storage 2.md\"\n?? \"docs/writable-overlay 2.md\"\n?? \"tools/adaptive-smoke 2.py\"\n?? \"tools/macos-sdk-check 2.py\"\n?? \"tools/mounted-update 2.py\"\n?? \"tools/owned-application 2.py\"\n?? \"tools/posix-runtime-validation 2.py\"\n?? \"tools/tiered-smoke 2.py\"\n?? tools/validation_common.py\n?? \"tools/windows-hardware-validation 2.ps1\"\n",
+  "os": "Linux-6.12.76-linuxkit-aarch64-with-glibc2.36",
+  "architecture": "aarch64",
+  "binary_sha256": "4fd440e7e628db42fafed88a7932046eac073a5f8cf542aeed0ba5569e140da6",
+  "status": "PASS",
+  "commands": [
+    [
+      "/usr/bin/python3",
+      "/src/tools/generate-testgame.py",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/source",
+      "--io-probe",
+      "/src/target-linux/release/io-probe",
+      "--world-bytes",
+      "4194304"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "pack",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/source",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "64K"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/mounted",
+      "--trace",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "optimize",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/static-0.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/adaptive-0.json",
+      "--policy",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/adaptive-1.json",
+      "--policy",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/static-1.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/static-2.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "replay-one",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/adaptive-2.json",
+      "--policy",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "mount",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/base",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/mounted",
+      "--trace",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/adaptive.trace.jsonl",
+      "--cache",
+      "4M",
+      "--policy",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/policy.json"
+    ],
+    [
+      "/src/target-linux/release/playsparse",
+      "trace",
+      "summarize",
+      "/tmp/playsparse-readiness-policy-before-20261004-01/evidence/capture.trace.jsonl"
+    ]
+  ],
+  "cache_bytes": 4194304,
+  "cache_state": "fresh PlaySparse cache per replay subprocess; OS/device caches uncontrolled; not disk-cold",
+  "dataset": "synthetic sequential + hot/churn + random; kernel callbacks captured, not a game benchmark",
+  "original": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.05228950000309851,
+    "latency_ns": {
+      "p50": 26792,
+      "p95": 40209,
+      "p99": 47292
+    }
+  },
+  "capture_mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-policy-before-20261004-01/mounted ro,nosuid,nodev,noatime - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_static": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.12409274999663467,
+    "latency_ns": {
+      "p50": 80959,
+      "p95": 153584,
+      "p99": 397792
+    }
+  },
+  "capture_metrics": [
+    {
+      "cache": {
+        "decompressions": 928,
+        "decompressions_avoided": 811,
+        "evictions": 864,
+        "hit_ratio": 0.46635997699827486,
+        "hits": 811,
+        "in_flight_waits": 0,
+        "misses": 928,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 60817408,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 6463363,
+        "primary_cache_hits": 0,
+        "primary_hits": 928,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "evaluation_policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 64,
+      "stream.bin": 896
+    }
+  },
+  "replay_trials": {
+    "static": [
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.078193,
+        "latency_ns": {
+          "p50": 33500,
+          "p95": 41833,
+          "p99": 61708
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.0781945
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.08201200000000002,
+        "latency_ns": {
+          "p50": 34417,
+          "p95": 46500,
+          "p99": 63042
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.082020333
+      },
+      {
+        "cache": {
+          "decompressions": 928,
+          "decompressions_avoided": 811,
+          "evictions": 864,
+          "hit_ratio": 0.46635997699827486,
+          "hits": 811,
+          "in_flight_waits": 0,
+          "misses": 928,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 60817408,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.07828,
+        "latency_ns": {
+          "p50": 33375,
+          "p95": 41750,
+          "p99": 61834
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 0.5960179833012202,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.078283292
+      }
+    ],
+    "adaptive": [
+      {
+        "cache": {
+          "decompressions": 2350,
+          "decompressions_avoided": 848,
+          "evictions": 888,
+          "hit_ratio": 0.48763657274295574,
+          "hits": 848,
+          "in_flight_waits": 4,
+          "misses": 891,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 95617024,
+          "prefetch_chunks_loaded": 1459,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 59,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 1459,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 3866624,
+          "prefetch_wasted_bytes": 91750400,
+          "raw_bytes_loaded": 154009600,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.137968,
+        "latency_ns": {
+          "p50": 36209,
+          "p95": 49708,
+          "p99": 79000
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 1.5093127809890816,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.083291083
+      },
+      {
+        "cache": {
+          "decompressions": 2338,
+          "decompressions_avoided": 853,
+          "evictions": 887,
+          "hit_ratio": 0.4905117883841288,
+          "hits": 853,
+          "in_flight_waits": 36,
+          "misses": 886,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 95158272,
+          "prefetch_chunks_loaded": 1452,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 65,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 1452,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 4259840,
+          "prefetch_wasted_bytes": 90898432,
+          "raw_bytes_loaded": 153223168,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.146463,
+        "latency_ns": {
+          "p50": 37166,
+          "p95": 80875,
+          "p99": 110584
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 1.5016056518946692,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.090346875
+      },
+      {
+        "cache": {
+          "decompressions": 2340,
+          "decompressions_avoided": 853,
+          "evictions": 886,
+          "hit_ratio": 0.4905117883841288,
+          "hits": 853,
+          "in_flight_waits": 50,
+          "misses": 886,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 95289344,
+          "prefetch_chunks_loaded": 1454,
+          "prefetch_dropped": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 64,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 1454,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_useful_bytes": 4194304,
+          "prefetch_wasted_bytes": 91095040,
+          "raw_bytes_loaded": 153354240,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "e93660bc9c1abf1d69a3110bc62fd9b29e617f3cce4baa33a03e14836b25a8c8",
+        "cpu_seconds": 0.141952,
+        "latency_ns": {
+          "p50": 36708,
+          "p95": 51875,
+          "p99": 89750
+        },
+        "process_peak_rss_bytes": 24162304,
+        "queries": 960,
+        "read_amplification": 1.5028901734104045,
+        "returned_bytes": 102039552,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.086861375
+      }
+    ]
+  },
+  "adaptive_mount_record": {
+    "mountinfo": "83 137 0:65 / /tmp/playsparse-readiness-policy-before-20261004-01/mounted ro,nosuid,nodev,noatime - fuse playsparse ro,user_id=0,group_id=0,default_permissions",
+    "filesystem_type": "fuse"
+  },
+  "mounted_adaptive": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.13055379199795425,
+    "latency_ns": {
+      "p50": 97083,
+      "p95": 170834,
+      "p99": 336833
+    }
+  },
+  "adaptive_metrics": [
+    {
+      "cache": {
+        "decompressions": 2122,
+        "decompressions_avoided": 962,
+        "evictions": 888,
+        "hit_ratio": 0.5531914893617021,
+        "hits": 962,
+        "in_flight_waits": 136,
+        "misses": 777,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 88145920,
+        "prefetch_chunks_loaded": 1345,
+        "prefetch_dropped": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 173,
+        "prefetch_peak_reserved_bytes": 131072,
+        "prefetch_queue_high_watermark": 2,
+        "prefetch_requests": 1345,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_useful_bytes": 11337728,
+        "prefetch_wasted_bytes": 76808192,
+        "raw_bytes_loaded": 139067392,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 960,
+      "requested_bytes": 102039552,
+      "returned_bytes": 102039552,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 12794040,
+        "primary_cache_hits": 0,
+        "primary_hits": 2122,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 960,
+        "events_written": 960,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "trace_summary": {
+    "cache_hit_ratio": 0.04479166666666667,
+    "cache_miss_ratio": 0.9552083333333333,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 960,
+    "hot_files": [
+      {
+        "events": 896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 64,
+        "path": "hot.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 4,
+        "length": 8192,
+        "offset": 348160,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 704512,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 712704,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 970752,
+        "path": "hot.bin"
+      },
+      {
+        "events": 2,
+        "length": 8192,
+        "offset": 15622144,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16842752,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16908288,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 16973824,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17039360,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17104896,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17170432,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17235968,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17301504,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17367040,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17432576,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17498112,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17563648,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17629184,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17694720,
+        "path": "stream.bin"
+      },
+      {
+        "events": 2,
+        "length": 131072,
+        "offset": 17760256,
+        "path": "stream.bin"
+      }
+    ],
+    "latency_ns": {
+      "p50": 36959,
+      "p95": 90458,
+      "p99": 242167
+    },
+    "operations": {
+      "read": 960
+    },
+    "read_bytes": 102039552,
+    "read_operations": 960,
+    "reread_ratio": 0.27291666666666664,
+    "sequential_read_percentage": 0.10416666666666667,
+    "sessions": [
+      "22115-1791113472366043884"
+    ],
+    "sources": {
+      "memory-cache": 43,
+      "mixed": 767,
+      "primary-local": 150
+    },
+    "version": 1,
+    "write_bytes": 0,
+    "write_operations": 0
+  },
+  "source_unchanged": true,
+  "base_unchanged": true
+}

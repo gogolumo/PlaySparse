@@ -1,0 +1,61 @@
+
+running 15 tests
+test tests::speculation_checks_every_variable_size_victim_without_partial_eviction ... ok
+test tests::prefetch_useful_wasted_and_final_accounting_are_conserved ... ok
+test tests::errors_wake_waiters_and_allow_retry ... ok
+test tests::invalid_known_sizes_do_not_load_and_mismatched_size_fails_closed ... ok
+test tests::adaptive_priority_changes_eviction_and_decays_under_new_traffic ... ok
+test tests::panicking_loader_releases_flight_and_permit ... ok
+test tests::admission_is_rechecked_after_racing_demand_without_evicting_protected_bytes ... ok
+test tests::speculative_hits_do_not_age_demand_priority_or_refresh_lru_recency ... ok
+test tests::racing_demand_claims_prefetch_once_and_preserves_loaded_tier ... ok
+test tests::speculative_errors_do_not_strand_demand_or_count_loaded_bytes ... ok
+test tests::weighted_lru_and_oversized_bypass ... ok
+test tests::racing_demand_makes_a_known_size_prefetch_flight_demand_admission ... ok
+test tests::speculation_does_not_wait_behind_saturated_demand_loads ... ok
+test tests::sixteen_threads_share_one_load_even_with_zero_cache ... ok
+test tests::speculative_entry_pressure_and_search_limits_do_not_start_loads ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+
+running 6 tests
+test tests::forward_coverage_counts_unique_bytes_and_resets_for_tiny_bursts_and_gaps ... ok
+test tests::sequence_confidence_random_rejection_and_expiry ... ok
+test tests::migrating_dispatch_workers_and_forward_overlap_are_sequential ... ok
+test tests::strict_invalid_configuration_and_roundtrip ... ok
+test tests::optimizer_uses_forward_overlap_confidence_and_rejects_random_stream ... ok
+test tests::hotness_decays_and_tracking_is_bounded ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 10 tests
+test prefetch::tests::reservations_dedup_queue_and_cancellation_stay_bounded ... ok
+test prefetch::tests::expired_requests_never_execute_loader ... ok
+test prefetch::tests::failed_objects_are_not_requeued_by_repeated_subchunk_predictions ... ok
+test prefetch::tests::worker_rechecks_queued_admission_after_demand_changes_the_cache ... ok
+test prefetch::tests::rejected_admission_history_is_bounded_without_source_io ... ok
+test tests::tiny_sequential_burst_does_not_predict_whole_chunks_until_chunk_coverage ... ok
+test tests::traced_reads_preserve_bytes_and_record_failure ... ok
+test tests::loads_only_intersecting_chunks_and_handles_overflow ... ok
+test replay::tests::deterministic_replay_and_prefetch_accounting ... ok
+test tests::ranges_equal_source ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.08s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

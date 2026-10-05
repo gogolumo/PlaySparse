@@ -22,6 +22,9 @@ pub enum Error {
 }
 pub type Result<T> = std::result::Result<T, Error>;
 
+mod resources;
+pub use resources::process_resources;
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum Layout {

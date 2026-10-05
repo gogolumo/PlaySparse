@@ -1,0 +1,9 @@
+   Compiling playsparse-cache v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-cache)
+   Compiling playsparse-range v0.1.0 (/Users/bogdan_dron/Documents/PlaySparse/crates/playsparse-range)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.37s
+     Running unittests src/lib.rs (/tmp/playsparse-policy-review-target/debug/deps/playsparse_cache-f994c77f1140e675)
+     Running unittests src/lib.rs (/tmp/playsparse-policy-review-target/debug/deps/playsparse_policy-3b115ee0229ad306)
+     Running unittests src/lib.rs (/tmp/playsparse-policy-review-target/debug/deps/playsparse_range-98ee0f51f173c55f)
+   Doc-tests playsparse_cache
+   Doc-tests playsparse_policy
+   Doc-tests playsparse_range

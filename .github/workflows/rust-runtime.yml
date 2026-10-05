@@ -46,17 +46,16 @@ jobs:
       - name: Install genuine FUSE mount dependencies
         run: sudo apt-get update && sudo apt-get install -y fuse3
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo clippy --locked --workspace --all-targets -- -D warnings
       - run: cargo test --locked --workspace
       - run: cargo build --locked --release --workspace
-      - name: Real mounted application and 64-bit I/O test
-        run: sudo python3 tools/mounted-smoke.py --work /tmp/playsparse-mounted-ci --world-bytes 10737418240 --iterations 32 --cache 64M
-      - name: Real writable overlay, updater, remount and trace
-        run: sudo python3 tools/mounted-update.py --work /tmp/playsparse-update-ci
-      - name: Real mounted adaptive capture and identical trace replay
-        run: sudo python3 tools/adaptive-smoke.py --work /tmp/playsparse-adaptive-ci
-      - name: Real mounted tier promotion, offline remount and HTTP ranges
-        run: sudo python3 tools/tiered-smoke.py --work /tmp/playsparse-tiered-ci
+      - name: Canonical POSIX validation with build receipt and actual doctor mount
+        run: sudo env "PATH=$PATH" "RUSTUP_HOME=${RUSTUP_HOME:-$HOME/.rustup}" "CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}" "CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-target}" python3 tools/posix-runtime-validation.py --work /tmp/playsparse-posix-ci --build
+      - name: Explicit driver-backed ignored Rust tests
+        run: |
+          test_binary=$(find target/debug/deps -maxdepth 1 -type f -name 'playsparse_vfs_fuse-*' -executable | head -n 1)
+          test -n "$test_binary"
+          sudo "$test_binary" --ignored --test-threads=1
       - name: Object-write and manifest-write kill tests, real ENOSPC
         run: |
           sudo mkdir /tmp/playsparse-enospc
@@ -65,19 +64,34 @@ jobs:
           sudo umount /tmp/playsparse-enospc
       - name: Loose versus packfiles experiment
         run: python3 experiments/04-loose-vs-packfiles/run_benchmark.py --output /tmp/playsparse-experiment04-ci --repetitions 2 --iterations 64 --size-mib 32
+      - name: Archive private root-owned evidence for upload
+        if: always()
+        run: |
+          sudo python3 - "$RUNNER_TEMP/linux-runtime-evidence.tar.gz" <<'PY'
+          from pathlib import Path
+          import sys, tarfile
+          roots = [Path('/tmp/playsparse-posix-ci'), Path('/tmp/playsparse-crash-ci'), Path('/tmp/playsparse-experiment04-ci')]
+          with tarfile.open(sys.argv[1], 'w:gz') as archive:
+              for root in roots:
+                  if not root.is_dir():
+                      continue
+                  if root.name == 'playsparse-posix-ci':
+                      paths = list(root.glob('*.json')) + list(root.glob('*.log')) + list(root.glob('*/evidence'))
+                  elif root.name == 'playsparse-crash-ci':
+                      paths = [root / 'evidence']
+                  else:
+                      paths = list(root.iterdir())
+                  for path in paths:
+                      if path.exists():
+                          archive.add(path, arcname=str(Path(root.name) / path.relative_to(root)))
+          PY
       - name: Preserve raw measured evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: linux-runtime-evidence
-          path: |
-            /tmp/playsparse-mounted-ci/evidence
-            /tmp/playsparse-update-ci/evidence
-            /tmp/playsparse-adaptive-ci/evidence
-            /tmp/playsparse-tiered-ci/evidence
-            /tmp/playsparse-crash-ci/evidence
-            /tmp/playsparse-experiment04-ci
-          if-no-files-found: warn
+          path: ${{ runner.temp }}/linux-runtime-evidence.tar.gz
+          if-no-files-found: error
 
   windows:
     runs-on: windows-latest
@@ -106,44 +120,64 @@ jobs:
           'C:\Program Files (x86)\WinFsp\bin' | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
           'LIBCLANG_PATH=C:\Program Files\LLVM\bin' | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo clippy --locked --workspace --all-targets -- -D warnings
       - run: cargo test --locked --workspace
       - run: cargo build --locked --release --workspace
-      - name: Native WinFsp mounted application and memory mapping
+      - name: Portable validation and native Windows WOF API tests
         shell: pwsh
         run: |
-          python tools/mounted-smoke.py --work "$env:RUNNER_TEMP\playsparse-mounted-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe --world-bytes 10737418240 --iterations 32 --cache 64M
-          if ($LASTEXITCODE -ne 0) { throw 'Windows mounted runtime test failed' }
+          python -m unittest discover -s tests -p 'test_*validation.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Validation/WOF regression tests failed' }
       - name: Parse optional physical-hardware harness
         shell: pwsh
         run: |
           $tokens = $null; $parseErrors = $null
           [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path tools/windows-hardware-validation.ps1), [ref]$tokens, [ref]$parseErrors) | Out-Null
           if ($parseErrors.Count) { $parseErrors | Format-List; throw 'Hardware harness syntax errors' }
-      - name: Native WinFsp writable updater, remount and trace
+      - name: Canonical Windows hosted validation and disposable WOF comparison
         shell: pwsh
         run: |
-          python tools/mounted-update.py --work "$env:RUNNER_TEMP\playsparse-update-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
-          if ($LASTEXITCODE -ne 0) { throw 'Windows mounted update test failed' }
-      - name: Native WinFsp adaptive capture and identical trace replay
-        shell: pwsh
-        run: |
-          python tools/adaptive-smoke.py --work "$env:RUNNER_TEMP\playsparse-adaptive-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
-          if ($LASTEXITCODE -ne 0) { throw 'Windows adaptive mounted test failed' }
-      - name: Native WinFsp tier promotion, offline remount and HTTP ranges
-        shell: pwsh
-        run: |
-          python tools/tiered-smoke.py --work "$env:RUNNER_TEMP\playsparse-tiered-ci" --playsparse target/release/playsparse.exe --io-probe target/release/io-probe.exe
-          if ($LASTEXITCODE -ne 0) { throw 'Windows mounted tier test failed' }
+          $evidence = Join-Path $env:RUNNER_TEMP 'playsparse-windows-ci'
+          ./tools/windows-hardware-validation.ps1 -EvidenceRoot $evidence
+          if ($LASTEXITCODE -ne 0) { throw 'Canonical Windows validation failed' }
+          $result = Get-Content (Join-Path $evidence 'result.json') -Raw | ConvertFrom-Json
+          if ($result.status -ne 'PASS' -or $result.windows_physical_validation.status -ne 'BLOCKED') { throw 'Hosted validation must pass software stages while retaining physical BLOCKED' }
+
+          # GitHub's Windows Server runner keeps WOF attached to the system
+          # volume, while RUNNER_TEMP is a separate D: data volume where
+          # compact /EXE can fail even on NTFS. Keep the large mounted-runtime
+          # evidence on D:, but run the small disposable WOF comparison on C:.
+          $systemRoot = "$env:SystemDrive\"
+          $suffix = "$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          $source = Join-Path $systemRoot "playsparse-wof-source-$suffix"
+          $wofWork = Join-Path $systemRoot "playsparse-wof-ci-$suffix"
+          if ((Test-Path $source) -or (Test-Path $wofWork)) { throw 'Fresh WOF paths already exist' }
+          New-Item -ItemType Directory -Path $source -ErrorAction Stop | Out-Null
+          python -c "from pathlib import Path; import sys; p=Path(sys.argv[1]); (p/'compressible.bin').write_bytes(b'PlaySparse WOF CI bytes\n' * 300000); (p/'small.txt').write_text('owned generated CI fixture\n')" $source
+          if ($LASTEXITCODE -ne 0) { throw 'WOF fixture creation failed' }
+
+          $playsparse = (Resolve-Path 'target/release/playsparse.exe').Path
+          python tools/windows-comparison.py --work $wofWork --source $source --playsparse $playsparse --binary-manifest (Join-Path $evidence 'binary-build-manifest.json') --environment (Join-Path $evidence 'environment.json') --algorithm XPRESS4K --timeout 1800
+          if ($LASTEXITCODE -ne 0) { throw 'Disposable WOF comparison failed' }
+          $wofResult = Get-Content (Join-Path $wofWork 'result.json') -Raw | ConvertFrom-Json
+          if ($wofResult.status -ne 'PASS' -or $wofResult.physical_wof_validation.status -ne 'BLOCKED') { throw 'Hosted WOF comparison must pass while retaining physical BLOCKED' }
+
+          # upload-artifact cannot combine C: and D: inputs in one artifact.
+          # Copy only the bounded comparison evidence back under RUNNER_TEMP.
+          $wofArchive = Join-Path $evidence 'wof-system-volume'
+          New-Item -ItemType Directory -Path $wofArchive -ErrorAction Stop | Out-Null
+          Get-ChildItem -Path $wofWork -File | Where-Object { $_.Extension -in '.json', '.log' } | Copy-Item -Destination $wofArchive
       - name: Preserve native Windows evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: windows-runtime-evidence
           path: |
-            ${{ runner.temp }}/playsparse-mounted-ci/evidence
-            ${{ runner.temp }}/playsparse-update-ci/evidence
-            ${{ runner.temp }}/playsparse-adaptive-ci/evidence
-            ${{ runner.temp }}/playsparse-tiered-ci/evidence
+            ${{ runner.temp }}/playsparse-windows-ci/result.json
+            ${{ runner.temp }}/playsparse-windows-ci/environment.json
+            ${{ runner.temp }}/playsparse-windows-ci/*.log
+            ${{ runner.temp }}/playsparse-windows-ci/*/evidence
+            ${{ runner.temp }}/playsparse-windows-ci/wof-system-volume/*.json
+            ${{ runner.temp }}/playsparse-windows-ci/wof-system-volume/*.log
             ${{ runner.temp }}/winfsp-install.log
           if-no-files-found: warn
