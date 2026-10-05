@@ -510,8 +510,17 @@ pub(super) fn mount_config() -> Config {
         MountOption::FSName("playsparse".into()),
         MountOption::Subtype("playsparse".into()),
     ];
-    config.n_threads =
-        Some(std::thread::available_parallelism().map_or(4, |n| n.get().clamp(2, 16)));
+    #[cfg(target_os = "linux")]
+    {
+        config.n_threads =
+            Some(std::thread::available_parallelism().map_or(4, |n| n.get().clamp(2, 16)));
+    }
+
+    #[cfg(target_os = "macos")]
+    {
+        // fuser supports multi-threaded session dispatch only on Linux.
+        config.n_threads = Some(1);
+    }
     config
 }
 
