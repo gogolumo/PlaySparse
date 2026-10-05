@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 520" role="img" aria-labelledby="title desc">
+  <title id="title">PlaySparse synthetic benchmark summary</title>
+  <desc id="desc">Synthetic CDC update reuse is higher than fixed chunking, while the latest adaptive policy remains slower than static LRU on the preserved trace.</desc>
+  <rect width="1400" height="520" rx="28" fill="#0b1020"/>
+  <text x="64" y="70" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="32" font-weight="700">Evidence, not marketing</text>
+  <text x="64" y="104" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="17">Synthetic results are labeled synthetic. Negative results stay visible.</text>
+  <rect x="64" y="142" width="610" height="306" rx="20" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="96" y="184" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" font-weight="700">Experiment 02 · update reuse</text>
+  <text x="96" y="211" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13">24 MiB generated insertion-heavy workload · SYNTHETIC</text>
+  <text x="96" y="267" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15">Fixed offsets</text>
+  <rect x="240" y="245" width="130" height="30" rx="8" fill="#475569"/>
+  <text x="384" y="267" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">33.16%</text>
+  <text x="96" y="327" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15">FastCDC-style</text>
+  <rect x="240" y="305" width="365" height="30" rx="8" fill="#22d3ee"/>
+  <text x="619" y="327" text-anchor="end" fill="#e2e8f0" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">92.91%</text>
+  <text x="96" y="385" fill="#94a3b8" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="14">+59.75 percentage points reuse on this synthetic update.</text>
+  <text x="96" y="414" fill="#64748b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13">This is not a real-game compression or update claim.</text>
+  <rect x="726" y="142" width="610" height="306" rx="20" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="758" y="184" fill="#f8fafc" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="20" font-weight="700">Adaptive policy · current verdict</text>
+  <text x="758" y="211" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13">2026-10-04 same-input AFTER comparison · SYNTHETIC</text>
+  <text x="758" y="266" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15">p95 latency</text>
+  <text x="920" y="266" fill="#22d3ee" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">47.458 µs static</text>
+  <text x="1130" y="266" fill="#f59e0b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">52.083 µs adaptive</text>
+  <text x="758" y="314" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15">CPU</text>
+  <text x="920" y="314" fill="#22d3ee" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">0.082633 s</text>
+  <text x="1130" y="314" fill="#f59e0b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">0.088748 s</text>
+  <text x="758" y="362" fill="#cbd5e1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15">Raw bytes loaded</text>
+  <text x="920" y="362" fill="#22d3ee" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">60.8 MB</text>
+  <text x="1130" y="362" fill="#f59e0b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15">62.5 MB</text>
+  <text x="758" y="410" fill="#f59e0b" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="15" font-weight="700">Adaptive still loses. Static LRU remains the default.</text>
+</svg>
