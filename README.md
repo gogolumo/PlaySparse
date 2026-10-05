@@ -97,17 +97,17 @@ PlaySparse is **experimental systems research**, not production-ready game stora
 | Tracing + adaptive cache/prefetch | Functional and reproducible, but current synthetic comparison loses to static LRU | 🧪 Experimental |
 | Secondary local + HTTP tiers | Verified promotion, offline promoted reads, exact HTTP ranges and corruption failure paths | 🧪 Experimental |
 | Physical Linux/Windows performance | Windows warm-read measurements captured on physical hardware; physical Linux evidence still required | 🧪 Windows measured |
-| Real-game filesystem compatibility | Elden Ring executable reached the main menu and ran normally from a PlaySparse mount; Steam/DRM/EAC were not tested | 🧪 One workload validated |
+| Real-game filesystem compatibility | Elden Ring reached the main menu on Windows; Project Zomboid reached live single-player gameplay on macOS through a hybrid PlaySparse/APFS runtime | 🧪 Two owned workloads validated |
 
 ### Platform matrix
 
 | Platform | Build | Virtual mount | CI evidence | Physical validation | Real game |
 |---|---|---|---|---|---|
-| macOS arm64 | ✅ | ✅ macFUSE 5.4.0 | ✅ SDK + native mounted validation | ✅ native Apple Silicon generated-fixture validation | Not run |
+| macOS arm64 | ✅ | ✅ macFUSE 5.4.0 | ✅ SDK + native mounted validation | ✅ native Apple Silicon generated-fixture validation | ✅ Project Zomboid hybrid runtime; live gameplay |
 | Linux | ✅ | ✅ FUSE | ✅ mounted validation | Hardware required | Not run |
 | Windows | ✅ | ✅ WinFsp | ✅ hosted Server validation | ✅ Windows 11 x64 physical hardware | ✅ Elden Ring executable path; launcher/DRM/EAC not tested |
 
-Hosted CI is not treated as equivalent to a physical gaming desktop. Physical Windows testing now exists for one owned Elden Ring workload, but that does not establish universal game, launcher, DRM, anti-cheat or multiplayer compatibility. See the [physical Windows / Elden Ring validation report](docs/evidence/windows-physical-elden-ring-2026-10-05.md).
+Hosted CI is not treated as equivalent to a physical gaming desktop. Physical Windows testing exists for one owned Elden Ring workload, and native Apple Silicon testing now includes one owned Project Zomboid gameplay workload through a hybrid PlaySparse/APFS compatibility runtime. Neither result establishes universal game, launcher, DRM, anti-cheat or multiplayer compatibility. See the [physical Windows / Elden Ring report](docs/evidence/windows-physical-elden-ring-2026-10-05.md) and the [macOS / Project Zomboid report](docs/evidence/macos-project-zomboid-2026-10-05.md).
 
 ## Quick start
 
@@ -268,6 +268,27 @@ The read comparison was a **warm workload**, not a disk-cold benchmark: mean wal
 
 See the [full physical Windows / Elden Ring validation and storage analysis](docs/evidence/windows-physical-elden-ring-2026-10-05.md).
 
+### macOS + Project Zomboid: L2 gameplay evidence
+
+On native Apple Silicon macOS, an owned Project Zomboid installation was packed, verified and run through a hybrid PlaySparse runtime. macOS-signed native/runtime code plus selected path-sensitive resources were materialized into a small APFS shadow, while large game assets continued to be served from the compressed PlaySparse store through macFUSE.
+
+The tested session progressed beyond launch and the main menu: a new character and world were created, the world loaded, live single-player gameplay ran normally, ordinary interactions were performed, save activity occurred and the game exited normally.
+
+Measured allocated footprint:
+
+| Representation | Allocated |
+|---|---:|
+| Original installation | 10,163.27 MiB |
+| PlaySparse store | 4,948.25 MiB |
+| APFS compatibility shadow | 869.80 MiB |
+| **Effective PlaySparse runtime** | **5,818.05 MiB** |
+
+That is **4,345.23 MiB saved, or 42.75% less allocated storage**, for this specific title/host/configuration.
+
+The experiment also isolated two macOS compatibility requirements for productization: runtime-loaded signed native code may need APFS materialization on this host, and the current POSIX namespace does not yet emulate case-insensitive APFS lookup. The result is therefore recorded as a **hybrid-runtime L2 validation**, not universal direct-FUSE compatibility.
+
+See the [full macOS / Project Zomboid validation report](docs/evidence/macos-project-zomboid-2026-10-05.md).
+
 ### Reproducible evidence
 
 The repository retains evidence for:
@@ -277,6 +298,7 @@ The repository retains evidence for:
 - native Apple Silicon macFUSE readonly/writable/adaptive/tiered stages;
 - hosted Windows WinFsp readonly/writable/adaptive/tiered stages;
 - physical Windows 11 x64 WinFsp validation and one owned Elden Ring executable workload;
+- native Apple Silicon macFUSE validation and one owned Project Zomboid hybrid-runtime gameplay workload;
 - corruption and ENOSPC failure handling;
 - loose objects vs indexed packfiles;
 - source/base fingerprints and command provenance;
@@ -343,7 +365,7 @@ The detailed milestone history and acceptance criteria are in [`ROADMAP.md`](ROA
 | **Tiering** | [Tiered storage](docs/tiered-storage.md) |
 | **Offline analysis** | [Game awareness](docs/game-awareness.md) · [Pre-code audit](docs/game-awareness-audit.md) |
 | **Research standard** | [Breakthrough criteria](docs/breakthrough-criteria.md) · [Prior art](docs/prior-art.md) · [Limitations](docs/limitations.md) |
-| **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) · [Physical Windows + Elden Ring](docs/evidence/windows-physical-elden-ring-2026-10-05.md) |
+| **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) · [Physical Windows + Elden Ring](docs/evidence/windows-physical-elden-ring-2026-10-05.md) · [macOS + Project Zomboid](docs/evidence/macos-project-zomboid-2026-10-05.md) |
 
 ## Contributing
 
