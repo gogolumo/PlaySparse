@@ -135,6 +135,25 @@ Keep the source directory read-only and write the PlaySparse store somewhere els
 
 The default Rust pack path uses content-defined chunks, indexed packfiles and Zstd level 3, retaining raw objects when compression would make an object larger.
 
+### Experimental game-aware analysis
+
+Optional engine discovery and measured file probes can produce a reviewed packing
+plan. Universal-modder is an optional read-only detector; the mounted runtime has
+no dependency on it. Profiles retain Zstd by default, and ZIP record boundaries
+are an explicit experiment. Bounded-sample compression skipping has a retained
+negative result and requires an additional experimental opt-in.
+
+```bash
+./target/release/playsparse inspect-game ./TestGame --scanner generic \
+  --output game-profile.json --plan-output packing-plan.json --container-aware
+./target/release/playsparse analyze ./TestGame --profile game-profile.json
+./target/release/playsparse pack ./TestGame ./TestGame.playsparse --plan packing-plan.json
+```
+
+See [game-aware storage](docs/game-awareness.md), the [audit](docs/game-awareness-audit.md)
+and [experiment 05](experiments/05-game-aware-packing/README.md). Engine recognition
+does not establish a compression advantage or real-game compatibility.
+
 ### Mount on Linux
 
 Linux needs an accessible `/dev/fuse` plus `fusermount3` or `fusermount`.
@@ -303,6 +322,7 @@ The detailed milestone history and acceptance criteria are in [`ROADMAP.md`](ROA
 | **Mutable layer** | [Writable overlay](docs/writable-overlay.md) |
 | **Observability & policy** | [Access tracing](docs/access-tracing.md) · [Adaptive policy](docs/adaptive-policy.md) |
 | **Tiering** | [Tiered storage](docs/tiered-storage.md) |
+| **Offline analysis** | [Game awareness](docs/game-awareness.md) · [Pre-code audit](docs/game-awareness-audit.md) |
 | **Research standard** | [Breakthrough criteria](docs/breakthrough-criteria.md) · [Prior art](docs/prior-art.md) · [Limitations](docs/limitations.md) |
 | **Evidence** | [Production readiness](docs/evidence/production-readiness.md) · [Adaptive/writable runtime](docs/evidence/adaptive-writable-runtime.md) · [macOS/Linux runtime](docs/evidence/posix-runtime.md) |
 

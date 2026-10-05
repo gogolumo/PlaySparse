@@ -5,6 +5,7 @@ edition.workspace = true
 license.workspace = true
 [dependencies]
 playsparse-core = { path = "../playsparse-core" }
+playsparse-game = { path = "../playsparse-game" }
 blake3.workspace = true
 zstd.workspace = true
 fastcdc.workspace = true

@@ -14,6 +14,7 @@ use std::{
 };
 
 mod diagnostics;
+mod game;
 
 #[derive(Parser)]
 #[command(
@@ -35,6 +36,12 @@ enum ChunkerArg {
     Cdc,
     Fixed,
 }
+#[derive(Clone, Copy, ValueEnum)]
+enum ScannerArg {
+    Auto,
+    Generic,
+    UniversalModder,
+}
 #[derive(Subcommand)]
 enum Command {
     Pack {
@@ -48,6 +55,16 @@ enum Command {
         chunk_size: usize,
         #[arg(long, default_value_t = 3)]
         level: i32,
+        /// Experimental profile; no scanner runs during packing.
+        #[arg(long, conflicts_with = "plan")]
+        profile: Option<PathBuf>,
+        /// Validated offline decisions, recomputed against the source before packing.
+        #[arg(long, conflicts_with = "profile")]
+        plan: Option<PathBuf>,
+        #[arg(long, requires = "profile")]
+        container_aware: bool,
+        #[arg(long, requires = "profile")]
+        experimental_skip_compression: bool,
     },
     Verify {
         store: PathBuf,
@@ -56,6 +73,31 @@ enum Command {
         source: PathBuf,
         #[arg(long,default_value="256K",value_parser=parse_size)]
         chunk_size: usize,
+        #[arg(long)]
+        profile: Option<PathBuf>,
+        #[arg(long, requires = "profile")]
+        plan_output: Option<PathBuf>,
+        #[arg(long, requires = "profile")]
+        container_aware: bool,
+        #[arg(long, requires = "profile")]
+        experimental_skip_compression: bool,
+    },
+    /// Read-only bounded file probes and optional engine discovery.
+    InspectGame {
+        source: PathBuf,
+        #[arg(long)]
+        output: Option<PathBuf>,
+        #[arg(long)]
+        plan_output: Option<PathBuf>,
+        #[arg(long, requires = "plan_output")]
+        container_aware: bool,
+        #[arg(long, requires = "plan_output")]
+        experimental_skip_compression: bool,
+        #[arg(long, value_enum, default_value = "auto")]
+        scanner: ScannerArg,
+        /// Explicit trusted executable (literal argv, never a shell command).
+        #[arg(long, default_value = "um")]
+        scanner_program: PathBuf,
     },
     Mount {
         store: PathBuf,
@@ -205,10 +247,12 @@ fn main() -> Result<()> {
             chunker,
             chunk_size,
             level,
-        } => print(&pack_directory(
-            &source,
-            &store,
-            &PackOptions {
+            profile,
+            plan,
+            container_aware,
+            experimental_skip_compression,
+        } => {
+            let options = PackOptions {
                 layout: match layout {
                     LayoutArg::Packs => Layout::Packs,
                     LayoutArg::Loose => Layout::Loose,
@@ -219,11 +263,72 @@ fn main() -> Result<()> {
                 },
                 chunk_size: u32::try_from(chunk_size).context("chunk size exceeds u32")?,
                 level,
-            },
-        )?),
+            };
+            let plan = if let Some(path) = plan {
+                Some(playsparse_game::PackingPlan::load(&path)?)
+            } else if let Some(path) = profile {
+                Some(playsparse_game::PackingPlan::experimental(
+                    &playsparse_game::GameProfile::load(&path)?,
+                    container_aware,
+                    experimental_skip_compression,
+                )?)
+            } else {
+                None
+            };
+            print(&if let Some(plan) = plan {
+                playsparse_store::pack_directory_with_plan(&source, &store, &options, &plan)?
+            } else {
+                pack_directory(&source, &store, &options)?
+            })
+        }
         Command::Verify { store } => print(&Store::open(&store)?.verify()?),
-        Command::Analyze { source, chunk_size } => {
-            print(&analyze(&source, u32::try_from(chunk_size)?)?)
+        Command::Analyze {
+            source,
+            chunk_size,
+            profile,
+            plan_output,
+            container_aware,
+            experimental_skip_compression,
+        } => {
+            let mut report = analyze(&source, u32::try_from(chunk_size)?)?;
+            if let Some(profile) = profile {
+                if chunk_size != playsparse_game::TARGET_BYTES as usize {
+                    bail!("profile analysis requires --chunk-size 256K");
+                }
+                let value = game::analyze(
+                    &source,
+                    &profile,
+                    plan_output.as_deref(),
+                    container_aware,
+                    experimental_skip_compression,
+                )?;
+                report["game_aware"] = value;
+            }
+            print(&report)
+        }
+        Command::InspectGame {
+            source,
+            output,
+            plan_output,
+            container_aware,
+            experimental_skip_compression,
+            scanner,
+            scanner_program,
+        } => {
+            let mode = match scanner {
+                ScannerArg::Auto => playsparse_game::scanner::Mode::Auto,
+                ScannerArg::Generic => playsparse_game::scanner::Mode::Generic,
+                ScannerArg::UniversalModder => playsparse_game::scanner::Mode::UniversalModder,
+            };
+            print(&game::inspect(
+                &source,
+                output.as_deref(),
+                plan_output.as_deref(),
+                container_aware,
+                experimental_skip_compression,
+                mode,
+                &scanner_program,
+            )?)
         }
         Command::Mount {
             store,
