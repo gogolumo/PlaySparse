@@ -37,6 +37,73 @@ async fn add_game(service: State<'_, Backend>, path: String) -> Reply<playsparse
     .map_err(|e| e.to_string())?
 }
 #[tauri::command]
+async fn inspect_installation(
+    service: State<'_, Backend>,
+    path: String,
+) -> Reply<playsparse_desktop::product::InstallationInspection> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .inspect_installation(std::path::Path::new(&path))
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+async fn discover_launch(
+    service: State<'_, Backend>,
+    id: String,
+) -> Reply<Vec<playsparse_desktop::product::LaunchCandidate>> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service.discover_launch(&id).map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+async fn optimize_preflight(service: State<'_, Backend>, id: String) -> Reply<Value> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .optimize_preflight(&id)
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+async fn test_readiness(service: State<'_, Backend>) -> Reply<Value> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service.test_readiness().map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+fn game_locations(service: State<'_, Backend>, id: String) -> Reply<Value> {
+    service.game_locations(&id).map_err(|e| format!("{e:#}"))
+}
+#[tauri::command]
+async fn inspect_location(service: State<'_, Backend>, id: String, kind: String) -> Reply<()> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .inspect_location(&id, &kind)
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+#[tauri::command]
+fn forget_missing_store(service: State<'_, Backend>, id: String) -> Reply<()> {
+    service
+        .forget_missing_store(&id)
+        .map_err(|e| format!("{e:#}"))
+}
+#[tauri::command]
 fn remove_game(service: State<'_, Backend>, id: String) -> Reply<()> {
     service.remove_game(&id).map_err(|e| format!("{e:#}"))
 }
@@ -155,18 +222,21 @@ fn acceptance_probe(service: State<'_, Backend>, id: String) -> Reply<Value> {
 }
 
 pub fn run() {
-    let builder = tauri::Builder::default()
-        .plugin(tauri_plugin_single_instance::init(|app, _, _| {
-            if let Some(window) = app.get_webview_window("main") {
-                let _ = window.set_focus();
-            }
-        }))
-        .plugin(tauri_plugin_dialog::init())
+    let builder = tauri::Builder::default();
+    // Isolated acceptance libraries may coexist with the user's normal application.
+    #[cfg(not(feature = "acceptance"))]
+    let builder = builder.plugin(tauri_plugin_single_instance::init(|app, _, _| {
+        if let Some(window) = app.get_webview_window("main") {
+            let _ = window.set_focus();
+        }
+    }));
+    let builder = builder.plugin(tauri_plugin_dialog::init())
         .on_page_load(|webview, payload| {
             #[cfg(feature = "acceptance")]
             if payload.event() == tauri::webview::PageLoadEvent::Finished
                 && let Some(source) = std::env::var_os("PLAYSPARSE_DESKTOP_ACCEPTANCE_SOURCE")
             {
+                let _ = webview.set_focus();
                 let prefix = format!(
                     "window.__DESKTOP_ACCEPTANCE_SOURCE={};",
                     serde_json::to_string(&source.to_string_lossy()).unwrap()
@@ -194,8 +264,19 @@ pub fn run() {
             let service = match Service::open(&root, &engine) {
                 Ok(service) => service,
                 Err(error) => {
-                    app.dialog().message(format!("PlaySparse could not open its library at {}.\n\n{error:#}\n\nExisting data was retained. Close other instances or inspect the library before retrying.", root.display()))
-                        .title("Library needs attention").kind(tauri_plugin_dialog::MessageDialogKind::Error).blocking_show();
+                    let inspect = app.dialog().message(format!("PlaySparse could not open its library at {}.\n\n{error:#}\n\nExisting data was retained. Close other instances and reopen PlaySparse. For a corrupt library, retain library.json and restore a known-good backup before retrying. No library is reset automatically.", root.display()))
+                        .title("Library needs attention").kind(tauri_plugin_dialog::MessageDialogKind::Error)
+                        .buttons(tauri_plugin_dialog::MessageDialogButtons::OkCancelCustom("Show library folder".into(), "Close".into())).blocking_show();
+                    if inspect {
+                        #[cfg(target_os = "macos")]
+                        let opener = "open";
+                        #[cfg(target_os = "windows")]
+                        let opener = "explorer.exe";
+                        #[cfg(target_os = "linux")]
+                        let opener = "xdg-open";
+                        #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+                        let _ = std::process::Command::new(opener).arg(&root).spawn();
+                    }
                     return Err(error.into());
                 }
             };
@@ -223,10 +304,17 @@ pub fn run() {
             }
         })
         .invoke_handler(tauri::generate_handler![
+            inspect_installation,
+            discover_launch,
+            optimize_preflight,
+            test_readiness,
+            game_locations,
+            inspect_location,
             get_snapshot,
             select_folder,
             add_game,
             remove_game,
+            forget_missing_store,
             update_settings,
             configure_launch,
             start_job,
@@ -237,10 +325,17 @@ pub fn run() {
         ]);
     #[cfg(feature = "acceptance")]
     let builder = builder.invoke_handler(tauri::generate_handler![
+        inspect_installation,
+        discover_launch,
+        optimize_preflight,
+        test_readiness,
+        game_locations,
+        inspect_location,
         get_snapshot,
         select_folder,
         add_game,
         remove_game,
+        forget_missing_store,
         update_settings,
         configure_launch,
         start_job,
