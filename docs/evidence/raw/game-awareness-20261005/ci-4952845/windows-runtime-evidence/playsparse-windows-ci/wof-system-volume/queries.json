@@ -1,0 +1,1502 @@
+[
+  {
+    "path": "compressible.bin",
+    "offset": 4650088,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3910789,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4575160,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 458212,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 699932,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1131446,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 337713,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4702854,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4954637,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2179677,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6958803,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4008554,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4173363,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4513214,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1830525,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3429527,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1916617,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6443836,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 359870,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1246486,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2864795,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4311937,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5907642,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4299644,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6528622,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2496549,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 177292,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6405891,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 447517,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4594050,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2796577,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 848275,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1807741,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5539016,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6119221,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 739041,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 7050415,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1620538,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3391394,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4731752,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2267283,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6299432,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3740887,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 758088,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2085554,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5821634,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2126029,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3866110,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1834657,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2465628,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 636720,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 220064,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 555501,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2658514,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3041431,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2894859,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4301624,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1776691,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2866185,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1827794,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6692576,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4014357,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6931916,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1668236,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1423241,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4380833,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4081798,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5552336,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1397024,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 760847,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 277856,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3453466,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2132144,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2138451,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3576522,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2757315,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5479052,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4518215,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5957161,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1656628,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4701269,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3813423,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1764171,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4785342,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3650016,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2488805,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 453710,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1330193,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2133500,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5156563,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 823213,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4534316,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4342716,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 429549,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 7013190,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1429013,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2139224,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4984497,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5163842,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5590497,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2798011,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6957004,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2364453,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 21397,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 706705,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2650083,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 958755,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4288632,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1337561,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 881325,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1557350,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5432473,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4676268,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2379348,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4544506,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 509488,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 4757658,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 7093327,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5761350,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2839769,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 530359,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6678738,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 7061383,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 2407951,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 5086507,
+    "length": 1048576
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3313760,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1921345,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3438572,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6298895,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6782795,
+    "length": 4096
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3893455,
+    "length": 1048576
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3034490,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 436652,
+    "length": 65536
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "small.txt",
+    "offset": 0,
+    "length": 28
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 1933975,
+    "length": 4096
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 6815955,
+    "length": 65536
+  },
+  {
+    "path": "compressible.bin",
+    "offset": 3098713,
+    "length": 1048576
+  }
+]

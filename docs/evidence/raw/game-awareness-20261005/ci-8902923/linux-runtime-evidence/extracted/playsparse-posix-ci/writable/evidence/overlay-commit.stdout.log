@@ -1,0 +1,27 @@
+{
+  "base_opened_read_only": true,
+  "method": "bounded streaming merged tree into disposable staging directory; full temporary logical space required",
+  "pack": {
+    "allocated_bytes": 2691072,
+    "files": 14,
+    "filesystem_entries": 8,
+    "logical_bytes": 29964330,
+    "measured_raw_bytes": 0,
+    "measured_raw_objects": 0,
+    "metadata_bytes": 9638,
+    "object_bytes": 2656573,
+    "pack_cpu_seconds": 0.066745,
+    "pack_seconds": 0.06951644,
+    "physical_bytes": 2666211,
+    "reused_chunks": 2,
+    "unique_objects": 43,
+    "verified_before_publish": true,
+    "zstd_attempted_objects": 43
+  },
+  "verify": {
+    "checked_bytes": 29964330,
+    "checked_files": 14,
+    "checked_objects": 43,
+    "ok": true
+  }
+}

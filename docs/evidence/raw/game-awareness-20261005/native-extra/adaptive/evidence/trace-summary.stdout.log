@@ -1,0 +1,160 @@
+{
+  "cache_hit_ratio": 0.7483317445185891,
+  "cache_miss_ratio": 0.25166825548141086,
+  "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+  "events": 2098,
+  "hot_files": [
+    {
+      "events": 2048,
+      "path": "stream.bin"
+    },
+    {
+      "events": 50,
+      "path": "hot.bin"
+    }
+  ],
+  "hot_ranges": [
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 0,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 16384,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 32768,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 49152,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 65536,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 98304,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 114688,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 131072,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 180224,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 196608,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 262144,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 278528,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 294912,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 311296,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 344064,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 360448,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 376832,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 393216,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 409600,
+      "path": "hot.bin"
+    },
+    {
+      "events": 1,
+      "length": 16384,
+      "offset": 442368,
+      "path": "hot.bin"
+    }
+  ],
+  "latency_ns": {
+    "p50": 875,
+    "p95": 38667,
+    "p99": 45167
+  },
+  "operations": {
+    "read": 2098
+  },
+  "read_bytes": 34373632,
+  "read_operations": 2098,
+  "reread_ratio": 0.0,
+  "sequential_read_percentage": 97.95042897998093,
+  "sessions": [
+    "48966-1791208906997586000"
+  ],
+  "sources": {
+    "memory-cache": 1570,
+    "primary-local": 528
+  },
+  "version": 1,
+  "write_bytes": 0,
+  "write_operations": 0
+}

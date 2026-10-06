@@ -1,0 +1,5 @@
+{
+  "status": "FAIL",
+  "evidence": "/private/tmp/playsparse-game-aware-native-extra-01/tiers/evidence",
+  "error": "promoted-remount: full mounted tree differs from expected"
+}

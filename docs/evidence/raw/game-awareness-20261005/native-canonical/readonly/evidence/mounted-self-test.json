@@ -1,0 +1,9 @@
+{
+  "asset_root": "/private/tmp/playsparse-game-aware-native-mac-01/readonly/mounted",
+  "executable": "/private/tmp/playsparse-game-aware-native-mac-01/readonly/mounted/testgame",
+  "read_and_mmap_samples": 177,
+  "sample_blake3": "b03ffa1948cbcb10d1889fdf260b9b9e208114430597b88f67fa302cffb3bb8e",
+  "schema": 1,
+  "self_test": "PASS",
+  "verified_bytes": 631139
+}

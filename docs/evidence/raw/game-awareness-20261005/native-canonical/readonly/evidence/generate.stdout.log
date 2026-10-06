@@ -1,0 +1,10 @@
+{
+  "source": "/private/tmp/playsparse-game-aware-native-mac-01/readonly/TestGame",
+  "executable": "testgame",
+  "world_logical_bytes": 10737418240,
+  "logical_bytes": 10745115655,
+  "files": 9,
+  "source_allocated_bytes": 14295040,
+  "nonzero_world_regions": 70,
+  "sample_count": 177
+}

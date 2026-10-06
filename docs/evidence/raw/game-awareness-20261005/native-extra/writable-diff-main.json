@@ -1,0 +1,261 @@
+{
+  "expected": {
+    "assets": {
+      "kind": "directory"
+    },
+    "assets/empty.bin": {
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assets/entropy.dat": {
+      "kind": "file",
+      "bytes": 2097152,
+      "sha256": "57a3ba1f81f0b66f43eaa1896aa8b7c439e5784fbf50b70a13d8e45a63d65fba"
+    },
+    "assets/texture.dat": {
+      "kind": "file",
+      "bytes": 1077248,
+      "sha256": "51dc97ab4f4133f1e340e09238875670c3aaa0ad3f6d93d6bbd360bb6361bb7e"
+    },
+    "audio.dat": {
+      "kind": "file",
+      "bytes": 2138112,
+      "sha256": "107fb765c1210d3e25997601182f17fe07e97bf7ea439ed0b07ad3e1b3bb0eeb"
+    },
+    "config.json": {
+      "kind": "file",
+      "bytes": 32,
+      "sha256": "328d309303a1bdaafabec020e6f5a299e4db6fc9998d9115e36d83f75494b2bc"
+    },
+    "data": {
+      "kind": "directory"
+    },
+    "data/archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4194304,
+      "sha256": "180ac4c87f19e3f73ea15a9d72bd52a2a367ad9716964e02a2d30375ab07e87f"
+    },
+    "data/archive-b.bin": {
+      "kind": "file",
+      "bytes": 1179659,
+      "sha256": "033a68d3d9e550ebf548fdd591c801a344e6028f2852a7daea36412f7b75c8f1"
+    },
+    "data/replace.bin": {
+      "kind": "file",
+      "bytes": 19,
+      "sha256": "aa40aec18b8359d012be1197acebec65a4184b3b8d95cec23256381e3c44881c"
+    },
+    "data/truncate.bin": {
+      "kind": "file",
+      "bytes": 8192,
+      "sha256": "457372ad2fc3906058e51bfd8995ab1eb85116cd9a14decb5911267ab1192677"
+    },
+    "fixture.json": {
+      "kind": "file",
+      "bytes": 1202761,
+      "sha256": "d24c8ce6b6d2ff6e56cf581cf60cfe5a0765c68f024657d3e7b31ba587a9b7ae"
+    },
+    "patch": {
+      "kind": "directory"
+    },
+    "patch/renamed.bin": {
+      "kind": "file",
+      "bytes": 8,
+      "sha256": "9103e1254ead22fbc8031e175d94d3b53a6dcdef1648988f087eb176a804e91e"
+    },
+    "renamed-dir": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested/file.bin": {
+      "kind": "file",
+      "bytes": 11,
+      "sha256": "427669f05f889060543116f6924d53247ece013801b74010da0e4162d1fba83f"
+    },
+    "testgame": {
+      "kind": "file",
+      "bytes": 1115840,
+      "sha256": "b1ced97a35541ec4288a177955e3611305a47e885ad415e56e871b88b0475361"
+    },
+    "world.dat": {
+      "kind": "file",
+      "bytes": 16777216,
+      "sha256": "7385008f8830b3d8c276493ed3021891b56de58f3ac2dafb34e557f1290cbb13"
+    }
+  },
+  "actual": {
+    "._config.json": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "._patch": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "assets": {
+      "kind": "directory"
+    },
+    "assets/empty.bin": {
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assets/entropy.dat": {
+      "kind": "file",
+      "bytes": 2097152,
+      "sha256": "57a3ba1f81f0b66f43eaa1896aa8b7c439e5784fbf50b70a13d8e45a63d65fba"
+    },
+    "assets/texture.dat": {
+      "kind": "file",
+      "bytes": 1077248,
+      "sha256": "51dc97ab4f4133f1e340e09238875670c3aaa0ad3f6d93d6bbd360bb6361bb7e"
+    },
+    "audio.dat": {
+      "kind": "file",
+      "bytes": 2138112,
+      "sha256": "107fb765c1210d3e25997601182f17fe07e97bf7ea439ed0b07ad3e1b3bb0eeb"
+    },
+    "config.json": {
+      "kind": "file",
+      "bytes": 32,
+      "sha256": "328d309303a1bdaafabec020e6f5a299e4db6fc9998d9115e36d83f75494b2bc"
+    },
+    "data": {
+      "kind": "directory"
+    },
+    "data/._archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._archive-b.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._replace.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._truncate.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4194304,
+      "sha256": "180ac4c87f19e3f73ea15a9d72bd52a2a367ad9716964e02a2d30375ab07e87f"
+    },
+    "data/archive-b.bin": {
+      "kind": "file",
+      "bytes": 1179659,
+      "sha256": "033a68d3d9e550ebf548fdd591c801a344e6028f2852a7daea36412f7b75c8f1"
+    },
+    "data/replace.bin": {
+      "kind": "file",
+      "bytes": 19,
+      "sha256": "aa40aec18b8359d012be1197acebec65a4184b3b8d95cec23256381e3c44881c"
+    },
+    "data/truncate.bin": {
+      "kind": "file",
+      "bytes": 8192,
+      "sha256": "457372ad2fc3906058e51bfd8995ab1eb85116cd9a14decb5911267ab1192677"
+    },
+    "fixture.json": {
+      "kind": "file",
+      "bytes": 1202761,
+      "sha256": "d24c8ce6b6d2ff6e56cf581cf60cfe5a0765c68f024657d3e7b31ba587a9b7ae"
+    },
+    "patch": {
+      "kind": "directory"
+    },
+    "patch/._renamed.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "patch/renamed.bin": {
+      "kind": "file",
+      "bytes": 8,
+      "sha256": "9103e1254ead22fbc8031e175d94d3b53a6dcdef1648988f087eb176a804e91e"
+    },
+    "renamed-dir": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested/._file.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "renamed-dir/nested/file.bin": {
+      "kind": "file",
+      "bytes": 11,
+      "sha256": "427669f05f889060543116f6924d53247ece013801b74010da0e4162d1fba83f"
+    },
+    "testgame": {
+      "kind": "file",
+      "bytes": 1115840,
+      "sha256": "b1ced97a35541ec4288a177955e3611305a47e885ad415e56e871b88b0475361"
+    },
+    "world.dat": {
+      "kind": "file",
+      "bytes": 16777216,
+      "sha256": "7385008f8830b3d8c276493ed3021891b56de58f3ac2dafb34e557f1290cbb13"
+    }
+  },
+  "extra": {
+    "._config.json": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "._patch": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._archive-b.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._replace.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "data/._truncate.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "patch/._renamed.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    },
+    "renamed-dir/nested/._file.bin": {
+      "kind": "file",
+      "bytes": 4096,
+      "sha256": "02721b52b9aca95556e840d75804d25f694bdc03c8d7707baaa859f38bfa963a"
+    }
+  },
+  "missing": [],
+  "changed": [],
+  "full_tree_equal": false
+}

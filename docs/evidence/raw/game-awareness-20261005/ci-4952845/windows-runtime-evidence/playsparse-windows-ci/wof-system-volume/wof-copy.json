@@ -1,0 +1,27 @@
+{
+  "definition": "SHA-256 of complete file/stream contents, sorted relative names/type/mode/mtime; allocation and atime excluded",
+  "tree_sha256": "a8b5092b0b697719d940f4eeb01b7318efd04e48fca76bbe30d7077c040cf410",
+  "entries": [
+    {
+      "path": "compressible.bin",
+      "directory": false,
+      "size": 7200000,
+      "mode": 33206,
+      "mtime_ns": 1791209145278740500,
+      "sha256": "6de111e2e7228693901837bd47789fc35149ad677ead1062ffc4fea337f5eef0",
+      "named_streams": []
+    },
+    {
+      "path": "small.txt",
+      "directory": false,
+      "size": 28,
+      "mode": 33206,
+      "mtime_ns": 1791209145278740500,
+      "sha256": "6cd5405551f0e142246286da55396fa7d9adcd4e0b457f7d3762f75443b3d44b",
+      "named_streams": []
+    }
+  ],
+  "logical_bytes": 7200028,
+  "allocated_data_bytes": 495648,
+  "allocation_definition": "sum FILE_STREAM_INFO.StreamAllocationSize for all file data streams including WOF backing stream; directory/MFT metadata excluded"
+}

@@ -1,0 +1,5 @@
+PlaySparse doctor: macos / aarch64
+READY_TO_TEST: Supported macFUSE installation and compiled kernel transport; actual mount capability is unverified. FSKit is unsupported. Run playsparse doctor --mount-test; installation presence does not establish kernel approval or mount capability.
+Mount readiness: MOUNT_TEST_PASSED; kernel approval: UNKNOWN
+  Run playsparse doctor --mount-test; installation presence does not establish kernel approval or mount capability.
+Actual mount/read/unmount test: PASS

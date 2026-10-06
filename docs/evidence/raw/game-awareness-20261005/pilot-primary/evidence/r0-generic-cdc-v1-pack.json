@@ -1,0 +1,13 @@
+{
+  "logical_bytes": 25877334,
+  "physical_bytes": 25186474,
+  "object_bytes": 25172720,
+  "metadata_bytes": 13754,
+  "allocated_bytes": 25198592,
+  "filesystem_entries": 8,
+  "files": 3,
+  "unique_objects": 78,
+  "reused_chunks": 0,
+  "pack_seconds": 0.085232,
+  "verified_before_publish": true
+}

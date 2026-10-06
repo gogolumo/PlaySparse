@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "cache_bytes": null,
+  "eviction": "decaying-hotness",
+  "decay_accesses": 64,
+  "prefetch": {
+    "enabled": true,
+    "sequential_reads": 3,
+    "max_chunks": 2,
+    "budget_bytes": 8388608,
+    "queue_depth": 32,
+    "ttl_ms": 500
+  },
+  "files": {
+    "._overlay-created.txt": 12,
+    "assets/empty.bin": 14,
+    "assets/entropy.dat": 142,
+    "assets/texture.dat": 80,
+    "audio.dat": 145,
+    "config.json": 15,
+    "fixture.json": 88,
+    "overlay-created.txt": 9,
+    "readme.txt": 15,
+    "testgame": 85,
+    "world.dat": 380
+  }
+}

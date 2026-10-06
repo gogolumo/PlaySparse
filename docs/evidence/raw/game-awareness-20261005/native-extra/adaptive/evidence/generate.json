@@ -1,0 +1,10 @@
+{
+  "source": "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/source",
+  "executable": "testgame",
+  "world_logical_bytes": 4194304,
+  "logical_bytes": 11825443,
+  "files": 9,
+  "source_allocated_bytes": 11837440,
+  "nonzero_world_regions": 68,
+  "sample_count": 169
+}

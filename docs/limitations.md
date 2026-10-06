@@ -69,6 +69,11 @@ limits.
 - Replay latency/CPU/RSS compare fresh PlaySparse caches. OS and device caches are
   uncontrolled. The trace records sizes/positions, not overlay content versions, so
   replay rejects writable/overlay traffic.
+- Native macOS 26.6.2 writable/tiered full-tree checks fail when the OS adds
+  AppleDouble `._*` sidecars for unsupported extended metadata. The preserved
+  main binary and candidate exhibit the same failure; ordinary intended file
+  bytes match. Readonly/profile-guided ZIP mounts and adaptive checks pass.
+  These failures remain failures in the [game-awareness evidence](evidence/game-awareness.md).
 - Hosted WinFsp tests do not prove physical Windows desktop, games, Steam/Epic,
   DRM or anti-cheat support. macFUSE physical mounting requires an installed and
   approved driver. No driver was silently installed during this sprint.

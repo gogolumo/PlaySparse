@@ -1,0 +1,10 @@
+{
+  "source": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+  "executable": "testgame.exe",
+  "world_logical_bytes": 10737418240,
+  "logical_bytes": 10744958288,
+  "files": 9,
+  "source_allocated_bytes": null,
+  "nonzero_world_regions": 70,
+  "sample_count": 177
+}

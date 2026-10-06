@@ -1,0 +1,240 @@
+windows	Run cargo test --locked --workspace	﻿2026-10-05T13:39:13.8772452Z ##[group]Run cargo test --locked --workspace
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8772895Z ^[[36;1mcargo test --locked --workspace^[[0m
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8842409Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8843012Z env:
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8843225Z   CARGO_HOME: C:\Users\runneradmin\.cargo
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8843511Z   CARGO_INCREMENTAL: 0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8843732Z   CARGO_TERM_COLOR: always
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8843967Z   CommandPromptType: Native
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8844329Z   DevEnvDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8844862Z   ExtensionSdkDir: C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8847094Z   EXTERNAL_INCLUDE: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\include\um
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8849219Z   Framework40Version: v4.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8849494Z   FrameworkDir: C:\Windows\Microsoft.NET\Framework64\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8849857Z   FrameworkDir64: C:\Windows\Microsoft.NET\Framework64\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8850160Z   FrameworkVersion: v4.0.30319
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8850405Z   FrameworkVersion64: v4.0.30319
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8850919Z   FSHARPINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8851512Z   HTMLHelpDir: C:\Program Files (x86)\HTML Help Workshop
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8853575Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\include\um
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8856543Z   LIB: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8859442Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8861149Z   llvmArm64: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\ARM64\bin
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8861700Z   llvmX64: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\x64\bin
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8862188Z   NETFXSDKDir: C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8.1\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8876676Z   Path: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\18\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\18\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools\;C:\Program Files\MongoDB\Server\7.0\bin;C:\vcpkg;C:\tools\zstd;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.12\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\vcpkg
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8892923Z   Platform: x64
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8893148Z   UCRTVersion: 10.0.26100.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8893461Z   UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8893785Z   use_x64_llvm: true
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8894142Z   VCIDEInstallDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\VC\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8894665Z   VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8895133Z   VCPKG_ROOT: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\vcpkg
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8895698Z   VCToolsInstallDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.51.36231\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8896329Z   VCToolsRedistDir: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Redist\MSVC\14.51.36231\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8896789Z   VCToolsVersion: 14.51.36231
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8897026Z   VisualStudioVersion: 18.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8897389Z   VS180COMNTOOLS: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\Tools\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8897793Z   VSCMD_ARG_app_plat: Desktop
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8898036Z   VSCMD_ARG_HOST_ARCH: x64
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8898255Z   VSCMD_ARG_TGT_ARCH: x64
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8898462Z   VSCMD_VER: 18.10.2
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8898967Z   VSINSTALLDIR: C:\Program Files\Microsoft Visual Studio\18\Enterprise\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8899456Z   VSSDK150INSTALL: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VSSDK
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8899938Z   VSSDKINSTALL: C:\Program Files\Microsoft Visual Studio\18\Enterprise\VSSDK
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8900609Z   WindowsLibPath: C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8901251Z   WindowsSdkBinPath: C:\Program Files (x86)\Windows Kits\10\bin\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8901628Z   WindowsSdkDir: C:\Program Files (x86)\Windows Kits\10\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8901932Z   WindowsSDKLibVersion: 10.0.26100.0\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8902298Z   WindowsSdkVerBinPath: C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8902682Z   WindowsSDKVersion: 10.0.26100.0\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8903127Z   WindowsSDK_ExecutablePath_x64: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\x64\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8903961Z   WindowsSDK_ExecutablePath_x86: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8.1 Tools\
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8904425Z   __DOTNET_ADD_64BIT: 1
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8904650Z   __DOTNET_PREFERRED_BITNESS: 64
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8913260Z   __VSCMD_PREINIT_PATH: C:\Program Files\MongoDB\Server\7.0\bin;C:\vcpkg;C:\tools\zstd;C:\hostedtoolcache\windows\stack\3.11.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.6.1\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.13\x64\bin;C:\hostedtoolcache\windows\Python\3.12.10\x64\Scripts;C:\hostedtoolcache\windows\Python\3.12.10\x64;C:\hostedtoolcache\windows\Ruby\3.3.12\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\17.0.20-101\x64\bin;C:\Program Files\ImageMagick-7.1.2-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.16\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\mongosh\;C:\Program Files\LLVM\bin;C:\Program Files (x86)\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8922303Z   CACHE_ON_FAILURE: false
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8922551Z   LIBCLANG_PATH: C:\Program Files\LLVM\bin
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:13.8922818Z ##[endgroup]
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:14.5435392Z ^[[1m^[[92m   Compiling^[[0m windows-sys v0.61.2
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:14.5527781Z ^[[1m^[[92m   Compiling^[[0m playsparse-vfs-win v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-vfs-win)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:14.5540981Z ^[[1m^[[92m   Compiling^[[0m playsparse-cli v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-cli)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:15.8159805Z ^[[1m^[[92m   Compiling^[[0m playsparse-core v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-core)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:15.8161234Z ^[[1m^[[92m   Compiling^[[0m tempfile v3.27.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:15.8161848Z ^[[1m^[[92m   Compiling^[[0m winapi-util v0.1.11
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.1659246Z ^[[1m^[[92m   Compiling^[[0m same-file v1.0.6
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.3569552Z ^[[1m^[[92m   Compiling^[[0m walkdir v2.5.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.3637708Z ^[[1m^[[92m   Compiling^[[0m playsparse-trace v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-trace)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.5380744Z ^[[1m^[[92m   Compiling^[[0m playsparse-cache v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-cache)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.6365259Z ^[[1m^[[92m   Compiling^[[0m playsparse-game v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-game)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:16.9777931Z ^[[1m^[[92m   Compiling^[[0m playsparse-policy v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-policy)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:17.1249138Z ^[[1m^[[92m   Compiling^[[0m rusty-fork v0.3.1
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:18.0393296Z ^[[1m^[[92m   Compiling^[[0m playsparse-store v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-store)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:18.2806735Z ^[[1m^[[92m   Compiling^[[0m anstyle-query v1.1.5
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:18.6882250Z ^[[1m^[[92m   Compiling^[[0m anstyle-wincon v3.0.11
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:19.1566477Z ^[[1m^[[92m   Compiling^[[0m playsparse-range v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-range)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:19.2272620Z ^[[1m^[[92m   Compiling^[[0m anstream v1.0.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:20.0819288Z ^[[1m^[[92m   Compiling^[[0m playsparse-overlay v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-overlay)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:20.7705568Z ^[[1m^[[92m   Compiling^[[0m proptest v1.11.0
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:21.0361510Z ^[[1m^[[92m   Compiling^[[0m clap_builder v4.6.7
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:24.0642819Z ^[[1m^[[92m   Compiling^[[0m nu-ansi-term v0.50.3
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:24.6314488Z ^[[1m^[[92m   Compiling^[[0m clap v4.6.7
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:24.7055110Z ^[[1m^[[92m   Compiling^[[0m tracing-subscriber v0.3.23
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:25.7603178Z ^[[1m^[[92m   Compiling^[[0m playsparse-vfs-fuse v0.1.0 (D:\a\PlaySparse\PlaySparse\crates\playsparse-vfs-fuse)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:26.1398246Z ^[[1m^[[92m   Compiling^[[0m ctrlc v3.5.2
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:30.2741101Z ^[[1m^[[92m   Compiling^[[0m io-probe v0.1.0 (D:\a\PlaySparse\PlaySparse\tools\io-probe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4172991Z ^[[1m^[[92m    Finished^[[0m `test` profile [unoptimized + debuginfo] target(s) in 27.18s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4317288Z ^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\debug\deps\io_probe-13f68818fdeb3414.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4422590Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4422844Z running 0 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4423063Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4423383Z test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4423726Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4441862Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_cache-6e87c851a35189b9.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4544353Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4544718Z running 15 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4568681Z test tests::invalid_known_sizes_do_not_load_and_mismatched_size_fails_closed ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4569521Z test tests::errors_wake_waiters_and_allow_retry ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4570257Z test tests::adaptive_priority_changes_eviction_and_decays_under_new_traffic ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4571080Z test tests::prefetch_useful_wasted_and_final_accounting_are_conserved ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4572240Z test tests::admission_is_rechecked_after_racing_demand_without_evicting_protected_bytes ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4573005Z test tests::panicking_loader_releases_flight_and_permit ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4584870Z test tests::speculation_checks_every_variable_size_victim_without_partial_eviction ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4585963Z test tests::racing_demand_makes_a_known_size_prefetch_flight_demand_admission ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4586831Z test tests::racing_demand_claims_prefetch_once_and_preserves_loaded_tier ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4591411Z test tests::speculative_errors_do_not_strand_demand_or_count_loaded_bytes ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4599030Z test tests::speculative_hits_do_not_age_demand_priority_or_refresh_lru_recency ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4603914Z test tests::speculation_does_not_wait_behind_saturated_demand_loads ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.4604698Z test tests::weighted_lru_and_oversized_bypass ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.5598156Z test tests::sixteen_threads_share_one_load_even_with_zero_cache ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7511869Z test tests::speculative_entry_pressure_and_search_limits_do_not_start_loads ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7512418Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7512678Z test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7539019Z ^[[1m^[[92m     Running^[[0m unittests src\main.rs (target\debug\deps\playsparse-b53ea07a5c8cf69b.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7539750Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7653460Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7653741Z running 6 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7662419Z test diagnostics::tests::passive_diagnostics_do_not_claim_mount_approval ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7664433Z test diagnostics::tests::blocked_probe_never_runs_when_prerequisites_are_missing ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7734767Z test mount_path_tests::unused_drive_mount_root_does_not_require_a_parent ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7735452Z test diagnostics::tests::probe_requires_exact_bytes_and_refuses_longer_or_shorter_content ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7736006Z test game::tests::refuse_nested_output_without_mutating_source ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7738995Z test mount_path_tests::doctor_reports_structured_windows_mount_backend ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7739424Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7739679Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7740026Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7766048Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_core-bf66df23f2f40d9c.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7864799Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7865084Z running 4 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7869515Z test tests::reject_unsafe_paths ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7871257Z test tests::official_blake3_vectors ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.7980186Z test resources::tests::native_process_measurements_are_present_and_monotonic ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8129156Z test tests::large_offsets ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8129437Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8130372Z test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8130725Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8150256Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_game-8349d1648ddc4b71.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8251588Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8252313Z running 9 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8280325Z test tests::bounded_artifact_read ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8535583Z test tests::extension_is_not_compression_proof ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8899007Z test tests::absent_scanner_falls_back_without_changing_plan ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.8905351Z test tests::deterministic_measurement_and_plan ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9079767Z test tests::forged_decision_is_remeasured ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9111251Z test tests::artifact_validation_and_source_mismatch ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9300086Z test tests::scanner_unknown_and_multiple_signals_no_path_leak ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9333061Z test tests::scanner_malformed_oversized_and_wrong_source ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9449210Z test tests::zip_valid_boundaries_and_malformed_count_offset_flags ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9449602Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9449864Z test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9450213Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9478836Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_overlay-2a846a50b6ef2713.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9607300Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:41.9607580Z running 14 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.2356186Z test tests::canonical_verbatim_windows_storage_paths_are_supported ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.3561951Z test tests::exclusive_lock_is_retained_by_handles_and_discard_preserves_base ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.4130440Z test tests::handle_delete_preserves_replacements_and_follows_live_renames ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.5362435Z test tests::interrupted_metadata_and_copy_up_orphans_are_collected_without_data_loss ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.7786245Z test tests::metadata_corruption_missing_objects_and_wrong_base_fail_closed ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.8280823Z test tests::per_file_serialization_shared_reads_and_atomic_append ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:42.8489332Z test tests::create_partial_append_truncate_modes_and_remount ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.2320242Z test tests::refuses_overlap_unrecognized_roots_and_foreign_handles ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.2626818Z test tests::rename_empty_directory_replace_and_file_replace_remount ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.3338128Z test tests::stable_file_handles_survive_rename_replace_and_unlink ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.3374342Z test tests::renamed_base_tree_directory_handles_and_tombstones_persist ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.3970330Z test tests::strict_paths_read_permissions_limits_and_wrong_types ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4373023Z test tests::syntactically_valid_corrupt_metadata_is_rejected ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4404511Z test tests::truncate_zero_skips_copy_and_large_sparse_offsets_stay_u64 ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4404949Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4405207Z test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.48s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4405565Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4431239Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_policy-c7d5a8712b2ecf20.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4536188Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4536556Z running 6 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4546392Z test tests::forward_coverage_counts_unique_bytes_and_resets_for_tiny_bursts_and_gaps ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4547677Z test tests::migrating_dispatch_workers_and_forward_overlap_are_sequential ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4551491Z test tests::sequence_confidence_random_rejection_and_expiry ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4569517Z test tests::strict_invalid_configuration_and_roundtrip ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4597505Z test tests::optimizer_uses_forward_overlap_confidence_and_rejects_random_stream ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4908270Z test tests::hotness_decays_and_tracking_is_bounded ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4908611Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4908878Z test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4909231Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.4930987Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_range-aafa4451b14fd955.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5054715Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5055026Z running 10 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5073202Z test prefetch::tests::reservations_dedup_queue_and_cancellation_stay_bounded ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5074424Z test prefetch::tests::expired_requests_never_execute_loader ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5080770Z test prefetch::tests::worker_rechecks_queued_admission_after_demand_changes_the_cache ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5082874Z test prefetch::tests::failed_objects_are_not_requeued_by_repeated_subchunk_predictions ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.5411133Z test prefetch::tests::rejected_admission_history_is_bounded_without_source_io ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.6253116Z test tests::loads_only_intersecting_chunks_and_handles_overflow ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.7199172Z test replay::tests::deterministic_replay_and_prefetch_accounting ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.7329949Z test tests::tiny_sequential_burst_does_not_predict_whole_chunks_until_chunk_coverage ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:43.7492441Z test tests::traced_reads_preserve_bytes_and_record_failure ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2844290Z test tests::ranges_equal_source ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2844712Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2845154Z test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.78s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2845672Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2871674Z ^[[1m^[[92m     Running^[[0m unittests src\lib.rs (target\debug\deps\playsparse_store-b80054def59ab21d.exe)
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2996386Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.2996625Z running 22 tests
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3043732Z test publication_tests::rejects_nested_destination_without_mutating_the_source ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3227874Z test game_tests::forged_plan_refused_before_creating_destination_parent ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3661538Z test publication_tests::creates_nested_destination_only_outside_the_source ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3723148Z test tests::corrupt_missing_and_partial_are_errors ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3753216Z test tests::exclusive_publish_never_replaces_existing_empty_directory ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.3757340Z test tests::index_rejects_length_codec_reserved_and_duplicate ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.5032623Z test tests::object_corruption_detected ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.5423418Z test game_tests::measured_codec_byte_identity_and_generic_regression ... FAILED
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.6230751Z test tests::deterministic_chunker_index_manifest_and_pack ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.6280220Z test tests::arbitrary_index_never_panics ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.7260332Z test tests::windows_pack_preserves_writable_and_readonly_intent ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.7345764Z test tiers::tests::config_versions_fields_bounds_relative_paths_and_credentials_are_checked ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.9922357Z test tiers::tests::concurrent_atomic_promotion_is_single_object_and_never_replaces_peer_data ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:47.9959174Z test tests::pack_verify_dedup_both_layouts ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.1222990Z test tiers::tests::local_corruption_is_hard_error_and_missing_secondary_identity_falls_remote ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.1261796Z test tiers::tests::metadata_only_open_retains_seal_index_and_available_pack_checks ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.2127521Z test tiers::tests::remote_promotion_is_persistent_verified_and_offline_readable ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.2938438Z test tiers::tests::primary_and_metadata_only_remote_ranges_preserve_identity_and_bounds ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.4780114Z test tiers::tests::secondary_own_locator_promotion_and_reopen_without_upstream ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.5554048Z test tiers::tests::unreachable_remote_is_sanitized_and_local_fallback_avoids_http ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.6023299Z test tiers::tests::remote_protocol_and_integrity_failures_never_return_unverified_bytes ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8567462Z test tiers::tests::header_and_body_timeouts_have_bounded_retry_and_metrics ... ok
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8568077Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8568172Z failures:
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8568294Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8568893Z ---- game_tests::measured_codec_byte_identity_and_generic_regression stdout ----
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8569231Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8569668Z thread 'game_tests::measured_codec_byte_identity_and_generic_regression' (6308) panicked at crates\playsparse-store\src\game_tests.rs:48:76:
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8570479Z called `Result::unwrap()` on an `Err` value: Invalid("source content changed after plan validation")
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571054Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571351Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571356Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571434Z failures:
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571702Z     game_tests::measured_codec_byte_identity_and_generic_regression
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8571961Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8572215Z test result: FAILED. 21 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.56s
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8572561Z 
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.8591031Z ^[[1m^[[91merror^[[0m: test failed, to rerun pass `-p playsparse-store --lib`
+windows	Run cargo test --locked --workspace	2026-10-05T13:39:48.9840599Z ##[error]Process completed with exit code 1.
