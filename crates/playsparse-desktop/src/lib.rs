@@ -790,7 +790,7 @@ impl Service {
                 use std::io::Read;
                 let n = bytes.len().min(4096);
                 let mut read = vec![0; n];
-                if File::open(mountpoint.join(&probe.path))
+                if File::open(mounted_root(&mountpoint).join(&probe.path))
                     .and_then(|mut f| f.read_exact(&mut read))
                     .is_ok()
                     && read == bytes[..n]
@@ -838,7 +838,7 @@ impl Service {
             relative_executable(&descriptor.executable),
             "Invalid executable path"
         );
-        let mount = session.mountpoint.canonicalize()?;
+        let mount = mounted_root(&session.mountpoint).canonicalize()?;
         let executable = mount.join(&descriptor.executable).canonicalize()?;
         ensure!(
             executable.starts_with(&mount) && executable.is_file(),
@@ -1131,4 +1131,15 @@ fn overlay_allocation(path: &Path) -> Option<u64> {
         return Some(0);
     }
     directory_allocation(path).ok()?.0
+}
+
+fn mounted_root(path: &Path) -> PathBuf {
+    #[cfg(windows)]
+    {
+        PathBuf::from(format!("{}\\", path.display()))
+    }
+    #[cfg(not(windows))]
+    {
+        path.to_path_buf()
+    }
 }

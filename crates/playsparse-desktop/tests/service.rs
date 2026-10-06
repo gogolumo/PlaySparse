@@ -248,6 +248,8 @@ fn native_mount_exact_bytes_launch_stop_unmount() {
         .unwrap()
         .mountpoint
         .clone();
+    #[cfg(windows)]
+    let mount = std::path::PathBuf::from(format!("{}\\", mount.display()));
     assert_eq!(fs::read(mount.join("assets/data.bin")).unwrap(), expected);
     fs::write(mount.join("save.txt"), b"overlay save").unwrap();
     assert!(!source.join("save.txt").exists());
