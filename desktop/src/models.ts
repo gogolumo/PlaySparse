@@ -41,6 +41,7 @@ export interface Game {
   store: string | null;
   verified: boolean;
   store_stats: PackStats | null;
+  overlay_allocated_bytes: number | null;
   error: string | null;
   launch: LaunchDescriptor | null;
   session: {
@@ -53,7 +54,7 @@ export interface Game {
 export interface Job {
   id: string;
   game_id: string;
-  operation: Operation | "mount" | "launch" | "stop" | "unmount";
+  operation: Operation | "mount" | "launch" | "stop" | "unmount" | "recover";
   state: string;
   stage: string;
   bytes: number;
@@ -92,7 +93,7 @@ export function status(game: Game, jobs: Job[]): string {
   );
   if (
     active &&
-    ["mount", "launch", "stop", "unmount"].includes(active.operation)
+    ["mount", "launch", "stop", "unmount", "recover"].includes(active.operation)
   )
     return (
       {
@@ -100,12 +101,13 @@ export function status(game: Game, jobs: Job[]): string {
         launch: "Launching",
         stop: "Stopping",
         unmount: "Unmounting",
+        recover: "Reconciling",
       } as Record<string, string>
     )[active.operation];
   if (active)
     return active.operation === "analyze"
       ? "Analyzing"
-      : active.stage === "verifying"
+      : active.stage.startsWith("verif")
         ? "Verifying"
         : active.operation === "optimize"
           ? "Optimizing"
@@ -124,4 +126,11 @@ export function status(game: Game, jobs: Job[]): string {
     return "Needs attention";
   if (game.store) return game.verified ? "Ready" : "Verify required";
   return game.analysis ? "Ready to optimize" : "Not analyzed";
+}
+
+export function effectiveBytes(game: Game): number | null {
+  const store = game.store_stats?.allocated_bytes;
+  return store != null && game.overlay_allocated_bytes != null
+    ? store + game.overlay_allocated_bytes
+    : null;
 }

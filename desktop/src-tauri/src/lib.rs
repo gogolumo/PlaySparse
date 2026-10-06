@@ -106,14 +106,76 @@ async fn runtime_action(
     .map_err(|e| e.to_string())?
 }
 
+#[cfg(feature = "acceptance")]
+#[tauri::command]
+fn acceptance_report(service: State<'_, Backend>, report: Value) -> Reply<()> {
+    let root = std::env::var_os("PLAYSPARSE_DESKTOP_DATA_DIR")
+        .ok_or("Acceptance requires an isolated data directory")?;
+    let path = std::path::PathBuf::from(root).join("native-acceptance.json");
+    if service.snapshot().games.len() > 1 {
+        return Err("Acceptance requires a single generated fixture".into());
+    }
+    std::fs::write(
+        path,
+        serde_json::to_vec_pretty(&report).map_err(|e| e.to_string())?,
+    )
+    .map_err(|e| e.to_string())
+}
+#[cfg(feature = "acceptance")]
+#[tauri::command]
+fn acceptance_probe(service: State<'_, Backend>, id: String) -> Reply<Value> {
+    let snapshot = service.snapshot();
+    let game = snapshot
+        .games
+        .iter()
+        .find(|g| g.id == id)
+        .ok_or("Unknown fixture")?;
+    if std::fs::read(game.source.join(".playsparse-generated-fixture"))
+        .map_err(|e| e.to_string())?
+        != b"desktop-acceptance-v1"
+    {
+        return Err("Only generated acceptance fixtures can be probed".into());
+    }
+    let session = game.session.as_ref().ok_or("No mounted fixture")?;
+    let expected = std::fs::read(game.source.join("assets/data.bin")).map_err(|e| e.to_string())?;
+    let actual =
+        std::fs::read(session.mountpoint.join("assets/data.bin")).map_err(|e| e.to_string())?;
+    if expected != actual {
+        return Err("Mounted content differs from source".into());
+    }
+    std::fs::write(
+        session.mountpoint.join("fixture-save.txt"),
+        b"generated overlay save",
+    )
+    .map_err(|e| e.to_string())?;
+    if game.source.join("fixture-save.txt").exists() {
+        return Err("Overlay escaped into source".into());
+    }
+    Ok(serde_json::json!({"exact_bytes":expected.len(), "source_save_absent":true}))
+}
+
 pub fn run() {
-    tauri::Builder::default()
+    let builder = tauri::Builder::default()
         .plugin(tauri_plugin_single_instance::init(|app, _, _| {
             if let Some(window) = app.get_webview_window("main") {
                 let _ = window.set_focus();
             }
         }))
         .plugin(tauri_plugin_dialog::init())
+        .on_page_load(|webview, payload| {
+            #[cfg(feature = "acceptance")]
+            if payload.event() == tauri::webview::PageLoadEvent::Finished
+                && let Some(source) = std::env::var_os("PLAYSPARSE_DESKTOP_ACCEPTANCE_SOURCE")
+            {
+                let prefix = format!(
+                    "window.__DESKTOP_ACCEPTANCE_SOURCE={};",
+                    serde_json::to_string(&source.to_string_lossy()).unwrap()
+                );
+                let _ = webview.eval(&(prefix + include_str!("acceptance.js")));
+            }
+            #[cfg(not(feature = "acceptance"))]
+            let _ = (webview, payload);
+        })
         .setup(|app| {
             let root = std::env::var_os("PLAYSPARSE_DESKTOP_DATA_DIR")
                 .map(std::path::PathBuf::from)
@@ -129,7 +191,14 @@ pub fn run() {
                     .ok_or("No application directory")?
                     .join(format!("playsparse-engine{extension}"))
             };
-            let service = Service::open(&root, &engine)?;
+            let service = match Service::open(&root, &engine) {
+                Ok(service) => service,
+                Err(error) => {
+                    app.dialog().message(format!("PlaySparse could not open its library at {}.\n\n{error:#}\n\nExisting data was retained. Close other instances or inspect the library before retrying.", root.display()))
+                        .title("Library needs attention").kind(tauri_plugin_dialog::MessageDialogKind::Error).blocking_show();
+                    return Err(error.into());
+                }
+            };
             app.manage(service.clone());
             let handle = app.handle().clone();
             std::thread::spawn(move || {
@@ -165,7 +234,24 @@ pub fn run() {
             get_system_status,
             get_storage_statistics,
             runtime_action
-        ])
+        ]);
+    #[cfg(feature = "acceptance")]
+    let builder = builder.invoke_handler(tauri::generate_handler![
+        get_snapshot,
+        select_folder,
+        add_game,
+        remove_game,
+        update_settings,
+        configure_launch,
+        start_job,
+        cancel_job,
+        get_system_status,
+        get_storage_statistics,
+        runtime_action,
+        acceptance_report,
+        acceptance_probe
+    ]);
+    builder
         .build(tauri::generate_context!())
         .expect("Unable to build PlaySparse desktop")
         .run(|app, event| {

@@ -558,6 +558,11 @@ impl Store {
                 self.read_object(hash)?;
             }
         }
+        observer(Progress {
+            stage: "verified",
+            bytes,
+            files: self.manifest.files.len(),
+        })?;
         Ok(VerifyStats {
             ok: true,
             checked_files: self.manifest.files.len(),

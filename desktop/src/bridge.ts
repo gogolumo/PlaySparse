@@ -39,6 +39,7 @@ const example: Game = {
   store: "/Preview/Stores/project-zomboid",
   store_stats: analysis.cdc_chunks,
   verified: true,
+  overlay_allocated_bytes: 0,
   session: null,
   error: null,
   launch: null,

@@ -214,9 +214,14 @@ Evidence progression:
 
 ## M11 — Productization
 
-Only after the engine is correct and benchmarks justify it:
+A first development desktop is implemented in merged [PR #16](https://github.com/gogolumo/PlaySparse/pull/16), with runtime hardening and final acceptance in [PR #17](https://github.com/gogolumo/PlaySparse/pull/17): Tauri/React navigation and themes, persistent registration, real Rust analysis/packing/verification, cooperative cancellation, diagnostic gating, direct-process launch tracking and ordinary mount/unmount. Native macOS fixture acceptance includes real WKWebView/IPC and exact-byte writable runtime checks. See the [desktop guide](docs/desktop/README.md) and [milestone report](docs/desktop/acceptance-2026-10-06.md).
 
-- stable CLI (`analyze`, `pack`, `verify`, `mount`, `unmount`, `profile`, `optimize`, `doctor`);
-- installer/service lifecycle;
-- recovery tooling;
-- GUI.
+Open production gates remain:
+
+- stable public CLI/API contracts and broader measured title compatibility;
+- physical Windows/Linux desktop acceptance;
+- process-tree lifecycle and stronger stale-drive identity checks;
+- automatic APFS compatibility shadows/case translation;
+- signed/notarized installers and production release/update lifecycle.
+
+The GUI and unsigned development bundles do not close these release gates.

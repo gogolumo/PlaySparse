@@ -26,11 +26,11 @@ This builds and bundles the actual `playsparse` runtime sidecar and starts Vite.
 
 ## First installation
 
-Add Game opens a native folder chooser. Registering records only the path. Analyze performs the existing full measured fixed/CDC comparison with two disposable, verified stores. Choose store and temporary locations in Settings before optimization. Disk budgets are conservative estimates, not reservations. Analyze can take time and needs substantial temporary space.
+Add Game opens a native folder chooser. Registering records only the path. Analyze performs the existing full measured fixed/CDC comparison with two disposable, verified stores. Choose the store location from the optimization preview or Settings; choose temporary storage in Settings. Disk budgets are conservative estimates, not reservations. Analyze can take time and needs substantial temporary space.
 
 Review & Optimize opens the measured preview. Packing creates a new independent store, verifies its staging data and publishes atomically. The library entry is registered as verified only after successful engine publication and database persistence. Stage and byte/file counters come from actual engine callbacks; progress is indeterminate where a reliable denominator is unavailable. Cancellation is cooperative between scan entries/chunks and verification reads. Preflight scans and individual filesystem operations are not interruptible. Cancellation is disabled before atomic publication.
 
-Original installs remain on disk. **Representation savings are not reclaimed free disk space.** Allocation can be unavailable and is displayed as such. Store objects are shared within each store, not across stores. Current storage measurements include overlays. Hardlinks/reflinks across installations are not deduplicated in totals; no aggregate claim of unique physical disk usage is made. Compatibility shadows are not configured by this app. Runtime caches use memory, not a persistent disk cache.
+Original installs remain on disk. **Representation savings are not reclaimed free disk space.** Allocation can be unavailable and is displayed as such. Store objects are shared within each store, not across stores. Effective representation sizes and savings include allocated store and writable-overlay bytes. Overlay allocation becomes unknown on mount and is measured again on ordinary unmount or Measure now; unknown values are not treated as zero. No compatibility shadow or persistent disk cache is configured. Application logs, library metadata and destination lock files are not included in game representation totals. Current storage measurements include overlays. Hardlinks/reflinks across installations are not deduplicated in totals; no aggregate claim of unique physical disk usage is made. Compatibility shadows are not configured by this app. Runtime caches use memory, not a persistent disk cache.
 
 ## Runtime
 
@@ -40,7 +40,7 @@ Configure a relative executable, literal arguments as a JSON string array and an
 
 Stop terminates only the tracked direct process after confirmation. Descendants and launchers are not tracked; close them manually before confirming Unmount. Ordinary backend unmount preserves overlay saves and refuses a busy filesystem. Automatic APFS native-code shadows, case translation and platform process groups are not implemented. macOS signed native code may require the separately documented hybrid-runtime process. Existing Project Zomboid/Elden Ring reports remain title/configuration-specific evidence.
 
-Closing a window or quitting is blocked while jobs or sessions remain. Metadata is stored atomically in a versioned `library.json` in Tauri's platform application-data directory. A filesystem lock prevents concurrent writers. Interrupted jobs become interrupted; prior runtime sessions become Needs attention. No persisted PID is killed. Inspect a stale session and close processes before unmounting; external mount reconciliation is conservative, not proof that a prior session survived. Library corruption is retained and produces an error rather than silently resetting data. Removing a game unregisters it and leaves **all files** on disk.
+Closing a window or quitting is blocked while jobs or sessions remain. Metadata is stored atomically in a versioned `library.json` in Tauri's platform application-data directory. A filesystem lock prevents concurrent writers. Interrupted jobs become interrupted; prior runtime sessions become Needs attention. No persisted PID is killed. Reconcile stale session clears metadata only when no tracked process is running and the owned POSIX mount has the same filesystem device as its parent (or is absent), or the Windows runtime drive is absent. It never detaches a mounted filesystem or kills a persisted PID. Inspect a stale session and close processes before unmounting; external mount reconciliation is conservative, not proof that a prior session survived. Library corruption is retained and produces an error rather than silently resetting data. Removing a game unregisters it and leaves **all files** on disk.
 
 `PLAYSPARSE_DESKTOP_DATA_DIR` selects a separate library root for disposable acceptance runs or an explicitly chosen portable workspace. It must remain separate from installations. There is no store/source recursive deletion command.
 
@@ -95,6 +95,8 @@ All images are rendered UI captures. Browser images visibly say Preview Mode. Br
 |---|---|
 | Library / dark | [Dark library](screenshots/library-dark.png) |
 | Library / light | [Light library](screenshots/library-light.png) |
+| Native macOS generated fixture | [Actual native library](screenshots/native-macos-fixture.png) |
+| Native macOS empty | [Actual macOS window](screenshots/native-macos-empty.png) |
 | Empty | [Empty library](screenshots/empty-library.png) |
 | Add Game | [Folder registration](screenshots/add-game.png) |
 | Analysis | [Measured-data presentation](screenshots/analysis-results.png) |
@@ -106,3 +108,17 @@ Design uses system fonts, neutral layered surfaces, restrained green, compact ro
 ## Remaining work
 
 Automated APFS compatibility shadows and case-insensitive mapping, verified per-title launch descriptors, process-tree lifecycle management, stronger stale-mount identity checks, public release signing/notarization, updates and physical Windows/Linux GUI acceptance remain open. Generic engine detection is unavailable in the desktop UI; users must supply tested launch configuration. Settings can disable runtime log retention. Each mount/launch log is bounded to 2 MiB while stdout/stderr continue to be drained. Diagnostic export controls are not implemented.
+
+## Native WKWebView acceptance
+
+On an Apple Silicon Mac with an approved macFUSE installation, run:
+
+```sh
+python3 tools/desktop-native-acceptance.py --work /tmp/playsparse-desktop-native-new
+```
+
+Use a new work directory. The harness builds an opt-in `acceptance` debug executable, creates a generated installation and an isolated library, and drives real Tauri IPC inside the native WKWebView. It exercises navigation, registration, analysis, packing, verification, exact mounted bytes, separate overlay writes, fixture launch/stop and unmount. Source file hashes and modes are compared afterward. A machine-readable receipt and capture of only that application's window are retained. The acceptance commands and startup script are excluded from the normal desktop build. Native folder-dialog interaction is not automated by this harness; it registers an actual generated folder through the same command used after selection.
+
+Failures retain evidence and any live application for inspection; they never force-unmount a potentially busy runtime. `--keep-open` retains a successful application. `--skip-build` requires an already-built acceptance binary. This is native fixture evidence, not a commercial-game compatibility claim.
+
+The final clean native WKWebView receipt is [retained here](evidence/native-wkwebview-20261006.json); [local macOS development bundle hashes](evidence/macos-development-bundles-20261006.json) identify the produced artifacts. The native screenshot uses a deliberately compressible generated fixture and establishes functionality, not commercial-game savings.

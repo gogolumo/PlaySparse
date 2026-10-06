@@ -11,12 +11,20 @@ use std::{
     process::{Child, Command, Stdio},
     sync::{
         Arc, Mutex,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
     },
     thread,
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
+static SEQUENCE: AtomicU64 = AtomicU64::new(0);
+fn identity(prefix: &str) -> String {
+    format!(
+        "{prefix}-{}-{}",
+        now(),
+        SEQUENCE.fetch_add(1, Ordering::Relaxed)
+    )
+}
 fn now() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -56,6 +64,8 @@ pub struct Game {
     pub store: Option<PathBuf>,
     pub verified: bool,
     pub store_stats: Option<Value>,
+    #[serde(default)]
+    pub overlay_allocated_bytes: Option<u64>,
     pub launch: Option<LaunchDescriptor>,
     pub session: Option<Session>,
     pub error: Option<String>,
@@ -84,6 +94,7 @@ pub enum Operation {
     Launch,
     Stop,
     Unmount,
+    Recover,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Snapshot {
@@ -146,6 +157,7 @@ impl Service {
         for job in &mut db.jobs {
             if job.state == "running" {
                 job.state = "interrupted".into();
+                job.cancellable = false;
                 job.finished_at = Some(now());
                 job.error = Some("Application stopped before completion. Retry; temporary engine staging may remain.".into());
             }
@@ -159,6 +171,16 @@ impl Service {
                         .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
                 "Invalid persisted game identity; library retained"
             );
+            let source = game
+                .source
+                .canonicalize()
+                .unwrap_or_else(|_| game.source.clone());
+            ensure!(
+                source.is_absolute() && !overlap(&source, &root),
+                "Persisted installation overlaps application data; library retained"
+            );
+            game.overlay_allocated_bytes =
+                overlay_allocation(&root.join("runtimes").join(&game.id).join("overlay"));
             // Never trust a persisted process ID or pretend a session survived restart.
             if let Some(session) = &mut game.session {
                 session.state = "needs_attention".into();
@@ -212,8 +234,8 @@ impl Service {
         let mut inner = self.inner.lock().unwrap();
         if require_idle {
             ensure!(
-                inner.active.is_none(),
-                "Another storage operation is running"
+                inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
+                "Another operation is running"
             );
             ensure!(
                 inner.db.games.iter().all(|g| g.session.is_none()),
@@ -232,7 +254,7 @@ impl Service {
     fn idle(&self) -> Result<()> {
         let inner = self.inner.lock().unwrap();
         ensure!(
-            inner.active.is_none(),
+            inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
             "Another storage operation is running. Wait or cancel it first."
         );
         ensure!(
@@ -266,7 +288,7 @@ impl Service {
             "Library limit: 1000 installations"
         );
         let game = Game {
-            id: format!("g-{}-{}", now(), snapshot.games.len()),
+            id: identity("g"),
             name: source
                 .file_name()
                 .context("Cannot register filesystem root")?
@@ -277,11 +299,22 @@ impl Service {
             store: None,
             verified: false,
             store_stats: None,
+            overlay_allocated_bytes: Some(0),
             launch: None,
             session: None,
             error: None,
         };
         self.change_idle(|db| {
+            ensure!(
+                !db.games.iter().any(|g| overlap(&g.source, &game.source)),
+                "Installation already registered or overlaps another entry"
+            );
+            ensure!(db.games.len() < 1000, "Library limit: 1000 installations");
+            let storage = playsparse_cli::workspace::projected(&db.settings.storage_dir)?.0;
+            ensure!(
+                !overlap(&storage, &game.source),
+                "Installation overlaps current store directory"
+            );
             db.games.push(game.clone());
             Ok(())
         })?;
@@ -318,6 +351,13 @@ impl Service {
             );
         }
         self.change_idle(|db| {
+            for path in [&settings.storage_dir, &settings.temp_dir] {
+                let location = playsparse_cli::workspace::projected(path)?.0;
+                ensure!(
+                    !db.games.iter().any(|g| overlap(&location, &g.source)),
+                    "Storage or temporary directory overlaps installation"
+                );
+            }
             db.settings = settings;
             Ok(())
         })
@@ -351,7 +391,7 @@ impl Service {
         );
         let mut inner = self.inner.lock().unwrap();
         ensure!(
-            inner.active.is_none(),
+            inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
             "Another storage operation is running"
         );
         ensure!(
@@ -375,7 +415,7 @@ impl Service {
             );
         }
         let job = Job {
-            id: format!("j-{}", now()),
+            id: identity("j"),
             game_id: id.into(),
             operation,
             state: "running".into(),
@@ -482,7 +522,7 @@ impl Service {
                     job.files = progress.files;
                     last = std::time::Instant::now();
                 }
-                if progress.stage == "publishing" {
+                if progress.stage == "publishing" && operation == Operation::Optimize {
                     job.cancellable = false;
                 }
             }
@@ -601,10 +641,15 @@ impl Service {
             "launch" => Operation::Launch,
             "stop" => Operation::Stop,
             "unmount" => Operation::Unmount,
+            "recover" => Operation::Recover,
             _ => anyhow::bail!("Unknown runtime action"),
         };
-        let job_id = format!("runtime-{}", now());
+        let job_id = identity("runtime");
         self.change(|db| {
+            ensure!(
+                !db.jobs.iter().any(|j| j.state == "running"),
+                "Another operation is running"
+            );
             game_mut(db, id)?;
             if db.jobs.len() >= 200 {
                 db.jobs.remove(0);
@@ -629,6 +674,7 @@ impl Service {
             Operation::Launch => self.launch_game(id),
             Operation::Stop => self.stop_game(id),
             Operation::Unmount => self.unmount_game(id, processes_closed),
+            Operation::Recover => self.recover_session(id),
             _ => unreachable!(),
         };
         self.change(|db| {
@@ -673,6 +719,10 @@ impl Service {
         let store = Store::open(&store_path)?;
         store.verify()?;
         let runtime = self.root.join("runtimes").join(id);
+        validate_owned_path(&runtime)?;
+        validate_owned_path(&runtime.join("overlay"))?;
+        #[cfg(not(windows))]
+        validate_owned_path(&runtime.join("mount"))?;
         fs::create_dir_all(&runtime)?;
         let overlay = runtime.join("overlay");
         #[cfg(not(windows))]
@@ -697,6 +747,7 @@ impl Service {
             overlay: overlay.clone(),
             error: None,
         };
+        game_mut(&mut inner.db, id)?.overlay_allocated_bytes = None;
         game_mut(&mut inner.db, id)?.session = Some(session);
         self.persist(&inner.db)?;
         let mut command = Command::new(&self.engine);
@@ -739,7 +790,7 @@ impl Service {
                 use std::io::Read;
                 let n = bytes.len().min(4096);
                 let mut read = vec![0; n];
-                if File::open(mountpoint.join(&probe.path))
+                if File::open(mounted_root(&mountpoint).join(&probe.path))
                     .and_then(|mut f| f.read_exact(&mut read))
                     .is_ok()
                     && read == bytes[..n]
@@ -787,7 +838,7 @@ impl Service {
             relative_executable(&descriptor.executable),
             "Invalid executable path"
         );
-        let mount = session.mountpoint.canonicalize()?;
+        let mount = mounted_root(&session.mountpoint).canonicalize()?;
         let executable = mount.join(&descriptor.executable).canonicalize()?;
         ensure!(
             executable.starts_with(&mount) && executable.is_file(),
@@ -870,6 +921,7 @@ impl Service {
             .find(|g| g.id == id)
             .context("Unknown game")?;
         let session = game.session.as_ref().context("No runtime session")?;
+        self.validate_mount_location(id, &session.mountpoint)?;
         let output = Command::new(&self.engine)
             .arg("unmount")
             .arg(&session.mountpoint)
@@ -879,16 +931,103 @@ impl Service {
             "Ordinary unmount failed; retained session: {}",
             String::from_utf8_lossy(&output.stderr)
         );
-        if let Some(mut child) = inner.mounts.remove(id) {
-            let _ = child.wait();
+        if let Some(child) = inner.mounts.get_mut(id) {
+            let deadline = std::time::Instant::now() + Duration::from_secs(3);
+            while child.try_wait()?.is_none() && std::time::Instant::now() < deadline {
+                thread::sleep(Duration::from_millis(50));
+            }
+            ensure!(
+                child.try_wait()?.is_some(),
+                "Unmount returned, but backend is still shutting down. Session retained; reconcile when it exits."
+            );
         }
+        inner.mounts.remove(id);
         game_mut(&mut inner.db, id)?.session = None;
+        game_mut(&mut inner.db, id)?.overlay_allocated_bytes =
+            overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
         self.persist(&inner.db)?;
+        Ok(())
+    }
+    fn validate_mount_location(&self, id: &str, mountpoint: &Path) -> Result<()> {
+        #[cfg(not(windows))]
+        ensure!(
+            mountpoint == self.root.join("runtimes").join(id).join("mount"),
+            "Session mountpoint is outside the owned runtime location"
+        );
+        #[cfg(windows)]
+        {
+            let drive = mountpoint.to_string_lossy();
+            ensure!(
+                drive.len() == 2
+                    && (b'D'..=b'Z').contains(&drive.as_bytes()[0])
+                    && drive.ends_with(':'),
+                "Invalid persisted runtime drive"
+            );
+            let _ = id;
+        }
+        Ok(())
+    }
+    /// Clear stale metadata only after proving the ordinary mount is absent.
+    /// This does not kill a process, detach a mount or delete runtime files.
+    pub fn recover_session(&self, id: &str) -> Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        ensure!(inner.active.is_none(), "Wait for storage operation");
+        ensure!(
+            !inner.processes.contains_key(id),
+            "Stop the tracked game process first"
+        );
+        if let Some(child) = inner.mounts.get_mut(id) {
+            ensure!(
+                child.try_wait()?.is_some(),
+                "Mount process is still alive; use ordinary unmount"
+            );
+        }
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        let session = game.session.as_ref().context("No stale runtime session")?;
+        self.validate_mount_location(id, &session.mountpoint)?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::MetadataExt;
+            match fs::metadata(&session.mountpoint) {
+                Ok(metadata) => {
+                    let parent = session
+                        .mountpoint
+                        .parent()
+                        .context("No mountpoint parent")?;
+                    ensure!(
+                        metadata.dev() == fs::metadata(parent)?.dev(),
+                        "A separate filesystem is still mounted. Close all processes and use ordinary unmount."
+                    );
+                    validate_owned_path(&session.mountpoint)?;
+                }
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+                Err(error) => return Err(error.into()),
+            }
+        }
+        #[cfg(windows)]
+        ensure!(
+            !PathBuf::from(format!("{}\\", session.mountpoint.display())).try_exists()?,
+            "Runtime drive exists; inspect it and use ordinary unmount. No external drive is detached automatically."
+        );
+        inner.mounts.remove(id);
+        let mut next = inner.db.clone();
+        game_mut(&mut next, id)?.session = None;
+        game_mut(&mut next, id)?.overlay_allocated_bytes =
+            overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
+        self.persist(&next)?;
+        inner.db = next;
         Ok(())
     }
     pub fn can_close(&self) -> bool {
         let inner = self.inner.lock().unwrap();
-        inner.active.is_none() && inner.db.games.iter().all(|g| g.session.is_none())
+        inner.active.is_none()
+            && !inner.db.jobs.iter().any(|j| j.state == "running")
+            && inner.db.games.iter().all(|g| g.session.is_none())
     }
 }
 fn game_mut<'a>(db: &'a mut Snapshot, id: &str) -> Result<&'a mut Game> {
@@ -911,6 +1050,33 @@ fn relative_executable(value: &str) -> bool {
 
 fn default_logs() -> bool {
     true
+}
+
+fn validate_owned_path(path: &Path) -> Result<()> {
+    ensure!(
+        playsparse_cli::workspace::projected(path)?.0 == path,
+        "Owned runtime path contains a symlink; inspect it before proceeding"
+    );
+    Ok(())
+}
+
+#[cfg(all(test, unix))]
+mod owned_path_tests {
+    use super::*;
+    #[test]
+    fn runtime_symlink_is_rejected_before_creating_source_directories() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let source = root.join("source");
+        fs::create_dir(&source).unwrap();
+        fs::write(source.join("original"), b"unchanged").unwrap();
+        let owned = root.join("runtime");
+        std::os::unix::fs::symlink(&source, &owned).unwrap();
+        assert!(validate_owned_path(&owned.join("overlay")).is_err());
+        assert!(!source.join("overlay").exists());
+        assert_eq!(fs::read(source.join("original")).unwrap(), b"unchanged");
+        assert!(validate_owned_path(&root.join("safe/new/overlay")).is_ok());
+    }
 }
 /// Bound combined stdout/stderr on disk while continuing to drain both pipes.
 fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Child> {
@@ -955,4 +1121,25 @@ fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Chil
         drain(pipe, shared);
     }
     Ok(child)
+}
+
+fn overlay_allocation(path: &Path) -> Option<u64> {
+    if validate_owned_path(path).is_err() {
+        return None;
+    }
+    if !path.try_exists().ok()? {
+        return Some(0);
+    }
+    directory_allocation(path).ok()?.0
+}
+
+fn mounted_root(path: &Path) -> PathBuf {
+    #[cfg(windows)]
+    {
+        PathBuf::from(format!("{}\\", path.display()))
+    }
+    #[cfg(not(windows))]
+    {
+        path.to_path_buf()
+    }
 }

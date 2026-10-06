@@ -162,6 +162,33 @@ fn cancellation_at_publication_removes_staging_and_preserves_source() {
     }));
     assert_eq!(fs::read(source.join("assets/data.bin")).unwrap(), expected);
 }
+
+#[test]
+fn concurrent_registration_cannot_duplicate_a_source() {
+    let temp = tempfile::tempdir().unwrap();
+    let source = temp.path().join("source");
+    fixture(&source);
+    let service = Service::open(&temp.path().join("app"), Path::new("unused")).unwrap();
+    let barrier = std::sync::Arc::new(std::sync::Barrier::new(4));
+    let threads: Vec<_> = (0..4)
+        .map(|_| {
+            let service = service.clone();
+            let source = source.clone();
+            let barrier = barrier.clone();
+            thread::spawn(move || {
+                barrier.wait();
+                service.add_game(&source).is_ok()
+            })
+        })
+        .collect();
+    let successes = threads
+        .into_iter()
+        .map(|handle| handle.join().unwrap())
+        .filter(|ok| *ok)
+        .count();
+    assert_eq!(successes, 1);
+    assert_eq!(service.snapshot().games.len(), 1);
+}
 #[test]
 fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids() {
     let temp = tempfile::tempdir().unwrap();
@@ -173,7 +200,7 @@ fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids
     drop(service);
     let path = root.join("library.json");
     let mut db: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
-    db["games"][0]["session"] = serde_json::json!({"state":"running", "mountpoint":root.join("mount"),"overlay":root.join("overlay"),"error":null});
+    db["games"][0]["session"] = serde_json::json!({"state":"running", "mountpoint":root.canonicalize().unwrap().join("runtimes").join(&game.id).join("mount"),"overlay":root.join("overlay"),"error":null});
     db["jobs"] = serde_json::json!([{"id":"interrupted", "game_id":game.id, "operation":"analyze", "state":"running", "stage":"packing", "bytes":42,"files":0,"started_at":1,"finished_at":null,"error":null,"cancellable":true}]);
     fs::write(&path, serde_json::to_vec(&db).unwrap()).unwrap();
     let service = Service::open(&root, Path::new("unused")).unwrap();
@@ -183,6 +210,12 @@ fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids
         "needs_attention"
     );
     assert!(!service.can_close());
+    #[cfg(unix)]
+    {
+        service.recover_session(&game.id).unwrap();
+        assert!(service.can_close());
+        assert!(service.snapshot().games[0].session.is_none());
+    }
 }
 /// Opt-in physical mount gate, never confused with ordinary engine tests.
 #[test]
@@ -215,6 +248,8 @@ fn native_mount_exact_bytes_launch_stop_unmount() {
         .unwrap()
         .mountpoint
         .clone();
+    #[cfg(windows)]
+    let mount = std::path::PathBuf::from(format!("{}\\", mount.display()));
     assert_eq!(fs::read(mount.join("assets/data.bin")).unwrap(), expected);
     fs::write(mount.join("save.txt"), b"overlay save").unwrap();
     assert!(!source.join("save.txt").exists());
