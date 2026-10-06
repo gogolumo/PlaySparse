@@ -29,6 +29,24 @@
 > [!IMPORTANT]
 > PlaySparse is **not** claiming arbitrary 10×–15× lossless compression for already-compressed game assets. The project explores a different storage representation: chunked, compressed, verified objects served through a virtual filesystem while applications continue reading ordinary files.
 
+## Desktop application
+
+PlaySparse now has a Tauri 2 / React desktop application with a persistent library, native folder selection, measured Rust analysis, source-preserving optimization, verification, cancellable jobs, driver diagnostics and managed runtime sessions. Light/dark themes and a browser preview are available.
+
+![PlaySparse desktop — actual native macOS window](docs/desktop/screenshots/native-macos-empty.png)
+
+```sh
+cd desktop
+npm ci
+npm run dev        # Browser preview: explicitly simulated data
+# Stop the preview server, then:
+npm run tauri dev  # Native application: actual Rust operations
+```
+
+macOS Apple Silicon is validated locally with generated native-runtime fixtures. Windows x64 and Linux x64 have native packaging workflows; physical desktop and game compatibility remain separate gates. Runtime mounts require macFUSE, WinFsp or FUSE. Compatibility shadows are not automated, and arbitrary game/launcher compatibility is not established. Original installations remain on disk: representation savings are not reclaimed free space.
+
+See [Desktop guide, screenshots and platform dependencies](docs/desktop/README.md) for development, packaging, tests and limitations. Builds are unsigned development artifacts, not production releases. Research documentation and historical game evidence remain below.
+
 ## What is PlaySparse?
 
 Modern games can occupy enormous amounts of storage, but simply turning the compression level up is not a solution. Assets may already be compressed, random reads still need low latency, updates can shift large regions of data, and decompression consumes CPU.

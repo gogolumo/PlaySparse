@@ -1,6 +1,6 @@
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand, ValueEnum};
-use playsparse_core::{Chunker, Codec, Layout};
+use playsparse_core::{Chunker, Layout};
 use playsparse_range::RangeResolver;
 use playsparse_store::{
     PackOptions, Store, directory_allocation, directory_bytes, pack_directory, read_at_exact,
@@ -15,7 +15,7 @@ use std::{
 
 mod diagnostics;
 mod game;
-mod workspace;
+use playsparse_cli::{analyze, workspace};
 
 #[derive(Parser)]
 #[command(
@@ -742,60 +742,6 @@ fn unmount(mountpoint: &Path) -> Result<()> {
     }
 }
 
-fn analyze(source: &Path, chunk_size: u32, temp_dir: &Path) -> Result<Value> {
-    let budget = workspace::preflight(source, temp_dir, chunk_size, Layout::Packs, 2, "temporary")?;
-    fs::create_dir_all(temp_dir)?;
-    let work = tempfile::Builder::new()
-        .prefix("playsparse-analysis-")
-        .tempdir_in(temp_dir)?;
-    let fixed = pack_directory(
-        source,
-        &work.path().join("fixed"),
-        &PackOptions {
-            chunker: Chunker::Fixed,
-            chunk_size,
-            ..Default::default()
-        },
-    )?;
-    let cdc = pack_directory(
-        source,
-        &work.path().join("cdc"),
-        &PackOptions {
-            chunk_size,
-            ..Default::default()
-        },
-    )?;
-    let store = Store::open(&work.path().join("cdc"))?;
-    let mut hashes = std::collections::BTreeSet::new();
-    let mut duplicates = 0u64;
-    let mut cdc_reuse = 0u64;
-    let mut refs = std::collections::BTreeSet::new();
-    for file in &store.manifest().files {
-        if !hashes.insert(&file.hash) {
-            duplicates += file.size;
-        }
-        for chunk in &file.chunks {
-            if !refs.insert(&chunk.hash) {
-                cdc_reuse += chunk.raw_size as u64;
-            }
-        }
-    }
-    let compressible: u64 = store
-        .index()
-        .values()
-        .filter(|r| r.codec == Codec::Zstd)
-        .map(|r| r.raw_size as u64)
-        .sum();
-    let incompressible: u64 = store
-        .index()
-        .values()
-        .filter(|r| r.codec == Codec::Raw)
-        .map(|r| r.raw_size as u64)
-        .sum();
-    Ok(
-        json!({"title":"PlaySparse Analysis","temporary_workspace":budget,"measurement":"measured full scan, two temporary verified stores; no extrapolation","source_modified":false,"files":cdc.files,"logical_bytes":cdc.logical_bytes,"exact_duplicate_file_bytes":duplicates,"cdc_duplicate_reuse_bytes":cdc_reuse,"unique_compressible_raw_bytes":compressible,"unique_incompressible_raw_bytes":incompressible,"already_compressed_bytes":null,"high_entropy_bytes":null,"classification_note":"Codec choice is measured. Already-compressed and high-entropy attribution is not inferred from filename or compression ratio.","fixed_chunks":fixed,"cdc_chunks":cdc,"projected_safe_mode":{"measurement":"measured on this input","physical_bytes":cdc.physical_bytes,"metadata_bytes":cdc.metadata_bytes},"temporary_stores_removed_on_exit":true}),
-    )
-}
 fn percentiles(mut values: Vec<f64>) -> Value {
     values.sort_by(f64::total_cmp);
     if values.is_empty() {

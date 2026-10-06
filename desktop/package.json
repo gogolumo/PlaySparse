@@ -1,0 +1,43 @@
+{
+  "name": "playsparse-desktop-ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b",
+    "lint": "eslint src",
+    "test": "vitest run src",
+    "test:e2e": "playwright test",
+    "engine": "node scripts/prepare-engine.mjs",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4",
+    "@tauri-apps/api": "^2",
+    "lucide-react": "^0.468",
+    "react": "^19",
+    "react-dom": "^19",
+    "tailwindcss": "^4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9",
+    "@playwright/test": "^1",
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^4.7.0",
+    "eslint": "^9",
+    "eslint-plugin-react-hooks": "^5",
+    "prettier": "^3.9.9",
+    "typescript": "^5",
+    "typescript-eslint": "^8",
+    "vite": "^6.4.4",
+    "vitest": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

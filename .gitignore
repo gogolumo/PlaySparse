@@ -10,3 +10,13 @@ experiments/01-zstd-random-access/dataset/
 /fuzz/artifacts/
 /fuzz/corpus/
 *.pack.lock
+
+# Desktop build products
+desktop/node_modules/
+desktop/dist/
+desktop/src-tauri/target/
+desktop/src-tauri/binaries/
+desktop/src-tauri/gen/
+desktop/test-results/
+desktop/playwright-report/
+desktop/*.tsbuildinfo

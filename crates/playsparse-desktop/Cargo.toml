@@ -1,0 +1,18 @@
+[package]
+name = "playsparse-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true
+playsparse-cli = { path = "../playsparse-cli" }
+playsparse-core = { path = "../playsparse-core" }
+playsparse-store = { path = "../playsparse-store" }
+blake3.workspace = true
+
+[dev-dependencies]
+playsparse-range = { path = "../playsparse-range" }

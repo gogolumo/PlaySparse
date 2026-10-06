@@ -1,0 +1,15 @@
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, copyFileSync, chmodSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+const root = fileURLToPath(new URL('../../', import.meta.url));
+const host = execFileSync('rustc', ['--print', 'host-tuple'], { encoding: 'utf8' }).trim();
+const ext = process.platform === 'win32' ? '.exe' : '';
+const args = ['build', '--locked', '--release', '-p', 'playsparse-cli'];
+if (process.platform === 'darwin') args.push('--features', 'macfuse');
+execFileSync('cargo', args, { cwd: root, stdio: 'inherit' });
+const destination = join(root, 'desktop/src-tauri/binaries');
+mkdirSync(destination, { recursive: true });
+const binary = join(destination, `playsparse-engine-${host}${ext}`);
+copyFileSync(join(root, `target/release/playsparse${ext}`), binary);
+if (!ext) chmodSync(binary, 0o755);
