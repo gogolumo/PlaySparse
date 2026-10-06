@@ -17,6 +17,8 @@ use std::{
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
+pub mod product;
+
 static SEQUENCE: AtomicU64 = AtomicU64::new(0);
 fn identity(prefix: &str) -> String {
     format!(
@@ -179,6 +181,9 @@ impl Service {
                 source.is_absolute() && !overlap(&source, &root),
                 "Persisted installation overlaps application data; library retained"
             );
+            if !game.source.is_dir() {
+                game.error = Some("Original installation is missing. Restore its folder or forget this entry; no files will be deleted.".into());
+            }
             game.overlay_allocated_bytes =
                 overlay_allocation(&root.join("runtimes").join(&game.id).join("overlay"));
             // Never trust a persisted process ID or pretend a session survived restart.
@@ -263,8 +268,7 @@ impl Service {
         );
         Ok(())
     }
-    pub fn add_game(&self, source: &Path) -> Result<Game> {
-        self.idle()?;
+    fn validate_installation(&self, source: &Path) -> Result<PathBuf> {
         let source = source
             .canonicalize()
             .context("Choose an existing installation folder")?;
@@ -287,6 +291,102 @@ impl Service {
             snapshot.games.len() < 1000,
             "Library limit: 1000 installations"
         );
+        ensure!(
+            !source
+                .ancestors()
+                .any(|p| p.join("COMMITTED.json").is_file()),
+            "Choose an original installation, not a PlaySparse store"
+        );
+        ensure!(
+            !snapshot
+                .games
+                .iter()
+                .filter_map(|g| g.store.as_ref())
+                .any(|p| overlap(p, &source)),
+            "Installation overlaps a registered store"
+        );
+        Ok(source)
+    }
+    pub fn inspect_installation(&self, source: &Path) -> Result<product::InstallationInspection> {
+        product::inspect(&self.validate_installation(source)?)
+    }
+    pub fn game_locations(&self, id: &str) -> Result<Value> {
+        let db = self.snapshot();
+        let game = db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        Ok(
+            json!({"source":game.source,"store":game.store,"overlay":self.root.join("runtimes").join(id).join("overlay"),"mount":game.session.as_ref().map(|s| &s.mountpoint)}),
+        )
+    }
+    pub fn inspect_location(&self, id: &str, kind: &str) -> Result<()> {
+        ensure!(
+            ["source", "store", "overlay", "mount"].contains(&kind),
+            "Unknown location"
+        );
+        let locations = self.game_locations(id)?;
+        let path = PathBuf::from(
+            locations[kind]
+                .as_str()
+                .context("Location not created yet")?,
+        );
+        ensure!(path.is_dir(), "Folder is missing or unavailable");
+        #[cfg(target_os = "macos")]
+        let opener = "open";
+        #[cfg(target_os = "windows")]
+        let opener = "explorer.exe";
+        #[cfg(target_os = "linux")]
+        let opener = "xdg-open";
+        #[cfg(any(target_os = "macos", target_os = "windows", target_os = "linux"))]
+        Command::new(opener).arg(path).spawn()?;
+        Ok(())
+    }
+    pub fn discover_launch(&self, id: &str) -> Result<Vec<product::LaunchCandidate>> {
+        let db = self.snapshot();
+        let game = db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        Ok(product::inspect(&game.source)?.candidates)
+    }
+    pub fn optimize_preflight(&self, id: &str) -> Result<Value> {
+        let db = self.snapshot();
+        let game = db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        ensure!(
+            game.session.is_none() && game.store.is_none(),
+            "Unmount or inspect the existing store first"
+        );
+        ensure!(game.analysis.is_some(), "Analyze first");
+        let parent = playsparse_cli::workspace::projected(&db.settings.storage_dir)?.0;
+        ensure!(
+            !parent.join(id).exists(),
+            "Destination already exists; retained for inspection. Choose another location"
+        );
+        ensure!(
+            !db.games.iter().any(|g| overlap(&parent, &g.source)),
+            "Destination overlaps an installation"
+        );
+        let mut report = playsparse_cli::workspace::preflight(
+            &game.source,
+            &parent,
+            256 * 1024,
+            playsparse_core::Layout::Packs,
+            1,
+            "destination",
+        )?;
+        report["destination"] = json!(parent.join(id));
+        Ok(report)
+    }
+    pub fn add_game(&self, source: &Path) -> Result<Game> {
+        self.idle()?;
+        let source = self.validate_installation(source)?;
         let game = Game {
             id: identity("g"),
             name: source
@@ -326,6 +426,22 @@ impl Service {
         self.change_idle(|db| {
             ensure!(db.games.iter().any(|g| g.id == id), "Unknown game");
             db.games.retain(|g| g.id != id);
+            Ok(())
+        })
+    }
+    /// Forget missing store metadata only; never removes any filesystem data.
+    pub fn forget_missing_store(&self, id: &str) -> Result<()> {
+        self.change_idle(|db| {
+            let game = game_mut(db, id)?;
+            let store = game.store.as_ref().context("No store registered")?;
+            ensure!(
+                !store.try_exists()?,
+                "Store still exists. Verify or inspect it instead of forgetting a missing store"
+            );
+            game.store = None;
+            game.store_stats = None;
+            game.verified = false;
+            game.error = None;
             Ok(())
         })
     }
@@ -377,7 +493,32 @@ impl Service {
             "Launch arguments exceed limits"
         );
         self.change_idle(|db| {
-            game_mut(db, id)?.launch = Some(descriptor);
+            let game = game_mut(db, id)?;
+            let root = game
+                .source
+                .canonicalize()
+                .context("Source missing; restore installation before configuring launch")?;
+            let target = root
+                .join(&descriptor.executable)
+                .canonicalize()
+                .context("Launch target does not exist in installation")?;
+            ensure!(
+                target.starts_with(&root),
+                "Launch target escapes installation"
+            );
+            #[cfg(target_os = "macos")]
+            let bundle = target.is_dir() && target.extension().is_some_and(|s| s == "app");
+            #[cfg(not(target_os = "macos"))]
+            let bundle = false;
+            ensure!(
+                target.is_file() || bundle,
+                "Launch target must be a file or supported app bundle"
+            );
+            #[cfg(target_os = "macos")]
+            if bundle {
+                product::bundle_executable(&target)?;
+            }
+            game.launch = Some(descriptor);
             Ok(())
         })
     }
@@ -537,6 +678,11 @@ impl Service {
                     &mut observer,
                 )?;
                 value["original_allocated_bytes"] = json!(directory_allocation(&game.source)?.0);
+                value["destination_required_estimated_bytes"] =
+                    value["temporary_workspace"]["required_estimated_bytes"]
+                        .as_u64()
+                        .map(|n| json!(n / 2))
+                        .unwrap_or(Value::Null);
                 self.change(|db| {
                     let g = game_mut(db, id)?;
                     g.analysis = Some(value);
@@ -598,6 +744,16 @@ impl Service {
         }
         Ok(())
     }
+    pub fn test_readiness(&self) -> Result<Value> {
+        self.idle()?;
+        let output = Command::new(&self.engine)
+            .args(["doctor", "--json", "--mount-test"])
+            .output()?;
+        let mut report: Value = serde_json::from_slice(&output.stdout)
+            .context("Diagnostics could not return a structured report")?;
+        report["readiness"] = readiness(&report);
+        Ok(report)
+    }
     pub fn system_status(&self) -> Result<Value> {
         let settings = self.snapshot().settings;
         let output = Command::new(&self.engine)
@@ -605,12 +761,10 @@ impl Service {
             .arg(settings.temp_dir)
             .output()
             .context("Bundled PlaySparse engine could not start")?;
-        ensure!(
-            output.status.success(),
-            "Engine diagnostics failed: {}",
-            String::from_utf8_lossy(&output.stderr)
-        );
-        Ok(serde_json::from_slice(&output.stdout)?)
+        let mut report: Value = serde_json::from_slice(&output.stdout)
+            .context("Engine diagnostics returned an unreadable report")?;
+        report["readiness"] = readiness(&report);
+        Ok(report)
     }
     /// Sizes are individual measured representations. Originals remain installed;
     /// saved representation bytes do not imply free disk space was reclaimed.
@@ -650,7 +804,8 @@ impl Service {
                 !db.jobs.iter().any(|j| j.state == "running"),
                 "Another operation is running"
             );
-            game_mut(db, id)?;
+            let game = game_mut(db, id)?;
+            validate_transition(game, operation)?;
             if db.jobs.len() >= 200 {
                 db.jobs.remove(0);
             }
@@ -691,6 +846,16 @@ impl Service {
             }
             .into();
             job.error = result.as_ref().err().map(|e| format!("{e:#}"));
+            if let Err(error) = &result
+                && let Some(session) = &mut game_mut(db, id)?.session
+            {
+                if session.state == "preparing" {
+                    session.state = "needs_attention".into();
+                }
+                session.error = Some(format!(
+                    "{action} failed: {error:#}. Session retained for inspection and safe recovery."
+                ));
+            }
             Ok(())
         })?;
         result
@@ -840,11 +1005,28 @@ impl Service {
         );
         let mount = mounted_root(&session.mountpoint).canonicalize()?;
         let executable = mount.join(&descriptor.executable).canonicalize()?;
+        #[cfg(target_os = "macos")]
+        let bundle = executable.is_dir() && executable.extension().is_some_and(|s| s == "app");
+        #[cfg(not(target_os = "macos"))]
+        let bundle = false;
         ensure!(
-            executable.starts_with(&mount) && executable.is_file(),
+            executable.starts_with(&mount) && (executable.is_file() || bundle),
             "Executable escapes mount or is not a file"
         );
-        let mut command = Command::new(executable);
+        #[cfg(target_os = "macos")]
+        let mut command = if bundle {
+            product::bundle_executable(&executable)?;
+            let mut command = Command::new("/usr/bin/open");
+            command
+                .args(["-W", "-n", "-a"])
+                .arg(&executable)
+                .arg("--args");
+            command
+        } else {
+            Command::new(&executable)
+        };
+        #[cfg(not(target_os = "macos"))]
+        let mut command = Command::new(&executable);
         command.args(descriptor.args).current_dir(&mount);
         let child = spawn_logged(&mut command, &self.root.join("runtimes").join(id).join("launch.log"), inner.db.settings.retain_logs)
             .context("Launch failed; signed native macOS code may require an independently prepared APFS compatibility shadow")?;
@@ -857,15 +1039,22 @@ impl Service {
         let mut inner = self.inner.lock().unwrap();
         let mut exited = vec![];
         for (id, child) in &mut inner.processes {
-            if child.try_wait()?.is_some() {
-                exited.push(id.clone());
+            if let Some(status) = child.try_wait()? {
+                exited.push((id.clone(), status));
             }
         }
-        for id in exited {
+        let mut changed = !exited.is_empty();
+        for (id, status) in exited {
             inner.processes.remove(&id);
             if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session {
                 session.state = "mounted".into();
-                session.error = Some("Tracked process exited. Child/launcher processes are not tracked; close them before unmounting.".into());
+                session.error = Some(if status.success() {
+                    "Tracked process exited. Child/launcher processes are not tracked; close them before unmounting.".into()
+                } else {
+                    format!(
+                        "Launch exited with {status}. Inspect launch.log and compatibility; close any remaining child processes before unmounting."
+                    )
+                });
             }
         }
         let mut failed = vec![];
@@ -874,6 +1063,7 @@ impl Service {
                 failed.push(id.clone());
             }
         }
+        changed |= !failed.is_empty();
         for id in failed {
             inner.mounts.remove(&id);
             if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session {
@@ -882,10 +1072,23 @@ impl Service {
                     Some("Mount process exited. Inspect the mount before cleanup.".into());
             }
         }
+        if changed {
+            self.persist(&inner.db)?;
+        }
         Ok(())
     }
     pub fn stop_game(&self, id: &str) -> Result<()> {
         let mut inner = self.inner.lock().unwrap();
+        ensure!(
+            !inner
+                .db
+                .games
+                .iter()
+                .find(|g| g.id == id)
+                .and_then(|g| g.launch.as_ref())
+                .is_some_and(|d| d.executable.ends_with(".app")),
+            "Quit the app using its own Quit command. PlaySparse tracks Launch Services waiting, and cannot safely terminate the application by that helper PID."
+        );
         let child = inner
             .processes
             .get_mut(id)
@@ -1064,6 +1267,33 @@ fn validate_owned_path(path: &Path) -> Result<()> {
 mod owned_path_tests {
     use super::*;
     #[test]
+    fn hardlinked_log_is_replaced_without_truncating_source() {
+        use std::os::unix::fs::MetadataExt;
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let source = root.join("original");
+        fs::write(&source, b"unchanged").unwrap();
+        let logs = root.join("runtime");
+        fs::create_dir(&logs).unwrap();
+        let path = logs.join("launch.log");
+        fs::hard_link(&source, &path).unwrap();
+        let mut command = Command::new("/bin/echo");
+        command.arg("generated log");
+        let mut child = spawn_logged(&mut command, &path, true).unwrap();
+        assert!(child.wait().unwrap().success());
+        let deadline = std::time::Instant::now() + Duration::from_secs(2);
+        while fs::metadata(&path).unwrap().len() == 0 && std::time::Instant::now() < deadline {
+            thread::sleep(Duration::from_millis(10));
+        }
+        assert_eq!(fs::read(&source).unwrap(), b"unchanged");
+        assert_ne!(
+            fs::metadata(&source).unwrap().ino(),
+            fs::metadata(&path).unwrap().ino()
+        );
+        assert_eq!(fs::read(&path).unwrap(), b"generated log\n");
+    }
+
+    #[test]
     fn runtime_symlink_is_rejected_before_creating_source_directories() {
         let temp = tempfile::tempdir().unwrap();
         let root = temp.path().canonicalize().unwrap();
@@ -1086,11 +1316,20 @@ fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Chil
             .stderr(Stdio::null())
             .spawn()?);
     }
-    let log = OpenOptions::new()
-        .create(true)
-        .truncate(true)
-        .write(true)
-        .open(path)?;
+    let parent = path.parent().context("Missing log directory")?;
+    validate_owned_path(parent)?;
+    match fs::symlink_metadata(path) {
+        Ok(metadata) => ensure!(
+            metadata.is_file() && !metadata.is_symlink(),
+            "Runtime log is redirected or not a regular file; inspect it before retrying"
+        ),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        Err(error) => return Err(error.into()),
+    }
+    // Replace the directory entry atomically, never truncate a pre-existing inode.
+    // This also keeps a hardlinked source file untouched. The returned handle is
+    // the exclusively-created tempfile inode, not a newly followed log path.
+    let log = tempfile::NamedTempFile::new_in(parent)?.persist(path)?;
     let shared = Arc::new(Mutex::new((log, 0usize)));
     let mut child = command
         .stdout(Stdio::piped())
@@ -1142,4 +1381,128 @@ fn mounted_root(path: &Path) -> PathBuf {
     {
         path.to_path_buf()
     }
+}
+
+/// Prerequisite presence is distinct from a tested mount, never kernel approval proof.
+pub fn readiness(report: &Value) -> Value {
+    let available = report["mount_backend"]["available"].as_bool();
+    let unsupported = report["os"]
+        .as_str()
+        .is_some_and(|os| !["macos", "windows", "linux"].contains(&os))
+        || report["mount_diagnostic"]["status"] == "UNSUPPORTED_VERSION"
+        || report["mount_backend"]["backend"] == "unsupported";
+    let state = if unsupported {
+        "Unsupported"
+    } else if available == Some(false) {
+        "Action required"
+    } else if report["mount_test"]["status"] == "PASS" {
+        "Ready"
+    } else if report["mount_test"]["status"] == "FAIL"
+        || (report["mount_test"]["status"] == "BLOCKED" && report["os"] != "windows")
+    {
+        "Action required"
+    } else {
+        "Unknown"
+    };
+    let guidance = match report["os"].as_str() {
+        Some("macos") => {
+            "Install official macFUSE 5.3.3+ in the 5.x series. Follow its kernel-backend approval and restart instructions in System Settings. FSKit is unsupported. Installation presence does not prove approval."
+        }
+        Some("windows") => {
+            "Install official WinFsp 2.1 with its filesystem driver, and WebView2. Restart if the installer requests it. DLL detection alone does not prove the driver can mount."
+        }
+        Some("linux") => {
+            "Install your distribution's FUSE 3 package. Ensure /dev/fuse exists and your account can open it, and fusermount3 is installed. Follow distribution permission guidance; do not make the device world-writable."
+        }
+        _ => "Open the native app to inspect this system. Mount capability is unknown.",
+    };
+    #[cfg(target_os = "linux")]
+    let helpers: Vec<String> = ["fusermount3", "fusermount"]
+        .iter()
+        .filter(|name| {
+            std::env::var_os("PATH")
+                .is_some_and(|p| std::env::split_paths(&p).any(|dir| dir.join(name).is_file()))
+        })
+        .map(|s| (*s).into())
+        .collect();
+    #[cfg(not(target_os = "linux"))]
+    let helpers: Vec<String> = vec![];
+    json!({"state":state, "can_attempt_mount":available == Some(true) && report["mount_test"]["status"] != "FAIL" && !(report["mount_test"]["status"] == "BLOCKED" && report["os"] != "windows"), "guidance":guidance, "arch":report["arch"], "platform":report["os"], "driver":report["mount_backend"]["backend"], "mount_test":report["mount_test"]["status"], "helpers":helpers, "approval":"Unknown unless independently confirmed; no system settings are changed"})
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum RuntimeState {
+    Unoptimized,
+    Analyzed,
+    Optimizing,
+    Ready,
+    Mounting,
+    Mounted,
+    Launching,
+    Running,
+    Stopping,
+    Unmounting,
+    NeedsAttention,
+    Error,
+}
+pub fn runtime_state(game: &Game, jobs: &[Job]) -> RuntimeState {
+    if let Some(job) = jobs
+        .iter()
+        .find(|j| j.game_id == game.id && j.state == "running")
+    {
+        return match job.operation {
+            Operation::Optimize => RuntimeState::Optimizing,
+            Operation::Mount => RuntimeState::Mounting,
+            Operation::Launch => RuntimeState::Launching,
+            Operation::Stop => RuntimeState::Stopping,
+            Operation::Unmount => RuntimeState::Unmounting,
+            _ => RuntimeState::NeedsAttention,
+        };
+    }
+    if let Some(session) = &game.session {
+        return match session.state.as_str() {
+            "mounted" => RuntimeState::Mounted,
+            "running" => RuntimeState::Running,
+            _ => RuntimeState::NeedsAttention,
+        };
+    }
+    if game.error.is_some() {
+        return RuntimeState::NeedsAttention;
+    }
+    if game.store.is_some() {
+        return if game.verified {
+            RuntimeState::Ready
+        } else {
+            RuntimeState::NeedsAttention
+        };
+    }
+    if game.analysis.is_some() {
+        RuntimeState::Analyzed
+    } else {
+        RuntimeState::Unoptimized
+    }
+}
+pub fn validate_transition(game: &Game, operation: Operation) -> Result<()> {
+    let state = runtime_state(game, &[]);
+    let allowed = match operation {
+        Operation::Mount => game.verified && game.session.is_none(),
+        Operation::Launch => {
+            state == RuntimeState::Mounted
+                && game
+                    .launch
+                    .as_ref()
+                    .is_some_and(|d| d.compatibility_confirmed)
+        }
+        Operation::Stop => state == RuntimeState::Running,
+        Operation::Unmount | Operation::Recover => {
+            game.session.is_some() && state != RuntimeState::Running
+        }
+        Operation::Analyze | Operation::Optimize | Operation::Verify => game.session.is_none(),
+    };
+    ensure!(
+        allowed,
+        "Cannot {operation:?} while runtime state is {state:?}; inspect the game details for recovery"
+    );
+    Ok(())
 }

@@ -225,3 +225,7 @@ Open production gates remain:
 - signed/notarized installers and production release/update lifecycle.
 
 The GUI and unsigned development bundles do not close these release gates.
+
+### Desktop productization MVP
+
+Implemented first-run readiness and passive/active diagnostics, read-only installation review, bounded platform launch-candidate discovery with user confirmation, pre-optimization disk budget review, separated game paths/metrics, explicit backend transition validation and missing-store metadata recovery. macOS bundle launch semantics are preserved through Launch Services; users quit bundles normally. Runtime process-tree monitoring remains an open gate, with current-session child ownership and conservative restart behavior retained. The headless macOS CI DMG workflow is unchanged.

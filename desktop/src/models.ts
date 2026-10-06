@@ -14,6 +14,7 @@ export interface PackStats {
   metadata_bytes?: number;
 }
 export interface Analysis {
+  destination_required_estimated_bytes?: number;
   logical_bytes: number;
   files: number;
   original_allocated_bytes: number | null;
@@ -133,4 +134,67 @@ export function effectiveBytes(game: Game): number | null {
   return store != null && game.overlay_allocated_bytes != null
     ? store + game.overlay_allocated_bytes
     : null;
+}
+
+export interface LaunchCandidate {
+  executable: string;
+  label: string;
+  kind: string;
+  rank: number;
+  note: string;
+}
+export interface InstallationInspection {
+  source: string;
+  title: string;
+  logical_bytes: number;
+  files: number;
+  candidates: LaunchCandidate[];
+  discovery_truncated: boolean;
+}
+export interface Readiness {
+  state: "Ready" | "Action required" | "Unsupported" | "Unknown";
+  can_attempt_mount: boolean;
+  guidance: string;
+  arch: string | null;
+  platform: string | null;
+  driver: string | null;
+  mount_test: string | null;
+  helpers: string[];
+}
+export function readinessOf(system: unknown): Readiness {
+  if (system && typeof system === "object" && "readiness" in system)
+    return system.readiness as Readiness;
+  return {
+    state: "Unknown",
+    can_attempt_mount: false,
+    guidance:
+      "Open the desktop application to check macFUSE, WinFsp or FUSE. Driver presence does not prove mount capability.",
+    arch: null,
+    platform: null,
+    driver: null,
+    mount_test: null,
+    helpers: [],
+  };
+}
+export function stageLabel(stage: string): string {
+  return (
+    (
+      {
+        measuring_source: "Measuring source and temporary requirements",
+        fixed_scanning: "Scanning files for fixed chunks",
+        testing_fixed_chunks: "Testing fixed chunks and compression",
+        fixed_verifying: "Verifying fixed-chunk measurements",
+        fixed_finalizing: "Finalizing fixed-chunk measurements",
+        cdc_scanning: "Scanning files for content-defined chunks",
+        testing_cdc_chunks: "Testing content-defined chunks and compression",
+        cdc_verifying: "Verifying content-defined measurements",
+        cdc_finalizing: "Finalizing content-defined measurements",
+        finalizing_analysis: "Finalizing analysis",
+        scanning: "Scanning files",
+        packing: "Building compressed store",
+        verifying: "Verifying exact bytes",
+        publishing: "Publishing atomically",
+      } as Record<string, string>
+    )[stage] ?? stage.replaceAll("_", " ")
+  );
 }

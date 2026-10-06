@@ -21,8 +21,22 @@ import {
   X,
 } from "lucide-react";
 import * as bridge from "./bridge";
-import { bytes, savings, status, effectiveBytes } from "./models";
-import type { Game, Operation, Settings, Snapshot } from "./models";
+import {
+  bytes,
+  savings,
+  status,
+  effectiveBytes,
+  readinessOf,
+  stageLabel,
+} from "./models";
+import type {
+  Game,
+  Operation,
+  Settings,
+  Snapshot,
+  InstallationInspection,
+  LaunchCandidate,
+} from "./models";
 
 type Page = "Library" | "Activity" | "Storage" | "Settings";
 const sections = [
@@ -101,7 +115,9 @@ export default function App() {
     initialView === "add" ? "/Preview/Games/New installation" : null,
   );
   const [detail, setDetail] = useState<string | null>(
-    initialView === "analysis" ? "preview-zomboid" : null,
+    ["analysis", "recovery"].includes(initialView ?? "")
+      ? "preview-zomboid"
+      : null,
   );
   const [confirm, setConfirm] = useState<{
     title: string;
@@ -111,9 +127,71 @@ export default function App() {
   const [system, setSystem] = useState<unknown>(null);
   const [storage, setStorage] = useState<unknown>(null);
   const [draft, setDraft] = useState<Settings | null>(null);
+  const [inspection, setInspection] = useState<InstallationInspection | null>(
+    null,
+  );
+  const [locations, setLocations] = useState<{ overlay: string } | null>(null);
+  const [candidates, setCandidates] = useState<LaunchCandidate[]>([]);
   const [executable, setExecutable] = useState("");
-  const [args, setArgs] = useState("[]");
+  const [args, setArgs] = useState("");
   const [compatible, setCompatible] = useState(false);
+  useEffect(() => {
+    if (!detail) {
+      setCandidates([]);
+      return;
+    }
+    let current = true;
+    bridge
+      .getSnapshot()
+      .then((state) => {
+        const game = state.games.find((g) => g.id === detail);
+        if (current) {
+          setExecutable(game?.launch?.executable ?? "");
+          setArgs((game?.launch?.args ?? []).join("\n"));
+          setCompatible(game?.launch?.compatibility_confirmed ?? false);
+        }
+      })
+      .catch((e) => setError(String(e)));
+    bridge
+      .gameLocations(detail)
+      .then((result) => {
+        if (current) setLocations(result);
+      })
+      .catch((e) => setError(String(e)));
+    bridge
+      .discoverLaunch(detail)
+      .then((found) => {
+        if (current) setCandidates(found);
+      })
+      .catch((e) => {
+        if (current)
+          setError(
+            `Launch discovery: ${String(e)}. Restore the source folder or configure a target after recovery.`,
+          );
+      });
+    return () => {
+      current = false;
+    };
+  }, [detail]);
+  useEffect(() => {
+    setInspection(null);
+    if (!addPath) return;
+    let current = true;
+    const timer = setTimeout(() => {
+      bridge
+        .inspectInstallation(addPath)
+        .then((result) => {
+          if (current) setInspection(result);
+        })
+        .catch((e) => {
+          if (current) setError(String(e));
+        });
+    }, 200);
+    return () => {
+      current = false;
+      clearTimeout(timer);
+    };
+  }, [addPath]);
   const refresh = useCallback(async () => {
     const state = await bridge.getSnapshot();
     setData(state);
@@ -212,14 +290,8 @@ export default function App() {
       </main>
     );
   const selected = data.games.find((g) => g.id === detail);
-  const canMount =
-    bridge.preview ||
-    !!(
-      system &&
-      typeof system === "object" &&
-      "mount_backend" in system &&
-      (system.mount_backend as { available?: boolean })?.available
-    );
+  const readiness = readinessOf(system);
+  const canMount = bridge.preview || readiness.can_attempt_mount;
   const active = data.jobs.some((j) => j.state === "running");
   const busy = pending || active;
   const measured = data.games.filter(
@@ -256,6 +328,61 @@ export default function App() {
       });
     else void action(() => bridge.runtimeAction(game.id, task));
   };
+  const readinessPanel = (
+    <section className="panel readiness-panel" aria-label="System readiness">
+      <details
+        open={
+          page === "Settings" ||
+          data.games.length === 0 ||
+          ["Action required", "Unsupported"].includes(readiness.state)
+        }
+      >
+        <summary className="section-title">
+          System readiness{" "}
+          <span
+            className={`status ${readiness.state === "Ready" ? "success" : ""}`}
+          >
+            {readiness.state}
+          </span>
+        </summary>
+        <p>
+          {readiness.driver ?? "Native runtime"} ·{" "}
+          {readiness.platform ?? "Browser preview"} ·{" "}
+          {readiness.arch ?? "Unknown architecture"}
+        </p>
+        <p>{readiness.guidance}</p>
+        <p className="footnote">
+          Analysis and optimization work without a mount driver. Mounting is{" "}
+          {readiness.can_attempt_mount
+            ? "available to attempt; actual permission is checked when mounting"
+            : "unavailable or unverified"}
+          . Kernel approval and restart requirements are not inferred.
+        </p>
+        <div className="panel-actions">
+          <button
+            disabled={busy}
+            onClick={() =>
+              void action(async () => setSystem(await bridge.diagnostics()))
+            }
+          >
+            Run diagnostics again
+          </button>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void action(async () => setSystem(await bridge.testReadiness()))
+            }
+          >
+            Test mount readiness
+          </button>
+        </div>
+        <details>
+          <summary>Technical details</summary>
+          <pre>{JSON.stringify(system, null, 2)}</pre>
+        </details>
+      </details>
+    </section>
+  );
   return (
     <div className="shell">
       <aside className="sidebar">
@@ -356,6 +483,7 @@ export default function App() {
           </div>
           {page === "Library" && (
             <>
+              {readinessPanel}
               <div className="library-toolbar">
                 <div className="section-title">
                   Library <span>{data.games.length}</span>
@@ -481,7 +609,8 @@ export default function App() {
                           {ownJob && (
                             <div className="inline-progress">
                               <LoaderCircle size={15} className="spin" />
-                              {ownJob.stage} · {bytes(ownJob.bytes)} processed
+                              {stageLabel(ownJob.stage)} · {bytes(ownJob.bytes)}{" "}
+                              processed
                             </div>
                           )}
                           <div className="card-footer">
@@ -491,9 +620,11 @@ export default function App() {
                               }
                               disabled={busy}
                               onClick={() => {
-                                if (game.session?.state === "running")
-                                  runtime(game, "stop");
-                                else if (
+                                if (game.session?.state === "running") {
+                                  if (game.launch?.executable.endsWith(".app"))
+                                    setDetail(game.id);
+                                  else runtime(game, "stop");
+                                } else if (
                                   game.session?.state === "mounted" &&
                                   game.launch?.compatibility_confirmed
                                 )
@@ -516,7 +647,9 @@ export default function App() {
                                 <ArrowRight size={15} />
                               )}{" "}
                               {game.session?.state === "running"
-                                ? "Stop Game"
+                                ? game.launch?.executable.endsWith(".app")
+                                  ? "Manage Running App"
+                                  : "Stop Game"
                                 : game.session?.state === "mounted" &&
                                     game.launch?.compatibility_confirmed
                                   ? "Launch Game"
@@ -539,9 +672,7 @@ export default function App() {
                               onClick={() => {
                                 setDetail(game.id);
                                 setExecutable(game.launch?.executable ?? "");
-                                setArgs(
-                                  JSON.stringify(game.launch?.args ?? []),
-                                );
+                                setArgs((game.launch?.args ?? []).join("\n"));
                                 setCompatible(
                                   game.launch?.compatibility_confirmed ?? false,
                                 );
@@ -628,7 +759,7 @@ export default function App() {
                         </span>
                       </h3>
                       <p>
-                        {job.stage} · {bytes(job.bytes)} processed ·{" "}
+                        {stageLabel(job.stage)} · {bytes(job.bytes)} processed ·{" "}
                         {job.files.toLocaleString()} files ·{" "}
                         {Math.max(
                           0,
@@ -753,7 +884,10 @@ export default function App() {
                 <label className="setting-field">
                   <span>
                     Store directory
-                    <small>New optimized stores are created here.</small>
+                    <small>
+                      Applies only to new stores. Existing stores are not
+                      migrated.
+                    </small>
                   </span>
                   <input
                     value={draft.storage_dir}
@@ -776,7 +910,10 @@ export default function App() {
                 <label className="setting-field">
                   <span>
                     Temporary directory
-                    <small>Full analysis needs two disposable stores.</small>
+                    <small>
+                      Applies to new analysis jobs; two disposable stores are
+                      required.
+                    </small>
                   </span>
                   <input
                     value={draft.temp_dir}
@@ -841,27 +978,7 @@ export default function App() {
                   </button>
                 </div>
               </section>
-              <section className="panel">
-                <div className="section-title">
-                  Engine & filesystem{" "}
-                  <button
-                    disabled={pending}
-                    onClick={() =>
-                      void action(async () =>
-                        setSystem(await bridge.diagnostics()),
-                      )
-                    }
-                  >
-                    Run diagnostics
-                  </button>
-                </div>
-                <p className="muted">
-                  macOS requires macFUSE, Windows requires WinFsp, Linux
-                  requires accessible FUSE. Drivers are never installed or
-                  elevated silently.
-                </p>
-                {system != null && <pre>{JSON.stringify(system, null, 2)}</pre>}
-              </section>
+              {readinessPanel}
               <section className="about">
                 <Brand />
                 <div>
@@ -908,9 +1025,33 @@ export default function App() {
               Installation folder
               <input
                 value={addPath}
-                onChange={(e) => setAddPath(e.target.value)}
+                onChange={(e) => {
+                  setInspection(null);
+                  setAddPath(e.target.value);
+                }}
               />
             </label>
+            {inspection?.discovery_truncated && (
+              <p className="footnote">
+                Inspection is limited to 12 directory levels. Sizes and file
+                count below are partial; Analyze performs the full engine scan.
+              </p>
+            )}
+            {inspection ? (
+              <div className="analysis-grid">
+                <Metric label="Detected title" value={inspection.title} />
+                <Metric
+                  label="Logical size"
+                  value={bytes(inspection.logical_bytes)}
+                />
+                <Metric
+                  label="Files inspected"
+                  value={inspection.files.toLocaleString()}
+                />
+              </div>
+            ) : (
+              <p>Validating folder and inspecting installation…</p>
+            )}
             <div className="info-note">
               <ShieldCheck size={18} />
               <span>
@@ -928,7 +1069,7 @@ export default function App() {
               <button onClick={() => setAddPath(null)}>Cancel</button>
               <button
                 className="primary"
-                disabled={pending || !addPath.trim()}
+                disabled={pending || !inspection}
                 onClick={() =>
                   void action(async () => {
                     await bridge.addGame(addPath);
@@ -948,6 +1089,99 @@ export default function App() {
           <div className="modal-body details">
             <p className="path-label">
               Original installation <code>{selected.source}</code>
+            </p>
+            <div className="analysis-grid">
+              <Metric
+                label="Store allocated"
+                value={bytes(selected.store_stats?.allocated_bytes)}
+              />
+              <Metric
+                label="Overlay allocated"
+                value={bytes(selected.overlay_allocated_bytes)}
+              />
+              <Metric
+                label="Effective representation"
+                value={bytes(effectiveBytes(selected))}
+              />
+              <Metric
+                label="Verification"
+                value={selected.verified ? "Verified" : "Required"}
+              />
+              <Metric label="Runtime readiness" value={readiness.state} />
+              <Metric label="State" value={status(selected, data.jobs)} />
+            </div>
+            <p className="path-label">
+              PlaySparse store <code>{selected.store ?? "Not created"}</code>
+            </p>
+            <p className="path-label">
+              Writable overlay{" "}
+              <code>
+                {selected.session?.overlay ??
+                  locations?.overlay ??
+                  "Created in app-owned runtime folder on mount"}
+              </code>
+            </p>
+            <div className="panel-actions">
+              <button
+                onClick={() =>
+                  void action(() =>
+                    bridge.inspectLocation(selected.id, "source"),
+                  )
+                }
+              >
+                Show Installation
+              </button>
+              {selected.store && (
+                <button
+                  onClick={() =>
+                    void action(() =>
+                      bridge.inspectLocation(selected.id, "store"),
+                    )
+                  }
+                >
+                  Inspect Store
+                </button>
+              )}
+              {selected.session && (
+                <button
+                  onClick={() =>
+                    void action(() =>
+                      bridge.inspectLocation(selected.id, "mount"),
+                    )
+                  }
+                >
+                  Inspect Mount
+                </button>
+              )}
+            </div>
+            {selected.error && (
+              <div role="alert" className="error-banner">
+                {selected.error}
+              </div>
+            )}
+            {data.jobs.filter((j) => j.game_id === selected.id).at(-1) && (
+              <p>
+                Last operation:{" "}
+                {
+                  data.jobs.filter((j) => j.game_id === selected.id).at(-1)
+                    ?.operation
+                }{" "}
+                ·{" "}
+                {
+                  data.jobs.filter((j) => j.game_id === selected.id).at(-1)
+                    ?.state
+                }
+                <br />
+                {
+                  data.jobs.filter((j) => j.game_id === selected.id).at(-1)
+                    ?.error
+                }
+              </p>
+            )}
+            <p className="footnote">
+              Representation savings compare store + overlay with the original
+              allocation. Your original remains installed; no disk space has
+              been reclaimed.
             </p>
             {selected.analysis ? (
               <>
@@ -987,6 +1221,12 @@ export default function App() {
                     label="Unique raw bytes"
                     value={bytes(
                       selected.analysis.unique_incompressible_raw_bytes,
+                    )}
+                  />
+                  <Metric
+                    label="Destination budget"
+                    value={bytes(
+                      selected.analysis.destination_required_estimated_bytes,
                     )}
                   />
                   <Metric
@@ -1049,13 +1289,18 @@ export default function App() {
                 <button
                   className="primary"
                   disabled={busy}
-                  onClick={() => {
-                    setConfirm({
-                      title: "Create a verified store?",
-                      text: `PlaySparse will create ${data.settings.storage_dir}/${selected.id}. The original stays installed. Disk capacity is checked before packing. A store is registered only after verification succeeds.`,
-                      run: () => bridge.startJob(selected.id, "optimize"),
-                    });
-                  }}
+                  onClick={() =>
+                    void action(async () => {
+                      const budget = await bridge.optimizePreflight(
+                        selected.id,
+                      );
+                      setConfirm({
+                        title: "Create a verified store?",
+                        text: `Destination: ${budget.destination}. Conservative requirement: ${bytes(budget.required_estimated_bytes)}; available: ${bytes(budget.available_bytes)}. The original stays installed. Capacity is checked again before packing. Only verified data is published atomically.`,
+                        run: () => bridge.startJob(selected.id, "optimize"),
+                      });
+                    })
+                  }
                 >
                   Optimize Game
                   <ArrowRight size={16} />
@@ -1071,7 +1316,7 @@ export default function App() {
                 </button>
               )}
             </div>
-            {selected.verified && (
+            {(selected.verified || selected.session) && (
               <section className="runtime-config">
                 <h3>Runtime & launch</h3>
                 <p className="muted">
@@ -1091,6 +1336,37 @@ export default function App() {
                   </div>
                 )}
                 <label>
+                  Launch target
+                  <select
+                    aria-label="Discovered launch target"
+                    value={
+                      candidates.some((c) => c.executable === executable)
+                        ? executable
+                        : ""
+                    }
+                    onChange={(e) => {
+                      setExecutable(e.target.value);
+                      setCompatible(false);
+                    }}
+                  >
+                    <option value="">Configure manually</option>
+                    {candidates.map((candidate, index) => (
+                      <option
+                        key={candidate.executable}
+                        value={candidate.executable}
+                      >
+                        {candidate.label}
+                        {index === 0 ? " · First candidate" : ""}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {candidates.find((c) => c.executable === executable)?.note && (
+                  <p className="footnote">
+                    {candidates.find((c) => c.executable === executable)?.note}
+                  </p>
+                )}
+                <label>
                   Executable relative to mount
                   <input
                     placeholder="bin/game"
@@ -1099,8 +1375,9 @@ export default function App() {
                   />
                 </label>
                 <label>
-                  Literal arguments (JSON array)
-                  <input
+                  Arguments (one literal argument per line)
+                  <textarea
+                    rows={3}
                     value={args}
                     onChange={(e) => setArgs(e.target.value)}
                   />
@@ -1111,19 +1388,14 @@ export default function App() {
                     checked={compatible}
                     onChange={(e) => setCompatible(e.target.checked)}
                   />
-                  I have validated compatibility for this executable and
-                  installation.
+                  I confirm this launch target and understand compatibility is
+                  untested until I test this installation.
                 </label>
                 <button
                   disabled={busy || !!selected.session || !executable}
                   onClick={() =>
                     void action(async () => {
-                      const parsed: unknown = JSON.parse(args);
-                      if (
-                        !Array.isArray(parsed) ||
-                        !parsed.every((v) => typeof v === "string")
-                      )
-                        throw Error("Arguments must be an array of strings.");
+                      const parsed = args === "" ? [] : args.split("\n");
                       await bridge.configureLaunch(selected.id, {
                         executable,
                         args: parsed,
@@ -1153,11 +1425,18 @@ export default function App() {
                         Launch Game
                       </button>
                     )}
-                  {selected.session?.state === "running" && (
-                    <button onClick={() => runtime(selected, "stop")}>
-                      Stop Game
-                    </button>
-                  )}
+                  {selected.session?.state === "running" &&
+                    (selected.launch?.executable.endsWith(".app") ? (
+                      <p className="info-note">
+                        Quit the game using its own Quit command. PlaySparse
+                        waits for Launch Services; it cannot safely stop the app
+                        by the helper PID.
+                      </p>
+                    ) : (
+                      <button onClick={() => runtime(selected, "stop")}>
+                        Stop Game
+                      </button>
+                    ))}
                   {selected.session && selected.session.state !== "running" && (
                     <button onClick={() => runtime(selected, "unmount")}>
                       Unmount
@@ -1178,6 +1457,20 @@ export default function App() {
                   Gatekeeper or anti-cheat bypass is provided.
                 </p>
               </section>
+            )}
+            {selected.store && !selected.verified && (
+              <button
+                disabled={busy || !!selected.session}
+                onClick={() =>
+                  setConfirm({
+                    title: "Forget missing store metadata?",
+                    text: "Only permitted when the registered store path is absent. No files are deleted. Restore the original and analyze again before building a new store.",
+                    run: () => bridge.forgetMissingStore(selected.id),
+                  })
+                }
+              >
+                Forget Missing Store
+              </button>
             )}
             <div className="details-bottom">
               <span>Removing an entry never deletes its files.</span>

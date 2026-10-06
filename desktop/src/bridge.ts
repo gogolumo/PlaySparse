@@ -2,6 +2,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import type {
   Analysis,
+  InstallationInspection,
+  LaunchCandidate,
   Game,
   LaunchDescriptor,
   Operation,
@@ -57,6 +59,17 @@ const demo: Snapshot = {
     retain_logs: true,
   },
 };
+if (params.get("view") === "recovery") {
+  demo.games[0].verified = false;
+  demo.games[0].error =
+    "Store is missing (simulated). Inspect the previous session before recovery.";
+  demo.games[0].session = {
+    state: "needs_attention",
+    mountpoint: "/Preview/Runtime/mount",
+    overlay: "/Preview/Runtime/overlay",
+    error: "Interrupted session (simulated); no persisted PID is killed.",
+  };
+}
 if (params.get("view") === "optimization")
   demo.jobs.push({
     id: "preview-job",
@@ -189,4 +202,78 @@ export async function storageStatistics(): Promise<unknown> {
         note: "Reference representations are simulated. No disk space was reclaimed.",
       }
     : invoke("get_storage_statistics");
+}
+
+export async function inspectInstallation(
+  path: string,
+): Promise<InstallationInspection> {
+  return preview
+    ? {
+        source: path,
+        title: path.split("/").at(-1) || "Installation",
+        logical_bytes: analysis.logical_bytes,
+        files: analysis.files,
+        candidates: [
+          {
+            executable: "bin/game",
+            label: "Game executable",
+            kind: "executable",
+            rank: 80,
+            note: "Simulated candidate; not compatibility evidence.",
+          },
+        ],
+        discovery_truncated: false,
+      }
+    : invoke("inspect_installation", { path });
+}
+export async function discoverLaunch(id: string): Promise<LaunchCandidate[]> {
+  return preview
+    ? (await inspectInstallation("/Preview/Game")).candidates
+    : invoke("discover_launch", { id });
+}
+export async function optimizePreflight(id: string): Promise<{
+  destination: string;
+  required_estimated_bytes: number;
+  available_bytes: number;
+}> {
+  return preview
+    ? {
+        destination: `${demo.settings.storage_dir}/${id}`,
+        required_estimated_bytes: 11 * GiB,
+        available_bytes: 120 * GiB,
+      }
+    : invoke("optimize_preflight", { id });
+}
+export async function testReadiness(): Promise<unknown> {
+  return preview ? diagnostics() : invoke("test_readiness");
+}
+
+export async function forgetMissingStore(id: string): Promise<void> {
+  if (preview) throw Error("Preview store still exists (simulated).");
+  await invoke("forget_missing_store", { id });
+}
+
+export async function gameLocations(id: string): Promise<{
+  source: string;
+  store: string | null;
+  overlay: string;
+  mount: string | null;
+}> {
+  if (preview) {
+    const game = demo.games.find((g) => g.id === id);
+    return {
+      source: game?.source ?? "",
+      store: game?.store ?? null,
+      overlay: `/Preview/Runtime/${id}/overlay`,
+      mount: null,
+    };
+  }
+  return invoke("game_locations", { id });
+}
+export async function inspectLocation(id: string, kind: string): Promise<void> {
+  if (preview)
+    throw Error(
+      "Inspect folders in the native app; preview has no filesystem access.",
+    );
+  await invoke("inspect_location", { id, kind });
 }

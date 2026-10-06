@@ -39,6 +39,7 @@ body {
 }
 button,
 input,
+textarea,
 select {
   font: inherit;
 }
@@ -68,11 +69,14 @@ button:disabled {
   cursor: default;
 }
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 3px;
 }
-input {
+input,
+textarea {
   border: 1px solid var(--border);
   border-radius: 7px;
   background: var(--canvas);
@@ -832,7 +836,8 @@ dialog::backdrop {
   font-size: 11px;
   margin: 18px 0 12px;
 }
-.modal-body label > input:not([type="checkbox"]) {
+.modal-body label > input:not([type="checkbox"]),
+.modal-body label > textarea {
   display: block;
   width: 100%;
   margin-top: 9px;
@@ -1040,4 +1045,23 @@ code {
     animation: none !important;
     transition: none !important;
   }
+}
+
+.readiness-panel {
+  margin-bottom: 24px;
+}
+.readiness-panel details {
+  margin-top: 14px;
+}
+summary {
+  cursor: pointer;
+}
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
 }
