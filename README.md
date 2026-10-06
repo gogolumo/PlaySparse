@@ -133,6 +133,11 @@ Keep the source directory read-only and write the PlaySparse store somewhere els
 ./target/release/playsparse verify ./TestGame.playsparse
 ```
 
+Full analysis creates two temporary verified stores. Use
+`analyze ./TestGame --temp-dir /path/to/large/scratch` to select their volume.
+Analysis and packing now check conservative disk budgets before creating large
+outputs; packing stages on its destination volume. See [temporary storage](docs/temporary-storage.md).
+
 The default Rust pack path uses content-defined chunks, indexed packfiles and Zstd level 3, retaining raw objects when compression would make an object larger.
 
 ### Experimental game-aware analysis

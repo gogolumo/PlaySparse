@@ -135,6 +135,7 @@ pub fn analyze(
     output: Option<&Path>,
     container_aware: bool,
     skip_compression: bool,
+    temp_dir: &Path,
 ) -> Result<Value> {
     if let Some(output) = output {
         outside_source(output, source)?;
@@ -149,7 +150,18 @@ pub fn analyze(
     if let Some(output) = output {
         write_artifact_exclusive(output, &artifact_bytes(&plan)?)?;
     }
-    let work = tempfile::tempdir()?;
+    super::workspace::preflight(
+        source,
+        temp_dir,
+        playsparse_game::TARGET_BYTES,
+        playsparse_core::Layout::Packs,
+        1,
+        "temporary",
+    )?;
+    std::fs::create_dir_all(temp_dir)?;
+    let work = tempfile::Builder::new()
+        .prefix("playsparse-profile-analysis-")
+        .tempdir_in(temp_dir)?;
     let candidate = playsparse_store::pack_directory_with_plan(
         source,
         &work.path().join("candidate"),

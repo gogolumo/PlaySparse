@@ -15,6 +15,7 @@ use std::{
 
 mod diagnostics;
 mod game;
+mod workspace;
 
 #[derive(Parser)]
 #[command(
@@ -71,6 +72,9 @@ enum Command {
     },
     Analyze {
         source: PathBuf,
+        /// Directory on a volume with room for two disposable analysis stores.
+        #[arg(long)]
+        temp_dir: Option<PathBuf>,
         #[arg(long,default_value="256K",value_parser=parse_size)]
         chunk_size: usize,
         #[arg(long)]
@@ -175,6 +179,12 @@ enum Command {
         /// Print actionable text instead of JSON.
         #[arg(long)]
         human: bool,
+        /// Explicit JSON output (also the default).
+        #[arg(long, conflicts_with = "human")]
+        json: bool,
+        /// Inspect a custom temporary workspace.
+        #[arg(long)]
+        temp_dir: Option<PathBuf>,
         /// Test a tiny readonly mount, read and ordinary unmount (POSIX only).
         #[arg(long)]
         mount_test: bool,
@@ -264,6 +274,17 @@ fn main() -> Result<()> {
                 chunk_size: u32::try_from(chunk_size).context("chunk size exceeds u32")?,
                 level,
             };
+            workspace::preflight(
+                &source,
+                store
+                    .parent()
+                    .filter(|p| !p.as_os_str().is_empty())
+                    .unwrap_or(Path::new(".")),
+                options.chunk_size,
+                options.layout,
+                1,
+                "destination",
+            )?;
             let plan = if let Some(path) = plan {
                 Some(playsparse_game::PackingPlan::load(&path)?)
             } else if let Some(path) = profile {
@@ -284,13 +305,15 @@ fn main() -> Result<()> {
         Command::Verify { store } => print(&Store::open(&store)?.verify()?),
         Command::Analyze {
             source,
+            temp_dir,
             chunk_size,
             profile,
             plan_output,
             container_aware,
             experimental_skip_compression,
         } => {
-            let mut report = analyze(&source, u32::try_from(chunk_size)?)?;
+            let temp_dir = temp_dir.unwrap_or_else(std::env::temp_dir);
+            let mut report = analyze(&source, u32::try_from(chunk_size)?, &temp_dir)?;
             if let Some(profile) = profile {
                 if chunk_size != playsparse_game::TARGET_BYTES as usize {
                     bail!("profile analysis requires --chunk-size 256K");
@@ -301,6 +324,7 @@ fn main() -> Result<()> {
                     plan_output.as_deref(),
                     container_aware,
                     experimental_skip_compression,
+                    &temp_dir,
                 )?;
                 report["game_aware"] = value;
             }
@@ -428,9 +452,24 @@ fn main() -> Result<()> {
             store,
             path,
             human,
+            json: _,
+            temp_dir,
             mount_test,
         } => {
             let mut report = doctor(store.as_deref(), &path);
+            let temp_dir = temp_dir.unwrap_or_else(std::env::temp_dir);
+            report["temporary_workspace"] = match workspace::inspect(&temp_dir) {
+                Ok(value) => value,
+                Err(error) => {
+                    json!({"location":temp_dir,"status":"FAIL","error":format!("{error:#}")})
+                }
+            };
+            report["store_destination"] = match workspace::inspect(&path) {
+                Ok(value) => value,
+                Err(error) => json!({"location":path,"status":"FAIL","error":format!("{error:#}")}),
+            };
+            report["version"] = json!(env!("CARGO_PKG_VERSION"));
+            report["compatibility"] = json!({"case_insensitive_posix_lookup":"NOT IMPLEMENTED","macos_native_code_materialization":"manual prototype; not automated","universal_application_compatibility":"NOT ESTABLISHED"});
             let exit = diagnostics::augment(&mut report, mount_test);
             if human {
                 diagnostics::print_human(&report);
@@ -703,8 +742,12 @@ fn unmount(mountpoint: &Path) -> Result<()> {
     }
 }
 
-fn analyze(source: &Path, chunk_size: u32) -> Result<Value> {
-    let work = tempfile::tempdir()?;
+fn analyze(source: &Path, chunk_size: u32, temp_dir: &Path) -> Result<Value> {
+    let budget = workspace::preflight(source, temp_dir, chunk_size, Layout::Packs, 2, "temporary")?;
+    fs::create_dir_all(temp_dir)?;
+    let work = tempfile::Builder::new()
+        .prefix("playsparse-analysis-")
+        .tempdir_in(temp_dir)?;
     let fixed = pack_directory(
         source,
         &work.path().join("fixed"),
@@ -750,7 +793,7 @@ fn analyze(source: &Path, chunk_size: u32) -> Result<Value> {
         .map(|r| r.raw_size as u64)
         .sum();
     Ok(
-        json!({"title":"PlaySparse Analysis","measurement":"measured full scan, two temporary verified stores; no extrapolation","source_modified":false,"files":cdc.files,"logical_bytes":cdc.logical_bytes,"exact_duplicate_file_bytes":duplicates,"cdc_duplicate_reuse_bytes":cdc_reuse,"unique_compressible_raw_bytes":compressible,"unique_incompressible_raw_bytes":incompressible,"already_compressed_bytes":null,"high_entropy_bytes":null,"classification_note":"Codec choice is measured. Already-compressed and high-entropy attribution is not inferred from filename or compression ratio.","fixed_chunks":fixed,"cdc_chunks":cdc,"projected_safe_mode":{"measurement":"measured on this input","physical_bytes":cdc.physical_bytes,"metadata_bytes":cdc.metadata_bytes},"temporary_stores_removed_on_exit":true}),
+        json!({"title":"PlaySparse Analysis","temporary_workspace":budget,"measurement":"measured full scan, two temporary verified stores; no extrapolation","source_modified":false,"files":cdc.files,"logical_bytes":cdc.logical_bytes,"exact_duplicate_file_bytes":duplicates,"cdc_duplicate_reuse_bytes":cdc_reuse,"unique_compressible_raw_bytes":compressible,"unique_incompressible_raw_bytes":incompressible,"already_compressed_bytes":null,"high_entropy_bytes":null,"classification_note":"Codec choice is measured. Already-compressed and high-entropy attribution is not inferred from filename or compression ratio.","fixed_chunks":fixed,"cdc_chunks":cdc,"projected_safe_mode":{"measurement":"measured on this input","physical_bytes":cdc.physical_bytes,"metadata_bytes":cdc.metadata_bytes},"temporary_stores_removed_on_exit":true}),
     )
 }
 fn percentiles(mut values: Vec<f64>) -> Value {
