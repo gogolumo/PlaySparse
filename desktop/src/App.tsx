@@ -1011,6 +1011,34 @@ export default function App() {
                 representation.
               </p>
             )}
+            {selected.analysis && !selected.store && (
+              <div className="info-note">
+                <span>
+                  New store location
+                  <code>
+                    {data.settings.storage_dir}/{selected.id}
+                  </code>
+                  <button
+                    disabled={busy}
+                    onClick={() =>
+                      void action(async () => {
+                        const location = await bridge.selectFolder();
+                        if (!location) return;
+                        const settings = {
+                          ...data.settings,
+                          storage_dir: location,
+                        };
+                        await bridge.updateSettings(settings);
+                        setDraft(settings);
+                      })
+                    }
+                  >
+                    <FolderOpen size={14} />
+                    Choose store location
+                  </button>
+                </span>
+              </div>
+            )}
             <div className="modal-actions">
               <button
                 disabled={busy || !!selected.session}
