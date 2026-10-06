@@ -1,3 +1,4 @@
+<!-- Raw evidence preservation: see bundles/game-awareness-20261005.inventory.json -->
 # Game-aware storage: retained L0 result (2026-10-05)
 
 Optional engine discovery now feeds deterministic offline profiles and packing
@@ -276,3 +277,7 @@ and [exact changed-file inventory](raw/game-awareness-20261005/files-changed.txt
 The raw collection preserves original bytes and Windows CRLF through scoped Git
 attributes; whitespace checks apply to authored code/docs. It contains JSON/logs/traces/hashes, no fixture, game asset,
 store, overlay data or executable payload. A SHA-256 inventory accompanies it.
+
+## Curated retention
+
+All 2,581 raw files from PR #13 are preserved byte-for-byte in `bundles/game-awareness-20261005.tar.gz`; per-file SHA-256 hashes, lengths and original paths are in the adjacent inventory. Important result/provenance/tree JSON and nonempty native Mac failure stderr logs remain expanded. Historical path links to unexpanded logs require extraction of the bundle into the repository root. No failed measurement was changed. See [retention instructions](raw/game-awareness-20261005/README.md).
