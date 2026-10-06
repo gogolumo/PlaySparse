@@ -1,0 +1,331 @@
+{
+  "version": 1,
+  "status": "FAIL",
+  "repository": {
+    "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "4dea236864a353dc6bbba1e25727e3fae6e75e4c112c8a3b72cb32519f36bfa8",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "binary_sha256": "c933e4261c1bf91cb3d1066f5a3ad204f1018f2a9e69b52a0bc174944b7f6976",
+  "scope": "L0 native macFUSE correctness; not mounted performance or real-game evidence",
+  "commands": [
+    [
+      "/tmp/playsparse-game-aware-baseline-01/playsparse",
+      "mount",
+      "/tmp/playsparse-game-aware-native-main-writable-01/base",
+      "/tmp/playsparse-game-aware-native-main-writable-01/mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-extra-01/writable-diff-main.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-game-aware-native-main-writable-01/overlay"
+    ],
+    {
+      "label": "writable-diff-main-read",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-c",
+        "import sys,json,hashlib;from pathlib import Path\n\ndef tree(root):\n out={}\n for p in sorted(root.rglob('*')):\n  name=p.relative_to(root).as_posix()\n  if p.is_dir():out[name]={'kind':'directory'}\n  elif p.is_file():out[name]={'kind':'file','bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}\n  else:raise RuntimeError(name)\n return out\nexpected,actual=tree(Path(sys.argv[1])),tree(Path(sys.argv[2]))\nextra={k:v for k,v in actual.items() if k not in expected}\nmissing=[k for k in expected if k not in actual]\nchanged=[k for k in expected if k in actual and expected[k]!=actual[k]]\nprint(json.dumps({'expected':expected,'actual':actual,'extra':extra,'missing':missing,'changed':changed,'full_tree_equal':expected==actual}))\nif missing or changed:raise SystemExit(1)\nif len(sys.argv)<4 and extra:raise SystemExit(1)\n",
+        "/tmp/playsparse-game-aware-native-main-writable-01/expected",
+        "/tmp/playsparse-game-aware-native-main-writable-01/mounted",
+        "permit-recorded-extra-sidecars"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:44.966933+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.23843849999866507
+    },
+    [
+      "/tmp/playsparse-game-aware-target/release/playsparse",
+      "mount",
+      "/tmp/playsparse-game-aware-native-mac-01/writable/base",
+      "/tmp/playsparse-game-aware-native-mac-01/writable/mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-extra-01/writable-diff-candidate.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/tmp/playsparse-game-aware-native-mac-01/writable/overlay"
+    ],
+    {
+      "label": "writable-diff-candidate-read",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-c",
+        "import sys,json,hashlib;from pathlib import Path\n\ndef tree(root):\n out={}\n for p in sorted(root.rglob('*')):\n  name=p.relative_to(root).as_posix()\n  if p.is_dir():out[name]={'kind':'directory'}\n  elif p.is_file():out[name]={'kind':'file','bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}\n  else:raise RuntimeError(name)\n return out\nexpected,actual=tree(Path(sys.argv[1])),tree(Path(sys.argv[2]))\nextra={k:v for k,v in actual.items() if k not in expected}\nmissing=[k for k in expected if k not in actual]\nchanged=[k for k in expected if k in actual and expected[k]!=actual[k]]\nprint(json.dumps({'expected':expected,'actual':actual,'extra':extra,'missing':missing,'changed':changed,'full_tree_equal':expected==actual}))\nif missing or changed:raise SystemExit(1)\nif len(sys.argv)<4 and extra:raise SystemExit(1)\n",
+        "/tmp/playsparse-game-aware-native-mac-01/writable/expected",
+        "/tmp/playsparse-game-aware-native-mac-01/writable/mounted",
+        "permit-recorded-extra-sidecars"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:45.591157+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.1845020000000659
+    },
+    {
+      "label": "profile-inspect",
+      "command": [
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "inspect-game",
+        "/private/tmp/playsparse-game-aware-native-extra-01/profile-fixture/v2",
+        "--scanner",
+        "generic",
+        "--container-aware",
+        "--output",
+        "/private/tmp/playsparse-game-aware-native-extra-01/profile.json",
+        "--plan-output",
+        "/private/tmp/playsparse-game-aware-native-extra-01/plan.json"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:46.062167+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.04432837499916786
+    },
+    {
+      "label": "profile-pack",
+      "command": [
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "pack",
+        "/private/tmp/playsparse-game-aware-native-extra-01/profile-fixture/v2",
+        "/private/tmp/playsparse-game-aware-native-extra-01/zip-store",
+        "--plan",
+        "/private/tmp/playsparse-game-aware-native-extra-01/plan.json"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:46.107962+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0750482910007122
+    },
+    {
+      "label": "profile-old-reader-verify",
+      "command": [
+        "/tmp/playsparse-game-aware-baseline-01/playsparse",
+        "verify",
+        "/private/tmp/playsparse-game-aware-native-extra-01/zip-store"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:46.184528+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.020632042000215733
+    },
+    [
+      "/tmp/playsparse-game-aware-target/release/playsparse",
+      "mount",
+      "/private/tmp/playsparse-game-aware-native-extra-01/zip-store",
+      "/private/tmp/playsparse-game-aware-native-extra-01/zip-mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-extra-01/profile.trace.jsonl",
+      "--cache",
+      "8M"
+    ],
+    {
+      "label": "profile-mounted-read",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-c",
+        "import sys,json,hashlib;from pathlib import Path\n\ndef tree(root):\n out={}\n for p in sorted(root.rglob('*')):\n  name=p.relative_to(root).as_posix()\n  if p.is_dir():out[name]={'kind':'directory'}\n  elif p.is_file():out[name]={'kind':'file','bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}\n  else:raise RuntimeError(name)\n return out\nexpected,actual=tree(Path(sys.argv[1])),tree(Path(sys.argv[2]))\nextra={k:v for k,v in actual.items() if k not in expected}\nmissing=[k for k in expected if k not in actual]\nchanged=[k for k in expected if k in actual and expected[k]!=actual[k]]\nprint(json.dumps({'expected':expected,'actual':actual,'extra':extra,'missing':missing,'changed':changed,'full_tree_equal':expected==actual}))\nif missing or changed:raise SystemExit(1)\nif len(sys.argv)<4 and extra:raise SystemExit(1)\n",
+        "/private/tmp/playsparse-game-aware-native-extra-01/profile-fixture/v2",
+        "/private/tmp/playsparse-game-aware-native-extra-01/zip-mounted"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:46.418568+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 0.0775430840003537
+    },
+    {
+      "label": "adaptive",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/bogdan_dron/Documents/PlaySparse-game-aware/tools/adaptive-smoke.py",
+        "--work",
+        "/private/tmp/playsparse-game-aware-native-extra-01/adaptive",
+        "--playsparse",
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "--io-probe",
+        "/tmp/playsparse-game-aware-target/release/io-probe"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:46.639458+00:00",
+      "status": "PASS",
+      "exit_code": 0,
+      "wall_seconds": 1.6001565829992614
+    },
+    {
+      "label": "tiers",
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/bogdan_dron/Documents/PlaySparse-game-aware/tools/tiered-smoke.py",
+        "--work",
+        "/private/tmp/playsparse-game-aware-native-extra-01/tiers",
+        "--playsparse",
+        "/tmp/playsparse-game-aware-target/release/playsparse",
+        "--io-probe",
+        "/tmp/playsparse-game-aware-target/release/io-probe"
+      ],
+      "cwd": "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "timestamp": "2026-10-05T14:01:48.242156+00:00",
+      "status": "FAIL",
+      "exit_code": 1,
+      "error": "tiers exited 1; inspect preserved logs",
+      "failure_type": "RuntimeError",
+      "wall_seconds": 3.3409695829996053
+    }
+  ],
+  "stages": {
+    "writable_audit": "PASS: intended file bytes match; identical AppleDouble extras; full-tree gate remains FAIL",
+    "profile_zip_mount": "PASS",
+    "adaptive": "PASS"
+  },
+  "binary_provenance": {
+    "repository": {
+      "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+      "dirty": false,
+      "working_tree_status": "",
+      "source_digest_sha256": "4dea236864a353dc6bbba1e25727e3fae6e75e4c112c8a3b72cb32519f36bfa8",
+      "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+    },
+    "binaries": {
+      "playsparse": {
+        "path": "/private/tmp/playsparse-game-aware-target/release/playsparse",
+        "sha256": "c933e4261c1bf91cb3d1066f5a3ad204f1018f2a9e69b52a0bc174944b7f6976"
+      },
+      "io-probe": {
+        "path": "/private/tmp/playsparse-game-aware-target/release/io-probe",
+        "sha256": "569e008c9e3d5ce67502f3a9c8adb18f922786dd7146df721fbe2dcca6e727f6"
+      }
+    },
+    "allow_dirty": false,
+    "allow_unverified_binaries": false,
+    "status": "VERIFIED_LOCAL_BUILD_RECEIPT",
+    "manifest": "/private/tmp/playsparse-game-aware-checks-02/binary-build-manifest.json"
+  },
+  "writable_comparison": [
+    {
+      "baseline_or_candidate": "main",
+      "binary_sha256": "5ea26b506b7486403b46478b27b3d014f859df879e590ddabcc480e5fc7baa42",
+      "full_tree_equal": false,
+      "extra_paths": [
+        "._config.json",
+        "._patch",
+        "data/._archive-a-v2.bin",
+        "data/._archive-b.bin",
+        "data/._replace.bin",
+        "data/._truncate.bin",
+        "patch/._renamed.bin",
+        "renamed-dir/nested/._file.bin"
+      ],
+      "missing": [],
+      "changed": [],
+      "original_gate_status": "FAIL"
+    },
+    {
+      "baseline_or_candidate": "candidate",
+      "binary_sha256": "c933e4261c1bf91cb3d1066f5a3ad204f1018f2a9e69b52a0bc174944b7f6976",
+      "full_tree_equal": false,
+      "extra_paths": [
+        "._config.json",
+        "._patch",
+        "data/._archive-a-v2.bin",
+        "data/._archive-b.bin",
+        "data/._replace.bin",
+        "data/._truncate.bin",
+        "patch/._renamed.bin",
+        "renamed-dir/nested/._file.bin"
+      ],
+      "missing": [],
+      "changed": [],
+      "original_gate_status": "FAIL"
+    }
+  ],
+  "profile_mount_record": {
+    "os_path_ismount": true
+  },
+  "profile_devices": {
+    "source": 16777232,
+    "mount": 905969701
+  },
+  "profile_provider_events": [
+    {
+      "cache": {
+        "decompressions": 24,
+        "decompressions_avoided": 446,
+        "evictions": 0,
+        "hit_ratio": 0.948936170212766,
+        "hits": 446,
+        "in_flight_waits": 0,
+        "misses": 24,
+        "peak_resident_bytes": 7347487,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 7347487,
+        "resident_bytes": 7347487,
+        "resident_entries": 24
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 449,
+      "requested_bytes": 7347487,
+      "returned_bytes": 7347487,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 6643396,
+        "primary_cache_hits": 0,
+        "primary_hits": 24,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 449,
+        "events_written": 449,
+        "queue_high_watermark": 7,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 449,
+        "events_written": 449,
+        "queue_high_watermark": 7,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "source_unchanged": true,
+  "store_unchanged": true,
+  "profile_clean_unmount": true,
+  "error": "tiers exited 1; inspect preserved logs"
+}

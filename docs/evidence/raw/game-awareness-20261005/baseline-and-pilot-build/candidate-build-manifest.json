@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "repository": {
+    "git_sha": "ae62a56d53d2c853a2711dc1daff6334083455b1",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "5fb9a4166043c49bc604c2dfcbcf9c7a3d21ff6bbb64e397b72621134dc2dbb4",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "command": [
+    "/Users/bogdan_dron/.cargo/bin/cargo",
+    "build",
+    "--locked",
+    "--release",
+    "--workspace",
+    "--all-features"
+  ],
+  "timestamp": "2026-10-05T13:37:56.949525+00:00",
+  "binaries": {
+    "playsparse": {
+      "path": "/Users/bogdan_dron/Documents/PlaySparse/target/release/playsparse",
+      "sha256": "90a1f4c1b54feb5920b96673006a632ac04b741e60d757dcefc628b7fcd252c9"
+    },
+    "io-probe": {
+      "path": "/Users/bogdan_dron/Documents/PlaySparse/target/release/io-probe",
+      "sha256": "b1ced97a35541ec4288a177955e3611305a47e885ad415e56e871b88b0475361"
+    }
+  },
+  "basis": "successful validation-runner build with unchanged repository identity; local receipt, not a signed attestation"
+}

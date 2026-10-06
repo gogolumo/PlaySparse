@@ -1,0 +1,696 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-05T14:05:38.813440+00:00",
+  "commit": "4952845f6546fd68f2951970c7ffd63fdf461829",
+  "working_tree_status": "",
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "architecture": "AMD64",
+  "binary_sha256": "993f1a1ba15b6071fd519955f619896abae874fa81b2c3b9140b67ce9e6e5ab3",
+  "status": "PASS",
+  "commands": [
+    [
+      "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+      "D:\\a\\PlaySparse\\PlaySparse\\tools\\generate-testgame.py",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\source",
+      "--io-probe",
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+      "--world-bytes",
+      "16777216"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "pack",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\source",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "256K"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "verify",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted",
+      "--trace",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\update.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\overlay"
+    ],
+    [
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted\\testgame.exe",
+      "--self-test"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\source",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted",
+      "--iterations",
+      "8",
+      "--sequential-limit",
+      "8388608",
+      "--output",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\io-probe.json"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted",
+      "--trace",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\remount.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\overlay"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "overlay",
+      "status",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\overlay"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "trace",
+      "summarize",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\update.trace.jsonl"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "overlay",
+      "commit",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\overlay",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\committed-base"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "verify",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\committed-base"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\committed-base",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted",
+      "--trace",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\commit.trace.jsonl",
+      "--cache",
+      "8M"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "overlay",
+      "discard",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\discarded-overlay"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "overlay",
+      "status",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\discarded-overlay"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\mounted",
+      "--trace",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\evidence\\reset.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\discarded-overlay"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "verify",
+      "D:\\a\\_temp\\playsparse-windows-ci\\writable\\base"
+    ]
+  ],
+  "dataset": "generated synthetic updater; no real launcher/game compatibility claim",
+  "windows_physical_validation": "BLOCKED_ON_PHYSICAL_WINDOWS",
+  "expected_tree": {
+    "assets": {
+      "kind": "directory"
+    },
+    "assets/empty.bin": {
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assets/entropy.dat": {
+      "kind": "file",
+      "bytes": 2097152,
+      "sha256": "57a3ba1f81f0b66f43eaa1896aa8b7c439e5784fbf50b70a13d8e45a63d65fba"
+    },
+    "assets/texture.dat": {
+      "kind": "file",
+      "bytes": 1077248,
+      "sha256": "51dc97ab4f4133f1e340e09238875670c3aaa0ad3f6d93d6bbd360bb6361bb7e"
+    },
+    "audio.dat": {
+      "kind": "file",
+      "bytes": 2138112,
+      "sha256": "107fb765c1210d3e25997601182f17fe07e97bf7ea439ed0b07ad3e1b3bb0eeb"
+    },
+    "config.json": {
+      "kind": "file",
+      "bytes": 32,
+      "sha256": "328d309303a1bdaafabec020e6f5a299e4db6fc9998d9115e36d83f75494b2bc"
+    },
+    "data": {
+      "kind": "directory"
+    },
+    "data/archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4194304,
+      "sha256": "180ac4c87f19e3f73ea15a9d72bd52a2a367ad9716964e02a2d30375ab07e87f"
+    },
+    "data/archive-b.bin": {
+      "kind": "file",
+      "bytes": 1179659,
+      "sha256": "033a68d3d9e550ebf548fdd591c801a344e6028f2852a7daea36412f7b75c8f1"
+    },
+    "data/replace.bin": {
+      "kind": "file",
+      "bytes": 19,
+      "sha256": "aa40aec18b8359d012be1197acebec65a4184b3b8d95cec23256381e3c44881c"
+    },
+    "data/truncate.bin": {
+      "kind": "file",
+      "bytes": 8192,
+      "sha256": "457372ad2fc3906058e51bfd8995ab1eb85116cd9a14decb5911267ab1192677"
+    },
+    "fixture.json": {
+      "kind": "file",
+      "bytes": 1202768,
+      "sha256": "ba4799322794c86d10d618450240e01ff10b20ef0c61045b12f9ba9990662722"
+    },
+    "patch": {
+      "kind": "directory"
+    },
+    "patch/renamed.bin": {
+      "kind": "file",
+      "bytes": 10,
+      "sha256": "d135f30dac4bc0f342e66dcbf1ffc7fd891229f5df977d769358d1bb5d66deb0"
+    },
+    "renamed-dir": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested/file.bin": {
+      "kind": "file",
+      "bytes": 11,
+      "sha256": "427669f05f889060543116f6924d53247ece013801b74010da0e4162d1fba83f"
+    },
+    "testgame.exe": {
+      "kind": "file",
+      "bytes": 958464,
+      "sha256": "b6e6c96e0301669d78f60c5ef02a1cd441b6b5f1a4e7c433045679a5e44c9dd3"
+    },
+    "world.dat": {
+      "kind": "file",
+      "bytes": 16777216,
+      "sha256": "7385008f8830b3d8c276493ed3021891b56de58f3ac2dafb34e557f1290cbb13"
+    }
+  },
+  "mount_record": {
+    "real_mount": true,
+    "filesystem_type": "PlaySparse",
+    "volume_label": "PlaySparse",
+    "api": "GetVolumeInformationByHandleW"
+  },
+  "update_metrics": [
+    {
+      "cache": {
+        "decompressions": 338,
+        "decompressions_avoided": 1800,
+        "evictions": 306,
+        "hit_ratio": 0.8419083255378859,
+        "hits": 1800,
+        "in_flight_waits": 0,
+        "misses": 338,
+        "peak_resident_bytes": 8388608,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 84045334,
+        "resident_bytes": 8388608,
+        "resident_entries": 32
+      },
+      "event": "winfsp_unmounted",
+      "overlay": {
+        "copy_up_bytes": 5383963,
+        "copy_up_files": 5,
+        "metadata_bytes": 1108,
+        "overlay_allocated_bytes": null,
+        "overlay_bytes_written": 8179,
+        "overlay_files": 7,
+        "overlay_logical_bytes": 5382227,
+        "tombstones": 9
+      },
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 6542644,
+        "primary_cache_hits": 0,
+        "primary_hits": 338,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 1640,
+        "events_written": 1640,
+        "queue_high_watermark": 39,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 1640,
+        "events_written": 1640,
+        "queue_high_watermark": 39,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "remount_record": {
+    "real_mount": true,
+    "filesystem_type": "PlaySparse",
+    "volume_label": "PlaySparse",
+    "api": "GetVolumeInformationByHandleW"
+  },
+  "remount_tree_verified": true,
+  "remount_metrics": [
+    {
+      "cache": {
+        "decompressions": 79,
+        "decompressions_avoided": 16,
+        "evictions": 47,
+        "hit_ratio": 0.16842105263157894,
+        "hits": 16,
+        "in_flight_waits": 0,
+        "misses": 79,
+        "peak_resident_bytes": 8388608,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 20056656,
+        "resident_bytes": 8388608,
+        "resident_entries": 32
+      },
+      "event": "winfsp_unmounted",
+      "overlay": {
+        "copy_up_bytes": 0,
+        "copy_up_files": 0,
+        "metadata_bytes": 1108,
+        "overlay_allocated_bytes": null,
+        "overlay_bytes_written": 0,
+        "overlay_files": 7,
+        "overlay_logical_bytes": 5382227,
+        "tombstones": 9
+      },
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 2539356,
+        "primary_cache_hits": 0,
+        "primary_hits": 79,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 161,
+        "events_written": 161,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 161,
+        "events_written": 161,
+        "queue_high_watermark": 1,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "overlay": {
+    "copy_up_files": 0,
+    "copy_up_bytes": 0,
+    "overlay_bytes_written": 0,
+    "overlay_files": 7,
+    "tombstones": 9,
+    "overlay_logical_bytes": 5382227,
+    "overlay_allocated_bytes": null,
+    "metadata_bytes": 1108
+  },
+  "trace": {
+    "cache_hit_ratio": 0.8284132841328413,
+    "cache_miss_ratio": 0.17158671586715868,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 1640,
+    "hot_files": [
+      {
+        "events": 1089,
+        "path": "world.dat"
+      },
+      {
+        "events": 71,
+        "path": "testgame.exe"
+      },
+      {
+        "events": 50,
+        "path": "fixture.json"
+      },
+      {
+        "events": 38,
+        "path": "audio.dat"
+      },
+      {
+        "events": 36,
+        "path": "assets/entropy.dat"
+      },
+      {
+        "events": 36,
+        "path": "assets/texture.dat"
+      },
+      {
+        "events": 35,
+        "path": "config.json"
+      },
+      {
+        "events": 31,
+        "path": "data/archive-b.bin"
+      },
+      {
+        "events": 31,
+        "path": "data/truncate.bin"
+      },
+      {
+        "events": 27,
+        "path": "data/replace.bin"
+      },
+      {
+        "events": 25,
+        "path": "assets/empty.bin"
+      },
+      {
+        "events": 25,
+        "path": "data/archive-a.bin"
+      },
+      {
+        "events": 25,
+        "path": "readme.txt"
+      },
+      {
+        "events": 18,
+        "path": "old-dir/nested/file.bin"
+      },
+      {
+        "events": 15,
+        "path": "patch"
+      },
+      {
+        "events": 12,
+        "path": "data/archive-a-v2.bin"
+      },
+      {
+        "events": 11,
+        "path": "renamed-dir/nested/file.bin"
+      },
+      {
+        "events": 10,
+        "path": ""
+      },
+      {
+        "events": 9,
+        "path": "data"
+      },
+      {
+        "events": 9,
+        "path": "patch/renamed.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 33,
+        "length": 65536,
+        "offset": 0,
+        "path": "world.dat"
+      },
+      {
+        "events": 33,
+        "length": 1048576,
+        "offset": 0,
+        "path": "world.dat"
+      },
+      {
+        "events": 32,
+        "length": 4096,
+        "offset": 0,
+        "path": "world.dat"
+      },
+      {
+        "events": 32,
+        "length": 4096,
+        "offset": 262143,
+        "path": "world.dat"
+      },
+      {
+        "events": 32,
+        "length": 4096,
+        "offset": 262144,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 65536,
+        "offset": 262143,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 1048576,
+        "offset": 262143,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 65536,
+        "offset": 262144,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 1048576,
+        "offset": 262144,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 4096,
+        "offset": 16777179,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 65536,
+        "offset": 16777179,
+        "path": "world.dat"
+      },
+      {
+        "events": 31,
+        "length": 1048576,
+        "offset": 16777179,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 4096,
+        "offset": 329796,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 65536,
+        "offset": 329796,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 1048576,
+        "offset": 329796,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 4096,
+        "offset": 6463700,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 65536,
+        "offset": 6463700,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 1048576,
+        "offset": 6463700,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 4096,
+        "offset": 6738069,
+        "path": "world.dat"
+      },
+      {
+        "events": 5,
+        "length": 65536,
+        "offset": 6738069,
+        "path": "world.dat"
+      }
+    ],
+    "latency_ns": {
+      "p50": 2100,
+      "p95": 562100,
+      "p99": 1911500
+    },
+    "operations": {
+      "create": 3,
+      "flush": 522,
+      "mkdir": 2,
+      "read": 1095,
+      "rename": 4,
+      "rmdir": 1,
+      "truncate": 2,
+      "unlink": 2,
+      "write": 9
+    },
+    "read_bytes": 299036853,
+    "read_operations": 1095,
+    "reread_ratio": 0.5159817351598174,
+    "sequential_read_percentage": 5.3881278538812785,
+    "sessions": [
+      "5132-1791209139655587600"
+    ],
+    "sources": {
+      "memory-cache": 898,
+      "mixed": 69,
+      "overlay": 556,
+      "primary-local": 117
+    },
+    "version": 1,
+    "write_bytes": 8179,
+    "write_operations": 9
+  },
+  "immutable_commit": {
+    "base_opened_read_only": true,
+    "method": "bounded streaming merged tree into disposable staging directory; full temporary logical space required",
+    "pack": {
+      "allocated_bytes": null,
+      "files": 14,
+      "filesystem_entries": 8,
+      "logical_bytes": 29633187,
+      "measured_raw_bytes": 0,
+      "measured_raw_objects": 0,
+      "metadata_bytes": 9809,
+      "object_bytes": 2540670,
+      "pack_cpu_seconds": 0.078125,
+      "pack_seconds": 0.0779274,
+      "physical_bytes": 2550479,
+      "reused_chunks": 2,
+      "unique_objects": 44,
+      "verified_before_publish": true,
+      "zstd_attempted_objects": 44
+    },
+    "verify": {
+      "checked_bytes": 29633187,
+      "checked_files": 14,
+      "checked_objects": 44,
+      "ok": true
+    }
+  },
+  "committed_verify": {
+    "ok": true,
+    "checked_files": 14,
+    "checked_bytes": 29633187,
+    "checked_objects": 44
+  },
+  "committed_mount_verified": true,
+  "discarded_overlay": {
+    "copy_up_files": 0,
+    "copy_up_bytes": 0,
+    "overlay_bytes_written": 0,
+    "overlay_files": 0,
+    "tombstones": 0,
+    "overlay_logical_bytes": 0,
+    "overlay_allocated_bytes": null,
+    "metadata_bytes": 275
+  },
+  "discard_mount_verified": true,
+  "clean_unmount": true,
+  "source_unchanged": true,
+  "base_unchanged": true,
+  "wall_seconds": 2.136504000000059
+}

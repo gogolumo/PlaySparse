@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "repository": {
+    "git_sha": "4952845f6546fd68f2951970c7ffd63fdf461829",
+    "dirty": false,
+    "working_tree_status": "",
+    "source_digest_sha256": "4dea236864a353dc6bbba1e25727e3fae6e75e4c112c8a3b72cb32519f36bfa8",
+    "source_digest_definition": "SHA-256 of sorted Git tracked and nonignored untracked filenames, modes and file SHA-256s; symlinks record link text"
+  },
+  "command": [
+    "/Users/bogdan_dron/.cargo/bin/cargo",
+    "build",
+    "--locked",
+    "--release",
+    "--workspace",
+    "--all-features"
+  ],
+  "timestamp": "2026-10-05T14:01:07.010233+00:00",
+  "binaries": {
+    "playsparse": {
+      "path": "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "sha256": "c933e4261c1bf91cb3d1066f5a3ad204f1018f2a9e69b52a0bc174944b7f6976"
+    },
+    "io-probe": {
+      "path": "/private/tmp/playsparse-game-aware-target/release/io-probe",
+      "sha256": "569e008c9e3d5ce67502f3a9c8adb18f922786dd7146df721fbe2dcca6e727f6"
+    }
+  },
+  "basis": "successful validation-runner build with unchanged repository identity; local receipt, not a signed attestation"
+}

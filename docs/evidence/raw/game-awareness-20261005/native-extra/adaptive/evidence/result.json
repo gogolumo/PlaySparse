@@ -1,0 +1,784 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-05T14:01:46.689402+00:00",
+  "commit": "4952845f6546fd68f2951970c7ffd63fdf461829",
+  "working_tree_status": "",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "binary_sha256": "c933e4261c1bf91cb3d1066f5a3ad204f1018f2a9e69b52a0bc174944b7f6976",
+  "status": "PASS",
+  "commands": [
+    [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/bogdan_dron/Documents/PlaySparse-game-aware/tools/generate-testgame.py",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/source",
+      "--io-probe",
+      "/private/tmp/playsparse-game-aware-target/release/io-probe",
+      "--world-bytes",
+      "4194304"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "pack",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/source",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "64K"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "mount",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "optimize",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/policy.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/static-0.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/adaptive-0.json",
+      "--policy",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/policy.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/adaptive-1.json",
+      "--policy",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/policy.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/static-1.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/static-2.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "replay-one",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl",
+      "--cache",
+      "4M",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/adaptive-2.json",
+      "--policy",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/policy.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "mount",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/base",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/adaptive.trace.jsonl",
+      "--cache",
+      "4M",
+      "--policy",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/policy.json"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-target/release/playsparse",
+      "trace",
+      "summarize",
+      "/private/tmp/playsparse-game-aware-native-extra-01/adaptive/evidence/capture.trace.jsonl"
+    ]
+  ],
+  "cache_bytes": 4194304,
+  "cache_state": "fresh PlaySparse cache per replay subprocess; OS/device caches uncontrolled; not disk-cold",
+  "dataset": "synthetic sequential + hot/churn + random; kernel callbacks captured, not a game benchmark",
+  "original": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.019785208998655435,
+    "latency_ns": {
+      "p50": 3917,
+      "p95": 5500,
+      "p99": 11292
+    }
+  },
+  "capture_mount_record": {
+    "os_path_ismount": true
+  },
+  "mounted_static": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.05664249999972526,
+    "latency_ns": {
+      "p50": 3667,
+      "p95": 12667,
+      "p99": 139666
+    }
+  },
+  "capture_metrics": [
+    {
+      "cache": {
+        "decompressions": 528,
+        "decompressions_avoided": 1570,
+        "evictions": 464,
+        "hit_ratio": 0.7483317445185891,
+        "hits": 1570,
+        "in_flight_waits": 0,
+        "misses": 528,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 0,
+        "prefetch_chunks_loaded": 0,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 0,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 0,
+        "prefetch_peak_reserved_bytes": 0,
+        "prefetch_queue_high_watermark": 0,
+        "prefetch_requests": 0,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 0,
+        "prefetch_useful_bytes": 0,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 34603008,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 2098,
+      "requested_bytes": 34373632,
+      "returned_bytes": 34373632,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 3157504,
+        "primary_cache_hits": 0,
+        "primary_hits": 528,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 2098,
+        "events_written": 2098,
+        "queue_high_watermark": 3,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 2098,
+        "events_written": 2098,
+        "queue_high_watermark": 3,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 50,
+      "stream.bin": 1024
+    }
+  },
+  "evaluation_policy": {
+    "version": 1,
+    "cache_bytes": null,
+    "eviction": "decaying-hotness",
+    "decay_accesses": 64,
+    "prefetch": {
+      "enabled": true,
+      "sequential_reads": 3,
+      "max_chunks": 2,
+      "budget_bytes": 8388608,
+      "queue_depth": 32,
+      "ttl_ms": 500
+    },
+    "files": {
+      "hot.bin": 50,
+      "stream.bin": 1024
+    }
+  },
+  "replay_trials": {
+    "static": [
+      {
+        "cache": {
+          "decompressions": 528,
+          "decompressions_avoided": 1570,
+          "evictions": 464,
+          "hit_ratio": 0.7483317445185891,
+          "hits": 1570,
+          "in_flight_waits": 0,
+          "misses": 528,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 34603008,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.03977900000000001,
+        "latency_ns": {
+          "p50": 417,
+          "p95": 37667,
+          "p99": 45167
+        },
+        "process_peak_rss_bytes": 13254656,
+        "queries": 2098,
+        "read_amplification": 1.0066730219256435,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.039830625
+      },
+      {
+        "cache": {
+          "decompressions": 528,
+          "decompressions_avoided": 1570,
+          "evictions": 464,
+          "hit_ratio": 0.7483317445185891,
+          "hits": 1570,
+          "in_flight_waits": 0,
+          "misses": 528,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 34603008,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.035003000000000006,
+        "latency_ns": {
+          "p50": 375,
+          "p95": 32375,
+          "p99": 37125
+        },
+        "process_peak_rss_bytes": 13303808,
+        "queries": 2098,
+        "read_amplification": 1.0066730219256435,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.035222917
+      },
+      {
+        "cache": {
+          "decompressions": 528,
+          "decompressions_avoided": 1570,
+          "evictions": 464,
+          "hit_ratio": 0.7483317445185891,
+          "hits": 1570,
+          "in_flight_waits": 0,
+          "misses": 528,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 0,
+          "prefetch_chunks_loaded": 0,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 0,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 0,
+          "prefetch_peak_reserved_bytes": 0,
+          "prefetch_queue_high_watermark": 0,
+          "prefetch_requests": 0,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 0,
+          "prefetch_useful_bytes": 0,
+          "prefetch_wasted_bytes": 0,
+          "raw_bytes_loaded": 34603008,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.038599,
+        "latency_ns": {
+          "p50": 375,
+          "p95": 35042,
+          "p99": 65333
+        },
+        "process_peak_rss_bytes": 13778944,
+        "queries": 2098,
+        "read_amplification": 1.0066730219256435,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.03968375
+      }
+    ],
+    "adaptive": [
+      {
+        "cache": {
+          "decompressions": 558,
+          "decompressions_avoided": 1604,
+          "evictions": 494,
+          "hit_ratio": 0.7645376549094376,
+          "hits": 1604,
+          "in_flight_waits": 1,
+          "misses": 494,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 4194304,
+          "prefetch_chunks_loaded": 64,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 3357,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 62,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 64,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 4063232,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 36569088,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.038222000000000006,
+        "latency_ns": {
+          "p50": 834,
+          "p95": 33833,
+          "p99": 39958
+        },
+        "process_peak_rss_bytes": 14041088,
+        "queries": 2098,
+        "read_amplification": 1.0638703527168731,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.036133708
+      },
+      {
+        "cache": {
+          "decompressions": 558,
+          "decompressions_avoided": 1604,
+          "evictions": 494,
+          "hit_ratio": 0.7645376549094376,
+          "hits": 1604,
+          "in_flight_waits": 1,
+          "misses": 494,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 4194304,
+          "prefetch_chunks_loaded": 64,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 3369,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 62,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 64,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 4063232,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 36569088,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.04046,
+        "latency_ns": {
+          "p50": 833,
+          "p95": 35041,
+          "p99": 58500
+        },
+        "process_peak_rss_bytes": 14204928,
+        "queries": 2098,
+        "read_amplification": 1.0638703527168731,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.03874325
+      },
+      {
+        "cache": {
+          "decompressions": 558,
+          "decompressions_avoided": 1604,
+          "evictions": 494,
+          "hit_ratio": 0.7645376549094376,
+          "hits": 1604,
+          "in_flight_waits": 1,
+          "misses": 494,
+          "peak_resident_bytes": 4194304,
+          "prefetch_bytes_loaded": 4194304,
+          "prefetch_chunks_loaded": 64,
+          "prefetch_dropped": 0,
+          "prefetch_duplicates": 3345,
+          "prefetch_errors": 0,
+          "prefetch_expired": 0,
+          "prefetch_hits": 62,
+          "prefetch_peak_reserved_bytes": 131072,
+          "prefetch_queue_high_watermark": 2,
+          "prefetch_requests": 64,
+          "prefetch_reserved_bytes": 0,
+          "prefetch_resident_unconsumed_bytes": 0,
+          "prefetch_skipped": 447,
+          "prefetch_useful_bytes": 4063232,
+          "prefetch_wasted_bytes": 131072,
+          "raw_bytes_loaded": 36569088,
+          "resident_bytes": 4194304,
+          "resident_entries": 64
+        },
+        "cache_state": "fresh empty userspace cache; OS and device cache uncontrolled",
+        "content_blake3": "8414254b45b00487b69f3fde554236d6511413e3956789c38fb1deb6c3b3e8b8",
+        "cpu_seconds": 0.038236,
+        "latency_ns": {
+          "p50": 792,
+          "p95": 33792,
+          "p99": 43041
+        },
+        "process_peak_rss_bytes": 13975552,
+        "queries": 2098,
+        "read_amplification": 1.0638703527168731,
+        "returned_bytes": 34373632,
+        "rss_basis": "process lifetime peak; use separate replay-one child processes for mode comparison",
+        "wall_seconds": 0.036464125
+      }
+    ]
+  },
+  "adaptive_mount_record": {
+    "os_path_ismount": true
+  },
+  "mounted_adaptive": {
+    "queries": 960,
+    "requested_bytes": 51118080,
+    "aggregate_sha256": "28742c9bc840fe15130e9ca6e203ca839e6980709a3495a57c3f10d3aa27f225",
+    "wall_seconds": 0.06058599999960279,
+    "latency_ns": {
+      "p50": 4167,
+      "p95": 50250,
+      "p99": 96750
+    }
+  },
+  "adaptive_metrics": [
+    {
+      "cache": {
+        "decompressions": 556,
+        "decompressions_avoided": 1606,
+        "evictions": 492,
+        "hit_ratio": 0.765490943755958,
+        "hits": 1606,
+        "in_flight_waits": 17,
+        "misses": 492,
+        "peak_resident_bytes": 4194304,
+        "prefetch_bytes_loaded": 4194304,
+        "prefetch_chunks_loaded": 64,
+        "prefetch_dropped": 0,
+        "prefetch_duplicates": 3472,
+        "prefetch_errors": 0,
+        "prefetch_expired": 0,
+        "prefetch_hits": 64,
+        "prefetch_peak_reserved_bytes": 131072,
+        "prefetch_queue_high_watermark": 2,
+        "prefetch_requests": 64,
+        "prefetch_reserved_bytes": 0,
+        "prefetch_resident_unconsumed_bytes": 0,
+        "prefetch_skipped": 447,
+        "prefetch_useful_bytes": 4194304,
+        "prefetch_wasted_bytes": 0,
+        "raw_bytes_loaded": 36438016,
+        "resident_bytes": 4194304,
+        "resident_entries": 64
+      },
+      "event": "fuse_unmounted",
+      "read_errors": 0,
+      "read_requests": 2098,
+      "requested_bytes": 34373632,
+      "returned_bytes": 34373632,
+      "tiers": {
+        "errors": 0,
+        "integrity_errors": 0,
+        "primary_bytes": 4992512,
+        "primary_cache_hits": 0,
+        "primary_hits": 556,
+        "promotion_bytes": 0,
+        "promotions": 0,
+        "remote_bytes": 0,
+        "remote_errors": 0,
+        "remote_hits": 0,
+        "remote_ranges": 0,
+        "remote_requests": 0,
+        "secondary_bytes": 0,
+        "secondary_hits": 0,
+        "timeouts": 0
+      },
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 2098,
+        "events_written": 2098,
+        "queue_high_watermark": 7,
+        "writer_errors": 0
+      }
+    },
+    {
+      "event": "trace_closed",
+      "trace": {
+        "events_dropped": 0,
+        "events_seen": 2098,
+        "events_written": 2098,
+        "queue_high_watermark": 7,
+        "writer_errors": 0
+      }
+    }
+  ],
+  "trace_summary": {
+    "cache_hit_ratio": 0.7483317445185891,
+    "cache_miss_ratio": 0.25166825548141086,
+    "cache_ratio_basis": "read events; mixed counts as miss; bypass excluded",
+    "events": 2098,
+    "hot_files": [
+      {
+        "events": 2048,
+        "path": "stream.bin"
+      },
+      {
+        "events": 50,
+        "path": "hot.bin"
+      }
+    ],
+    "hot_ranges": [
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 0,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 16384,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 32768,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 49152,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 65536,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 98304,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 114688,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 131072,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 180224,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 196608,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 262144,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 278528,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 294912,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 311296,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 344064,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 360448,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 376832,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 393216,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 409600,
+        "path": "hot.bin"
+      },
+      {
+        "events": 1,
+        "length": 16384,
+        "offset": 442368,
+        "path": "hot.bin"
+      }
+    ],
+    "latency_ns": {
+      "p50": 875,
+      "p95": 38667,
+      "p99": 45167
+    },
+    "operations": {
+      "read": 2098
+    },
+    "read_bytes": 34373632,
+    "read_operations": 2098,
+    "reread_ratio": 0.0,
+    "sequential_read_percentage": 97.95042897998093,
+    "sessions": [
+      "48966-1791208906997586000"
+    ],
+    "sources": {
+      "memory-cache": 1570,
+      "primary-local": 528
+    },
+    "version": 1,
+    "write_bytes": 0,
+    "write_operations": 0
+  },
+  "source_unchanged": true,
+  "base_unchanged": true
+}

@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-10-05T13:54:30.174774+00:00",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "system": "Darwin",
+  "kernel": "25.6.0",
+  "architecture": "arm64",
+  "python": "3.14.6",
+  "cpu_count": 10,
+  "uid": 501,
+  "git": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "-C",
+      "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "8902923acbbfa578d7c85f798e75c9aaa0dd6e72",
+    "stderr": ""
+  },
+  "working_tree": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "-C",
+      "/Users/bogdan_dron/Documents/PlaySparse-game-aware",
+      "status",
+      "--porcelain"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source_clean": true,
+  "available_disk_bytes": 75710451712,
+  "physical_hardware_status": "UNKNOWN; virtualization hints are not a physical-machine attestation",
+  "hardware_model": {
+    "command": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.model"
+    ],
+    "exit_code": 0,
+    "stdout": "Mac16,13",
+    "stderr": ""
+  },
+  "ram": {
+    "command": [
+      "/usr/sbin/sysctl",
+      "-n",
+      "hw.memsize"
+    ],
+    "exit_code": 0,
+    "stdout": "17179869184",
+    "stderr": ""
+  },
+  "macfuse": {
+    "filesystem_bundle": "/Library/Filesystems/macfuse.fs",
+    "installed": true,
+    "framework_directory_present": true,
+    "driver_approval_and_load_status": "UNKNOWN; a successful mount is required"
+  },
+  "unmount_helper": true
+}
