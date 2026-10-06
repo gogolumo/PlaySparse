@@ -86,6 +86,11 @@ jobs:
           'C:\Program Files (x86)\WinFsp\bin' | Out-File $env:GITHUB_PATH -Append -Encoding utf8
       - run: npm ci
         working-directory: desktop
+      # Tauri validates externalBin when build.rs runs (including Clippy),
+      # so the host-specific CLI sidecar must exist before that step.
+      - name: Prepare native engine sidecar
+        run: npm run engine
+        working-directory: desktop
       - run: cargo test --locked -p playsparse-desktop
       - run: cargo fmt --manifest-path desktop/src-tauri/Cargo.toml -- --check
       - run: cargo clippy --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets -- -D warnings
