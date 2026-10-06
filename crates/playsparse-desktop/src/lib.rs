@@ -167,6 +167,14 @@ impl Service {
                         .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
                 "Invalid persisted game identity; library retained"
             );
+            let source = game
+                .source
+                .canonicalize()
+                .unwrap_or_else(|_| game.source.clone());
+            ensure!(
+                source.is_absolute() && !overlap(&source, &root),
+                "Persisted installation overlaps application data; library retained"
+            );
             // Never trust a persisted process ID or pretend a session survived restart.
             if let Some(session) = &mut game.session {
                 session.state = "needs_attention".into();
@@ -698,6 +706,10 @@ impl Service {
         let store = Store::open(&store_path)?;
         store.verify()?;
         let runtime = self.root.join("runtimes").join(id);
+        validate_owned_path(&runtime)?;
+        validate_owned_path(&runtime.join("overlay"))?;
+        #[cfg(not(windows))]
+        validate_owned_path(&runtime.join("mount"))?;
         fs::create_dir_all(&runtime)?;
         let overlay = runtime.join("overlay");
         #[cfg(not(windows))]
@@ -936,6 +948,33 @@ fn relative_executable(value: &str) -> bool {
 
 fn default_logs() -> bool {
     true
+}
+
+fn validate_owned_path(path: &Path) -> Result<()> {
+    ensure!(
+        playsparse_cli::workspace::projected(path)?.0 == path,
+        "Owned runtime path contains a symlink; inspect it before proceeding"
+    );
+    Ok(())
+}
+
+#[cfg(all(test, unix))]
+mod owned_path_tests {
+    use super::*;
+    #[test]
+    fn runtime_symlink_is_rejected_before_creating_source_directories() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let source = root.join("source");
+        fs::create_dir(&source).unwrap();
+        fs::write(source.join("original"), b"unchanged").unwrap();
+        let owned = root.join("runtime");
+        std::os::unix::fs::symlink(&source, &owned).unwrap();
+        assert!(validate_owned_path(&owned.join("overlay")).is_err());
+        assert!(!source.join("overlay").exists());
+        assert_eq!(fs::read(source.join("original")).unwrap(), b"unchanged");
+        assert!(validate_owned_path(&root.join("safe/new/overlay")).is_ok());
+    }
 }
 /// Bound combined stdout/stderr on disk while continuing to drain both pipes.
 fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Child> {
