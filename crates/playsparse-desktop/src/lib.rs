@@ -30,6 +30,8 @@ pub struct Settings {
     pub storage_dir: PathBuf,
     pub temp_dir: PathBuf,
     pub cache_mib: u64,
+    #[serde(default = "default_logs")]
+    pub retain_logs: bool,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct LaunchDescriptor {
@@ -133,6 +135,7 @@ impl Service {
                     storage_dir: root.join("stores"),
                     temp_dir: std::env::temp_dir(),
                     cache_mib: 256,
+                    retain_logs: true,
                 },
             }
         };
@@ -148,6 +151,14 @@ impl Service {
             }
         }
         for game in &mut db.games {
+            ensure!(
+                game.id.starts_with("g-")
+                    && game
+                        .id
+                        .bytes()
+                        .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
+                "Invalid persisted game identity; library retained"
+            );
             // Never trust a persisted process ID or pretend a session survived restart.
             if let Some(session) = &mut game.session {
                 session.state = "needs_attention".into();
@@ -688,22 +699,21 @@ impl Service {
         };
         game_mut(&mut inner.db, id)?.session = Some(session);
         self.persist(&inner.db)?;
-        let log = OpenOptions::new()
-            .create(true)
-            .truncate(true)
-            .write(true)
-            .open(runtime.join("mount.log"))?;
-        let mut child = Command::new(&self.engine)
+        let mut command = Command::new(&self.engine);
+        command
             .arg("mount")
             .arg(&store_path)
             .arg(&mountpoint)
             .arg("--overlay")
             .arg(&overlay)
             .arg("--cache")
-            .arg(format!("{}M", inner.db.settings.cache_mib))
-            .stdout(Stdio::null())
-            .stderr(log)
-            .spawn()?;
+            .arg(format!("{}M", inner.db.settings.cache_mib));
+        let child = spawn_logged(
+            &mut command,
+            &runtime.join("mount.log"),
+            inner.db.settings.retain_logs,
+        )?;
+        inner.mounts.insert(id.into(), child);
         // Establish mount readiness from actual bytes, not process existence alone.
         let probe = store.manifest().files.iter().find(|f| f.size > 0);
         let expected = probe
@@ -716,7 +726,13 @@ impl Service {
             .transpose()?;
         let mut mounted = false;
         for _ in 0..100 {
-            if child.try_wait()?.is_some() {
+            if inner
+                .mounts
+                .get_mut(id)
+                .context("Missing mount child")?
+                .try_wait()?
+                .is_some()
+            {
                 break;
             }
             if let (Some(probe), Some(bytes)) = (probe, &expected) {
@@ -741,7 +757,6 @@ impl Service {
             session.state = "needs_attention".into();
             session.error = Some("Mount did not pass exact-byte readiness check. Inspect diagnostics and mount.log, then unmount. Empty stores cannot be probed.".into());
         }
-        inner.mounts.insert(id.into(), child);
         self.persist(&inner.db)?;
         ensure!(
             mounted,
@@ -778,12 +793,10 @@ impl Service {
             executable.starts_with(&mount) && executable.is_file(),
             "Executable escapes mount or is not a file"
         );
-        let log = OpenOptions::new()
-            .create(true)
-            .truncate(true)
-            .write(true)
-            .open(self.root.join("runtimes").join(id).join("launch.log"))?;
-        let child = Command::new(executable).args(descriptor.args).current_dir(&mount).stdout(log.try_clone()?).stderr(log).spawn().context("Launch failed; signed native macOS code may require an independently prepared APFS compatibility shadow")?;
+        let mut command = Command::new(executable);
+        command.args(descriptor.args).current_dir(&mount);
+        let child = spawn_logged(&mut command, &self.root.join("runtimes").join(id).join("launch.log"), inner.db.settings.retain_logs)
+            .context("Launch failed; signed native macOS code may require an independently prepared APFS compatibility shadow")?;
         inner.processes.insert(id.into(), child);
         game_mut(&mut inner.db, id)?.session.as_mut().unwrap().state = "running".into();
         self.persist(&inner.db)?;
@@ -894,4 +907,52 @@ fn relative_executable(value: &str) -> bool {
         && Path::new(value)
             .components()
             .all(|c| matches!(c, Component::Normal(_)))
+}
+
+fn default_logs() -> bool {
+    true
+}
+/// Bound combined stdout/stderr on disk while continuing to drain both pipes.
+fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Child> {
+    if !retain {
+        return Ok(command
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()?);
+    }
+    let log = OpenOptions::new()
+        .create(true)
+        .truncate(true)
+        .write(true)
+        .open(path)?;
+    let shared = Arc::new(Mutex::new((log, 0usize)));
+    let mut child = command
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()?;
+    fn drain(mut input: impl std::io::Read + Send + 'static, shared: Arc<Mutex<(File, usize)>>) {
+        thread::spawn(move || {
+            let mut buffer = [0u8; 8192];
+            while let Ok(n) = input.read(&mut buffer) {
+                if n == 0 {
+                    break;
+                }
+                let mut shared = shared.lock().unwrap();
+                let remaining = (2 * 1024 * 1024usize).saturating_sub(shared.1);
+                let keep = n.min(remaining);
+                if shared.0.write_all(&buffer[..keep]).is_ok() {
+                    shared.1 += keep;
+                } else {
+                    shared.1 = 2 * 1024 * 1024;
+                }
+            }
+        });
+    }
+    if let Some(pipe) = child.stdout.take() {
+        drain(pipe, shared.clone());
+    }
+    if let Some(pipe) = child.stderr.take() {
+        drain(pipe, shared);
+    }
+    Ok(child)
 }
