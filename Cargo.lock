@@ -770,6 +770,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "playsparse-desktop"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "blake3",
+ "playsparse-cli",
+ "playsparse-core",
+ "playsparse-range",
+ "playsparse-store",
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
 name = "playsparse-game"
 version = "0.1.0"
 dependencies = [

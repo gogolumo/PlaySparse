@@ -1,0 +1,897 @@
+//! Headless desktop service. Owns metadata and new stores, never source installs.
+use anyhow::{Context, Result, ensure};
+use playsparse_store::{PackOptions, Progress, Store, directory_allocation, directory_bytes};
+use serde::{Deserialize, Serialize};
+use serde_json::{Value, json};
+use std::{
+    collections::BTreeMap,
+    fs::{self, File, OpenOptions},
+    io::Write,
+    path::{Component, Path, PathBuf},
+    process::{Child, Command, Stdio},
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicBool, Ordering},
+    },
+    thread,
+    time::{Duration, SystemTime, UNIX_EPOCH},
+};
+
+fn now() -> u64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_millis() as u64
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Settings {
+    pub theme: String,
+    pub storage_dir: PathBuf,
+    pub temp_dir: PathBuf,
+    pub cache_mib: u64,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct LaunchDescriptor {
+    /// Relative executable in the mounted store; no shell expansion.
+    pub executable: String,
+    pub args: Vec<String>,
+    pub compatibility_confirmed: bool,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Session {
+    pub state: String,
+    pub mountpoint: PathBuf,
+    pub overlay: PathBuf,
+    pub error: Option<String>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Game {
+    pub id: String,
+    pub name: String,
+    pub source: PathBuf,
+    pub analysis: Option<Value>,
+    pub store: Option<PathBuf>,
+    pub verified: bool,
+    pub store_stats: Option<Value>,
+    pub launch: Option<LaunchDescriptor>,
+    pub session: Option<Session>,
+    pub error: Option<String>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Job {
+    pub id: String,
+    pub game_id: String,
+    pub operation: Operation,
+    pub state: String,
+    pub stage: String,
+    pub bytes: u64,
+    pub files: usize,
+    pub started_at: u64,
+    pub finished_at: Option<u64>,
+    pub error: Option<String>,
+    pub cancellable: bool,
+}
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum Operation {
+    Analyze,
+    Optimize,
+    Verify,
+    Mount,
+    Launch,
+    Stop,
+    Unmount,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Snapshot {
+    pub version: u32,
+    pub games: Vec<Game>,
+    pub jobs: Vec<Job>,
+    pub settings: Settings,
+}
+struct Inner {
+    db: Snapshot,
+    active: Option<(String, Arc<AtomicBool>)>,
+    mounts: BTreeMap<String, Child>,
+    processes: BTreeMap<String, Child>,
+}
+pub struct Service {
+    root: PathBuf,
+    engine: PathBuf,
+    inner: Mutex<Inner>,
+    _lock: File,
+}
+
+impl Service {
+    pub fn open(root: &Path, engine: &Path) -> Result<Arc<Self>> {
+        fs::create_dir_all(root)?;
+        let root = root.canonicalize()?;
+        let lock = OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .read(true)
+            .write(true)
+            .open(root.join("library.lock"))?;
+        lock.try_lock()
+            .context("PlaySparse is already using this library")?;
+        let path = root.join("library.json");
+        let mut db: Snapshot = if path.exists() {
+            ensure!(
+                fs::metadata(&path)?.len() <= 16 * 1024 * 1024,
+                "library exceeds 16 MiB limit"
+            );
+            serde_json::from_slice(&fs::read(&path)?)
+                .context("Library could not be read; retained for recovery")?
+        } else {
+            Snapshot {
+                version: 1,
+                games: vec![],
+                jobs: vec![],
+                settings: Settings {
+                    theme: "system".into(),
+                    storage_dir: root.join("stores"),
+                    temp_dir: std::env::temp_dir(),
+                    cache_mib: 256,
+                },
+            }
+        };
+        ensure!(
+            db.version == 1,
+            "unsupported library version; retained for recovery"
+        );
+        for job in &mut db.jobs {
+            if job.state == "running" {
+                job.state = "interrupted".into();
+                job.finished_at = Some(now());
+                job.error = Some("Application stopped before completion. Retry; temporary engine staging may remain.".into());
+            }
+        }
+        for game in &mut db.games {
+            // Never trust a persisted process ID or pretend a session survived restart.
+            if let Some(session) = &mut game.session {
+                session.state = "needs_attention".into();
+                session.error = Some("Previous session requires inspection. Close game processes before unmounting. No persisted PID is killed.".into());
+            }
+            if game
+                .store
+                .as_ref()
+                .is_some_and(|p| !p.join("COMMITTED.json").is_file())
+            {
+                game.verified = false;
+                game.error =
+                    Some("Store is missing or incomplete. Verify or optimize again.".into());
+            }
+        }
+        let service = Arc::new(Self {
+            root,
+            engine: engine.into(),
+            inner: Mutex::new(Inner {
+                db,
+                active: None,
+                mounts: BTreeMap::new(),
+                processes: BTreeMap::new(),
+            }),
+            _lock: lock,
+        });
+        service.persist(&service.inner.lock().unwrap().db)?;
+        Ok(service)
+    }
+    fn persist(&self, db: &Snapshot) -> Result<()> {
+        let mut temp = tempfile::NamedTempFile::new_in(&self.root)?;
+        serde_json::to_writer_pretty(&mut temp, db)?;
+        temp.write_all(b"\n")?;
+        temp.as_file().sync_all()?;
+        temp.persist(self.root.join("library.json"))?;
+        #[cfg(unix)]
+        File::open(&self.root)?.sync_all()?;
+        Ok(())
+    }
+    fn change<T>(&self, f: impl FnOnce(&mut Snapshot) -> Result<T>) -> Result<T> {
+        self.change_checked(false, f)
+    }
+    fn change_idle<T>(&self, f: impl FnOnce(&mut Snapshot) -> Result<T>) -> Result<T> {
+        self.change_checked(true, f)
+    }
+    fn change_checked<T>(
+        &self,
+        require_idle: bool,
+        f: impl FnOnce(&mut Snapshot) -> Result<T>,
+    ) -> Result<T> {
+        let mut inner = self.inner.lock().unwrap();
+        if require_idle {
+            ensure!(
+                inner.active.is_none(),
+                "Another storage operation is running"
+            );
+            ensure!(
+                inner.db.games.iter().all(|g| g.session.is_none()),
+                "Unmount runtime sessions first"
+            );
+        }
+        let mut next = inner.db.clone();
+        let result = f(&mut next)?;
+        self.persist(&next)?;
+        inner.db = next;
+        Ok(result)
+    }
+    pub fn snapshot(&self) -> Snapshot {
+        self.inner.lock().unwrap().db.clone()
+    }
+    fn idle(&self) -> Result<()> {
+        let inner = self.inner.lock().unwrap();
+        ensure!(
+            inner.active.is_none(),
+            "Another storage operation is running. Wait or cancel it first."
+        );
+        ensure!(
+            inner.db.games.iter().all(|g| g.session.is_none()),
+            "Unmount all runtime sessions before changing the library or storage."
+        );
+        Ok(())
+    }
+    pub fn add_game(&self, source: &Path) -> Result<Game> {
+        self.idle()?;
+        let source = source
+            .canonicalize()
+            .context("Choose an existing installation folder")?;
+        ensure!(source.is_dir(), "Installation must be a directory");
+        ensure!(
+            !overlap(&source, &self.root),
+            "Installation and application data must be separate trees"
+        );
+        let snapshot = self.snapshot();
+        let storage = playsparse_cli::workspace::projected(&snapshot.settings.storage_dir)?.0;
+        ensure!(
+            !overlap(&source, &storage),
+            "Installation and store directory must be separate trees"
+        );
+        ensure!(
+            !snapshot.games.iter().any(|g| overlap(&g.source, &source)),
+            "This installation overlaps an existing library entry"
+        );
+        ensure!(
+            snapshot.games.len() < 1000,
+            "Library limit: 1000 installations"
+        );
+        let game = Game {
+            id: format!("g-{}-{}", now(), snapshot.games.len()),
+            name: source
+                .file_name()
+                .context("Cannot register filesystem root")?
+                .to_string_lossy()
+                .into(),
+            source,
+            analysis: None,
+            store: None,
+            verified: false,
+            store_stats: None,
+            launch: None,
+            session: None,
+            error: None,
+        };
+        self.change_idle(|db| {
+            db.games.push(game.clone());
+            Ok(())
+        })?;
+        Ok(game)
+    }
+    /// Unregister only. Never recursively remove source, stores or runtime data.
+    pub fn remove_game(&self, id: &str) -> Result<()> {
+        self.idle()?;
+        self.change_idle(|db| {
+            ensure!(db.games.iter().any(|g| g.id == id), "Unknown game");
+            db.games.retain(|g| g.id != id);
+            Ok(())
+        })
+    }
+    pub fn update_settings(&self, settings: Settings) -> Result<()> {
+        self.idle()?;
+        ensure!(
+            ["light", "dark", "system"].contains(&settings.theme.as_str()),
+            "Invalid theme"
+        );
+        ensure!(
+            (16..=16384).contains(&settings.cache_mib),
+            "Cache must be 16..16384 MiB"
+        );
+        for path in [&settings.storage_dir, &settings.temp_dir] {
+            let location = playsparse_cli::workspace::projected(path)?.0;
+            ensure!(
+                !self
+                    .snapshot()
+                    .games
+                    .iter()
+                    .any(|g| overlap(&location, &g.source)),
+                "Storage and temporary directories must be outside installations"
+            );
+        }
+        self.change_idle(|db| {
+            db.settings = settings;
+            Ok(())
+        })
+    }
+    pub fn configure_launch(&self, id: &str, descriptor: LaunchDescriptor) -> Result<()> {
+        self.idle()?;
+        ensure!(
+            relative_executable(&descriptor.executable),
+            "Executable must be a relative path without traversal"
+        );
+        ensure!(
+            descriptor.args.len() <= 128
+                && descriptor
+                    .args
+                    .iter()
+                    .all(|s| s.len() <= 8192 && !s.contains('\0')),
+            "Launch arguments exceed limits"
+        );
+        self.change_idle(|db| {
+            game_mut(db, id)?.launch = Some(descriptor);
+            Ok(())
+        })
+    }
+    pub fn start_job(self: &Arc<Self>, id: &str, operation: Operation) -> Result<Job> {
+        ensure!(
+            matches!(
+                operation,
+                Operation::Analyze | Operation::Optimize | Operation::Verify
+            ),
+            "Use runtime action for session operations"
+        );
+        let mut inner = self.inner.lock().unwrap();
+        ensure!(
+            inner.active.is_none(),
+            "Another storage operation is running"
+        );
+        ensure!(
+            inner.db.games.iter().all(|g| g.session.is_none()),
+            "Unmount runtime sessions first"
+        );
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        if operation == Operation::Verify {
+            ensure!(game.store.is_some(), "Optimize the installation first");
+        }
+        if operation == Operation::Optimize {
+            ensure!(game.analysis.is_some(), "Analyze the installation first");
+            ensure!(
+                game.store.is_none(),
+                "An existing store is registered. Remove the library entry to create a separate store."
+            );
+        }
+        let job = Job {
+            id: format!("j-{}", now()),
+            game_id: id.into(),
+            operation,
+            state: "running".into(),
+            stage: "preparing".into(),
+            bytes: 0,
+            files: 0,
+            started_at: now(),
+            finished_at: None,
+            error: None,
+            cancellable: true,
+        };
+        let cancel = Arc::new(AtomicBool::new(false));
+        let mut next = inner.db.clone();
+        next.jobs.retain(|j| {
+            j.state == "running" || j.finished_at.unwrap_or(0) > now().saturating_sub(30 * 86400000)
+        });
+        if next.jobs.len() >= 200 {
+            next.jobs.remove(0);
+        }
+        next.jobs.push(job.clone());
+        self.persist(&next)?;
+        inner.db = next;
+        inner.active = Some((job.id.clone(), cancel.clone()));
+        drop(inner);
+        let service = self.clone();
+        let job_id = job.id.clone();
+        let game_id = id.to_owned();
+        thread::spawn(move || {
+            let result = service.execute(&game_id, &job_id, operation, &cancel);
+            let mut inner = service.inner.lock().unwrap();
+            if let Some(job) = inner.db.jobs.iter_mut().find(|j| j.id == job_id) {
+                job.finished_at = Some(now());
+                job.cancellable = false;
+                match result {
+                    Ok(()) => {
+                        job.state = "completed".into();
+                        job.stage = "complete".into();
+                    }
+                    Err(error) => {
+                        job.state = if cancel.load(Ordering::Relaxed) {
+                            "cancelled"
+                        } else {
+                            "failed"
+                        }
+                        .into();
+                        job.error = Some(format!("{error:#}"));
+                    }
+                }
+            }
+            if let Err(error) = service.persist(&inner.db)
+                && let Some(job) = inner.db.jobs.iter_mut().find(|j| j.id == job_id)
+            {
+                job.state = "failed".into();
+                job.error = Some(format!(
+                    "Could not persist completion: {error:#}. Inspect store before retrying."
+                ));
+            }
+            inner.active = None;
+        });
+        Ok(job)
+    }
+    pub fn cancel_job(&self, id: &str) -> Result<()> {
+        let inner = self.inner.lock().unwrap();
+        let (active, flag) = inner.active.as_ref().context("No active job")?;
+        ensure!(active == id, "Job is not active");
+        let job = inner
+            .db
+            .jobs
+            .iter()
+            .find(|j| j.id == id)
+            .context("Unknown job")?;
+        ensure!(
+            job.cancellable,
+            "Publication has started; wait for completion"
+        );
+        flag.store(true, Ordering::Relaxed);
+        Ok(())
+    }
+    fn execute(
+        &self,
+        id: &str,
+        job_id: &str,
+        operation: Operation,
+        cancel: &AtomicBool,
+    ) -> Result<()> {
+        let snapshot = self.snapshot();
+        let game = snapshot
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        let mut last = std::time::Instant::now() - Duration::from_secs(1);
+        let mut observer = |progress: Progress| -> playsparse_core::Result<()> {
+            let mut inner = self.inner.lock().unwrap();
+            if cancel.load(Ordering::Relaxed) {
+                return Err(playsparse_core::Error::Invalid(
+                    "Cancelled before publication".into(),
+                ));
+            }
+            if let Some(job) = inner.db.jobs.iter_mut().find(|j| j.id == job_id) {
+                if last.elapsed() >= Duration::from_millis(100) || job.stage != progress.stage {
+                    job.stage = progress.stage.into();
+                    job.bytes = progress.bytes;
+                    job.files = progress.files;
+                    last = std::time::Instant::now();
+                }
+                if progress.stage == "publishing" {
+                    job.cancellable = false;
+                }
+            }
+            Ok(())
+        };
+        match operation {
+            Operation::Analyze => {
+                let mut value = playsparse_cli::analyze_observed(
+                    &game.source,
+                    256 * 1024,
+                    &snapshot.settings.temp_dir,
+                    &mut observer,
+                )?;
+                value["original_allocated_bytes"] = json!(directory_allocation(&game.source)?.0);
+                self.change(|db| {
+                    let g = game_mut(db, id)?;
+                    g.analysis = Some(value);
+                    g.error = None;
+                    Ok(())
+                })?;
+            }
+            Operation::Optimize => {
+                let parent =
+                    playsparse_cli::workspace::projected(&snapshot.settings.storage_dir)?.0;
+                for source in snapshot.games.iter().map(|g| &g.source) {
+                    ensure!(
+                        !overlap(&parent, source),
+                        "Store location overlaps an installation"
+                    );
+                }
+                let destination = parent.join(id);
+                ensure!(
+                    !destination.exists(),
+                    "Destination already exists. It was retained; choose another storage directory or inspect it."
+                );
+                playsparse_cli::workspace::preflight(
+                    &game.source,
+                    &parent,
+                    256 * 1024,
+                    playsparse_core::Layout::Packs,
+                    1,
+                    "destination",
+                )?;
+                let stats = playsparse_store::pack_directory_observed(
+                    &game.source,
+                    &destination,
+                    &PackOptions::default(),
+                    &mut observer,
+                )?;
+                // Engine has verified staging and atomically published. Do not honour late cancellation.
+                self.change(|db| {
+                    let g = game_mut(db, id)?;
+                    g.store = Some(destination);
+                    g.store_stats = Some(serde_json::to_value(stats)?);
+                    g.verified = true;
+                    g.error = None;
+                    Ok(())
+                })?;
+            }
+            Operation::Verify => {
+                self.change(|db| {
+                    game_mut(db, id)?.verified = false;
+                    Ok(())
+                })?;
+                Store::open(game.store.as_ref().context("No store")?)?
+                    .verify_observed(&mut observer)?;
+                self.change(|db| {
+                    game_mut(db, id)?.verified = true;
+                    Ok(())
+                })?;
+            }
+            _ => anyhow::bail!("Runtime operation is not a storage job"),
+        }
+        Ok(())
+    }
+    pub fn system_status(&self) -> Result<Value> {
+        let settings = self.snapshot().settings;
+        let output = Command::new(&self.engine)
+            .args(["doctor", "--json", "--temp-dir"])
+            .arg(settings.temp_dir)
+            .output()
+            .context("Bundled PlaySparse engine could not start")?;
+        ensure!(
+            output.status.success(),
+            "Engine diagnostics failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        Ok(serde_json::from_slice(&output.stdout)?)
+    }
+    /// Sizes are individual measured representations. Originals remain installed;
+    /// saved representation bytes do not imply free disk space was reclaimed.
+    pub fn storage_statistics(&self) -> Result<Value> {
+        let snapshot = self.snapshot();
+        let mut rows = vec![];
+        for game in snapshot.games {
+            let measure = |path: &Path| -> Value {
+                match directory_allocation(path) {
+                    Ok((allocated, _)) => {
+                        json!({"allocated_bytes": allocated, "logical_bytes": directory_bytes(path).ok()})
+                    }
+                    Err(e) => json!({"error":e.to_string()}),
+                }
+            };
+            rows.push(json!({"game_id":game.id, "original":measure(&game.source), "store":game.store.as_deref().map(measure),
+                "overlay":measure(&self.root.join("runtimes").join(&game.id).join("overlay")), "compatibility_shadow":null,
+                "cache_disk_bytes":0, "cache_note":"Runtime cache is memory-only; no disk cache is configured"}));
+        }
+        Ok(
+            json!({"games":rows,"shared_objects":"Stores are independent; no cross-store deduplication. Hardlinks/reflinks across installations are not deduplicated in totals.","originals_retained":true}),
+        )
+    }
+    /// Runtime events are audited separately from byte-counted storage jobs.
+    pub fn perform_runtime(&self, id: &str, action: &str, processes_closed: bool) -> Result<()> {
+        let operation = match action {
+            "mount" => Operation::Mount,
+            "launch" => Operation::Launch,
+            "stop" => Operation::Stop,
+            "unmount" => Operation::Unmount,
+            _ => anyhow::bail!("Unknown runtime action"),
+        };
+        let job_id = format!("runtime-{}", now());
+        self.change(|db| {
+            game_mut(db, id)?;
+            if db.jobs.len() >= 200 {
+                db.jobs.remove(0);
+            }
+            db.jobs.push(Job {
+                id: job_id.clone(),
+                game_id: id.into(),
+                operation,
+                state: "running".into(),
+                stage: action.into(),
+                bytes: 0,
+                files: 0,
+                started_at: now(),
+                finished_at: None,
+                error: None,
+                cancellable: false,
+            });
+            Ok(())
+        })?;
+        let result = match operation {
+            Operation::Mount => self.mount_game(id),
+            Operation::Launch => self.launch_game(id),
+            Operation::Stop => self.stop_game(id),
+            Operation::Unmount => self.unmount_game(id, processes_closed),
+            _ => unreachable!(),
+        };
+        self.change(|db| {
+            let job = db
+                .jobs
+                .iter_mut()
+                .find(|j| j.id == job_id)
+                .context("Missing runtime job")?;
+            job.finished_at = Some(now());
+            job.state = if result.is_ok() {
+                "completed"
+            } else {
+                "failed"
+            }
+            .into();
+            job.error = result.as_ref().err().map(|e| format!("{e:#}"));
+            Ok(())
+        })?;
+        result
+    }
+    pub fn mount_game(&self, id: &str) -> Result<()> {
+        let diagnostic = self.system_status()?;
+        ensure!(
+            diagnostic["mount_backend"]["available"].as_bool() == Some(true),
+            "Filesystem backend unavailable. Run diagnostics and install the platform driver explicitly."
+        );
+        let mut inner = self.inner.lock().unwrap();
+        ensure!(inner.active.is_none(), "Wait for storage operation");
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?
+            .clone();
+        ensure!(game.verified, "Verify the store first");
+        ensure!(
+            game.session.is_none(),
+            "Inspect or unmount the existing session first"
+        );
+        let store_path = game.store.context("No store")?;
+        let store = Store::open(&store_path)?;
+        store.verify()?;
+        let runtime = self.root.join("runtimes").join(id);
+        fs::create_dir_all(&runtime)?;
+        let overlay = runtime.join("overlay");
+        #[cfg(not(windows))]
+        let mountpoint = {
+            let p = runtime.join("mount");
+            fs::create_dir_all(&p)?;
+            ensure!(
+                fs::read_dir(&p)?.next().is_none(),
+                "Mountpoint is not empty; inspect stale mount"
+            );
+            p
+        };
+        #[cfg(windows)]
+        let mountpoint = (b'D'..=b'Z')
+            .rev()
+            .map(|c| PathBuf::from(format!("{}:", c as char)))
+            .find(|p| !PathBuf::from(format!("{}\\", p.display())).exists())
+            .context("No unused drive letter")?;
+        let session = Session {
+            state: "preparing".into(),
+            mountpoint: mountpoint.clone(),
+            overlay: overlay.clone(),
+            error: None,
+        };
+        game_mut(&mut inner.db, id)?.session = Some(session);
+        self.persist(&inner.db)?;
+        let log = OpenOptions::new()
+            .create(true)
+            .truncate(true)
+            .write(true)
+            .open(runtime.join("mount.log"))?;
+        let mut child = Command::new(&self.engine)
+            .arg("mount")
+            .arg(&store_path)
+            .arg(&mountpoint)
+            .arg("--overlay")
+            .arg(&overlay)
+            .arg("--cache")
+            .arg(format!("{}M", inner.db.settings.cache_mib))
+            .stdout(Stdio::null())
+            .stderr(log)
+            .spawn()?;
+        // Establish mount readiness from actual bytes, not process existence alone.
+        let probe = store.manifest().files.iter().find(|f| f.size > 0);
+        let expected = probe
+            .map(|f| {
+                let chunk = f.chunks.first().context("Missing probe chunk")?;
+                Ok::<_, anyhow::Error>(
+                    store.read_object(&playsparse_core::parse_hash(&chunk.hash)?)?,
+                )
+            })
+            .transpose()?;
+        let mut mounted = false;
+        for _ in 0..100 {
+            if child.try_wait()?.is_some() {
+                break;
+            }
+            if let (Some(probe), Some(bytes)) = (probe, &expected) {
+                use std::io::Read;
+                let n = bytes.len().min(4096);
+                let mut read = vec![0; n];
+                if File::open(mountpoint.join(&probe.path))
+                    .and_then(|mut f| f.read_exact(&mut read))
+                    .is_ok()
+                    && read == bytes[..n]
+                {
+                    mounted = true;
+                    break;
+                }
+            }
+            thread::sleep(Duration::from_millis(100));
+        }
+        let session = game_mut(&mut inner.db, id)?.session.as_mut().unwrap();
+        if mounted {
+            session.state = "mounted".into();
+        } else {
+            session.state = "needs_attention".into();
+            session.error = Some("Mount did not pass exact-byte readiness check. Inspect diagnostics and mount.log, then unmount. Empty stores cannot be probed.".into());
+        }
+        inner.mounts.insert(id.into(), child);
+        self.persist(&inner.db)?;
+        ensure!(
+            mounted,
+            "Mount readiness failed; session retained for safe recovery"
+        );
+        Ok(())
+    }
+    pub fn launch_game(&self, id: &str) -> Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?
+            .clone();
+        let session = game.session.context("Mount the verified store first")?;
+        ensure!(
+            session.state == "mounted",
+            "Runtime must be mounted and idle"
+        );
+        let descriptor = game.launch.context("Configure a tested executable and literal arguments first. Engine detection is not compatibility proof.")?;
+        ensure!(
+            descriptor.compatibility_confirmed,
+            "Confirm compatibility for this installation before launching"
+        );
+        ensure!(
+            relative_executable(&descriptor.executable),
+            "Invalid executable path"
+        );
+        let mount = session.mountpoint.canonicalize()?;
+        let executable = mount.join(&descriptor.executable).canonicalize()?;
+        ensure!(
+            executable.starts_with(&mount) && executable.is_file(),
+            "Executable escapes mount or is not a file"
+        );
+        let log = OpenOptions::new()
+            .create(true)
+            .truncate(true)
+            .write(true)
+            .open(self.root.join("runtimes").join(id).join("launch.log"))?;
+        let child = Command::new(executable).args(descriptor.args).current_dir(&mount).stdout(log.try_clone()?).stderr(log).spawn().context("Launch failed; signed native macOS code may require an independently prepared APFS compatibility shadow")?;
+        inner.processes.insert(id.into(), child);
+        game_mut(&mut inner.db, id)?.session.as_mut().unwrap().state = "running".into();
+        self.persist(&inner.db)?;
+        Ok(())
+    }
+    pub fn reconcile(&self) -> Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        let mut exited = vec![];
+        for (id, child) in &mut inner.processes {
+            if child.try_wait()?.is_some() {
+                exited.push(id.clone());
+            }
+        }
+        for id in exited {
+            inner.processes.remove(&id);
+            if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session {
+                session.state = "mounted".into();
+                session.error = Some("Tracked process exited. Child/launcher processes are not tracked; close them before unmounting.".into());
+            }
+        }
+        let mut failed = vec![];
+        for (id, child) in &mut inner.mounts {
+            if child.try_wait()?.is_some() {
+                failed.push(id.clone());
+            }
+        }
+        for id in failed {
+            inner.mounts.remove(&id);
+            if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session {
+                session.state = "needs_attention".into();
+                session.error =
+                    Some("Mount process exited. Inspect the mount before cleanup.".into());
+            }
+        }
+        Ok(())
+    }
+    pub fn stop_game(&self, id: &str) -> Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        let child = inner
+            .processes
+            .get_mut(id)
+            .context("No tracked running process")?;
+        child.kill()?;
+        child.wait()?;
+        inner.processes.remove(id);
+        let session = game_mut(&mut inner.db, id)?
+            .session
+            .as_mut()
+            .context("No session")?;
+        session.state = "mounted".into();
+        session.error = Some(
+            "Tracked process stopped. Close any launcher/child processes before unmounting.".into(),
+        );
+        self.persist(&inner.db)?;
+        Ok(())
+    }
+    pub fn unmount_game(&self, id: &str, processes_closed: bool) -> Result<()> {
+        ensure!(
+            processes_closed,
+            "Confirm all game and launcher processes are closed"
+        );
+        let mut inner = self.inner.lock().unwrap();
+        ensure!(
+            !inner.processes.contains_key(id),
+            "Stop the tracked game process first"
+        );
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        let session = game.session.as_ref().context("No runtime session")?;
+        let output = Command::new(&self.engine)
+            .arg("unmount")
+            .arg(&session.mountpoint)
+            .output()?;
+        ensure!(
+            output.status.success(),
+            "Ordinary unmount failed; retained session: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        if let Some(mut child) = inner.mounts.remove(id) {
+            let _ = child.wait();
+        }
+        game_mut(&mut inner.db, id)?.session = None;
+        self.persist(&inner.db)?;
+        Ok(())
+    }
+    pub fn can_close(&self) -> bool {
+        let inner = self.inner.lock().unwrap();
+        inner.active.is_none() && inner.db.games.iter().all(|g| g.session.is_none())
+    }
+}
+fn game_mut<'a>(db: &'a mut Snapshot, id: &str) -> Result<&'a mut Game> {
+    db.games
+        .iter_mut()
+        .find(|g| g.id == id)
+        .context("Unknown game")
+}
+fn overlap(a: &Path, b: &Path) -> bool {
+    a.starts_with(b) || b.starts_with(a)
+}
+fn relative_executable(value: &str) -> bool {
+    !value.is_empty()
+        && !value.contains('\\')
+        && !value.contains(':')
+        && Path::new(value)
+            .components()
+            .all(|c| matches!(c, Component::Normal(_)))
+}
