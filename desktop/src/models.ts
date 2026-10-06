@@ -41,6 +41,7 @@ export interface Game {
   store: string | null;
   verified: boolean;
   store_stats: PackStats | null;
+  overlay_allocated_bytes: number | null;
   error: string | null;
   launch: LaunchDescriptor | null;
   session: {
@@ -106,7 +107,7 @@ export function status(game: Game, jobs: Job[]): string {
   if (active)
     return active.operation === "analyze"
       ? "Analyzing"
-      : active.stage === "verifying"
+      : active.stage.startsWith("verif")
         ? "Verifying"
         : active.operation === "optimize"
           ? "Optimizing"
@@ -125,4 +126,11 @@ export function status(game: Game, jobs: Job[]): string {
     return "Needs attention";
   if (game.store) return game.verified ? "Ready" : "Verify required";
   return game.analysis ? "Ready to optimize" : "Not analyzed";
+}
+
+export function effectiveBytes(game: Game): number | null {
+  const store = game.store_stats?.allocated_bytes;
+  return store != null && game.overlay_allocated_bytes != null
+    ? store + game.overlay_allocated_bytes
+    : null;
 }

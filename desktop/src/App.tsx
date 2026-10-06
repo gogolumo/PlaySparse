@@ -21,7 +21,7 @@ import {
   X,
 } from "lucide-react";
 import * as bridge from "./bridge";
-import { bytes, savings, status } from "./models";
+import { bytes, savings, status, effectiveBytes } from "./models";
 import type { Game, Operation, Settings, Snapshot } from "./models";
 
 type Page = "Library" | "Activity" | "Storage" | "Settings";
@@ -225,17 +225,14 @@ export default function App() {
   const measured = data.games.filter(
     (g) =>
       g.verified &&
-      g.store_stats?.allocated_bytes != null &&
+      effectiveBytes(g) != null &&
       g.analysis?.original_allocated_bytes != null,
   );
   const original = measured.reduce(
     (n, g) => n + g.analysis!.original_allocated_bytes!,
     0,
   );
-  const optimized = measured.reduce(
-    (n, g) => n + g.store_stats!.allocated_bytes!,
-    0,
-  );
+  const optimized = measured.reduce((n, g) => n + effectiveBytes(g)!, 0);
   const runJob = (id: string, operation: Operation) =>
     action(() => bridge.startJob(id, operation));
   const remove = (game: Game) =>
@@ -402,7 +399,7 @@ export default function App() {
                     .map((game) => {
                       const label = status(game, data.jobs);
                       const source = game.analysis?.original_allocated_bytes;
-                      const stored = game.store_stats?.allocated_bytes;
+                      const stored = effectiveBytes(game);
                       const percent = savings(source, stored);
                       const ownJob = data.jobs.find(
                         (j) => j.game_id === game.id && j.state === "running",
@@ -438,7 +435,7 @@ export default function App() {
                               value={bytes(source)}
                             />
                             <Metric
-                              label="Store allocated"
+                              label="Effective allocated"
                               value={bytes(stored)}
                             />
                             <Metric
@@ -470,13 +467,15 @@ export default function App() {
                             <span>
                               <i />{" "}
                               {stored == null
-                                ? "No store yet"
-                                : "Optimized representation"}
+                                ? game.store
+                                  ? "Measure runtime storage"
+                                  : "No store yet"
+                                : "Store + overlay"}
                             </span>
                             <span>
-                              {source == null
-                                ? "Analysis needed"
-                                : `${bytes((source ?? 0) - (stored ?? source ?? 0))} smaller`}
+                              {source == null || stored == null
+                                ? "Savings not measured"
+                                : `${bytes(Math.abs(source - stored))} ${source >= stored ? "smaller" : "larger"}`}
                             </span>
                           </div>
                           {ownJob && (
@@ -690,20 +689,20 @@ export default function App() {
                   <div className="table-row table-head">
                     <span>Installation</span>
                     <span>Original</span>
-                    <span>Store</span>
+                    <span>Store + overlay</span>
                     <span>Difference</span>
                   </div>
                   {data.games.map((g) => (
                     <div className="table-row" key={g.id}>
                       <strong>{g.name}</strong>
                       <span>{bytes(g.analysis?.original_allocated_bytes)}</span>
-                      <span>{bytes(g.store_stats?.allocated_bytes)}</span>
+                      <span>{bytes(effectiveBytes(g))}</span>
                       <span className="green">
                         {g.analysis?.original_allocated_bytes != null &&
-                        g.store_stats?.allocated_bytes != null
+                        effectiveBytes(g) != null
                           ? bytes(
                               g.analysis.original_allocated_bytes -
-                                g.store_stats.allocated_bytes,
+                                effectiveBytes(g)!,
                             )
                           : "—"}
                       </span>

@@ -64,6 +64,8 @@ pub struct Game {
     pub store: Option<PathBuf>,
     pub verified: bool,
     pub store_stats: Option<Value>,
+    #[serde(default)]
+    pub overlay_allocated_bytes: Option<u64>,
     pub launch: Option<LaunchDescriptor>,
     pub session: Option<Session>,
     pub error: Option<String>,
@@ -177,6 +179,8 @@ impl Service {
                 source.is_absolute() && !overlap(&source, &root),
                 "Persisted installation overlaps application data; library retained"
             );
+            game.overlay_allocated_bytes =
+                overlay_allocation(&root.join("runtimes").join(&game.id).join("overlay"));
             // Never trust a persisted process ID or pretend a session survived restart.
             if let Some(session) = &mut game.session {
                 session.state = "needs_attention".into();
@@ -295,6 +299,7 @@ impl Service {
             store: None,
             verified: false,
             store_stats: None,
+            overlay_allocated_bytes: Some(0),
             launch: None,
             session: None,
             error: None,
@@ -517,7 +522,7 @@ impl Service {
                     job.files = progress.files;
                     last = std::time::Instant::now();
                 }
-                if progress.stage == "publishing" {
+                if progress.stage == "publishing" && operation == Operation::Optimize {
                     job.cancellable = false;
                 }
             }
@@ -742,6 +747,7 @@ impl Service {
             overlay: overlay.clone(),
             error: None,
         };
+        game_mut(&mut inner.db, id)?.overlay_allocated_bytes = None;
         game_mut(&mut inner.db, id)?.session = Some(session);
         self.persist(&inner.db)?;
         let mut command = Command::new(&self.engine);
@@ -937,6 +943,8 @@ impl Service {
         }
         inner.mounts.remove(id);
         game_mut(&mut inner.db, id)?.session = None;
+        game_mut(&mut inner.db, id)?.overlay_allocated_bytes =
+            overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
         self.persist(&inner.db)?;
         Ok(())
     }
@@ -1009,6 +1017,8 @@ impl Service {
         inner.mounts.remove(id);
         let mut next = inner.db.clone();
         game_mut(&mut next, id)?.session = None;
+        game_mut(&mut next, id)?.overlay_allocated_bytes =
+            overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
         self.persist(&next)?;
         inner.db = next;
         Ok(())
@@ -1111,4 +1121,14 @@ fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Chil
         drain(pipe, shared);
     }
     Ok(child)
+}
+
+fn overlay_allocation(path: &Path) -> Option<u64> {
+    if validate_owned_path(path).is_err() {
+        return None;
+    }
+    if !path.try_exists().ok()? {
+        return Some(0);
+    }
+    directory_allocation(path).ok()?.0
 }
