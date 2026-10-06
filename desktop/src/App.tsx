@@ -1136,6 +1136,14 @@ export default function App() {
                       Unmount
                     </button>
                   )}
+                  {selected.session?.state === "needs_attention" && (
+                    <button
+                      disabled={pending}
+                      onClick={() => runtime(selected, "recover")}
+                    >
+                      Reconcile stale session
+                    </button>
+                  )}
                 </div>
                 <p className="footnote">
                   Automatic APFS shadows and case translation are not

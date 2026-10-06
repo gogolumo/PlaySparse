@@ -92,6 +92,7 @@ pub enum Operation {
     Launch,
     Stop,
     Unmount,
+    Recover,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Snapshot {
@@ -154,6 +155,7 @@ impl Service {
         for job in &mut db.jobs {
             if job.state == "running" {
                 job.state = "interrupted".into();
+                job.cancellable = false;
                 job.finished_at = Some(now());
                 job.error = Some("Application stopped before completion. Retry; temporary engine staging may remain.".into());
             }
@@ -228,8 +230,8 @@ impl Service {
         let mut inner = self.inner.lock().unwrap();
         if require_idle {
             ensure!(
-                inner.active.is_none(),
-                "Another storage operation is running"
+                inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
+                "Another operation is running"
             );
             ensure!(
                 inner.db.games.iter().all(|g| g.session.is_none()),
@@ -248,7 +250,7 @@ impl Service {
     fn idle(&self) -> Result<()> {
         let inner = self.inner.lock().unwrap();
         ensure!(
-            inner.active.is_none(),
+            inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
             "Another storage operation is running. Wait or cancel it first."
         );
         ensure!(
@@ -384,7 +386,7 @@ impl Service {
         );
         let mut inner = self.inner.lock().unwrap();
         ensure!(
-            inner.active.is_none(),
+            inner.active.is_none() && !inner.db.jobs.iter().any(|j| j.state == "running"),
             "Another storage operation is running"
         );
         ensure!(
@@ -634,10 +636,15 @@ impl Service {
             "launch" => Operation::Launch,
             "stop" => Operation::Stop,
             "unmount" => Operation::Unmount,
+            "recover" => Operation::Recover,
             _ => anyhow::bail!("Unknown runtime action"),
         };
         let job_id = identity("runtime");
         self.change(|db| {
+            ensure!(
+                !db.jobs.iter().any(|j| j.state == "running"),
+                "Another operation is running"
+            );
             game_mut(db, id)?;
             if db.jobs.len() >= 200 {
                 db.jobs.remove(0);
@@ -662,6 +669,7 @@ impl Service {
             Operation::Launch => self.launch_game(id),
             Operation::Stop => self.stop_game(id),
             Operation::Unmount => self.unmount_game(id, processes_closed),
+            Operation::Recover => self.recover_session(id),
             _ => unreachable!(),
         };
         self.change(|db| {
@@ -907,6 +915,7 @@ impl Service {
             .find(|g| g.id == id)
             .context("Unknown game")?;
         let session = game.session.as_ref().context("No runtime session")?;
+        self.validate_mount_location(id, &session.mountpoint)?;
         let output = Command::new(&self.engine)
             .arg("unmount")
             .arg(&session.mountpoint)
@@ -916,16 +925,99 @@ impl Service {
             "Ordinary unmount failed; retained session: {}",
             String::from_utf8_lossy(&output.stderr)
         );
-        if let Some(mut child) = inner.mounts.remove(id) {
-            let _ = child.wait();
+        if let Some(child) = inner.mounts.get_mut(id) {
+            let deadline = std::time::Instant::now() + Duration::from_secs(3);
+            while child.try_wait()?.is_none() && std::time::Instant::now() < deadline {
+                thread::sleep(Duration::from_millis(50));
+            }
+            ensure!(
+                child.try_wait()?.is_some(),
+                "Unmount returned, but backend is still shutting down. Session retained; reconcile when it exits."
+            );
         }
+        inner.mounts.remove(id);
         game_mut(&mut inner.db, id)?.session = None;
         self.persist(&inner.db)?;
         Ok(())
     }
+    fn validate_mount_location(&self, id: &str, mountpoint: &Path) -> Result<()> {
+        #[cfg(not(windows))]
+        ensure!(
+            mountpoint == self.root.join("runtimes").join(id).join("mount"),
+            "Session mountpoint is outside the owned runtime location"
+        );
+        #[cfg(windows)]
+        {
+            let drive = mountpoint.to_string_lossy();
+            ensure!(
+                drive.len() == 2
+                    && (b'D'..=b'Z').contains(&drive.as_bytes()[0])
+                    && drive.ends_with(':'),
+                "Invalid persisted runtime drive"
+            );
+            let _ = id;
+        }
+        Ok(())
+    }
+    /// Clear stale metadata only after proving the ordinary mount is absent.
+    /// This does not kill a process, detach a mount or delete runtime files.
+    pub fn recover_session(&self, id: &str) -> Result<()> {
+        let mut inner = self.inner.lock().unwrap();
+        ensure!(inner.active.is_none(), "Wait for storage operation");
+        ensure!(
+            !inner.processes.contains_key(id),
+            "Stop the tracked game process first"
+        );
+        if let Some(child) = inner.mounts.get_mut(id) {
+            ensure!(
+                child.try_wait()?.is_some(),
+                "Mount process is still alive; use ordinary unmount"
+            );
+        }
+        let game = inner
+            .db
+            .games
+            .iter()
+            .find(|g| g.id == id)
+            .context("Unknown game")?;
+        let session = game.session.as_ref().context("No stale runtime session")?;
+        self.validate_mount_location(id, &session.mountpoint)?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::MetadataExt;
+            match fs::metadata(&session.mountpoint) {
+                Ok(metadata) => {
+                    let parent = session
+                        .mountpoint
+                        .parent()
+                        .context("No mountpoint parent")?;
+                    ensure!(
+                        metadata.dev() == fs::metadata(parent)?.dev(),
+                        "A separate filesystem is still mounted. Close all processes and use ordinary unmount."
+                    );
+                    validate_owned_path(&session.mountpoint)?;
+                }
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+                Err(error) => return Err(error.into()),
+            }
+        }
+        #[cfg(windows)]
+        ensure!(
+            !PathBuf::from(format!("{}\\", session.mountpoint.display())).try_exists()?,
+            "Runtime drive exists; inspect it and use ordinary unmount. No external drive is detached automatically."
+        );
+        inner.mounts.remove(id);
+        let mut next = inner.db.clone();
+        game_mut(&mut next, id)?.session = None;
+        self.persist(&next)?;
+        inner.db = next;
+        Ok(())
+    }
     pub fn can_close(&self) -> bool {
         let inner = self.inner.lock().unwrap();
-        inner.active.is_none() && inner.db.games.iter().all(|g| g.session.is_none())
+        inner.active.is_none()
+            && !inner.db.jobs.iter().any(|j| j.state == "running")
+            && inner.db.games.iter().all(|g| g.session.is_none())
     }
 }
 fn game_mut<'a>(db: &'a mut Snapshot, id: &str) -> Result<&'a mut Game> {

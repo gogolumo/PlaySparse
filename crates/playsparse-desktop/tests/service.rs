@@ -200,7 +200,7 @@ fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids
     drop(service);
     let path = root.join("library.json");
     let mut db: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
-    db["games"][0]["session"] = serde_json::json!({"state":"running", "mountpoint":root.join("mount"),"overlay":root.join("overlay"),"error":null});
+    db["games"][0]["session"] = serde_json::json!({"state":"running", "mountpoint":root.canonicalize().unwrap().join("runtimes").join(&game.id).join("mount"),"overlay":root.join("overlay"),"error":null});
     db["jobs"] = serde_json::json!([{"id":"interrupted", "game_id":game.id, "operation":"analyze", "state":"running", "stage":"packing", "bytes":42,"files":0,"started_at":1,"finished_at":null,"error":null,"cancellable":true}]);
     fs::write(&path, serde_json::to_vec(&db).unwrap()).unwrap();
     let service = Service::open(&root, Path::new("unused")).unwrap();
@@ -210,6 +210,12 @@ fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids
         "needs_attention"
     );
     assert!(!service.can_close());
+    #[cfg(unix)]
+    {
+        service.recover_session(&game.id).unwrap();
+        assert!(service.can_close());
+        assert!(service.snapshot().games[0].session.is_none());
+    }
 }
 /// Opt-in physical mount gate, never confused with ordinary engine tests.
 #[test]

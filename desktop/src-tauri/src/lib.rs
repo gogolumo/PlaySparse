@@ -191,7 +191,14 @@ pub fn run() {
                     .ok_or("No application directory")?
                     .join(format!("playsparse-engine{extension}"))
             };
-            let service = Service::open(&root, &engine)?;
+            let service = match Service::open(&root, &engine) {
+                Ok(service) => service,
+                Err(error) => {
+                    app.dialog().message(format!("PlaySparse could not open its library at {}.\n\n{error:#}\n\nExisting data was retained. Close other instances or inspect the library before retrying.", root.display()))
+                        .title("Library needs attention").kind(tauri_plugin_dialog::MessageDialogKind::Error).blocking_show();
+                    return Err(error.into());
+                }
+            };
             app.manage(service.clone());
             let handle = app.handle().clone();
             std::thread::spawn(move || {

@@ -53,7 +53,7 @@ export interface Game {
 export interface Job {
   id: string;
   game_id: string;
-  operation: Operation | "mount" | "launch" | "stop" | "unmount";
+  operation: Operation | "mount" | "launch" | "stop" | "unmount" | "recover";
   state: string;
   stage: string;
   bytes: number;
@@ -92,7 +92,7 @@ export function status(game: Game, jobs: Job[]): string {
   );
   if (
     active &&
-    ["mount", "launch", "stop", "unmount"].includes(active.operation)
+    ["mount", "launch", "stop", "unmount", "recover"].includes(active.operation)
   )
     return (
       {
@@ -100,6 +100,7 @@ export function status(game: Game, jobs: Job[]): string {
         launch: "Launching",
         stop: "Stopping",
         unmount: "Unmounting",
+        recover: "Reconciling",
       } as Record<string, string>
     )[active.operation];
   if (active)
