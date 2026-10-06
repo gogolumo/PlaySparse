@@ -1,5 +1,31 @@
 # Roadmap
 
+## Evidence status as of 2026-10-06
+
+Checkboxes below describe their stated scope, not universal compatibility.
+**Implemented** means code exists; **software validated** means tests passed;
+**hosted CI validated** means a hosted runner passed; **physical hardware
+validated** means the retained report identifies a physical host. A **single-game
+validated** result applies only to that title/configuration. Experimental features,
+not-tested workloads, blocked prerequisites and future work remain separate.
+
+| Area | Verified evidence | Remaining gate |
+|---|---|---|
+| Windows WinFsp | Hosted CI and physical Windows 11 x64 generated readonly/writable/adaptive/tiered validation | Broader physical hosts/workloads; installer/crash lifecycle |
+| Elden Ring | Single-game executable reached main menu; ~3.2% measured generic reduction; warm original/WOF/PlaySparse comparison | Launcher, DRM, EAC, protected multiplayer not tested |
+| macFUSE | Native Apple Silicon generated mounted validation with macFUSE 5.4.0 | Metadata-aware local generated rerun passed; broader hosts |
+| Project Zomboid | Single-game live gameplay with manual macFUSE/APFS shadow; 42.75% allocated footprint reduction | Automated materialization, case compatibility, independent replication |
+| Linux FUSE | Software/VM/hosted mounted reads and open-source executable fixture | Physical desktop/game performance not tested |
+| ZIP-aware records | Implemented experimental update-reuse tradeoff | Full-store size/packing CPU can increase; not a compression improvement |
+| Sampling compression skip | Explicit experimental opt-in with adverse negative result | Not default; new evidence required |
+| Adaptive cache | Implemented experimental, current comparison loses to static LRU | Non-dominated representative result; LRU stays default |
+
+Sources: [Windows/Elden Ring](docs/evidence/windows-physical-elden-ring-2026-10-05.md),
+[macOS/Project Zomboid](docs/evidence/macos-project-zomboid-2026-10-05.md),
+[game-awareness audit](docs/game-awareness-audit.md). PR #13 retains later native
+writable/tiered AppleDouble tree-comparison failures. Earlier generated success
+is not proof that this validator regression was resolved.
+
 ## Runtime sprint — real reads from compressed CAS
 
 - [x] Rust workspace and in-process BLAKE3/Zstd/FastCDC
@@ -12,14 +38,15 @@
 - [x] Open-source native Zstd application executed from the mounted directory
 - [x] Rust CLI: analyze/pack/verify/mount/unmount/benchmark/doctor and independent io-probe
 - [x] Native WinFsp runtime validation in hosted Windows Server 2025 CI
-- [ ] **HARDWARE REQUIRED:** physical Windows desktop/game validation
-- [ ] **HARDWARE REQUIRED:** physical macFUSE validation (backend type-checked, experimental)
-- [ ] Windows original vs WOF vs PlaySparse frontier and real open game compatibility
+- [x] Physical Windows 11 x64 generated validation and single Elden Ring executable/main-menu path
+- [x] Physical native Apple Silicon macFUSE generated validation; single Project Zomboid hybrid gameplay proof
+- [x] Physical Windows original/WOF/PlaySparse warm comparison on owned Elden Ring
+- [ ] Redistributable Windows game compatibility and disk-cold performance frontier
 - [ ] Power-loss durability tests and installer/service lifecycle
 
 Evidence: [`docs/evidence/first-mounted-run.md`](docs/evidence/first-mounted-run.md).
-**WINDOWS HARDWARE TEST REQUIRED.** This sprint's Windows production milestone is
-not declared complete. The historical research milestones below remain intact.
+Physical Windows evidence is retained; production readiness still requires broader
+compatibility, installer lifecycle and recovery. The historical research milestones below remain intact.
 
 ## Adaptive writable runtime sprint — EXPERIMENTAL
 
@@ -37,8 +64,10 @@ not declared complete. The historical research milestones below remain intact.
 - [x] Actual Linux mounted overlay/trace/tier integration checks
 - [x] Native Windows combined writable/adaptive/tiered runtime at `4e39b9c` (hosted Server 2025)
 - [ ] Reproducible non-dominated adaptive benefit on representative workloads
-- [ ] **HARDWARE REQUIRED:** physical Windows desktop and legally owned game/launcher checks
-- [ ] **HARDWARE REQUIRED:** physical macFUSE checks
+- [x] Physical Windows generated combined stages and owned Elden Ring executable path
+- [ ] Broader owned-game and normal launcher checks (DRM/anti-cheat not established)
+- [x] Native Apple Silicon physical macFUSE generated stages and one hybrid game
+- [x] Metadata-aware writable/tiered generated validator rerun on native Apple Silicon (2026-10-06)
 - [ ] Block/chunk copy-up, mutable-data compression, advanced timestamps/ACL semantics and power-loss proof
 
 Implementation is ahead of compatibility and performance proof. The original
@@ -118,7 +147,8 @@ See [sprint evidence](docs/evidence/adaptive-writable-runtime.md),
 
 WinFsp's direct-buffer read contract is the implemented backend. ProjFS was
 evaluated and rejected for this stage because it hydrates retrieved file data
-into the local filesystem. Native Windows hardware tests and WOF baselines remain.
+into the local filesystem. Physical Windows 11 x64 tests and warm WOF baselines
+now exist for the retained Elden Ring configuration; broader validation remains.
 
 Required compatibility:
 
@@ -133,8 +163,9 @@ Required compatibility:
 **Acceptance:** arbitrary readers see the same logical bytes without a full pre-extraction step.
 
 Hosted native CI has proved those read workloads and the combined writable,
-adaptive and tiered paths at `4e39b9c`. Physical client Windows and real
-applications remain separate validation gates.
+adaptive and tiered paths at `4e39b9c`. Later physical client Windows validation
+and one owned executable/main-menu workload exist at `7783946`; other applications
+and normal launcher integration remain separate gates.
 
 ## M6 — Trace profiler + static policy frontier 🟡
 
