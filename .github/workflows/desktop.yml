@@ -86,6 +86,36 @@ jobs:
           'C:\Program Files (x86)\WinFsp\bin' | Out-File $env:GITHUB_PATH -Append -Encoding utf8
       - run: npm ci
         working-directory: desktop
+      - name: Prepare verified macFUSE SDK (macOS compile only; no driver install)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          brew install pkgconf
+          sdk_root="$RUNNER_TEMP/playsparse-macfuse-sdk"
+          mkdir -p "$sdk_root/image"
+          image="$sdk_root/macfuse-5.4.0.dmg"
+          curl --fail --location --retry 3 --output "$image" \
+            https://github.com/macfuse/macfuse/releases/download/macfuse-5.4.0/macfuse-5.4.0.dmg
+          expected=861814f0ac7fa8f6547ea40cdd49a36ac84bcc7d34f38a1fa74e8cf68b0401c5
+          actual="$(shasum -a 256 "$image" | cut -d ' ' -f 1)"
+          test "$actual" = "$expected"
+          hdiutil attach -readonly -nobrowse -noautoopen -mountpoint "$sdk_root/image" "$image"
+          trap 'hdiutil detach "$sdk_root/image"' EXIT
+          pkgutil --check-signature "$sdk_root/image/Install macFUSE.pkg" | tee "$sdk_root/signature.txt"
+          grep -Fq 'Benjamin Fleischer (3T5GSNBU6W)' "$sdk_root/signature.txt"
+          grep -Fq 'trusted by the Apple notary service' "$sdk_root/signature.txt"
+          pkgutil --expand-full "$sdk_root/image/Install macFUSE.pkg" "$sdk_root/sdk"
+          hdiutil detach "$sdk_root/image"
+          trap - EXIT
+          payload="$sdk_root/sdk/Core.pkg/Payload"
+          test -f "$payload/usr/local/lib/pkgconfig/fuse.pc"
+          {
+            echo "PKG_CONFIG_PATH=$payload/usr/local/lib/pkgconfig"
+            echo "PKG_CONFIG_SYSROOT_DIR=$payload"
+            echo "DYLD_LIBRARY_PATH=$payload/usr/local/lib"
+            echo "DYLD_FRAMEWORK_PATH=$payload/Library/Filesystems/macfuse.fs/Contents/Frameworks"
+          } >> "$GITHUB_ENV"
       # Tauri validates externalBin when build.rs runs (including Clippy),
       # so the host-specific CLI sidecar must exist before that step.
       - name: Prepare native engine sidecar
