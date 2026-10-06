@@ -8,7 +8,7 @@ Architecture: discovery and state validation live in `crates/playsparse-desktop`
 
 ## Validation
 
-Clean native code commit `c65d176b308f3eb437ed2ecf80be0b3eafdf8b62` passed real WKWebView/Tauri IPC acceptance: installation inspection and executable discovery, passive diagnostics, actual tiny doctor mount/read/unmount (Ready and cleanup PASS), register, analyze, destination preflight, pack, verify, mount, full exact-byte read, isolated overlay write, launch, stop, unmount and another verify. Original file hashes and modes remained unchanged; the receipt reports a clean working tree. [Native receipt](evidence/productization-native-20261006.json).
+Clean native code commit `bdfb861b17065a91cda626e8221e641528404f3e` passed real WKWebView/Tauri IPC acceptance: installation inspection and executable discovery, passive diagnostics, actual tiny doctor mount/read/unmount (Ready and cleanup PASS), register, analyze, destination preflight, pack, verify, mount, full exact-byte read, isolated overlay write, launch, stop, unmount and another verify. Original file hashes and modes remained unchanged; the receipt reports a clean working tree. [Native receipt](evidence/productization-native-20261006.json).
 
 - Rust workspace: 136 passed, zero failed, three driver/platform tests ignored in the normal run. Seven new product tests cover inspection/path safety, duplicate sources, discovery exclusions/symlinks, bundle Info.plist validation, readiness classification, illegal transitions missing-store recovery and recoverable mount-log redirection failures. An additional owned-log test proves hardlinked source bytes are not truncated. Existing interrupted-session/corrupt-library/cancellation/source-invariance tests were retained.
 - Formatting and strict workspace Clippy passed. Separate Tauri default-feature and all-feature Clippy passed.
@@ -20,9 +20,9 @@ The native screenshot capture was **blocked** (`could not create image from wind
 
 ## Artifacts and CI
 
-The initial implementation commit `2c0af0e` passed desktop/runtime/research workflows. Native engine/runtime code validation is tracked by [desktop CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288425), [runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288132), and [research CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288190). Latest PR-head checks cover subsequent documentation/theme and GUI recovery changes, including retaining runtime controls when a store is missing.
+The initial implementation commit `2c0af0e` passed desktop/runtime/research workflows. Final engine/runtime code validation is tracked by [desktop CI](https://github.com/gogolumo/PlaySparse/actions/runs/37491691361), [runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37491691396), and [research CI](https://github.com/gogolumo/PlaySparse/actions/runs/37491691492). All three workflows passed for `bdfb861`, including the final GUI recovery and safe-log changes. PR-head checks also validate the subsequent evidence-only commit.
 
-Local release `.app`, `.app` tarball and headlessly created/verified `.dmg` were produced from `c65d176`. [Hashes and sizes](evidence/productization-macos-artifacts-20261006.json). Hosted CI produces macOS app tarball/DMG, Windows NSIS executable and Linux deb/AppImage. These remain unsigned development artifacts, not signed/notarized production releases. The original Finder-based Tauri DMG helper was not reintroduced.
+Local release `.app`, `.app` tarball and headlessly created/verified `.dmg` were produced from `bdfb861`. [Hashes and sizes](evidence/productization-macos-artifacts-20261006.json). Hosted CI produces macOS app tarball/DMG, Windows NSIS executable and Linux deb/AppImage. These remain unsigned development artifacts, not signed/notarized production releases. The original Finder-based Tauri DMG helper was not reintroduced.
 
 ## Remaining gates
 
