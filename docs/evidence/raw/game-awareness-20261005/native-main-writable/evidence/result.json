@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "timestamp": "2026-10-05T13:57:47.979346+00:00",
+  "commit": "8902923acbbfa578d7c85f798e75c9aaa0dd6e72",
+  "working_tree_status": "",
+  "os": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "binary_sha256": "5ea26b506b7486403b46478b27b3d014f859df879e590ddabcc480e5fc7baa42",
+  "status": "FAIL",
+  "commands": [
+    [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Users/bogdan_dron/Documents/PlaySparse-game-aware/tools/generate-testgame.py",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/source",
+      "--io-probe",
+      "/private/tmp/playsparse-game-aware-baseline-01/io-probe",
+      "--world-bytes",
+      "16777216"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-baseline-01/playsparse",
+      "pack",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/source",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/base",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "256K"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-baseline-01/playsparse",
+      "verify",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/base"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-baseline-01/playsparse",
+      "mount",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/base",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/mounted",
+      "--trace",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/evidence/update.trace.jsonl",
+      "--cache",
+      "8M",
+      "--overlay",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/overlay"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/mounted/testgame",
+      "--self-test"
+    ],
+    [
+      "/private/tmp/playsparse-game-aware-baseline-01/io-probe",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/source",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/mounted",
+      "--iterations",
+      "8",
+      "--sequential-limit",
+      "8388608",
+      "--output",
+      "/private/tmp/playsparse-game-aware-native-main-writable-01/evidence/io-probe.json"
+    ]
+  ],
+  "dataset": "generated synthetic updater; no real launcher/game compatibility claim",
+  "windows_physical_validation": "BLOCKED_ON_PHYSICAL_WINDOWS",
+  "expected_tree": {
+    "assets": {
+      "kind": "directory"
+    },
+    "assets/empty.bin": {
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assets/entropy.dat": {
+      "kind": "file",
+      "bytes": 2097152,
+      "sha256": "57a3ba1f81f0b66f43eaa1896aa8b7c439e5784fbf50b70a13d8e45a63d65fba"
+    },
+    "assets/texture.dat": {
+      "kind": "file",
+      "bytes": 1077248,
+      "sha256": "51dc97ab4f4133f1e340e09238875670c3aaa0ad3f6d93d6bbd360bb6361bb7e"
+    },
+    "audio.dat": {
+      "kind": "file",
+      "bytes": 2138112,
+      "sha256": "107fb765c1210d3e25997601182f17fe07e97bf7ea439ed0b07ad3e1b3bb0eeb"
+    },
+    "config.json": {
+      "kind": "file",
+      "bytes": 32,
+      "sha256": "328d309303a1bdaafabec020e6f5a299e4db6fc9998d9115e36d83f75494b2bc"
+    },
+    "data": {
+      "kind": "directory"
+    },
+    "data/archive-a-v2.bin": {
+      "kind": "file",
+      "bytes": 4194304,
+      "sha256": "180ac4c87f19e3f73ea15a9d72bd52a2a367ad9716964e02a2d30375ab07e87f"
+    },
+    "data/archive-b.bin": {
+      "kind": "file",
+      "bytes": 1179659,
+      "sha256": "033a68d3d9e550ebf548fdd591c801a344e6028f2852a7daea36412f7b75c8f1"
+    },
+    "data/replace.bin": {
+      "kind": "file",
+      "bytes": 19,
+      "sha256": "aa40aec18b8359d012be1197acebec65a4184b3b8d95cec23256381e3c44881c"
+    },
+    "data/truncate.bin": {
+      "kind": "file",
+      "bytes": 8192,
+      "sha256": "457372ad2fc3906058e51bfd8995ab1eb85116cd9a14decb5911267ab1192677"
+    },
+    "fixture.json": {
+      "kind": "file",
+      "bytes": 1202761,
+      "sha256": "d24c8ce6b6d2ff6e56cf581cf60cfe5a0765c68f024657d3e7b31ba587a9b7ae"
+    },
+    "patch": {
+      "kind": "directory"
+    },
+    "patch/renamed.bin": {
+      "kind": "file",
+      "bytes": 8,
+      "sha256": "9103e1254ead22fbc8031e175d94d3b53a6dcdef1648988f087eb176a804e91e"
+    },
+    "renamed-dir": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested": {
+      "kind": "directory"
+    },
+    "renamed-dir/nested/file.bin": {
+      "kind": "file",
+      "bytes": 11,
+      "sha256": "427669f05f889060543116f6924d53247ece013801b74010da0e4162d1fba83f"
+    },
+    "testgame": {
+      "kind": "file",
+      "bytes": 1115840,
+      "sha256": "b1ced97a35541ec4288a177955e3611305a47e885ad415e56e871b88b0475361"
+    },
+    "world.dat": {
+      "kind": "file",
+      "bytes": 16777216,
+      "sha256": "7385008f8830b3d8c276493ed3021891b56de58f3ac2dafb34e557f1290cbb13"
+    }
+  },
+  "mount_record": {
+    "os_path_ismount": true
+  },
+  "error": "full mounted tree differs after update",
+  "source_unchanged": true,
+  "base_unchanged": true,
+  "wall_seconds": 2.0499724580004113,
+  "resources": {
+    "child_cpu_seconds": 0.747902,
+    "peak_single_child_rss_bytes": 47448064
+  }
+}

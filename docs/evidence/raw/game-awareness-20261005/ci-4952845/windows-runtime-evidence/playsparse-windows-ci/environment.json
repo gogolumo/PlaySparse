@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-10-05T14:03:43.6957121Z",
+  "is_windows": true,
+  "platform": "Microsoft Windows 10.0.26100",
+  "process_architecture": "X64",
+  "architecture": "X64",
+  "powershell": "7.6.6",
+  "virtual_machine_detected": true,
+  "physical_machine_attested": false,
+  "windows": "Microsoft Windows Server 2025 Datacenter",
+  "windows_version": "10.0.26100",
+  "windows_build": "26100",
+  "windows_product_type": 3,
+  "cpu": [
+    {
+      "Name": "AMD EPYC 9V74 80-Core Processor                ",
+      "NumberOfCores": 2,
+      "NumberOfLogicalProcessors": 4
+    }
+  ],
+  "ram_bytes": 17174360064,
+  "manufacturer": "Microsoft Corporation",
+  "model": "Virtual Machine",
+  "virtualization_basis": "CIM manufacturer/model/BIOS hints; absence is not proof of a physical machine",
+  "filesystems": [
+    {
+      "DriveLetter": null,
+      "FileSystem": "FAT32",
+      "FileSystemLabel": "",
+      "Size": 99614720,
+      "SizeRemaining": 63645184
+    },
+    {
+      "DriveLetter": "D",
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Temp",
+      "Size": 236205371392,
+      "SizeRemaining": 233924505600
+    },
+    {
+      "DriveLetter": "C",
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Windows",
+      "Size": 160467759104,
+      "SizeRemaining": 30486929408
+    },
+    {
+      "DriveLetter": null,
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Recovery",
+      "Size": 471855104,
+      "SizeRemaining": 457297920
+    }
+  ],
+  "disks": [
+    {
+      "Number": 1,
+      "FriendlyName": "Microsoft NVMe Direct Disk v2",
+      "BusType": "NVMe",
+      "PartitionStyle": "GPT",
+      "Size": 236223201280,
+      "IsBoot": false,
+      "IsSystem": false
+    },
+    {
+      "Number": 0,
+      "FriendlyName": "Virtual_Disk NVME Premium",
+      "BusType": "NVMe",
+      "PartitionStyle": "GPT",
+      "Size": 161061273600,
+      "IsBoot": true,
+      "IsSystem": true
+    }
+  ],
+  "winfsp": [
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    }
+  ],
+  "python": "3.12.10",
+  "python_is_windows": true
+}

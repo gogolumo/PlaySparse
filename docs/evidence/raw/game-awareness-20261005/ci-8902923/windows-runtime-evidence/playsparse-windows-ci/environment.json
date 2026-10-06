@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-10-05T13:55:36.4725971Z",
+  "is_windows": true,
+  "platform": "Microsoft Windows 10.0.26100",
+  "process_architecture": "X64",
+  "architecture": "X64",
+  "powershell": "7.6.6",
+  "virtual_machine_detected": true,
+  "physical_machine_attested": false,
+  "windows": "Microsoft Windows Server 2025 Datacenter",
+  "windows_version": "10.0.26100",
+  "windows_build": "26100",
+  "windows_product_type": 3,
+  "cpu": [
+    {
+      "Name": "AMD EPYC 7763 64-Core Processor                ",
+      "NumberOfCores": 2,
+      "NumberOfLogicalProcessors": 4
+    }
+  ],
+  "ram_bytes": 17174360064,
+  "manufacturer": "Microsoft Corporation",
+  "model": "Virtual Machine",
+  "virtualization_basis": "CIM manufacturer/model/BIOS hints; absence is not proof of a physical machine",
+  "filesystems": [
+    {
+      "DriveLetter": null,
+      "FileSystem": "FAT32",
+      "FileSystemLabel": "",
+      "Size": 99614720,
+      "SizeRemaining": 63645184
+    },
+    {
+      "DriveLetter": "D",
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Temporary Storage",
+      "Size": 161059172352,
+      "SizeRemaining": 155692576768
+    },
+    {
+      "DriveLetter": "C",
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Windows",
+      "Size": 160467759104,
+      "SizeRemaining": 33598984192
+    },
+    {
+      "DriveLetter": null,
+      "FileSystem": "NTFS",
+      "FileSystemLabel": "Recovery",
+      "Size": 471855104,
+      "SizeRemaining": 454893568
+    }
+  ],
+  "disks": [
+    {
+      "Number": 0,
+      "FriendlyName": "Msft Virtual Disk",
+      "BusType": "SAS",
+      "PartitionStyle": "GPT",
+      "Size": 161061273600,
+      "IsBoot": true,
+      "IsSystem": true
+    },
+    {
+      "Number": 1,
+      "FriendlyName": "Msft Virtual Disk",
+      "BusType": "SAS",
+      "PartitionStyle": "MBR",
+      "Size": 161061273600,
+      "IsBoot": false,
+      "IsSystem": false
+    }
+  ],
+  "winfsp": [
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-a64.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    },
+    {
+      "path": "C:\\Program Files (x86)\\WinFsp\\bin\\winfsp-x86.dll",
+      "version": "2.1.25156.ddca7bd",
+      "sdk_headers_present": true
+    }
+  ],
+  "python": "3.12.10",
+  "python_is_windows": true
+}

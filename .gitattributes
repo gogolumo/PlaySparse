@@ -1,0 +1,2 @@
+# Preserve retained scanner/CI evidence byte-for-byte, including Windows CRLF.
+docs/evidence/raw/game-awareness-20261005/** -text -whitespace

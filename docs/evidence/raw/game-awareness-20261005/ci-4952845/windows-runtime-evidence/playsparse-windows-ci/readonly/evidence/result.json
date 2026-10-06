@@ -1,0 +1,715 @@
+{
+  "schema": 1,
+  "os": "Windows-2025Server-10.0.26100-SP0",
+  "python": "3.12.10",
+  "commands": [
+    [
+      "C:\\hostedtoolcache\\windows\\Python\\3.12.10\\x64\\python.exe",
+      "D:\\a\\PlaySparse\\PlaySparse\\tools\\generate-testgame.py",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+      "--io-probe",
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+      "--world-bytes",
+      "10737418240"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "pack",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame.playsparse",
+      "--layout",
+      "packs",
+      "--chunker",
+      "fixed",
+      "--chunk-size",
+      "256K"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "verify",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame.playsparse"
+    ],
+    [
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame\\testgame.exe",
+      "--self-test"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "mount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame.playsparse",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+      "--cache",
+      "64M"
+    ],
+    [
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted\\testgame.exe",
+      "--self-test"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+      "--iterations",
+      "32",
+      "--sequential-limit",
+      "67108864",
+      "--output",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\evidence\\io-probe.json"
+    ],
+    [
+      "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe",
+      "unmount",
+      "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted"
+    ]
+  ],
+  "source": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+  "store": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame.playsparse",
+  "mountpoint": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+  "status": "PASS",
+  "windows_physical_test": "REQUIRED",
+  "windows_native_runtime_test": "PASS",
+  "commit": "4952845f6546fd68f2951970c7ffd63fdf461829",
+  "working_tree_status": "",
+  "binary_sha256": {
+    "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\playsparse.exe": "993f1a1ba15b6071fd519955f619896abae874fa81b2c3b9140b67ce9e6e5ab3",
+    "D:\\a\\PlaySparse\\PlaySparse\\target\\release\\io-probe.exe": "b6e6c96e0301669d78f60c5ef02a1cd441b6b5f1a4e7c433045679a5e44c9dd3"
+  },
+  "dataset": {
+    "source": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+    "executable": "testgame.exe",
+    "world_logical_bytes": 10737418240,
+    "logical_bytes": 10744958288,
+    "files": 9,
+    "source_allocated_bytes": null,
+    "nonzero_world_regions": 70,
+    "sample_count": 177
+  },
+  "pack": {
+    "logical_bytes": 10744958288,
+    "physical_bytes": 7221250,
+    "object_bytes": 2541366,
+    "metadata_bytes": 4679884,
+    "allocated_bytes": null,
+    "filesystem_entries": 8,
+    "files": 9,
+    "unique_objects": 120,
+    "reused_chunks": 40873,
+    "pack_seconds": 23.2647998,
+    "pack_cpu_seconds": 9.609375,
+    "zstd_attempted_objects": 120,
+    "measured_raw_objects": 0,
+    "measured_raw_bytes": 0,
+    "verified_before_publish": true
+  },
+  "pack_wall_seconds": 23.285030100000085,
+  "verify": {
+    "ok": true,
+    "checked_files": 9,
+    "checked_bytes": 10744958288,
+    "checked_objects": 120
+  },
+  "last_windows_mount_observation": {
+    "real_mount": true,
+    "filesystem_type": "PlaySparse",
+    "volume_label": "PlaySparse",
+    "api": "GetVolumeInformationByHandleW"
+  },
+  "mount_record": {
+    "real_mount": true,
+    "filesystem_type": "PlaySparse",
+    "volume_label": "PlaySparse",
+    "api": "GetVolumeInformationByHandleW"
+  },
+  "mounted_executable": {
+    "asset_root": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+    "executable": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted\\testgame.exe",
+    "read_and_mmap_samples": 177,
+    "sample_blake3": "aa07c936ab81ab48003e95e5554d1ed9147ad078156ffc2360ce26e033d238d4",
+    "schema": 1,
+    "self_test": "PASS",
+    "verified_bytes": 631142
+  },
+  "io_probe": {
+    "schema": 1,
+    "os": "windows",
+    "arch": "x86_64",
+    "original": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\TestGame",
+    "iterations_per_thread": 32,
+    "sequential_limit_per_file": 67108864,
+    "page_cache_policy": "OS caches are not cleared; sequential and earlier workloads may warm later reads",
+    "equality": "ORIGINAL == CANDIDATE for every measured byte read",
+    "comparisons": [
+      {
+        "candidate": "D:\\a\\_temp\\playsparse-windows-ci\\readonly\\mounted",
+        "logical_bytes": 10744958288,
+        "files": 9,
+        "directory_enumeration_equal": true,
+        "workloads": [
+          {
+            "name": "open",
+            "read_bytes": 0,
+            "threads": 1,
+            "original": {
+              "operations": 288,
+              "bytes": 2304,
+              "p50_ms": 0.0162,
+              "p95_ms": 0.0281,
+              "p99_ms": 0.0416,
+              "measured_operation_seconds": 0.0054073,
+              "throughput_mib_s": 0.4063517143491206,
+              "blake3": "32c11f1e435a12e8d8709bece7d5a393749d2d624a3333b7a51808065d739810",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 288,
+              "bytes": 2304,
+              "p50_ms": 0.0589,
+              "p95_ms": 0.0936,
+              "p99_ms": 0.1232,
+              "measured_operation_seconds": 0.0191238,
+              "throughput_mib_s": 0.11489691510055533,
+              "blake3": "32c11f1e435a12e8d8709bece7d5a393749d2d624a3333b7a51808065d739810",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0396058
+          },
+          {
+            "name": "stat",
+            "read_bytes": 0,
+            "threads": 1,
+            "original": {
+              "operations": 288,
+              "bytes": 2304,
+              "p50_ms": 0.0192,
+              "p95_ms": 0.0305,
+              "p99_ms": 0.0399,
+              "measured_operation_seconds": 0.0062108,
+              "throughput_mib_s": 0.3537814170477233,
+              "blake3": "32c11f1e435a12e8d8709bece7d5a393749d2d624a3333b7a51808065d739810",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 288,
+              "bytes": 2304,
+              "p50_ms": 0.0806,
+              "p95_ms": 0.1282,
+              "p99_ms": 0.1542,
+              "measured_operation_seconds": 0.0263757,
+              "throughput_mib_s": 0.08330643831253769,
+              "blake3": "32c11f1e435a12e8d8709bece7d5a393749d2d624a3333b7a51808065d739810",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0327139
+          },
+          {
+            "name": "sequential",
+            "read_bytes": 1048576,
+            "threads": 1,
+            "original": {
+              "operations": 76,
+              "bytes": 74648912,
+              "p50_ms": 0.6926,
+              "p95_ms": 0.9504,
+              "p99_ms": 1.1722,
+              "measured_operation_seconds": 0.053162,
+              "throughput_mib_s": 1339.1285151437176,
+              "blake3": "2bbcd0eb666fa7657045085579ffcd7c63cd615eb0ea39f0d80fb7d080bb907a",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 76,
+              "bytes": 74648912,
+              "p50_ms": 0.8807,
+              "p95_ms": 1.1951,
+              "p99_ms": 1.4236,
+              "measured_operation_seconds": 0.0645349,
+              "throughput_mib_s": 1103.1356695690286,
+              "blake3": "2bbcd0eb666fa7657045085579ffcd7c63cd615eb0ea39f0d80fb7d080bb907a",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.1509904
+          },
+          {
+            "name": "random",
+            "read_bytes": 4096,
+            "threads": 1,
+            "original": {
+              "operations": 32,
+              "bytes": 118821,
+              "p50_ms": 0.1138,
+              "p95_ms": 0.1444,
+              "p99_ms": 0.1479,
+              "measured_operation_seconds": 0.002786,
+              "throughput_mib_s": 40.67355920664287,
+              "blake3": "4bcc88e6450dbc50a25ff9a1f7c44d3f570d463aaf9f39d9ee333c59bf0b0ac4",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 32,
+              "bytes": 118821,
+              "p50_ms": 0.0507,
+              "p95_ms": 0.0731,
+              "p99_ms": 0.0909,
+              "measured_operation_seconds": 0.0012545,
+              "throughput_mib_s": 90.3280477877298,
+              "blake3": "4bcc88e6450dbc50a25ff9a1f7c44d3f570d463aaf9f39d9ee333c59bf0b0ac4",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0049159
+          },
+          {
+            "name": "random",
+            "read_bytes": 4096,
+            "threads": 2,
+            "original": {
+              "operations": 64,
+              "bytes": 237642,
+              "p50_ms": 0.0039,
+              "p95_ms": 0.1082,
+              "p99_ms": 0.1411,
+              "measured_operation_seconds": 0.0024714,
+              "throughput_mib_s": 91.7023031073133,
+              "blake3": "1ad3e77aa0f7647975cfc9b894d668224cc3fedb193c53a95108205e6feb3d91",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 64,
+              "bytes": 237642,
+              "p50_ms": 0.0035,
+              "p95_ms": 0.0533,
+              "p99_ms": 0.0688,
+              "measured_operation_seconds": 0.0012123,
+              "throughput_mib_s": 186.9447099722957,
+              "blake3": "1ad3e77aa0f7647975cfc9b894d668224cc3fedb193c53a95108205e6feb3d91",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0041588
+          },
+          {
+            "name": "random",
+            "read_bytes": 4096,
+            "threads": 4,
+            "original": {
+              "operations": 128,
+              "bytes": 475284,
+              "p50_ms": 0.0043,
+              "p95_ms": 0.2341,
+              "p99_ms": 0.4064,
+              "measured_operation_seconds": 0.0085088,
+              "throughput_mib_s": 53.27027827647002,
+              "blake3": "3fc11e86e8d3e5da1fc6e32bd61ae5cd49656dd14874f843d3e9d9a955c03a17",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 128,
+              "bytes": 475284,
+              "p50_ms": 0.0034,
+              "p95_ms": 0.0571,
+              "p99_ms": 0.0831,
+              "measured_operation_seconds": 0.002399,
+              "throughput_mib_s": 188.9396180903827,
+              "blake3": "3fc11e86e8d3e5da1fc6e32bd61ae5cd49656dd14874f843d3e9d9a955c03a17",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0061591
+          },
+          {
+            "name": "random",
+            "read_bytes": 4096,
+            "threads": 8,
+            "original": {
+              "operations": 256,
+              "bytes": 950568,
+              "p50_ms": 0.008,
+              "p95_ms": 0.5084,
+              "p99_ms": 0.5782,
+              "measured_operation_seconds": 0.034789,
+              "throughput_mib_s": 26.058015108156493,
+              "blake3": "b7f1ea26d5c3bf4a81ff4b2108979a1a3f6c4d674e8dd3220176958ff16106ce",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 256,
+              "bytes": 950568,
+              "p50_ms": 0.0044,
+              "p95_ms": 0.0603,
+              "p99_ms": 0.1248,
+              "measured_operation_seconds": 0.0049587,
+              "throughput_mib_s": 182.81652199117838,
+              "blake3": "b7f1ea26d5c3bf4a81ff4b2108979a1a3f6c4d674e8dd3220176958ff16106ce",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0109178
+          },
+          {
+            "name": "random",
+            "read_bytes": 4096,
+            "threads": 16,
+            "original": {
+              "operations": 512,
+              "bytes": 1901136,
+              "p50_ms": 0.0072,
+              "p95_ms": 0.7392,
+              "p99_ms": 0.9535,
+              "measured_operation_seconds": 0.1393131,
+              "throughput_mib_s": 13.014315058636356,
+              "blake3": "df0e9a0467225033816ae5834b0e35f00037ee77ef819e0a85ab527b9869719e",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 512,
+              "bytes": 1901136,
+              "p50_ms": 0.0042,
+              "p95_ms": 0.0674,
+              "p99_ms": 0.1719,
+              "measured_operation_seconds": 0.0140499,
+              "throughput_mib_s": 129.04466047411813,
+              "blake3": "df0e9a0467225033816ae5834b0e35f00037ee77ef819e0a85ab527b9869719e",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0200062
+          },
+          {
+            "name": "random",
+            "read_bytes": 65536,
+            "threads": 1,
+            "original": {
+              "operations": 32,
+              "bytes": 1900581,
+              "p50_ms": 0.1571,
+              "p95_ms": 0.219,
+              "p99_ms": 0.2255,
+              "measured_operation_seconds": 0.0045895,
+              "throughput_mib_s": 394.9308826559989,
+              "blake3": "ae4768a72053425bd641f538efd70d478a68173efaf59d4eda119dd0c53f91c7",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 32,
+              "bytes": 1900581,
+              "p50_ms": 0.0803,
+              "p95_ms": 0.1333,
+              "p99_ms": 0.1356,
+              "measured_operation_seconds": 0.0025424,
+              "throughput_mib_s": 712.9229412955109,
+              "blake3": "ae4768a72053425bd641f538efd70d478a68173efaf59d4eda119dd0c53f91c7",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0087218
+          },
+          {
+            "name": "random",
+            "read_bytes": 65536,
+            "threads": 2,
+            "original": {
+              "operations": 64,
+              "bytes": 3801162,
+              "p50_ms": 0.0443,
+              "p95_ms": 0.1956,
+              "p99_ms": 0.3251,
+              "measured_operation_seconds": 0.0056483,
+              "throughput_mib_s": 641.7985184744815,
+              "blake3": "cd5be281bc1dd6b6098db05888ba8ce47d9336b2bfc3d80976cc9285eab7ca2f",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 64,
+              "bytes": 3801162,
+              "p50_ms": 0.0393,
+              "p95_ms": 0.112,
+              "p99_ms": 0.1683,
+              "measured_operation_seconds": 0.0035817,
+              "throughput_mib_s": 1012.1089348352497,
+              "blake3": "cd5be281bc1dd6b6098db05888ba8ce47d9336b2bfc3d80976cc9285eab7ca2f",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0088788
+          },
+          {
+            "name": "random",
+            "read_bytes": 65536,
+            "threads": 4,
+            "original": {
+              "operations": 128,
+              "bytes": 7602324,
+              "p50_ms": 0.0808,
+              "p95_ms": 0.2178,
+              "p99_ms": 0.2693,
+              "measured_operation_seconds": 0.0142235,
+              "throughput_mib_s": 509.72975314084636,
+              "blake3": "0ee80950956b2726f4babfa895e10a77dfaf6bcc3ee3b7ae12876e8e107ef043",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 128,
+              "bytes": 7602324,
+              "p50_ms": 0.0697,
+              "p95_ms": 0.1361,
+              "p99_ms": 0.2195,
+              "measured_operation_seconds": 0.0099585,
+              "throughput_mib_s": 728.0354615452958,
+              "blake3": "0ee80950956b2726f4babfa895e10a77dfaf6bcc3ee3b7ae12876e8e107ef043",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0110494
+          },
+          {
+            "name": "random",
+            "read_bytes": 65536,
+            "threads": 8,
+            "original": {
+              "operations": 256,
+              "bytes": 15204648,
+              "p50_ms": 0.0777,
+              "p95_ms": 0.4076,
+              "p99_ms": 0.6406,
+              "measured_operation_seconds": 0.0407412,
+              "throughput_mib_s": 355.9120076874922,
+              "blake3": "ff74eb98cb6192464bf628e1b258eff8ca360391f6cf473880ecba060b8da396",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 256,
+              "bytes": 15204648,
+              "p50_ms": 0.0705,
+              "p95_ms": 0.4944,
+              "p99_ms": 0.9228,
+              "measured_operation_seconds": 0.0324554,
+              "throughput_mib_s": 446.77564558124857,
+              "blake3": "ff74eb98cb6192464bf628e1b258eff8ca360391f6cf473880ecba060b8da396",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0179689
+          },
+          {
+            "name": "random",
+            "read_bytes": 65536,
+            "threads": 16,
+            "original": {
+              "operations": 512,
+              "bytes": 30409296,
+              "p50_ms": 0.0615,
+              "p95_ms": 0.9586,
+              "p99_ms": 1.3412,
+              "measured_operation_seconds": 0.1624011,
+              "throughput_mib_s": 178.57369546878263,
+              "blake3": "9b67343d3457b11fbdfa0aaf691acb1c0a40dac128ed5f4e152bb25c3a75da8f",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 512,
+              "bytes": 30409296,
+              "p50_ms": 0.0592,
+              "p95_ms": 1.0263,
+              "p99_ms": 2.1666,
+              "measured_operation_seconds": 0.1041734,
+              "throughput_mib_s": 278.38742495872566,
+              "blake3": "9b67343d3457b11fbdfa0aaf691acb1c0a40dac128ed5f4e152bb25c3a75da8f",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0326744
+          },
+          {
+            "name": "random",
+            "read_bytes": 1048576,
+            "threads": 1,
+            "original": {
+              "operations": 32,
+              "bytes": 30408741,
+              "p50_ms": 0.6238,
+              "p95_ms": 1.6341,
+              "p99_ms": 1.661,
+              "measured_operation_seconds": 0.0194954,
+              "throughput_mib_s": 1487.5322017475767,
+              "blake3": "16667b1b3fce567204dbff67fa5913709fa6fb65837b146acf3081a5c5ab0970",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 32,
+              "bytes": 30408741,
+              "p50_ms": 0.6297,
+              "p95_ms": 0.7347,
+              "p99_ms": 0.9279,
+              "measured_operation_seconds": 0.0175757,
+              "throughput_mib_s": 1650.0074128455599,
+              "blake3": "16667b1b3fce567204dbff67fa5913709fa6fb65837b146acf3081a5c5ab0970",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0504828
+          },
+          {
+            "name": "random",
+            "read_bytes": 1048576,
+            "threads": 2,
+            "original": {
+              "operations": 64,
+              "bytes": 60817482,
+              "p50_ms": 0.2999,
+              "p95_ms": 0.8404,
+              "p99_ms": 1.072,
+              "measured_operation_seconds": 0.0280764,
+              "throughput_mib_s": 2065.794424210348,
+              "blake3": "1c0fe622d2d449657a19e1a6b19b903f2a2d1238d5203c0590ca97cfef372fdd",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 64,
+              "bytes": 60817482,
+              "p50_ms": 0.2688,
+              "p95_ms": 0.8485,
+              "p99_ms": 0.9799,
+              "measured_operation_seconds": 0.027255,
+              "throughput_mib_s": 2128.0524884204515,
+              "blake3": "1c0fe622d2d449657a19e1a6b19b903f2a2d1238d5203c0590ca97cfef372fdd",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0544752
+          },
+          {
+            "name": "random",
+            "read_bytes": 1048576,
+            "threads": 4,
+            "original": {
+              "operations": 128,
+              "bytes": 121634964,
+              "p50_ms": 0.4011,
+              "p95_ms": 3.1129,
+              "p99_ms": 5.3684,
+              "measured_operation_seconds": 0.1004248,
+              "throughput_mib_s": 1155.0945697058778,
+              "blake3": "42174cead14a96157e31b02c76c58947035736945bd8d2dd6500019e5d60ef24",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 128,
+              "bytes": 121634964,
+              "p50_ms": 0.3858,
+              "p95_ms": 1.1128,
+              "p99_ms": 1.9871,
+              "measured_operation_seconds": 0.0691458,
+              "throughput_mib_s": 1677.6165890596224,
+              "blake3": "42174cead14a96157e31b02c76c58947035736945bd8d2dd6500019e5d60ef24",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.081631
+          },
+          {
+            "name": "random",
+            "read_bytes": 1048576,
+            "threads": 8,
+            "original": {
+              "operations": 256,
+              "bytes": 243269928,
+              "p50_ms": 0.3712,
+              "p95_ms": 7.7488,
+              "p99_ms": 8.4322,
+              "measured_operation_seconds": 0.5108005,
+              "throughput_mib_s": 454.1896147078902,
+              "blake3": "33db19804c6e9378806ae64eae0bfffcd627c4cdc61193096c29305f850bc633",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 256,
+              "bytes": 243269928,
+              "p50_ms": 0.3844,
+              "p95_ms": 3.3085,
+              "p99_ms": 21.1977,
+              "measured_operation_seconds": 0.2758365,
+              "throughput_mib_s": 841.0789808005745,
+              "blake3": "33db19804c6e9378806ae64eae0bfffcd627c4cdc61193096c29305f850bc633",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.186516
+          },
+          {
+            "name": "random",
+            "read_bytes": 1048576,
+            "threads": 16,
+            "original": {
+              "operations": 512,
+              "bytes": 486539856,
+              "p50_ms": 0.377,
+              "p95_ms": 17.0321,
+              "p99_ms": 26.8599,
+              "measured_operation_seconds": 2.3998555,
+              "throughput_mib_s": 193.34520956582398,
+              "blake3": "4a4203c291858c452118c4a0158d31d5c99b4e2880fc454bf88bf7d909a96438",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 512,
+              "bytes": 486539856,
+              "p50_ms": 0.3659,
+              "p95_ms": 6.5109,
+              "p99_ms": 25.3598,
+              "measured_operation_seconds": 0.8288181,
+              "throughput_mib_s": 559.8340149366855,
+              "blake3": "4a4203c291858c452118c4a0158d31d5c99b4e2880fc454bf88bf7d909a96438",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.3818909
+          },
+          {
+            "name": "mmap_random_pages",
+            "read_bytes": 4096,
+            "threads": 1,
+            "original": {
+              "operations": 32,
+              "bytes": 118823,
+              "p50_ms": 0.1385,
+              "p95_ms": 0.3155,
+              "p99_ms": 0.3869,
+              "measured_operation_seconds": 0.004351,
+              "throughput_mib_s": 26.044229670958366,
+              "blake3": "36cb28f4f3b0cfdc53da53727553851ed756e8a0073cc6f0e7350a8e91f4890d",
+              "errors": 0
+            },
+            "candidate": {
+              "operations": 32,
+              "bytes": 118823,
+              "p50_ms": 0.0508,
+              "p95_ms": 0.0854,
+              "p99_ms": 0.1013,
+              "measured_operation_seconds": 0.0013015,
+              "throughput_mib_s": 87.06757072480973,
+              "blake3": "36cb28f4f3b0cfdc53da53727553851ed756e8a0073cc6f0e7350a8e91f4890d",
+              "errors": 0
+            },
+            "bytes_equal": true,
+            "wall_seconds": 0.0267372
+          }
+        ]
+      }
+    ],
+    "process_cpu_seconds": 1.625,
+    "peak_rss_bytes": 36904960
+  },
+  "probe_wall_seconds": 1.1474734999999328,
+  "mount_exit_code": 0,
+  "source_untouched": true,
+  "source_allocation_changed": false,
+  "source_fingerprint_sha256": "64ec1a97fff535baec1691a9f9f6bb93f7e6958c9eff3361297461727f5276a4",
+  "no_pre_extraction": {
+    "basis": "OS-verified filesystem mount; empty or absent mountpoint after unmount; runner never calls unpack/extraction",
+    "mountpoint_empty_after_unmount": true
+  },
+  "wall_seconds": 107.68690719999995
+}

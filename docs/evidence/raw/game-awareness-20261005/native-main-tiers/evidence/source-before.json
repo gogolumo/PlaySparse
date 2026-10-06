@@ -1,0 +1,127 @@
+{
+  "definition": "SHA-256 of ordered path, size, mode, mtime, extent positions and contents; allocation accounting excluded; not a whole-file SHA-256",
+  "tree_fingerprint_sha256": "beadbdba7271ce1c3da59a4d5fb30708611103aa759707249a017e2a28dd7ce8",
+  "files": [
+    {
+      "path": "assets/empty.bin",
+      "size": 0,
+      "mode": 33188,
+      "mtime_ns": 1791209013006591476,
+      "allocated_bytes": 0,
+      "extents": [],
+      "extent_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assets/entropy.dat",
+      "size": 2097152,
+      "mode": 33188,
+      "mtime_ns": 1791209013010979037,
+      "allocated_bytes": 2097152,
+      "extents": [
+        [
+          0,
+          2097152
+        ]
+      ],
+      "extent_sha256": "33b8ff3293e05ebf8a86ea4d1a04441bd30aa4df2c6365b7d76d457e89aa2887"
+    },
+    {
+      "path": "assets/texture.dat",
+      "size": 1077248,
+      "mode": 33188,
+      "mtime_ns": 1791209013006802563,
+      "allocated_bytes": 1077248,
+      "extents": [
+        [
+          0,
+          1077248
+        ]
+      ],
+      "extent_sha256": "b0b67baa7bcfd85372b2a5a88cd7b87fee751eeef815575957ee1fc485a273be"
+    },
+    {
+      "path": "audio.dat",
+      "size": 2138112,
+      "mode": 33188,
+      "mtime_ns": 1791209013011558961,
+      "allocated_bytes": 2138112,
+      "extents": [
+        [
+          0,
+          2138112
+        ]
+      ],
+      "extent_sha256": "3a0fa52175f83f32aa0dbd10c7eaf34f766da4d5083ca7ebb6998e152a012cf5"
+    },
+    {
+      "path": "config.json",
+      "size": 80,
+      "mode": 33188,
+      "mtime_ns": 1791209013006518017,
+      "allocated_bytes": 4096,
+      "extents": [
+        [
+          0,
+          80
+        ]
+      ],
+      "extent_sha256": "c49ae046f6343c471a06c80e87818d8ed42b7ebbb1e698377eb1c97b92fdd3b3"
+    },
+    {
+      "path": "fixture.json",
+      "size": 1202674,
+      "mode": 33188,
+      "mtime_ns": 1791209013017056037,
+      "allocated_bytes": 1204224,
+      "extents": [
+        [
+          0,
+          1202674
+        ]
+      ],
+      "extent_sha256": "47341565799a525e2d33ee8cabfb6d047a5bf7af25a7cef3f76de7d0e44e99ec"
+    },
+    {
+      "path": "readme.txt",
+      "size": 33,
+      "mode": 33188,
+      "mtime_ns": 1791209013006382348,
+      "allocated_bytes": 4096,
+      "extents": [
+        [
+          0,
+          33
+        ]
+      ],
+      "extent_sha256": "3799812a27975b99f23de9ea5781749189b2c6d4b089eb22b51a22cb7bb9a9d9"
+    },
+    {
+      "path": "testgame",
+      "size": 1115840,
+      "mode": 33261,
+      "mtime_ns": 1791206588955847349,
+      "allocated_bytes": 1118208,
+      "extents": [
+        [
+          0,
+          1115840
+        ]
+      ],
+      "extent_sha256": "43ba5fd18a7ae43cc3627f1c72118bdb891e33adb6ffd05a2de9a214c10f66b3"
+    },
+    {
+      "path": "world.dat",
+      "size": 4194304,
+      "mode": 33188,
+      "mtime_ns": 1791209013012659810,
+      "allocated_bytes": 4194304,
+      "extents": [
+        [
+          0,
+          4194304
+        ]
+      ],
+      "extent_sha256": "f05b959cceca3410792624dc62218d056c0a9c056de6d5cfe306abd4104d95ad"
+    }
+  ]
+}

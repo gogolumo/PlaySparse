@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-10-05T13:53:33.212343+00:00",
+  "os": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "system": "Linux",
+  "kernel": "6.17.0-1022-azure",
+  "architecture": "x86_64",
+  "python": "3.12.3",
+  "cpu_count": 4,
+  "uid": 0,
+  "git": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/home/runner/work/PlaySparse/PlaySparse",
+      "-C",
+      "/home/runner/work/PlaySparse/PlaySparse",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "8902923acbbfa578d7c85f798e75c9aaa0dd6e72",
+    "stderr": ""
+  },
+  "working_tree": {
+    "command": [
+      "git",
+      "-c",
+      "safe.directory=/home/runner/work/PlaySparse/PlaySparse",
+      "-C",
+      "/home/runner/work/PlaySparse/PlaySparse",
+      "status",
+      "--porcelain"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "source_clean": true,
+  "available_disk_bytes": 89593556992,
+  "physical_hardware_status": "UNKNOWN; virtualization hints are not a physical-machine attestation",
+  "distribution": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo",
+  "cpu_model": "AMD EPYC 7763 64-Core Processor",
+  "ram_bytes": 16766414848,
+  "virtualization_hints": {
+    "docker_marker": false,
+    "container_marker": false,
+    "system_vendor": "Microsoft Corporation",
+    "product_name": "Virtual Machine",
+    "linuxkit_kernel": false
+  },
+  "fuse_helper": {
+    "command": [
+      "/usr/bin/fusermount3",
+      "--version"
+    ],
+    "exit_code": 0,
+    "stdout": "fusermount3 version: 3.14.0",
+    "stderr": ""
+  },
+  "fuse_device": {
+    "path": "/dev/fuse",
+    "exists": true,
+    "opened_read_write": true
+  }
+}
