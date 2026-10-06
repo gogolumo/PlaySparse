@@ -1041,3 +1041,22 @@ code {
     transition: none !important;
   }
 }
+
+.readiness-panel {
+  margin-bottom: 24px;
+}
+.readiness-panel details {
+  margin-top: 14px;
+}
+summary {
+  cursor: pointer;
+}
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+}

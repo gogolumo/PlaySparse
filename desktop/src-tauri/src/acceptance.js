@@ -30,11 +30,19 @@
       button.click(); await pause(150);
     }
     record('native_navigation', 'PASS');
+    const inspection = await invoke('inspect_installation', { path: window.__DESKTOP_ACCEPTANCE_SOURCE });
+    if (!inspection.candidates.some(c => c.executable === 'fixture-game')) throw Error('Fixture executable was not discovered');
+    record('native_installation_inspection', inspection);
+    const diagnostics = await invoke('get_system_status');
+    if (!diagnostics.readiness) throw Error('Missing structured readiness');
+    record('readiness', diagnostics.readiness);
     const game = await invoke('add_game', { path: window.__DESKTOP_ACCEPTANCE_SOURCE });
     record('register_actual_folder', game.source);
     await job(game.id, 'analyze');
+    record('destination_preflight', await invoke('optimize_preflight', {id:game.id}));
     await job(game.id, 'optimize');
     await job(game.id, 'verify');
+    record('discovered_launch', await invoke('discover_launch', {id:game.id}));
     await invoke('configure_launch', { id:game.id, descriptor:{ executable:'fixture-game', args:[], compatibility_confirmed:true } });
     await invoke('runtime_action', { id:game.id, action:'mount', processesClosed:false });
     record('mount', 'PASS');

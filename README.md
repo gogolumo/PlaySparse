@@ -428,3 +428,7 @@ The Windows build also links GPL-3.0 WinFsp Rust bindings and uses the separatel
   <strong>Store less. Serve the same files.</strong><br>
   <sub>Measure first. Keep the failures. Earn the claim.</sub>
 </p>
+
+### Desktop MVP workflow
+
+The native UI now inspects folders before registration, explains filesystem readiness, discovers launch candidates for explicit confirmation, checks destination capacity before optimization and exposes game details/recovery. Analysis, packing and verification use the existing Rust engine; source installations stay untouched. macOS app bundles use Launch Services and must be quit normally. See [first run, workflow and recovery](docs/desktop/README.md). Bundles remain unsigned development builds; physical Windows/Linux desktop acceptance and per-title compatibility are separate gates.

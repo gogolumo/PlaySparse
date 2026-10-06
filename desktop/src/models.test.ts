@@ -53,3 +53,55 @@ describe("honest storage and state presentation", () => {
     ).toBe("Needs attention");
   });
 });
+
+import { readinessOf, stageLabel } from "./models";
+it("keeps browser readiness unknown and labels real stages without percentages", () => {
+  expect(readinessOf({ mode: "Preview" }).state).toBe("Unknown");
+  expect(stageLabel("testing_fixed_chunks")).toContain("fixed chunks");
+  expect(stageLabel("publishing")).toBe("Publishing atomically");
+});
+
+it("shows running, interrupted and verification recovery states without pretending success", () => {
+  const game = {
+    id: "test",
+    name: "Test",
+    source: "/fixture",
+    analysis: null,
+    store: "/store",
+    verified: false,
+    store_stats: null,
+    overlay_allocated_bytes: null,
+    error: null,
+    launch: null,
+    session: null,
+  };
+  expect(status(game, [])).toBe("Verify required");
+  expect(
+    status(
+      {
+        ...game,
+        session: {
+          state: "running",
+          mountpoint: "/mount",
+          overlay: "/overlay",
+          error: null,
+        },
+      },
+      [],
+    ),
+  ).toBe("Running");
+  expect(
+    status(
+      {
+        ...game,
+        session: {
+          state: "needs_attention",
+          mountpoint: "/mount",
+          overlay: "/overlay",
+          error: "interrupted",
+        },
+      },
+      [],
+    ),
+  ).toBe("Needs attention");
+});

@@ -77,8 +77,11 @@ def main():
     time.sleep(2)
     script = f'import CoreGraphics; let rows = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[String:Any]] ?? []; for row in rows {{ if row[kCGWindowOwnerPID as String] as? Int == {process.pid}, row[kCGWindowLayer as String] as? Int == 0 {{ print(row[kCGWindowNumber as String] as! Int); break }} }}'
     window = subprocess.check_output(["swift", "-e", script], text=True).strip()
+    result["screenshot_status"] = "UNAVAILABLE: no visible application window"
     if window:
-        subprocess.run(["screencapture", "-x", "-l", window, str(work / "native-library.png")], check=True)
+        capture = subprocess.run(["screencapture", "-x", "-l", window, str(work / "native-library.png")], capture_output=True, text=True)
+        result["screenshot_status"] = "CAPTURED" if capture.returncode == 0 else "BLOCKED: " + capture.stderr.strip()
+    (work / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     if not args.keep_open:
         # Final verified state has no active jobs, processes or mounts.
         process.terminate()
