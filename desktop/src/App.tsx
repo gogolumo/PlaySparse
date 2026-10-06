@@ -115,7 +115,9 @@ export default function App() {
     initialView === "add" ? "/Preview/Games/New installation" : null,
   );
   const [detail, setDetail] = useState<string | null>(
-    initialView === "analysis" ? "preview-zomboid" : null,
+    ["analysis", "recovery"].includes(initialView ?? "")
+      ? "preview-zomboid"
+      : null,
   );
   const [confirm, setConfirm] = useState<{
     title: string;
@@ -618,9 +620,11 @@ export default function App() {
                               }
                               disabled={busy}
                               onClick={() => {
-                                if (game.session?.state === "running")
-                                  runtime(game, "stop");
-                                else if (
+                                if (game.session?.state === "running") {
+                                  if (game.launch?.executable.endsWith(".app"))
+                                    setDetail(game.id);
+                                  else runtime(game, "stop");
+                                } else if (
                                   game.session?.state === "mounted" &&
                                   game.launch?.compatibility_confirmed
                                 )
@@ -643,7 +647,9 @@ export default function App() {
                                 <ArrowRight size={15} />
                               )}{" "}
                               {game.session?.state === "running"
-                                ? "Stop Game"
+                                ? game.launch?.executable.endsWith(".app")
+                                  ? "Manage Running App"
+                                  : "Stop Game"
                                 : game.session?.state === "mounted" &&
                                     game.launch?.compatibility_confirmed
                                   ? "Launch Game"
@@ -666,9 +672,7 @@ export default function App() {
                               onClick={() => {
                                 setDetail(game.id);
                                 setExecutable(game.launch?.executable ?? "");
-                                setArgs(
-                                  JSON.stringify(game.launch?.args ?? []),
-                                );
+                                setArgs((game.launch?.args ?? []).join("\n"));
                                 setCompatible(
                                   game.launch?.compatibility_confirmed ?? false,
                                 );
@@ -1312,7 +1316,7 @@ export default function App() {
                 </button>
               )}
             </div>
-            {selected.verified && (
+            {(selected.verified || selected.session) && (
               <section className="runtime-config">
                 <h3>Runtime & launch</h3>
                 <p className="muted">

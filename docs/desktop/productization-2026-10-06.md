@@ -20,7 +20,7 @@ The native screenshot capture was **blocked** (`could not create image from wind
 
 ## Artifacts and CI
 
-The initial implementation commit `2c0af0e` passed desktop/runtime/research workflows. Final functional code validation is tracked by [desktop CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288425), [runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288132), and [research CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288190). Latest PR-head checks are authoritative for subsequent documentation/theme-only changes.
+The initial implementation commit `2c0af0e` passed desktop/runtime/research workflows. Native engine/runtime code validation is tracked by [desktop CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288425), [runtime CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288132), and [research CI](https://github.com/gogolumo/PlaySparse/actions/runs/37490288190). Latest PR-head checks cover subsequent documentation/theme and GUI recovery changes, including retaining runtime controls when a store is missing.
 
 Local release `.app`, `.app` tarball and headlessly created/verified `.dmg` were produced from `c65d176`. [Hashes and sizes](evidence/productization-macos-artifacts-20261006.json). Hosted CI produces macOS app tarball/DMG, Windows NSIS executable and Linux deb/AppImage. These remain unsigned development artifacts, not signed/notarized production releases. The original Finder-based Tauri DMG helper was not reintroduced.
 

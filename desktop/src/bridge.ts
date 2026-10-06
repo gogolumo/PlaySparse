@@ -59,6 +59,17 @@ const demo: Snapshot = {
     retain_logs: true,
   },
 };
+if (params.get("view") === "recovery") {
+  demo.games[0].verified = false;
+  demo.games[0].error =
+    "Store is missing (simulated). Inspect the previous session before recovery.";
+  demo.games[0].session = {
+    state: "needs_attention",
+    mountpoint: "/Preview/Runtime/mount",
+    overlay: "/Preview/Runtime/overlay",
+    error: "Interrupted session (simulated); no persisted PID is killed.",
+  };
+}
 if (params.get("view") === "optimization")
   demo.jobs.push({
     id: "preview-job",
@@ -242,9 +253,7 @@ export async function forgetMissingStore(id: string): Promise<void> {
   await invoke("forget_missing_store", { id });
 }
 
-export async function gameLocations(
-  id: string,
-): Promise<{
+export async function gameLocations(id: string): Promise<{
   source: string;
   store: string | null;
   overlay: string;

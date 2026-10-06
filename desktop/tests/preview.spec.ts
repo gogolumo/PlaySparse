@@ -113,4 +113,18 @@ test("readiness, inspection, literal candidate confirmation and recovery are rea
     })
     .check();
   await page.getByRole("button", { name: "Save launch configuration" }).click();
+  await page.goto("/?view=recovery&theme=light");
+  await expect(
+    page.getByRole("button", { name: "Reconcile stale session" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Unmount", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Remove from Library", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "Reconcile stale session" }).click();
+  await expect(
+    page.getByRole("alert").filter({ hasText: "Runtime operations" }),
+  ).toContainText("require the native PlaySparse app");
 });
