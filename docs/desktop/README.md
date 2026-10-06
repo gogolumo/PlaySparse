@@ -95,6 +95,7 @@ All images are rendered UI captures. Browser images visibly say Preview Mode. Br
 |---|---|
 | Library / dark | [Dark library](screenshots/library-dark.png) |
 | Library / light | [Light library](screenshots/library-light.png) |
+| Native macOS generated fixture | [Actual native library](screenshots/native-macos-fixture.png) |
 | Native macOS empty | [Actual macOS window](screenshots/native-macos-empty.png) |
 | Empty | [Empty library](screenshots/empty-library.png) |
 | Add Game | [Folder registration](screenshots/add-game.png) |
@@ -119,3 +120,5 @@ python3 tools/desktop-native-acceptance.py --work /tmp/playsparse-desktop-native
 Use a new work directory. The harness builds an opt-in `acceptance` debug executable, creates a generated installation and an isolated library, and drives real Tauri IPC inside the native WKWebView. It exercises navigation, registration, analysis, packing, verification, exact mounted bytes, separate overlay writes, fixture launch/stop and unmount. Source file hashes and modes are compared afterward. A machine-readable receipt and capture of only that application's window are retained. The acceptance commands and startup script are excluded from the normal desktop build. Native folder-dialog interaction is not automated by this harness; it registers an actual generated folder through the same command used after selection.
 
 Failures retain evidence and any live application for inspection; they never force-unmount a potentially busy runtime. `--keep-open` retains a successful application. `--skip-build` requires an already-built acceptance binary. This is native fixture evidence, not a commercial-game compatibility claim.
+
+The final clean native WKWebView receipt is [retained here](evidence/native-wkwebview-20261006.json); [local macOS development bundle hashes](evidence/macos-development-bundles-20261006.json) identify the produced artifacts. The native screenshot uses a deliberately compressible generated fixture and establishes functionality, not commercial-game savings.

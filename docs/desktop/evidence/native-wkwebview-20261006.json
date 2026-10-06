@@ -1,0 +1,345 @@
+{
+  "scope": "Native WKWebView + real Tauri commands + Rust engine + installed macFUSE; generated fixture only",
+  "snapshot": {
+    "games": [
+      {
+        "analysis": {
+          "already_compressed_bytes": null,
+          "cdc_chunks": {
+            "allocated_bytes": 16384,
+            "files": 4,
+            "filesystem_entries": 8,
+            "logical_bytes": 16000045,
+            "measured_raw_bytes": 0,
+            "measured_raw_objects": 0,
+            "metadata_bytes": 3334,
+            "object_bytes": 896,
+            "pack_cpu_seconds": 0.7890889999999999,
+            "pack_seconds": 0.819886583,
+            "physical_bytes": 4230,
+            "reused_chunks": 10,
+            "unique_objects": 8,
+            "verified_before_publish": true,
+            "zstd_attempted_objects": 8
+          },
+          "cdc_duplicate_reuse_bytes": 10097152,
+          "classification_note": "Codec choice is measured. Already-compressed and high-entropy attribution is not inferred from filename or compression ratio.",
+          "exact_duplicate_file_bytes": 8000000,
+          "files": 4,
+          "fixed_chunks": {
+            "allocated_bytes": 20480,
+            "files": 4,
+            "filesystem_entries": 8,
+            "logical_bytes": 16000045,
+            "measured_raw_bytes": 0,
+            "measured_raw_objects": 0,
+            "metadata_bytes": 8422,
+            "object_bytes": 488,
+            "pack_cpu_seconds": 0.7676340000000001,
+            "pack_seconds": 0.781212,
+            "physical_bytes": 8910,
+            "reused_chunks": 56,
+            "unique_objects": 8,
+            "verified_before_publish": true,
+            "zstd_attempted_objects": 8
+          },
+          "high_entropy_bytes": null,
+          "logical_bytes": 16000045,
+          "measurement": "measured full scan, two temporary verified stores; no extrapolation",
+          "original_allocated_bytes": 16015360,
+          "projected_safe_mode": {
+            "measurement": "measured on this input",
+            "metadata_bytes": 3334,
+            "physical_bytes": 4230
+          },
+          "source_modified": false,
+          "temporary_stores_removed_on_exit": true,
+          "temporary_workspace": {
+            "available_bytes": 38951321600,
+            "basis": "conservative uncompressed budget with metadata/rounding reserve; concurrent disk use and unusual filesystem allocation can exceed this estimate",
+            "location": "/private/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T",
+            "measurement_path": "/private/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T",
+            "required_estimated_bytes": 166928474,
+            "volume": "/System/Volumes/Data"
+          },
+          "title": "PlaySparse Analysis",
+          "unique_compressible_raw_bytes": 5902848,
+          "unique_incompressible_raw_bytes": 45
+        },
+        "error": null,
+        "id": "g-1791288198357-0",
+        "launch": {
+          "args": [],
+          "compatibility_confirmed": true,
+          "executable": "fixture-game"
+        },
+        "name": "Generated Game",
+        "overlay_allocated_bytes": 16384,
+        "session": null,
+        "source": "/private/tmp/playsparse-native-ui-final-20261006/Generated Game",
+        "store": "/private/tmp/playsparse-native-ui-final-20261006/library/stores/g-1791288198357-0",
+        "store_stats": {
+          "allocated_bytes": 16384,
+          "files": 4,
+          "filesystem_entries": 8,
+          "logical_bytes": 16000045,
+          "measured_raw_bytes": 0,
+          "measured_raw_objects": 0,
+          "metadata_bytes": 3334,
+          "object_bytes": 896,
+          "pack_cpu_seconds": 0.790961,
+          "pack_seconds": 0.802271167,
+          "physical_bytes": 4230,
+          "reused_chunks": 10,
+          "unique_objects": 8,
+          "verified_before_publish": true,
+          "zstd_attempted_objects": 8
+        },
+        "verified": true
+      }
+    ],
+    "jobs": [
+      {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288200008,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288198372-1",
+        "operation": "analyze",
+        "stage": "complete",
+        "started_at": 1791288198372,
+        "state": "completed"
+      },
+      {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288200844,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288200018-2",
+        "operation": "optimize",
+        "stage": "complete",
+        "started_at": 1791288200018,
+        "state": "completed"
+      },
+      {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288201359,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288200947-3",
+        "operation": "verify",
+        "stage": "complete",
+        "started_at": 1791288200947,
+        "state": "completed"
+      },
+      {
+        "bytes": 0,
+        "cancellable": false,
+        "error": null,
+        "files": 0,
+        "finished_at": 1791288202122,
+        "game_id": "g-1791288198357-0",
+        "id": "runtime-1791288201386-4",
+        "operation": "mount",
+        "stage": "mount",
+        "started_at": 1791288201386,
+        "state": "completed"
+      },
+      {
+        "bytes": 0,
+        "cancellable": false,
+        "error": null,
+        "files": 0,
+        "finished_at": 1791288202207,
+        "game_id": "g-1791288198357-0",
+        "id": "runtime-1791288202184-5",
+        "operation": "launch",
+        "stage": "launch",
+        "started_at": 1791288202184,
+        "state": "completed"
+      },
+      {
+        "bytes": 0,
+        "cancellable": false,
+        "error": null,
+        "files": 0,
+        "finished_at": 1791288202241,
+        "game_id": "g-1791288198357-0",
+        "id": "runtime-1791288202219-6",
+        "operation": "stop",
+        "stage": "stop",
+        "started_at": 1791288202219,
+        "state": "completed"
+      },
+      {
+        "bytes": 0,
+        "cancellable": false,
+        "error": null,
+        "files": 0,
+        "finished_at": 1791288202428,
+        "game_id": "g-1791288198357-0",
+        "id": "runtime-1791288202253-7",
+        "operation": "unmount",
+        "stage": "unmount",
+        "started_at": 1791288202253,
+        "state": "completed"
+      },
+      {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288202862,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288202441-8",
+        "operation": "verify",
+        "stage": "complete",
+        "started_at": 1791288202441,
+        "state": "completed"
+      }
+    ],
+    "settings": {
+      "cache_mib": 256,
+      "retain_logs": true,
+      "storage_dir": "/private/tmp/playsparse-native-ui-final-20261006/library/stores",
+      "temp_dir": "/var/folders/r_/yttcgd5n3n505tnyj95t74j40000gn/T/",
+      "theme": "system"
+    },
+    "version": 1
+  },
+  "status": "PASS",
+  "steps": [
+    {
+      "stage": "native_navigation",
+      "value": "PASS"
+    },
+    {
+      "stage": "register_actual_folder",
+      "value": "/private/tmp/playsparse-native-ui-final-20261006/Generated Game"
+    },
+    {
+      "stage": "analyze",
+      "value": {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288200008,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288198372-1",
+        "operation": "analyze",
+        "stage": "complete",
+        "started_at": 1791288198372,
+        "state": "completed"
+      }
+    },
+    {
+      "stage": "optimize",
+      "value": {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288200844,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288200018-2",
+        "operation": "optimize",
+        "stage": "complete",
+        "started_at": 1791288200018,
+        "state": "completed"
+      }
+    },
+    {
+      "stage": "verify",
+      "value": {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288201359,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288200947-3",
+        "operation": "verify",
+        "stage": "complete",
+        "started_at": 1791288200947,
+        "state": "completed"
+      }
+    },
+    {
+      "stage": "mount",
+      "value": "PASS"
+    },
+    {
+      "stage": "exact_bytes_and_overlay_separation",
+      "value": {
+        "exact_bytes": 8000000,
+        "source_save_absent": true
+      }
+    },
+    {
+      "stage": "launch",
+      "value": "running"
+    },
+    {
+      "stage": "stop",
+      "value": "PASS"
+    },
+    {
+      "stage": "unmount",
+      "value": "PASS"
+    },
+    {
+      "stage": "verify",
+      "value": {
+        "bytes": 16000045,
+        "cancellable": false,
+        "error": null,
+        "files": 4,
+        "finished_at": 1791288202862,
+        "game_id": "g-1791288198357-0",
+        "id": "j-1791288202441-8",
+        "operation": "verify",
+        "stage": "complete",
+        "started_at": 1791288202441,
+        "state": "completed"
+      }
+    },
+    {
+      "stage": "verify_after_overlay",
+      "value": "PASS"
+    }
+  ],
+  "original_identity": {
+    ".playsparse-generated-fixture": {
+      "sha256": "80d987941c30b79c5f4aa4c797ae55c01794f382037b024923d2a9118bf5099f",
+      "size": 21,
+      "mode": 420
+    },
+    "assets/data.bin": {
+      "sha256": "0c43cdb1e20447ff9816101fccce04c0f70301e2b0fa07b306ede9f541e2b456",
+      "size": 8000000,
+      "mode": 420
+    },
+    "assets/duplicate.bin": {
+      "sha256": "0c43cdb1e20447ff9816101fccce04c0f70301e2b0fa07b306ede9f541e2b456",
+      "size": 8000000,
+      "mode": 420
+    },
+    "fixture-game": {
+      "sha256": "64cff525ce1a23041ba266e084ac3802496b6924ef2e080eacc59e2839266ce9",
+      "size": 24,
+      "mode": 493
+    }
+  },
+  "source_unchanged": true,
+  "application_sha256": "df169d3f3048bdd71d0ec4c1f428f72f53dbb358348d919c9b5985499f979e73",
+  "tested_commit": "9c9bd0b0b6d657a8b327f25dfb457314422a026d",
+  "working_tree_dirty": false,
+  "platform": "native macOS; generated fixture, not commercial-game compatibility"
+}

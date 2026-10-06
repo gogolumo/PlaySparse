@@ -1,0 +1,21 @@
+{
+  "code_commit": "9c9bd0b0b6d657a8b327f25dfb457314422a026d",
+  "scope": "Unsigned macOS arm64 development bundles; signing/notarization production gate remains open",
+  "files": [
+    {
+      "name": "PlaySparse_0.1.0_aarch64.dmg",
+      "bytes": 6683350,
+      "sha256": "b9cc302d983f305e57f7830bfd4f071974421f5fbe909aec5d260f81f7062312"
+    },
+    {
+      "name": "playsparse-app",
+      "bytes": 13205696,
+      "sha256": "ee1079b02d5e90bbbef8ac3cbf7606976e4b5f1ff118103f9c2adc0ae535946c"
+    },
+    {
+      "name": "playsparse-engine",
+      "bytes": 6560944,
+      "sha256": "bbb3e04e8fbeff9a343de85a700b04131f68aff676b321a785606646f8908235"
+    }
+  ]
+}
