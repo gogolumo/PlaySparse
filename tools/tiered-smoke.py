@@ -21,6 +21,7 @@ import subprocess
 import sys
 import threading
 import time
+import metadata_validation
 
 
 spec = importlib.util.spec_from_file_location(
@@ -168,8 +169,7 @@ def main():
         return mounted
 
     def check_view(label, mounted, expected, run_probe=False):
-        if update.tree(mountpoint) != expected:
-            raise RuntimeError(f"{label}: full mounted tree differs from expected")
+        metadata_validation.verify(mountpoint, expected, update.tree(mountpoint), evidence, label, report)
         executable = "testgame.exe" if sys.platform == "win32" else "testgame"
         run([str(mountpoint / executable), "--self-test"], f"{label}-native-executable")
         if run_probe:

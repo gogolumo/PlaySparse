@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import time
+import metadata_validation
 
 spec = importlib.util.spec_from_file_location("mounted_smoke", Path(__file__).with_name("mounted-smoke.py"))
 smoke = importlib.util.module_from_spec(spec)
@@ -204,15 +205,12 @@ def main():
             run([str(mountpoint / ("testgame.exe" if sys.platform == "win32" else "testgame")), "--self-test"], "mounted-executable")
             run([str(probe), str(source), str(mountpoint), "--iterations", "8", "--sequential-limit", str(8 << 20), "--output", str(evidence / "io-probe.json")], "io-probe")
             update(mountpoint)
-            if tree(mountpoint) != expected_tree:
-                raise RuntimeError("full mounted tree differs after update")
+            metadata_validation.verify(mountpoint, expected_tree, tree(mountpoint), evidence, "update", report)
         report["update_metrics"] = first.events
         second = Mount(cli, store, mountpoint, overlay, evidence / "remount.trace.jsonl", evidence, "remount", report["commands"])
         with second:
             report["remount_record"] = second.record
-            actual = tree(mountpoint)
-            if actual != expected_tree:
-                raise RuntimeError("full mounted tree differs after remount")
+            metadata_validation.verify(mountpoint, expected_tree, tree(mountpoint), evidence, "remount", report)
             report["remount_tree_verified"] = True
         report["remount_metrics"] = second.events
         report["overlay"] = run([str(cli), "overlay", "status", str(overlay)], "overlay")
@@ -224,8 +222,7 @@ def main():
         report["committed_verify"] = run([str(cli), "verify", str(committed_store)], "verify-committed")
         committed = Mount(cli, committed_store, mountpoint, None, evidence / "commit.trace.jsonl", evidence, "committed", report["commands"])
         with committed:
-            if tree(mountpoint) != expected_tree:
-                raise RuntimeError("committed immutable store differs from updated tree")
+            metadata_validation.verify(mountpoint, expected_tree, tree(mountpoint), evidence, "commit", report)
             report["committed_mount_verified"] = True
         # Reset a disposable duplicate; preserve the real update overlay for inspection.
         discarded_overlay = work / "discarded-overlay"
@@ -234,8 +231,7 @@ def main():
         report["discarded_overlay"] = run([str(cli), "overlay", "status", str(discarded_overlay)], "discarded-status")
         reset = Mount(cli, store, mountpoint, discarded_overlay, evidence / "reset.trace.jsonl", evidence, "reset", report["commands"])
         with reset:
-            if tree(mountpoint) != tree(source):
-                raise RuntimeError("discarded overlay did not restore immutable base view")
+            metadata_validation.verify(mountpoint, tree(source), tree(mountpoint), evidence, "discard", report)
             report["discard_mount_verified"] = True
         run([str(cli), "verify", str(store)], "verify-after")
         report["clean_unmount"] = not mountpoint.exists() or (not os.path.ismount(mountpoint) and not any(mountpoint.iterdir()))

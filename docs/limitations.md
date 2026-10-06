@@ -28,6 +28,19 @@
 See [game-awareness contract](game-awareness.md) and its retained experiment.
 
 
+## Validation metadata
+
+Mounted generated-tree validation separates expected content from extra macOS
+AppleDouble metadata. Only macOS v2 metadata envelopes with an expected companion
+are classified; existing `._*` content, malformed/orphan sidecars and real file
+changes still fail. Raw expected/observed inventories, envelope hashes and xattrs
+are recorded. Source/store fingerprints remain strict. This validates content
+bytes, not preservation of resource forks, xattrs or signing metadata in v1.
+Linux and Windows tree comparison remains strict.
+
+See [disk budgets](temporary-storage.md) for preflight scope and remaining capacity
+limits.
+
 ## Writable and adaptive runtime v1
 
 - Tiny writes to a base file can copy the entire file. Copy-up bytes and allocated
