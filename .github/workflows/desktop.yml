@@ -42,7 +42,9 @@ jobs:
         include:
           - os: macos-14
             platform: macos-arm64
-            bundles: app,dmg
+            # Tauri's Finder/AppleScript DMG helper is unreliable on hosted macOS runners.
+            # Build the .app with Tauri, then create a headless DMG below with hdiutil.
+            bundles: app
           - os: windows-latest
             platform: windows-x64
             bundles: nsis
@@ -127,6 +129,42 @@ jobs:
       - name: Build unsigned development application and installers
         run: npm run tauri build -- --bundles ${{ matrix.bundles }}
         working-directory: desktop
+      - name: Create verified macOS development DMG without Finder automation
+        if: runner.os == 'macOS'
+        shell: bash
+        working-directory: desktop
+        run: |
+          set -euo pipefail
+
+          # The macFUSE SDK is intentionally exposed to Rust compilation above.
+          # Do not leak its dynamic-loader paths into Apple's DiskImages tools.
+          unset DYLD_LIBRARY_PATH
+          unset DYLD_FRAMEWORK_PATH
+
+          app="src-tauri/target/release/bundle/macos/PlaySparse.app"
+          dmg_dir="src-tauri/target/release/bundle/dmg"
+          staging="$RUNNER_TEMP/playsparse-dmg-staging"
+          version="$(python3 -c 'import json; print(json.load(open("src-tauri/tauri.conf.json"))["version"])')"
+          dmg="$dmg_dir/PlaySparse_${version}_aarch64.dmg"
+
+          test -d "$app"
+          rm -rf "$staging"
+          mkdir -p "$staging" "$dmg_dir"
+          ditto "$app" "$staging/PlaySparse.app"
+          ln -s /Applications "$staging/Applications"
+
+          rm -f "$dmg"
+          hdiutil create \
+            -volname "PlaySparse" \
+            -srcfolder "$staging" \
+            -ov \
+            -format UDZO \
+            "$dmg"
+          hdiutil verify "$dmg"
+          test -s "$dmg"
+
+          rm -rf "$staging"
+
       - name: Preserve executable modes in macOS app
         if: runner.os == 'macOS'
         run: tar -czf desktop/src-tauri/target/release/bundle/PlaySparse-app.tar.gz -C desktop/src-tauri/target/release/bundle/macos PlaySparse.app
