@@ -1,6 +1,7 @@
 //! Bounded, best-effort runtime telemetry. Producer callbacks never do file I/O.
 use playsparse_core::{Error, Result};
 use serde::{Deserialize, Serialize};
+mod ranges;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs::{File, OpenOptions},
@@ -257,7 +258,8 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
     let mut operations = BTreeMap::<String, u64>::new();
     let mut sources = BTreeMap::<String, u64>::new();
     let mut files = BTreeMap::<String, u64>::new();
-    let mut ranges = BTreeMap::<(String, u64, u64), u64>::new();
+    let mut ranges = ranges::Ranges::new()?;
+    let mut file_ids = BTreeMap::<String, u64>::new();
     let mut previous_end = BTreeMap::new();
     let mut latencies = Vec::new();
     let mut sessions = BTreeSet::new();
@@ -268,10 +270,9 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
         mut read_bytes,
         mut write_bytes,
         mut sequential,
-        mut repeated,
         mut hits,
         mut misses,
-    ) = (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64);
+    ) = (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64);
     loop {
         line.clear();
         let count = reader
@@ -309,6 +310,8 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
         *sources.entry(event.source).or_default() += 1;
         if !files.contains_key(&event.path) {
             reserve_key_bytes(&mut retained_key_bytes, event.path.len())?;
+            reserve_key_bytes(&mut retained_key_bytes, event.path.len())?;
+            file_ids.insert(event.path.clone(), file_ids.len() as u64);
         }
         *files.entry(event.path.clone()).or_default() += 1;
         latencies.push(event.latency_ns);
@@ -329,15 +332,7 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
             {
                 sequential += 1;
             }
-            let range = (event.path, event.offset, event.requested);
-            if !ranges.contains_key(&range) {
-                reserve_key_bytes(&mut retained_key_bytes, range.0.len())?;
-            }
-            let visits = ranges.entry(range).or_default();
-            if *visits > 0 {
-                repeated += 1;
-            }
-            *visits += 1;
+            ranges.add((file_ids[&event.path], event.offset, event.requested))?;
             match event.cache.as_str() {
                 "hit" => hits += 1,
                 "miss" | "mixed" => misses += 1,
@@ -350,7 +345,6 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
                 .ok_or_else(|| Error::Invalid("trace write byte total overflows u64".into()))?;
         }
         if files.len() > MAX_IDENTITIES
-            || ranges.len() > MAX_IDENTITIES
             || sessions.len() > MAX_IDENTITIES
             || previous_end.len() > MAX_IDENTITIES
             || operations.len() > 64
@@ -376,12 +370,15 @@ pub fn summarize(path: &Path) -> Result<serde_json::Value> {
         .into_iter()
         .map(|(path, events)| serde_json::json!({"path":path,"events":events}))
         .collect();
-    let mut hot_ranges: Vec<_> = ranges.into_iter().collect();
-    hot_ranges.sort_by_key(|(_, events)| std::cmp::Reverse(*events));
-    hot_ranges.truncate(20);
-    let hot_ranges: Vec<_> = hot_ranges.into_iter().map(|((path,offset,length),events)| serde_json::json!({"path":path,"offset":offset,"length":length,"events":events})).collect();
+    let (unique_ranges, hot_ranges) = ranges.finish()?;
+    let repeated = reads - unique_ranges;
+    let mut paths = vec![String::new(); file_ids.len()];
+    for (path, id) in file_ids {
+        paths[id as usize] = path;
+    }
+    let hot_ranges: Vec<_> = hot_ranges.into_iter().map(|((id,offset,length),events)| serde_json::json!({"path":paths[id as usize],"offset":offset,"length":length,"events":events})).collect();
     Ok(
-        serde_json::json!({"version":VERSION,"events":latencies.len(),"sessions":sessions,"operations":operations,"read_operations":reads,"write_operations":writes,"read_bytes":read_bytes,"write_bytes":write_bytes,"hot_files":hot_files,"hot_ranges":hot_ranges,"sequential_read_percentage":100.0*ratio(sequential,reads),"reread_ratio":ratio(repeated,reads),"cache_hit_ratio":ratio(hits,hits+misses),"cache_miss_ratio":ratio(misses,hits+misses),"cache_ratio_basis":"read events; mixed counts as miss; bypass excluded","latency_ns":{"p50":percentile(50),"p95":percentile(95),"p99":percentile(99)},"sources":sources}),
+        serde_json::json!({"version":VERSION,"range_aggregation":"exact external sorted runs; scratch removed on exit","unique_read_ranges":unique_ranges,"analysis_limits":{"events":MAX_EVENTS,"file_session_stream_identities":MAX_IDENTITIES,"retained_key_bytes":MAX_RETAINED_KEY_BYTES,"range_sort_run_keys":16384,"range_sort_max_runs":128},"events":latencies.len(),"sessions":sessions,"operations":operations,"read_operations":reads,"write_operations":writes,"read_bytes":read_bytes,"write_bytes":write_bytes,"hot_files":hot_files,"hot_ranges":hot_ranges,"sequential_read_percentage":100.0*ratio(sequential,reads),"reread_ratio":ratio(repeated,reads),"cache_hit_ratio":ratio(hits,hits+misses),"cache_miss_ratio":ratio(misses,hits+misses),"cache_ratio_basis":"read events; mixed counts as miss; bypass excluded","latency_ns":{"p50":percentile(50),"p95":percentile(95),"p99":percentile(99)},"sources":sources}),
     )
 }
 
@@ -570,6 +567,25 @@ mod tests {
             write_imported(&path, [event]);
             assert!(summarize(&path).is_err(), "{field} was accepted");
         }
+    }
+    #[test]
+    fn summarizes_more_than_100k_unique_ranges_exactly() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("trace");
+        write_imported(
+            &path,
+            (0..110001).map(|index| {
+                let mut event = imported_event("read");
+                event.offset = if index == 110000 { 90000 } else { index };
+                event
+            }),
+        );
+        let report = summarize(&path).unwrap();
+        assert_eq!(report["unique_read_ranges"], 110000);
+        assert_eq!(report["hot_ranges"][0]["offset"], 90000);
+        assert_eq!(report["hot_ranges"][0]["events"], 2);
+        assert_eq!(report["read_bytes"], 440004);
+        assert_eq!(report["reread_ratio"], 1.0 / 110001.0);
     }
     #[test]
     fn rejects_unbounded_distinct_read_workers() {
