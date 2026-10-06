@@ -214,7 +214,7 @@ Evidence progression:
 
 ## M11 — Productization
 
-A first development desktop is implemented in [PR #16](https://github.com/gogolumo/PlaySparse/pull/16): Tauri/React navigation and themes, persistent registration, real Rust analysis/packing/verification, cooperative cancellation, diagnostic gating, direct-process launch tracking and ordinary mount/unmount. Native macOS fixture acceptance includes real WKWebView/IPC and exact-byte writable runtime checks. See the [desktop guide](docs/desktop/README.md) and [milestone report](docs/desktop/acceptance-2026-10-06.md).
+A first development desktop is implemented in merged [PR #16](https://github.com/gogolumo/PlaySparse/pull/16), with runtime hardening and final acceptance in [PR #17](https://github.com/gogolumo/PlaySparse/pull/17): Tauri/React navigation and themes, persistent registration, real Rust analysis/packing/verification, cooperative cancellation, diagnostic gating, direct-process launch tracking and ordinary mount/unmount. Native macOS fixture acceptance includes real WKWebView/IPC and exact-byte writable runtime checks. See the [desktop guide](docs/desktop/README.md) and [milestone report](docs/desktop/acceptance-2026-10-06.md).
 
 Open production gates remain:
 

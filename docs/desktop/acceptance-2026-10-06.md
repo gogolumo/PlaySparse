@@ -1,6 +1,6 @@
 # Desktop milestones — 2026-10-06
 
-Result: a functional development desktop over the existing engine. Production release and broad game compatibility gates remain open. [Draft PR #16](https://github.com/gogolumo/PlaySparse/pull/16) targets `main` from `feat/playsparse-desktop`; unrelated merged research/evidence work is preserved.
+Result: a functional development desktop over the existing engine. Production release and broad game compatibility gates remain open. The desktop foundation was merged in [PR #16](https://github.com/gogolumo/PlaySparse/pull/16). [Follow-up PR #17](https://github.com/gogolumo/PlaySparse/pull/17) targets `main` from `feat/playsparse-desktop` with runtime hardening and final native evidence; unrelated research/evidence work is preserved.
 
 | Milestone | Working implementation | Created files | Commits |
 |---|---|---|---|
