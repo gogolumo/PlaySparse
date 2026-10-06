@@ -11,12 +11,20 @@ use std::{
     process::{Child, Command, Stdio},
     sync::{
         Arc, Mutex,
-        atomic::{AtomicBool, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
     },
     thread,
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
+static SEQUENCE: AtomicU64 = AtomicU64::new(0);
+fn identity(prefix: &str) -> String {
+    format!(
+        "{prefix}-{}-{}",
+        now(),
+        SEQUENCE.fetch_add(1, Ordering::Relaxed)
+    )
+}
 fn now() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -266,7 +274,7 @@ impl Service {
             "Library limit: 1000 installations"
         );
         let game = Game {
-            id: format!("g-{}-{}", now(), snapshot.games.len()),
+            id: identity("g"),
             name: source
                 .file_name()
                 .context("Cannot register filesystem root")?
@@ -282,6 +290,16 @@ impl Service {
             error: None,
         };
         self.change_idle(|db| {
+            ensure!(
+                !db.games.iter().any(|g| overlap(&g.source, &game.source)),
+                "Installation already registered or overlaps another entry"
+            );
+            ensure!(db.games.len() < 1000, "Library limit: 1000 installations");
+            let storage = playsparse_cli::workspace::projected(&db.settings.storage_dir)?.0;
+            ensure!(
+                !overlap(&storage, &game.source),
+                "Installation overlaps current store directory"
+            );
             db.games.push(game.clone());
             Ok(())
         })?;
@@ -318,6 +336,13 @@ impl Service {
             );
         }
         self.change_idle(|db| {
+            for path in [&settings.storage_dir, &settings.temp_dir] {
+                let location = playsparse_cli::workspace::projected(path)?.0;
+                ensure!(
+                    !db.games.iter().any(|g| overlap(&location, &g.source)),
+                    "Storage or temporary directory overlaps installation"
+                );
+            }
             db.settings = settings;
             Ok(())
         })
@@ -375,7 +400,7 @@ impl Service {
             );
         }
         let job = Job {
-            id: format!("j-{}", now()),
+            id: identity("j"),
             game_id: id.into(),
             operation,
             state: "running".into(),
@@ -603,7 +628,7 @@ impl Service {
             "unmount" => Operation::Unmount,
             _ => anyhow::bail!("Unknown runtime action"),
         };
-        let job_id = format!("runtime-{}", now());
+        let job_id = identity("runtime");
         self.change(|db| {
             game_mut(db, id)?;
             if db.jobs.len() >= 200 {

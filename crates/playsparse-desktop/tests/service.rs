@@ -162,6 +162,33 @@ fn cancellation_at_publication_removes_staging_and_preserves_source() {
     }));
     assert_eq!(fs::read(source.join("assets/data.bin")).unwrap(), expected);
 }
+
+#[test]
+fn concurrent_registration_cannot_duplicate_a_source() {
+    let temp = tempfile::tempdir().unwrap();
+    let source = temp.path().join("source");
+    fixture(&source);
+    let service = Service::open(&temp.path().join("app"), Path::new("unused")).unwrap();
+    let barrier = std::sync::Arc::new(std::sync::Barrier::new(4));
+    let threads: Vec<_> = (0..4)
+        .map(|_| {
+            let service = service.clone();
+            let source = source.clone();
+            let barrier = barrier.clone();
+            thread::spawn(move || {
+                barrier.wait();
+                service.add_game(&source).is_ok()
+            })
+        })
+        .collect();
+    let successes = threads
+        .into_iter()
+        .map(|handle| handle.join().unwrap())
+        .filter(|ok| *ok)
+        .count();
+    assert_eq!(successes, 1);
+    assert_eq!(service.snapshot().games.len(), 1);
+}
 #[test]
 fn interrupted_jobs_and_sessions_become_attention_without_killing_persisted_pids() {
     let temp = tempfile::tempdir().unwrap();
