@@ -18,6 +18,7 @@ dirty-checkout run also passed and was used for development, not the final recei
 | `9cd71f4` | Classify AppleDouble metadata during mounted validation |
 | `d7188b5` | Temporary workspace control and disk-budget/doctor diagnostics |
 | `a57293c` | Exact bounded external read-range aggregation |
+| `2e3463d` | Preserve Linux real-ENOSPC testing after preflight |
 | `f145144` (separate branch) | PR #13 lossless curated evidence replacement, [draft PR #14](https://github.com/gogolumo/PlaySparse/pull/14) |
 
 ## FILES CHANGED
@@ -25,7 +26,7 @@ dirty-checkout run also passed and was used for development, not the final recei
 - `ROADMAP.md`, `README.md`, `docs/productization-audit-2026-10-06.md`
 - `docs/limitations.md`, `docs/temporary-storage.md`, `docs/access-tracing.md`
 - `tools/metadata_validation.py`, `tools/mounted-update.py`, `tools/tiered-smoke.py`
-- `tests/test_metadata_validation.py`
+- `tests/test_metadata_validation.py`, `tools/crash-smoke.py`
 - `crates/playsparse-cli/src/{main,game,diagnostics,workspace}.rs`
 - `crates/playsparse-vfs-win/src/backend.rs`
 - `crates/playsparse-trace/Cargo.toml`, `crates/playsparse-trace/src/{lib,ranges}.rs`
@@ -91,7 +92,14 @@ Bundle bytes: **249,528**. SHA-256:
 Every member was verified after reopening the final archive. Extract to a new
 evidence directory (members are relative to the final run root) and inspect
 `result.json`, `binary-build-manifest.json`, `writable/evidence/*-tree.json` and
-`tiers/evidence/*-tree.json`. The canonical report confirms repository/binary
+`tiers/evidence/*-tree.json`. The Linux-only crash harness now tests ordinary budget refusal separately from
+real ENOSPC. Its existing LD_PRELOAD fault injector overrides available space
+only for the exact owned tiny tmpfs, then requires real pack-write `os error 28`.
+This avoids mistaking a preflight refusal for kernel disk-full evidence. That
+harness was syntax-checked locally; execution is a hosted Linux gate, not a Mac
+physical result.
+
+The canonical report confirms repository/binary
 invariance, real mounts, stage results and original commands.
 
 ## KNOWN LIMITATIONS
