@@ -846,6 +846,16 @@ impl Service {
             }
             .into();
             job.error = result.as_ref().err().map(|e| format!("{e:#}"));
+            if let Err(error) = &result
+                && let Some(session) = &mut game_mut(db, id)?.session
+            {
+                if session.state == "preparing" {
+                    session.state = "needs_attention".into();
+                }
+                session.error = Some(format!(
+                    "{action} failed: {error:#}. Session retained for inspection and safe recovery."
+                ));
+            }
             Ok(())
         })?;
         result
@@ -1257,6 +1267,33 @@ fn validate_owned_path(path: &Path) -> Result<()> {
 mod owned_path_tests {
     use super::*;
     #[test]
+    fn hardlinked_log_is_replaced_without_truncating_source() {
+        use std::os::unix::fs::MetadataExt;
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().canonicalize().unwrap();
+        let source = root.join("original");
+        fs::write(&source, b"unchanged").unwrap();
+        let logs = root.join("runtime");
+        fs::create_dir(&logs).unwrap();
+        let path = logs.join("launch.log");
+        fs::hard_link(&source, &path).unwrap();
+        let mut command = Command::new("/bin/echo");
+        command.arg("generated log");
+        let mut child = spawn_logged(&mut command, &path, true).unwrap();
+        assert!(child.wait().unwrap().success());
+        let deadline = std::time::Instant::now() + Duration::from_secs(2);
+        while fs::metadata(&path).unwrap().len() == 0 && std::time::Instant::now() < deadline {
+            thread::sleep(Duration::from_millis(10));
+        }
+        assert_eq!(fs::read(&source).unwrap(), b"unchanged");
+        assert_ne!(
+            fs::metadata(&source).unwrap().ino(),
+            fs::metadata(&path).unwrap().ino()
+        );
+        assert_eq!(fs::read(&path).unwrap(), b"generated log\n");
+    }
+
+    #[test]
     fn runtime_symlink_is_rejected_before_creating_source_directories() {
         let temp = tempfile::tempdir().unwrap();
         let root = temp.path().canonicalize().unwrap();
@@ -1279,11 +1316,20 @@ fn spawn_logged(command: &mut Command, path: &Path, retain: bool) -> Result<Chil
             .stderr(Stdio::null())
             .spawn()?);
     }
-    let log = OpenOptions::new()
-        .create(true)
-        .truncate(true)
-        .write(true)
-        .open(path)?;
+    let parent = path.parent().context("Missing log directory")?;
+    validate_owned_path(parent)?;
+    match fs::symlink_metadata(path) {
+        Ok(metadata) => ensure!(
+            metadata.is_file() && !metadata.is_symlink(),
+            "Runtime log is redirected or not a regular file; inspect it before retrying"
+        ),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        Err(error) => return Err(error.into()),
+    }
+    // Replace the directory entry atomically, never truncate a pre-existing inode.
+    // This also keeps a hardlinked source file untouched. The returned handle is
+    // the exclusively-created tempfile inode, not a newly followed log path.
+    let log = tempfile::NamedTempFile::new_in(parent)?.persist(path)?;
     let shared = Arc::new(Mutex::new((log, 0usize)));
     let mut child = command
         .stdout(Stdio::piped())

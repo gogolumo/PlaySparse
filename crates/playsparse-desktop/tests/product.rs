@@ -168,3 +168,46 @@ fn missing_store_recovery_forgets_metadata_without_deleting_files() {
     assert!(restarted.snapshot().games[0].store.is_none());
     assert_eq!(fs::read(source.join("data")).unwrap(), b"original");
 }
+
+#[cfg(unix)]
+#[test]
+fn redirected_mount_log_failure_keeps_recoverable_session_and_preserves_source() {
+    use std::os::unix::fs::{PermissionsExt, symlink};
+    let temp = tempfile::tempdir().unwrap();
+    let source = temp.path().join("Game");
+    fs::create_dir(&source).unwrap();
+    fs::write(source.join("data"), b"original").unwrap();
+    let engine = temp.path().join("fake-doctor");
+    fs::write(
+        &engine,
+        b"#!/bin/sh\nprintf '%s\n' '{\"mount_backend\":{\"available\":true}}'\n",
+    )
+    .unwrap();
+    fs::set_permissions(&engine, fs::Permissions::from_mode(0o755)).unwrap();
+    let root = temp.path().join("app");
+    let service = Service::open(&root, &engine).unwrap();
+    let game = service.add_game(&source).unwrap();
+    drop(service);
+    let store = root.join("stores").join(&game.id);
+    playsparse_store::pack_directory(&source, &store, &playsparse_store::PackOptions::default())
+        .unwrap();
+    let path = root.join("library.json");
+    let mut db: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+    db["games"][0]["store"] = serde_json::json!(store);
+    db["games"][0]["verified"] = serde_json::json!(true);
+    fs::write(&path, serde_json::to_vec(&db).unwrap()).unwrap();
+    let runtime = root.join("runtimes").join(&game.id);
+    fs::create_dir_all(&runtime).unwrap();
+    symlink(source.join("data"), runtime.join("mount.log")).unwrap();
+    let service = Service::open(&root, &engine).unwrap();
+    assert!(service.perform_runtime(&game.id, "mount", false).is_err());
+    assert_eq!(
+        service.snapshot().games[0].session.as_ref().unwrap().state,
+        "needs_attention"
+    );
+    assert_eq!(service.snapshot().jobs.last().unwrap().state, "failed");
+    assert_eq!(fs::read(source.join("data")).unwrap(), b"original");
+    service.perform_runtime(&game.id, "recover", false).unwrap();
+    assert!(service.snapshot().games[0].session.is_none());
+    assert_eq!(fs::read(source.join("data")).unwrap(), b"original");
+}
