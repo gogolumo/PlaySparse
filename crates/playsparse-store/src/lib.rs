@@ -515,11 +515,23 @@ impl Store {
     }
 
     pub fn verify(&self) -> Result<VerifyStats> {
+        self.verify_observed(&mut |_| Ok(()))
+    }
+    /// Callback failures abort verification; called between bounded chunk reads.
+    pub fn verify_observed(
+        &self,
+        observer: &mut dyn FnMut(Progress) -> Result<()>,
+    ) -> Result<VerifyStats> {
         let mut bytes = 0u64;
         // Whole-file integrity checked incrementally; no full-file buffer.
         for file in &self.manifest.files {
             let mut hasher = blake3::Hasher::new();
             for chunk in &file.chunks {
+                observer(Progress {
+                    stage: "verifying",
+                    bytes,
+                    files: 0,
+                })?;
                 let raw = self.read_object(&parse_hash(&chunk.hash)?)?;
                 hasher.update(&raw);
                 bytes += raw.len() as u64;
@@ -537,6 +549,11 @@ impl Store {
             .map(|c| parse_hash(&c.hash))
             .collect::<Result<_>>()?;
         for hash in self.index.keys() {
+            observer(Progress {
+                stage: "verifying",
+                bytes,
+                files: self.manifest.files.len(),
+            })?;
             if !referenced.contains(hash) {
                 self.read_object(hash)?;
             }
@@ -691,7 +708,7 @@ pub fn pack_directory(
     destination: &Path,
     options: &PackOptions,
 ) -> Result<PackStats> {
-    pack_directory_inner(source, destination, options, None)
+    pack_directory_inner(source, destination, options, None, &mut |_| Ok(()))
 }
 /// Experimental offline plan; the runtime still reads the unchanged v1 format.
 pub fn pack_directory_with_plan(
@@ -700,13 +717,31 @@ pub fn pack_directory_with_plan(
     options: &PackOptions,
     plan: &playsparse_game::PackingPlan,
 ) -> Result<PackStats> {
-    pack_directory_inner(source, destination, options, Some(plan))
+    pack_directory_inner(source, destination, options, Some(plan), &mut |_| Ok(()))
+}
+/// Real engine work counters; no estimated percentage or synthetic stages.
+#[derive(Clone, Copy, Debug, Serialize)]
+pub struct Progress {
+    pub stage: &'static str,
+    pub bytes: u64,
+    pub files: usize,
+}
+/// Abort cooperatively by returning an error. Staging is removed by RAII;
+/// the final callback precedes atomic publication and cannot roll it back.
+pub fn pack_directory_observed(
+    source: &Path,
+    destination: &Path,
+    options: &PackOptions,
+    observer: &mut dyn FnMut(Progress) -> Result<()>,
+) -> Result<PackStats> {
+    pack_directory_inner(source, destination, options, None, observer)
 }
 fn pack_directory_inner(
     source: &Path,
     destination: &Path,
     options: &PackOptions,
     plan: Option<&playsparse_game::PackingPlan>,
+    observer: &mut dyn FnMut(Progress) -> Result<()>,
 ) -> Result<PackStats> {
     let start = Instant::now();
     let cpu_start = playsparse_core::process_resources().0;
@@ -788,12 +823,19 @@ fn pack_directory_inner(
         directories: Vec::new(),
         files: Vec::new(),
     };
+    let mut processed = 0u64;
+    let mut completed_files = 0usize;
     let mut entries = Vec::new();
     let mut metadata_budget = 0u64;
     for entry in walkdir::WalkDir::new(&source)
         .min_depth(1)
         .follow_links(false)
     {
+        observer(Progress {
+            stage: "scanning",
+            bytes: 0,
+            files: entries.len(),
+        })?;
         let entry = entry.map_err(|e| invalid(e.to_string()))?;
         if entry.file_type().is_symlink() {
             return Err(invalid(format!(
@@ -862,6 +904,12 @@ fn pack_directory_inner(
         let mut hasher = blake3::Hasher::new();
         let mut offset = 0u64;
         let mut add = |raw: &[u8]| -> Result<()> {
+            observer(Progress {
+                stage: "packing",
+                bytes: processed,
+                files: completed_files,
+            })?;
+            processed += raw.len() as u64;
             metadata_budget += 192;
             if metadata_budget > MAX_METADATA_BYTES {
                 return Err(invalid("chunk metadata exceeds bounded format limit"));
@@ -938,10 +986,16 @@ fn pack_directory_inner(
             return Err(invalid("source content changed after plan validation"));
         }
         manifest.files.push(file);
+        completed_files += 1;
     }
     if let Some(pack) = writer.pack.take() {
         pack.sync_all()?;
     }
+    observer(Progress {
+        stage: "writing manifests",
+        bytes: processed,
+        files: completed_files,
+    })?;
     manifest.validate()?;
     let manifest_bytes = serde_json::to_vec(&manifest).map_err(|e| invalid(e.to_string()))?;
     if manifest_bytes.len() as u64 > MAX_METADATA_BYTES {
@@ -950,7 +1004,7 @@ fn pack_directory_inner(
     let index_bytes = encode_index(&writer.index)?;
     write_synced(&stage.path().join("manifest.json"), &manifest_bytes)?;
     write_synced(&stage.path().join("index/objects.idx"), &index_bytes)?;
-    Store::open_inner(stage.path(), true)?.verify()?;
+    Store::open_inner(stage.path(), true)?.verify_observed(observer)?;
     let commit = Commit {
         version: FORMAT_VERSION,
         manifest_blake3: blake3::hash(&manifest_bytes).to_string(),
@@ -998,6 +1052,11 @@ fn pack_directory_inner(
     if destination.exists() {
         return Err(invalid("destination appeared during pack"));
     }
+    observer(Progress {
+        stage: "publishing",
+        bytes: processed,
+        files: completed_files,
+    })?;
     publish_directory(stage.path(), &destination)?;
     sync_dir(&parent)?;
     drop(stage);
