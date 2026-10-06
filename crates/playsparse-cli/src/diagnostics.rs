@@ -79,6 +79,10 @@ pub(super) fn augment(report: &mut Value, requested: bool) -> i32 {
 
 pub(super) fn print_human(report: &Value) {
     println!(
+        "Version: {}",
+        report["version"].as_str().unwrap_or("unknown")
+    );
+    println!(
         "PlaySparse doctor: {} / {}",
         report["os"].as_str().unwrap_or("unknown"),
         report["arch"].as_str().unwrap_or("unknown")
@@ -110,6 +114,21 @@ pub(super) fn print_human(report: &Value) {
     for field in ["reason", "error", "preserved_work"] {
         if let Some(value) = report["mount_test"][field].as_str() {
             println!("{field}: {value}");
+        }
+    }
+    for field in ["temporary_workspace", "store_destination"] {
+        let value = &report[field];
+        println!(
+            "{field}: {} (volume {}), {} bytes available",
+            value["location"].as_str().unwrap_or("unknown"),
+            value["volume"].as_str().unwrap_or("unknown"),
+            value["available_bytes"]
+                .as_u64()
+                .map(|v| v.to_string())
+                .unwrap_or_else(|| "UNKNOWN".into())
+        );
+        if let Some(error) = value["error"].as_str() {
+            println!("  {error}");
         }
     }
 }

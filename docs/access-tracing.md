@@ -85,7 +85,7 @@ silently treating it as complete evidence.
 ## Summary interpretation and limits
 
 The analyzer accepts at most 2,000,000 events and 256 KiB per line. It limits
-distinct file paths, exact read ranges, sessions and `(session, worker, path)`
+distinct file paths, sessions and `(session, worker, path)`
 streams to 100,000 each, and operation and source labels to 64 each. Retained
 string keys have a combined 32 MiB budget in addition to those count limits.
 Imported events enforce the same 4096-byte paths and 32-byte categories as the
@@ -93,6 +93,18 @@ writer, plus 64-byte session/worker identifiers. Read/write byte totals reject
 `u64` overflow. Optimize and replay share the bounded event deserializer.
 It rejects inputs exceeding those bounds. Exact
 latencies are retained and sorted within the event bound.
+
+Exact read ranges are aggregated using disk-backed sorted runs instead of a
+100,000-entry RAM map. A run holds at most 16,384 fixed-width 24-byte keys, and
+at most 128 runs are opened for merge. Within the 2,000,000-event bound this
+needs at most 48,000,000 scratch bytes plus filesystem overhead; read counts,
+unique ranges, reread ratio and hottest ranges remain exact. No sketch or
+approximate metric is used. Scratch uses the OS temporary directory (`TMPDIR`
+on POSIX, `TEMP` on Windows), and is removed on ordinary exit/error; process
+kills may leave a `playsparse-trace-*` directory. Disk errors fail the summary,
+never return partial statistics. Long traces can still reach the event,
+file/session/stream or retained-string limits; this removes the distinct-range
+limit rather than claiming unlimited ingestion.
 
 The JSON summary reports operation counts, returned read/write bytes, source
 counts, the 20 hottest files and the 20 hottest exact read ranges. File heat

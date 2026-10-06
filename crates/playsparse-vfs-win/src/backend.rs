@@ -578,6 +578,13 @@ pub fn system_resources(path: &Path) -> serde_json::Value {
         unsafe { GetDiskFreeSpaceExW(PCWSTR(wide.as_ptr()), Some(&mut disk_bytes), None, None) }
             .ok()
             .map(|_| disk_bytes);
+    let mut volume = vec![0u16; 32768];
+    let volume_path = unsafe { GetVolumePathNameW(PCWSTR(wide.as_ptr()), &mut volume) }
+        .ok()
+        .map(|_| {
+            let end = volume.iter().position(|c| *c == 0).unwrap_or(volume.len());
+            String::from_utf16_lossy(&volume[..end])
+        });
     let elevated = (|| -> windows::core::Result<bool> {
         let mut handle = HANDLE::default();
         unsafe {
@@ -602,6 +609,7 @@ pub fn system_resources(path: &Path) -> serde_json::Value {
         "available_ram_bytes": available_ram,
         "available_disk_bytes": available_disk,
         "disk_measurement_path": disk_path,
+        "volume_path": volume_path,
         "elevated": elevated,
         "winfsp": availability(),
     })
