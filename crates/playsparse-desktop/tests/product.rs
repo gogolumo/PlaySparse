@@ -85,6 +85,10 @@ fn prerequisites_are_not_reported_as_a_successful_mount() {
     use serde_json::json;
     let report = json!({"os":"macos","arch":"aarch64","mount_backend":{"available":true,"backend":"macFUSE"},"mount_test":{"status":"NOT RUN"}});
     assert_eq!(readiness(&report)["state"], "Unknown");
+    let mut blocked = report.clone();
+    blocked["mount_test"]["status"] = json!("BLOCKED");
+    assert_eq!(readiness(&blocked)["state"], "Action required");
+    assert_eq!(readiness(&blocked)["can_attempt_mount"], false);
     let mut passed = report.clone();
     passed["mount_test"]["status"] = json!("PASS");
     assert_eq!(readiness(&passed)["state"], "Ready");

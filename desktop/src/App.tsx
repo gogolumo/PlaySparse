@@ -1021,7 +1021,10 @@ export default function App() {
               Installation folder
               <input
                 value={addPath}
-                onChange={(e) => setAddPath(e.target.value)}
+                onChange={(e) => {
+                  setInspection(null);
+                  setAddPath(e.target.value);
+                }}
               />
             </label>
             {inspection?.discovery_truncated && (
@@ -1062,9 +1065,7 @@ export default function App() {
               <button onClick={() => setAddPath(null)}>Cancel</button>
               <button
                 className="primary"
-                disabled={
-                  pending || !inspection || inspection.source !== addPath
-                }
+                disabled={pending || !inspection}
                 onClick={() =>
                   void action(async () => {
                     await bridge.addGame(addPath);

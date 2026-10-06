@@ -1351,7 +1351,9 @@ pub fn readiness(report: &Value) -> Value {
         "Action required"
     } else if report["mount_test"]["status"] == "PASS" {
         "Ready"
-    } else if report["mount_test"]["status"] == "FAIL" {
+    } else if report["mount_test"]["status"] == "FAIL"
+        || (report["mount_test"]["status"] == "BLOCKED" && report["os"] != "windows")
+    {
         "Action required"
     } else {
         "Unknown"
@@ -1379,7 +1381,7 @@ pub fn readiness(report: &Value) -> Value {
         .collect();
     #[cfg(not(target_os = "linux"))]
     let helpers: Vec<String> = vec![];
-    json!({"state":state, "can_attempt_mount":available == Some(true) && report["mount_test"]["status"] != "FAIL", "guidance":guidance, "arch":report["arch"], "platform":report["os"], "driver":report["mount_backend"]["backend"], "mount_test":report["mount_test"]["status"], "helpers":helpers, "approval":"Unknown unless independently confirmed; no system settings are changed"})
+    json!({"state":state, "can_attempt_mount":available == Some(true) && report["mount_test"]["status"] != "FAIL" && !(report["mount_test"]["status"] == "BLOCKED" && report["os"] != "windows"), "guidance":guidance, "arch":report["arch"], "platform":report["os"], "driver":report["mount_backend"]["backend"], "mount_test":report["mount_test"]["status"], "helpers":helpers, "approval":"Unknown unless independently confirmed; no system settings are changed"})
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]

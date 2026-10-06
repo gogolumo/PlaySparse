@@ -36,6 +36,9 @@
     const diagnostics = await invoke('get_system_status');
     if (!diagnostics.readiness) throw Error('Missing structured readiness');
     record('readiness', diagnostics.readiness);
+    const tested = await invoke('test_readiness');
+    if (tested.readiness.state !== 'Ready' || tested.mount_test.cleanup !== 'PASS') throw Error('Readiness mount probe failed: ' + JSON.stringify(tested));
+    record('actual_readiness_probe', tested);
     const game = await invoke('add_game', { path: window.__DESKTOP_ACCEPTANCE_SOURCE });
     record('register_actual_folder', game.source);
     await job(game.id, 'analyze');
