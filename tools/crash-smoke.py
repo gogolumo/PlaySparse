@@ -26,8 +26,30 @@ HOOK = r'''
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/statvfs.h>
 #include <unistd.h>
 static __thread bool inside = false;
+/* Isolated test-only override: allow the preflight, then hit real kernel ENOSPC.
+ * Only the exact disposable tmpfs path is affected; write() errors are real.
+ * glibc clients can call either symbol depending on large-file build flags. */
+int statvfs(const char *path, struct statvfs *info) {
+    int (*real_statvfs)(const char*,struct statvfs*) = dlsym(RTLD_NEXT,"statvfs");
+    if (!real_statvfs) _exit(122);
+    int result = real_statvfs(path,info);
+    const char *target = getenv("PLAYSPARSE_TEST_PREFLIGHT_VOLUME");
+    if (result == 0 && target && strcmp(path,target) == 0 && info->f_frsize)
+        info->f_bavail = (512ULL << 20) / info->f_frsize;
+    return result;
+}
+int statvfs64(const char *path, struct statvfs64 *info) {
+    int (*real_statvfs)(const char*,struct statvfs64*) = dlsym(RTLD_NEXT,"statvfs64");
+    if (!real_statvfs) _exit(122);
+    int result = real_statvfs(path,info);
+    const char *target = getenv("PLAYSPARSE_TEST_PREFLIGHT_VOLUME");
+    if (result == 0 && target && strcmp(path,target) == 0 && info->f_frsize)
+        info->f_bavail = (512ULL << 20) / info->f_frsize;
+    return result;
+}
 ssize_t write(int fd, const void *buffer, size_t length) {
     ssize_t (*real_write)(int,const void*,size_t) = dlsym(RTLD_NEXT,"write");
     if (!real_write) _exit(121);
@@ -157,10 +179,16 @@ def main():
             if stat.f_blocks * stat.f_frsize > 16 << 20:
                 raise RuntimeError("refusing to fill tmpfs larger than 16 MiB")
             destination = small / "store"
-            rejected = execute([binary, "pack", str(source), str(destination), "--chunker", "fixed"], evidence, "disk-full", expected_success=False)
-            if destination.exists() or "space" not in rejected["stderr"].lower():
+            # Test the production preflight separately, then deliberately bypass
+            # only its measurement inside this harness to reach the real write.
+            preflight = execute([binary, "pack", str(source), str(destination), "--chunker", "fixed"], evidence, "disk-budget", expected_success=False)
+            if destination.exists() or "Insufficient destination storage" not in preflight["stderr"]:
+                raise RuntimeError("expected disk-budget refusal before publication")
+            env = dict(os.environ, LD_PRELOAD=str(library), PLAYSPARSE_TEST_PREFLIGHT_VOLUME=str(small))
+            rejected = execute([binary, "pack", str(source), str(destination), "--chunker", "fixed"], evidence, "disk-full", expected_success=False, env=env)
+            if destination.exists() or "os error 28" not in rejected["stderr"]:
                 raise RuntimeError("expected ENOSPC and absent published store")
-            report["disk_full"] = {"status": "PASS", "mountinfo": info[0], "capacity_bytes": stat.f_blocks * stat.f_frsize, "pack": rejected, "destination_absent": True}
+            report["disk_full"] = {"status": "PASS", "mountinfo": info[0], "capacity_bytes": stat.f_blocks * stat.f_frsize, "budget_preflight": preflight, "test_injection": "LD_PRELOAD overrides available-space measurement only for the exact owned tiny tmpfs; pack write receives real kernel errno 28", "pack": rejected, "destination_absent": True}
         check = hashlib.sha256()
         with (source / "entropy.dat").open("rb") as stream:
             while block := stream.read(1 << 20):
