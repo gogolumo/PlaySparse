@@ -217,7 +217,17 @@ jobs:
           set -euo pipefail
           python3 scripts/validation/package-kit.py --platform "${{ matrix.platform }}" --commit "$GITHUB_SHA"
           python3 scripts/validation/run-portable.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-portable" --commit "$GITHUB_SHA"
+      - name: Hosted Windows generated mount and descendant acceptance (GUI and physical proof excluded)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python scripts/validation/run-native.py --kit validation-kit --work "$env:RUNNER_TEMP/playsparse-hosted-native"
+          if ($LASTEXITCODE -ne 0) { throw 'Hosted generated desktop service acceptance failed; retain receipt' }
+      - name: Hosted Linux generated mount and descendant acceptance (GUI and physical proof excluded)
+        if: runner.os == 'Linux'
+        run: sudo python3 scripts/validation/run-native.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-hosted-native"
       - name: Preserve validation kit and portable receipt
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: desktop-validation-kit-${{ matrix.platform }}
@@ -225,6 +235,8 @@ jobs:
             validation-kit/
             ${{ runner.temp }}/playsparse-portable/validation-*.json
             ${{ runner.temp }}/playsparse-portable/summary.txt
+            ${{ runner.temp }}/playsparse-hosted-native/validation-*.json
+            ${{ runner.temp }}/playsparse-hosted-native/summary.txt
           if-no-files-found: error
       - name: Preserve executable modes in macOS app
         if: runner.os == 'macOS'
