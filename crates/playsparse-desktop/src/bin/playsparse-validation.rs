@@ -77,9 +77,10 @@ fn run(args: &BTreeMap<String, String>, work: &Path, receipt: &mut Value) -> Res
     let fixture =
         PathBuf::from(args.get("--fixture").context("--fixture required")?).canonicalize()?;
     let portable = args.contains_key("--portable");
+    let service_only = args.contains_key("--service-only");
     let mut app_child = None;
     stage(receipt, "app launches", || {
-        if portable {
+        if portable || service_only {
             return Ok(());
         }
         let app = PathBuf::from(
@@ -106,7 +107,7 @@ fn run(args: &BTreeMap<String, String>, work: &Path, receipt: &mut Value) -> Res
         );
         Ok(())
     })?;
-    if portable {
+    if portable || service_only {
         receipt["test_stages"][0]["status"] = json!("NOT RUN");
     }
     let service = Service::open(&work.join("service-library"), &engine)?;
@@ -256,7 +257,7 @@ fn main() -> Result<()> {
     while index < values.len() {
         let key = values[index].clone();
         index += 1;
-        if key == "--portable" {
+        if key == "--portable" || key == "--service-only" {
             args.insert(key, "true".into());
         } else {
             args.insert(

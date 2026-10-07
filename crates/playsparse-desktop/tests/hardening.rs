@@ -248,3 +248,20 @@ fn evidenced_profile_and_generated_crash_save_case_modes() {
         );
     }
 }
+
+#[test]
+fn interrupted_storage_and_runtime_operations_reconcile_conservatively() {
+    let temp = tempfile::tempdir().unwrap();
+    for operation in ["optimize", "verify", "launch", "mount", "repair"] {
+        let root = temp.path().join(operation);
+        let service = Service::open(&root, Path::new("unused")).unwrap();
+        drop(service);
+        let path = root.join("library.json");
+        let mut db: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        db["jobs"] = serde_json::json!([{"id":"interrupted","game_id":"g-1","operation":operation,"state":"running","stage":"working","bytes":0,"files":0,"started_at":1,"finished_at":null,"error":null,"cancellable":true}]);
+        fs::write(&path, serde_json::to_vec(&db).unwrap()).unwrap();
+        let restarted = Service::open(&root, Path::new("unused")).unwrap();
+        assert_eq!(restarted.snapshot().jobs[0].state, "interrupted");
+        assert!(!restarted.snapshot().jobs[0].cancellable);
+    }
+}
