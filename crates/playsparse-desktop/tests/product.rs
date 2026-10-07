@@ -109,6 +109,8 @@ fn running_and_interrupted_states_reject_unsafe_transitions() {
         mountpoint: temp.path().join("mount"),
         overlay: temp.path().join("overlay"),
         error: None,
+        processes: Default::default(),
+        ownership_token: None,
     });
     assert_eq!(runtime_state(&game, &[]), RuntimeState::Running);
     for op in [
