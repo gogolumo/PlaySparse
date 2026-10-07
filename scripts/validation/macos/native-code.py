@@ -13,6 +13,7 @@ p.add_argument('--work', type=Path, required=True)
 p.add_argument('--commit', required=True)
 a = p.parse_args()
 assert platform.system() == 'Darwin'
+assert len(a.commit) == 40 and all(c in '0123456789abcdefABCDEF' for c in a.commit), 'Full commit SHA required'
 a.work.mkdir(exist_ok=False)
 work = a.work.resolve()
 source = work / 'generated-source'

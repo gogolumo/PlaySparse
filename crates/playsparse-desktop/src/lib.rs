@@ -1768,7 +1768,7 @@ mod lifecycle_security_tests {
         assert!(service.inner.lock().unwrap().processes.is_empty());
     }
     #[test]
-    fn descendants_block_unmount_and_restart_never_claims_mount_ownership() {
+    fn descendants_block_unmount_and_missing_owner_never_authorizes_detachment() {
         use std::os::unix::fs::PermissionsExt;
         let temp = tempfile::tempdir().unwrap();
         let source = temp.path().join("source");
@@ -1776,7 +1776,7 @@ mod lifecycle_security_tests {
         // Generated script interpreted by its shebang; game launch argv is still literal, no shell -c.
         fs::write(
             source.join("launcher"),
-            b"#!/bin/sh\nsleep 2 &\nsleep 0.2\nexit 0\n",
+            b"#!/bin/sh\nsleep 5 &\nsleep 0.2\nexit 0\n",
         )
         .unwrap();
         fs::set_permissions(source.join("launcher"), fs::Permissions::from_mode(0o755)).unwrap();
@@ -1804,12 +1804,20 @@ mod lifecycle_security_tests {
             ownership_token: None,
         });
         service.launch_game(&game.id).unwrap();
-        thread::sleep(Duration::from_millis(400));
-        service.reconcile().unwrap();
-        assert_eq!(
-            service.snapshot().games[0].session.as_ref().unwrap().state,
-            "launcher_exited_but_game_running"
-        );
+        let deadline = std::time::Instant::now() + Duration::from_secs(4);
+        loop {
+            service.reconcile().unwrap();
+            if service.snapshot().games[0].session.as_ref().unwrap().state
+                == "launcher_exited_but_game_running"
+            {
+                break;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "Launcher did not exit before descendant"
+            );
+            thread::sleep(Duration::from_millis(50));
+        }
         assert!(
             service
                 .unmount_game(&game.id, true)
@@ -1817,8 +1825,25 @@ mod lifecycle_security_tests {
                 .to_string()
                 .contains("child processes")
         );
-        thread::sleep(Duration::from_secs(2));
-        service.reconcile().unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(8);
+        loop {
+            service.reconcile().unwrap();
+            if service.snapshot().games[0]
+                .session
+                .as_ref()
+                .unwrap()
+                .processes
+                .active_processes
+                .is_empty()
+            {
+                break;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "Descendant did not exit"
+            );
+            thread::sleep(Duration::from_millis(50));
+        }
         assert!(
             service
                 .unmount_game(&game.id, true)
