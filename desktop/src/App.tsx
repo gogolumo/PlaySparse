@@ -98,6 +98,11 @@ function Modal({
     </dialog>
   );
 }
+function allows(game: Game, action: string): boolean {
+  if (!bridge.preview) return game.available_actions?.includes(action) ?? false;
+  const state = game.session?.state;
+  return ({ mount: !state && game.verified, launch: state === "mounted" && !!game.launch?.compatibility_confirmed, stop: state === "running", unmount: !!state && state !== "running", recover: state === "needs_attention" } as Record<string, boolean>)[action] ?? false;
+}
 export default function App() {
   const [data, setData] = useState<Snapshot | null>(null);
   const initialView = new URLSearchParams(location.search).get("view");
@@ -620,7 +625,7 @@ export default function App() {
                               }
                               disabled={busy}
                               onClick={() => {
-                                if (game.session?.state === "running") {
+                                if (allows(game, "stop")) {
                                   if (game.launch?.executable.endsWith(".app"))
                                     setDetail(game.id);
                                   else runtime(game, "stop");
@@ -639,14 +644,14 @@ export default function App() {
                                 else void runJob(game.id, "analyze");
                               }}
                             >
-                              {game.session?.state === "running" ? (
+                              {allows(game, "stop") ? (
                                 <Square size={15} />
                               ) : game.verified ? (
                                 <Play size={15} />
                               ) : (
                                 <ArrowRight size={15} />
                               )}{" "}
-                              {game.session?.state === "running"
+                              {allows(game, "stop")
                                 ? game.launch?.executable.endsWith(".app")
                                   ? "Manage Running App"
                                   : "Stop Game"
@@ -997,6 +1002,7 @@ export default function App() {
               </section>
             </>
           )}
+          {page === "Settings" && <button disabled={pending || bridge.preview} onClick={() => void action(async () => { const path = await bridge.exportDiagnostics(); setError(`Diagnostics exported: ${path}. Paths, launch arguments and raw logs are omitted.`); })}>Export diagnostics</button>}
           <footer>
             <span>
               <ShieldCheck size={13} />
@@ -1109,6 +1115,9 @@ export default function App() {
               />
               <Metric label="Runtime readiness" value={readiness.state} />
               <Metric label="State" value={status(selected, data.jobs)} />
+              <Metric label="Compatibility" value={selected.compatibility?.status ?? "Unknown"} />
+              <Metric label="Last verified" value={selected.last_verified ? new Date(selected.last_verified).toLocaleString() : "Not recorded"} />
+              <Metric label="Active processes" value={String(selected.session?.processes?.active_processes.length ?? 0)} />
             </div>
             <p className="path-label">
               PlaySparse store <code>{selected.store ?? "Not created"}</code>
@@ -1306,6 +1315,9 @@ export default function App() {
                   <ArrowRight size={16} />
                 </button>
               )}
+              {selected.store && !selected.verified && !selected.session && (
+                <button disabled={busy} onClick={() => setConfirm({title: "Rebuild damaged store?", text: "Build and verify a new store from the current original installation. The previous store and writable overlay stay on disk. The library switches only after verification.", run: () => bridge.startJob(selected.id, "repair")})}>Rebuild Store</button>
+              )}
               {selected.store && (
                 <button
                   disabled={busy || !!selected.session}
@@ -1407,7 +1419,7 @@ export default function App() {
                   Save launch configuration
                 </button>
                 <div className="modal-actions">
-                  {!selected.session && (
+                  {allows(selected, "mount") && (
                     <button
                       disabled={busy || !canMount}
                       onClick={() => runtime(selected, "mount")}
@@ -1416,8 +1428,7 @@ export default function App() {
                       Mount Store
                     </button>
                   )}
-                  {selected.session?.state === "mounted" &&
-                    selected.launch?.compatibility_confirmed && (
+                  {allows(selected, "launch") && (
                       <button
                         disabled={pending}
                         onClick={() => runtime(selected, "launch")}
@@ -1425,7 +1436,7 @@ export default function App() {
                         Launch Game
                       </button>
                     )}
-                  {selected.session?.state === "running" &&
+                  {allows(selected, "stop") &&
                     (selected.launch?.executable.endsWith(".app") ? (
                       <p className="info-note">
                         Quit the game using its own Quit command. PlaySparse
@@ -1437,12 +1448,12 @@ export default function App() {
                         Stop Game
                       </button>
                     ))}
-                  {selected.session && selected.session.state !== "running" && (
+                  {selected.session && allows(selected, "unmount") && (
                     <button onClick={() => runtime(selected, "unmount")}>
                       Unmount
                     </button>
                   )}
-                  {selected.session?.state === "needs_attention" && (
+                  {allows(selected, "recover") && (
                     <button
                       disabled={pending}
                       onClick={() => runtime(selected, "recover")}

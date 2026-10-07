@@ -8,8 +8,24 @@ type Backend = Arc<Service>;
 type Reply<T> = Result<T, String>;
 
 #[tauri::command]
-fn get_snapshot(service: State<'_, Backend>) -> Snapshot {
-    service.snapshot()
+async fn export_diagnostics(service: State<'_, Backend>) -> Reply<String> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .export_diagnostics()
+            .map(|p| p.display().to_string())
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn get_snapshot(service: State<'_, Backend>) -> Reply<Snapshot> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || service.snapshot())
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -83,8 +99,13 @@ async fn test_readiness(service: State<'_, Backend>) -> Reply<Value> {
     .map_err(|e| e.to_string())?
 }
 #[tauri::command]
-fn game_locations(service: State<'_, Backend>, id: String) -> Reply<Value> {
-    service.game_locations(&id).map_err(|e| format!("{e:#}"))
+async fn game_locations(service: State<'_, Backend>, id: String) -> Reply<Value> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service.game_locations(&id).map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }
 #[tauri::command]
 async fn inspect_location(service: State<'_, Backend>, id: String, kind: String) -> Reply<()> {
@@ -114,14 +135,19 @@ fn update_settings(service: State<'_, Backend>, settings: Settings) -> Reply<()>
         .map_err(|e| format!("{e:#}"))
 }
 #[tauri::command]
-fn configure_launch(
+async fn configure_launch(
     service: State<'_, Backend>,
     id: String,
     descriptor: LaunchDescriptor,
 ) -> Reply<()> {
-    service
-        .configure_launch(&id, descriptor)
-        .map_err(|e| format!("{e:#}"))
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .configure_launch(&id, descriptor)
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }
 #[tauri::command]
 fn start_job(
@@ -311,6 +337,7 @@ pub fn run() {
             game_locations,
             inspect_location,
             get_snapshot,
+            export_diagnostics,
             select_folder,
             add_game,
             remove_game,
@@ -332,6 +359,7 @@ pub fn run() {
         game_locations,
         inspect_location,
         get_snapshot,
+        export_diagnostics,
         select_folder,
         add_game,
         remove_game,

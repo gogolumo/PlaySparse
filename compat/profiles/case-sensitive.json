@@ -1,0 +1,20 @@
+{
+  "status": "Unknown",
+  "game_identifier": "case-sensitive",
+  "platform": "synthetic",
+  "os": "host",
+  "architecture": "host",
+  "launch_target": "fixture",
+  "launcher_type": "case",
+  "filesystem_behaviour": "generated exact byte reads",
+  "case_sensitivity": "requires distinct Case/Data.txt and Case/data.txt",
+  "anti_cheat": "absent in generated fixture",
+  "native_code": "generated Rust executable",
+  "overlay_behaviour": "isolated writes",
+  "limitations": [
+    "Synthetic profile is a test specification, not a compatibility claim."
+  ],
+  "tested_version": null,
+  "test_date": null,
+  "evidence": []
+}

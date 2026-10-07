@@ -26,7 +26,9 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "externalBin": ["binaries/playsparse-engine"],
+    "externalBin": [
+      "binaries/playsparse-engine"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -35,6 +37,10 @@
       "icons/icon.ico"
     ],
     "shortDescription": "Manage and verify compressed game stores",
-    "category": "Utility"
+    "category": "Utility",
+    "macOS": {
+      "hardenedRuntime": true
+    },
+    "longDescription": "Experimental source-preserving compressed game storage. Unsigned development builds require separate platform and per-game validation."
   }
 }

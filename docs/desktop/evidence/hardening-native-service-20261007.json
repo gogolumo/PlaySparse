@@ -1,0 +1,147 @@
+{
+  "OS": "macos",
+  "OS_version": "Darwin 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:11:03 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8132",
+  "PlaySparse_version": "0.1.0",
+  "architecture": "aarch64",
+  "build_dirty": "true",
+  "commit_SHA": "b0ec736bad3d76023565324b14f44cc05e5c6bb3",
+  "errors": [],
+  "evidence_level": "physical hardware validation",
+  "filesystem_provider": "macFUSE",
+  "finished_at": 1791367640,
+  "pass_fail": "SERVICE PASS; GUI NOT RUN",
+  "readiness": {
+    "approval": "Unknown unless independently confirmed; no system settings are changed",
+    "arch": "aarch64",
+    "can_attempt_mount": true,
+    "driver": "macFUSE",
+    "guidance": "Install official macFUSE 5.3.3+ in the 5.x series. Follow its kernel-backend approval and restart instructions in System Settings. FSKit is unsupported. Installation presence does not prove approval.",
+    "helpers": [],
+    "mount_test": "NOT RUN",
+    "platform": "macos",
+    "state": "Unknown"
+  },
+  "schema": 1,
+  "source_after_hashes": {
+    "assets/data.bin": "0c4d02ccd1734faab649e9099f59c823c77e39e85c5e3ab490cfd61b3d486fed",
+    "assets/duplicate.bin": "0c4d02ccd1734faab649e9099f59c823c77e39e85c5e3ab490cfd61b3d486fed",
+    "fixture": "d887dcb0458d994e3ef7dffa38551bc7309687fb7c3a193f903fefe2e2a0ab36"
+  },
+  "source_before_hashes": {
+    "assets/data.bin": "0c4d02ccd1734faab649e9099f59c823c77e39e85c5e3ab490cfd61b3d486fed",
+    "assets/duplicate.bin": "0c4d02ccd1734faab649e9099f59c823c77e39e85c5e3ab490cfd61b3d486fed",
+    "fixture": "d887dcb0458d994e3ef7dffa38551bc7309687fb7c3a193f903fefe2e2a0ab36"
+  },
+  "started_at": 1791367632,
+  "test_stages": [
+    {
+      "name": "app launches",
+      "status": "NOT RUN"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "engine launches",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "filesystem provider readiness",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "fixture registration",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "analysis",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "optimization",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367632,
+      "name": "verification",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "mount",
+      "started_at": 1791367632,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "exact file read",
+      "started_at": 1791367633,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "overlay write",
+      "started_at": 1791367633,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "launch test fixture",
+      "started_at": 1791367633,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "process detection",
+      "started_at": 1791367633,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367633,
+      "name": "stop",
+      "started_at": 1791367633,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367640,
+      "name": "unmount",
+      "started_at": 1791367639,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367640,
+      "name": "post-unmount verification",
+      "started_at": 1791367640,
+      "status": "PASS"
+    },
+    {
+      "error": null,
+      "finished_at": 1791367640,
+      "name": "source unchanged",
+      "started_at": 1791367640,
+      "status": "PASS"
+    }
+  ]
+}

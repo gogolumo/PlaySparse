@@ -52,7 +52,10 @@ jobs:
             platform: linux-x64
             bundles: deb,appimage
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40
+    timeout-minutes: 50
+    env:
+      MAC_SIGNING: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && secrets.APPLE_CERTIFICATE != '' && secrets.APPLE_CERTIFICATE_PASSWORD != '' && secrets.APPLE_SIGNING_IDENTITY != '' && secrets.APPLE_ID != '' && secrets.APPLE_PASSWORD != '' && secrets.APPLE_TEAM_ID != '' }}
+      WINDOWS_SIGNING: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && secrets.WINDOWS_CERTIFICATE != '' && secrets.WINDOWS_CERTIFICATE_PASSWORD != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
@@ -127,8 +130,49 @@ jobs:
       - run: cargo fmt --manifest-path desktop/src-tauri/Cargo.toml -- --check
       - run: cargo clippy --locked --manifest-path desktop/src-tauri/Cargo.toml --all-targets -- -D warnings
       - name: Build unsigned development application and installers
+        if: (runner.os != 'macOS' || env.MAC_SIGNING != 'true') && (runner.os != 'Windows' || env.WINDOWS_SIGNING != 'true')
         run: npm run tauri build -- --bundles ${{ matrix.bundles }}
         working-directory: desktop
+      - name: Build Developer ID application with notarization
+        if: runner.os == 'macOS' && env.MAC_SIGNING == 'true'
+        working-directory: desktop
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          npm run tauri build -- --bundles app
+          codesign --verify --deep --strict src-tauri/target/release/bundle/macos/PlaySparse.app
+          xcrun stapler validate src-tauri/target/release/bundle/macos/PlaySparse.app
+      - name: Build Authenticode application and NSIS installer
+        if: runner.os == 'Windows' && env.WINDOWS_SIGNING == 'true'
+        shell: pwsh
+        working-directory: desktop
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $pfx = Join-Path $env:RUNNER_TEMP 'playsparse-signing.pfx'
+          $config = Join-Path $env:RUNNER_TEMP 'playsparse-signing.json'
+          $cert = $null
+          try {
+            [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
+            $password = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password
+            @{bundle=@{windows=@{certificateThumbprint=$cert.Thumbprint;digestAlgorithm='sha256';timestampUrl='http://timestamp.digicert.com'}}} | ConvertTo-Json -Depth 5 | Set-Content $config
+            npm run tauri build -- --bundles nsis --config $config
+            if ($LASTEXITCODE -ne 0) { throw 'Signed build failed' }
+            Get-ChildItem src-tauri/target/release/bundle/nsis/*.exe | ForEach-Object {
+              if ((Get-AuthenticodeSignature $_.FullName).Status -ne 'Valid') { throw 'Invalid installer signature' }
+            }
+          } finally {
+            if ($null -ne $cert) { Remove-Item "Cert:\CurrentUser\My\$($cert.Thumbprint)" }
+            Remove-Item $pfx,$config -Force -ErrorAction SilentlyContinue
+          }
       - name: Create verified macOS development DMG without Finder automation
         if: runner.os == 'macOS'
         shell: bash
@@ -165,9 +209,43 @@ jobs:
 
           rm -rf "$staging"
 
+      - name: Build native validation binaries with the platform compiler environment
+        run: cargo build --locked --release -p playsparse-desktop --bins
+      - name: Package downloadable synthetic validation kit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/validation/package-kit.py --platform "${{ matrix.platform }}" --commit "$GITHUB_SHA"
+          python3 scripts/validation/run-portable.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-portable" --commit "$GITHUB_SHA"
+          python3 scripts/validation/compatibility.py --profiles compat/profiles --fixture "validation-kit/playsparse-fixture${{ runner.os == 'Windows' && '.exe' || '' }}" --work "$RUNNER_TEMP/playsparse-compat" --commit "$GITHUB_SHA"
+      - name: Hosted Windows generated mount and descendant acceptance (GUI and physical proof excluded)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          python scripts/validation/run-native.py --kit validation-kit --work "$env:RUNNER_TEMP/playsparse-hosted-native"
+          if ($LASTEXITCODE -ne 0) { throw 'Hosted generated desktop service acceptance failed; retain receipt' }
+      - name: Hosted Linux generated mount and descendant acceptance (GUI and physical proof excluded)
+        if: runner.os == 'Linux'
+        run: sudo python3 scripts/validation/run-native.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-hosted-native"
+      - name: Preserve validation kit and portable receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-validation-kit-${{ matrix.platform }}
+          path: |
+            validation-kit/
+            ${{ runner.temp }}/playsparse-portable/validation-*.json
+            ${{ runner.temp }}/playsparse-portable/summary.txt
+            ${{ runner.temp }}/playsparse-hosted-native/validation-*.json
+            ${{ runner.temp }}/playsparse-hosted-native/summary.txt
+            ${{ runner.temp }}/playsparse-compat/compat-synthetic.json
+          if-no-files-found: error
       - name: Preserve executable modes in macOS app
         if: runner.os == 'macOS'
         run: tar -czf desktop/src-tauri/target/release/bundle/PlaySparse-app.tar.gz -C desktop/src-tauri/target/release/bundle/macos PlaySparse.app
+      - name: Generate installer checksums
+        shell: bash
+        run: python3 scripts/validation/checksums.py desktop/src-tauri/target/release/bundle
       - uses: actions/upload-artifact@v4
         with:
           name: playsparse-development-${{ matrix.platform }}
@@ -177,4 +255,5 @@ jobs:
             desktop/src-tauri/target/release/bundle/**/*.deb
             desktop/src-tauri/target/release/bundle/**/*.AppImage
             desktop/src-tauri/target/release/bundle/*.tar.gz
+            desktop/src-tauri/target/release/bundle/SHA256SUMS
           if-no-files-found: error
