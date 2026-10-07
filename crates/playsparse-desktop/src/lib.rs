@@ -1154,6 +1154,9 @@ impl Service {
             relative_executable(&descriptor.executable),
             "Invalid executable path"
         );
+        #[cfg(windows)]
+        let mount = mounted_root(&session.mountpoint);
+        #[cfg(not(windows))]
         let mount = mounted_root(&session.mountpoint).canonicalize()?;
         let expected = game
             .launch_fingerprint
@@ -1164,6 +1167,9 @@ impl Service {
                 && compat::fingerprint(&mount, &descriptor.executable)? == *expected,
             "Executable changed after confirmation. Unmount and reconfirm launch target"
         );
+        #[cfg(windows)]
+        let executable = mount.join(&descriptor.executable);
+        #[cfg(not(windows))]
         let executable = mount.join(&descriptor.executable).canonicalize()?;
         #[cfg(target_os = "macos")]
         let bundle = executable.is_dir() && executable.extension().is_some_and(|s| s == "app");
