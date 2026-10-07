@@ -7,3 +7,11 @@ States: Unknown, Detected, Tested, Compatible, CompatibleWithLimitations, Unsupp
 The native `playsparse-fixture` has plain, launcher, multiple descendants, child-first, case, save, argv and crash modes. It contains no commercial assets. Missing-executable is deliberately absent. On a case-insensitive source volume the distinct-case profile is Unsupported; do not claim case translation. Add profiles without changing React; add executable workload modes/tests in the Rust fixture when new behaviour is required. Profile targets are never automatically launched.
 
 Portable process tests execute generated native fixtures using owned OS process handles. Mount validation uses the downloadable validation kit. A passing standalone fixture does not prove launching signed native code through a virtual filesystem, broker/DRM behaviour or commercial compatibility.
+
+Run the profile-driven harness without UI changes:
+
+```sh
+python3 scripts/validation/compatibility.py --profiles compat/profiles --fixture target/release/playsparse-fixture --work /tmp/compat-new --commit FULL_COMMIT_SHA
+```
+
+It only invokes an explicitly supplied generated fixture and whitelisted workload modes, never a command from a profile. It emits Tested/Broken/Unsupported records with CI simulation provenance and original fixture hashes. Runs are on the normal host filesystem: virtual mounts and commercial compatibility remain NOT VERIFIED. Equivalent profiles can be added as bounded JSON. Rust validates the resulting evidence record format separately.

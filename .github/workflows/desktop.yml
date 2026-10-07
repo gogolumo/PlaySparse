@@ -217,6 +217,7 @@ jobs:
           set -euo pipefail
           python3 scripts/validation/package-kit.py --platform "${{ matrix.platform }}" --commit "$GITHUB_SHA"
           python3 scripts/validation/run-portable.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-portable" --commit "$GITHUB_SHA"
+          python3 scripts/validation/compatibility.py --profiles compat/profiles --fixture "validation-kit/playsparse-fixture${{ runner.os == 'Windows' && '.exe' || '' }}" --work "$RUNNER_TEMP/playsparse-compat" --commit "$GITHUB_SHA"
       - name: Hosted Windows generated mount and descendant acceptance (GUI and physical proof excluded)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -237,6 +238,7 @@ jobs:
             ${{ runner.temp }}/playsparse-portable/summary.txt
             ${{ runner.temp }}/playsparse-hosted-native/validation-*.json
             ${{ runner.temp }}/playsparse-hosted-native/summary.txt
+            ${{ runner.temp }}/playsparse-compat/compat-synthetic.json
           if-no-files-found: error
       - name: Preserve executable modes in macOS app
         if: runner.os == 'macOS'
