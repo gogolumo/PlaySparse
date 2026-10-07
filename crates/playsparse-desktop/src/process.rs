@@ -35,6 +35,7 @@ pub struct Observation {
     pub lifecycle: Lifecycle,
     pub active_processes: Vec<Identity>,
     pub safe_to_unmount: bool,
+    pub root_exit: Option<String>,
     pub limitation: Option<String>,
 }
 #[cfg_attr(windows, allow(dead_code))]
@@ -103,6 +104,7 @@ impl LaunchTree {
                 // A Job handle establishes membership, independent of reused numeric PIDs.
                 active_processes: self.job.members()?.into_iter().map(|pid| Identity { pid, birth: 0 }).collect(),
                 safe_to_unmount: count == 0,
+                root_exit: self.exit.map(|s| s.to_string()),
                 limitation: Some("Job captures CreateProcess descendants; external broker launches require manual inspection.".into()),
             })
         }
@@ -131,6 +133,7 @@ impl LaunchTree {
                 active_processes: active,
                 // Unix groups can be escaped via setsid between snapshots. Require explicit closure confirmation.
                 safe_to_unmount: false,
+                root_exit: self.exit.map(|s| s.to_string()),
                 limitation: Some("Unix polling cannot prove absence of children that detach between snapshots. Close all game processes before confirming ordinary unmount. Launch Services apps must be quit normally.".into()),
             })
         }
