@@ -1155,22 +1155,40 @@ impl Service {
             "Invalid executable path"
         );
         #[cfg(windows)]
-        let mount = mounted_root(&session.mountpoint);
+        let mount = {
+            // WinFsp drive mounts need not have a volume GUID: canonicalize's
+            // GetFinalPathNameByHandle volume-name resolution can fail with
+            // ERROR_UNRECOGNIZED_VOLUME.
+            // Use only our live, token-verified drive and reject reparse components
+            // during fingerprinting instead of asking for a volume GUID path.
+            self.validate_mount_location(id, &session.mountpoint)?;
+            verify_mount_identity(&mut inner, id, &session)?;
+            mounted_root(&session.mountpoint)
+        };
         #[cfg(not(windows))]
-        let mount = mounted_root(&session.mountpoint).canonicalize()?;
+        let mount = mounted_root(&session.mountpoint)
+            .canonicalize()
+            .context("Resolve mounted launch root")?;
         let expected = game
             .launch_fingerprint
             .as_ref()
             .context("Launch target needs reconfirmation")?;
         ensure!(
-            compat::fingerprint(&game.source, &descriptor.executable)? == *expected
-                && compat::fingerprint(&mount, &descriptor.executable)? == *expected,
+            compat::fingerprint(&game.source, &descriptor.executable)
+                .context("Hash source launch target")?
+                == *expected
+                && compat::fingerprint(&mount, &descriptor.executable)
+                    .context("Hash mounted launch target")?
+                    == *expected,
             "Executable changed after confirmation. Unmount and reconfirm launch target"
         );
         #[cfg(windows)]
         let executable = mount.join(&descriptor.executable);
         #[cfg(not(windows))]
-        let executable = mount.join(&descriptor.executable).canonicalize()?;
+        let executable = mount
+            .join(&descriptor.executable)
+            .canonicalize()
+            .context("Resolve mounted executable")?;
         #[cfg(target_os = "macos")]
         let bundle = executable.is_dir() && executable.extension().is_some_and(|s| s == "app");
         #[cfg(not(target_os = "macos"))]
@@ -1321,29 +1339,7 @@ impl Service {
             .context("Unknown game")?
             .clone();
         let session = game.session.as_ref().context("No runtime session")?;
-        let owner = inner.mounts.get_mut(id).context("Mount ownership is not established in this app lifetime. Inspect and detach the stale mount externally, then Recover");
-        // Validate owner before looking at any user-controlled persisted mount path.
-        let owner = owner?;
-        ensure!(
-            owner.try_wait()?.is_none(),
-            "Mount owner exited; inspect externally and recover only after absence"
-        );
-        let token = session
-            .ownership_token
-            .as_ref()
-            .context("Mount identity missing")?;
-        ensure!(
-            token
-                .bytes()
-                .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
-            "Invalid mount identity"
-        );
-        ensure!(
-            fs::read(
-                mounted_root(&session.mountpoint).join(format!(".playsparse-session-{token}"))
-            )? == token.as_bytes(),
-            "Mount identity mismatch; refusing unmount"
-        );
+        verify_mount_identity(&mut inner, id, session)?;
         self.validate_mount_location(id, &session.mountpoint)?;
         let output = Command::new(&self.engine)
             .arg("unmount")
@@ -1493,9 +1489,8 @@ fn acquire_library_lock(lock: &File) -> Result<()> {
                 thread::sleep(Duration::from_millis(10))
             }
             Err(error) => {
-                return Err(error).context(
-                    "PlaySparse is already using this library or the lock is unavailable",
-                );
+                let message = "PlaySparse is already using this library or the lock is unavailable";
+                return Err(error).context(message);
             }
         }
     }
@@ -1628,6 +1623,32 @@ fn overlay_allocation(path: &Path) -> Option<u64> {
         return Some(0);
     }
     directory_allocation(path).ok()?.0
+}
+
+fn verify_mount_identity(inner: &mut Inner, id: &str, session: &Session) -> Result<()> {
+    // A persisted path or token never substitutes for our live owner process.
+    let owner = inner.mounts.get_mut(id).context("Mount ownership is not established in this app lifetime. Inspect and detach the stale mount externally, then Recover")?;
+    ensure!(
+        owner.try_wait()?.is_none(),
+        "Mount owner exited; inspect externally and recover only after absence"
+    );
+    let token = session
+        .ownership_token
+        .as_ref()
+        .context("Mount identity missing")?;
+    ensure!(
+        !token.is_empty()
+            && token
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
+        "Invalid mount identity"
+    );
+    ensure!(
+        fs::read(mounted_root(&session.mountpoint).join(format!(".playsparse-session-{token}")))?
+            == token.as_bytes(),
+        "Mount identity mismatch; refusing operation"
+    );
+    Ok(())
 }
 
 fn mounted_root(path: &Path) -> PathBuf {
