@@ -99,7 +99,12 @@ def main():
         cargo = shutil.which("cargo") or str(Path.home() / ".cargo/bin/cargo")
         run([cargo, "fmt", "--all", "--", "--check"], "fmt", env)
         run([cargo, "clippy", "--locked", "--workspace", "--all-targets", "--features", "macfuse", "--", "-D", "warnings"], "clippy", env)
-        run([cargo, "test", "--locked", "--workspace", "--features", "macfuse"], "tests", env)
+        # Run the SDK-linked workspace suite serially. Some tests intentionally
+        # spawn short-lived child processes; on macOS a fork can briefly inherit
+        # another test's advisory library-lock descriptor before exec closes it.
+        # Serial execution keeps this compile/link validation deterministic
+        # without weakening the production lock itself.
+        run([cargo, "test", "--locked", "--workspace", "--features", "macfuse", "--", "--test-threads=1"], "tests", env)
         run([cargo, "build", "--locked", "--release", "--workspace", "--features", "macfuse"], "release", env)
         report["status"] = "PASS"
     except common.PrerequisiteMissing as error:
