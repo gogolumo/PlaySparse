@@ -17,6 +17,10 @@ use std::{
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 
+pub mod compat;
+mod diagnostics;
+pub use diagnostics::available_actions;
+pub mod process;
 pub mod product;
 
 static SEQUENCE: AtomicU64 = AtomicU64::new(0);
@@ -56,6 +60,10 @@ pub struct Session {
     pub mountpoint: PathBuf,
     pub overlay: PathBuf,
     pub error: Option<String>,
+    #[serde(default)]
+    pub processes: process::Observation,
+    #[serde(default)]
+    pub ownership_token: Option<String>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Game {
@@ -69,6 +77,14 @@ pub struct Game {
     #[serde(default)]
     pub overlay_allocated_bytes: Option<u64>,
     pub launch: Option<LaunchDescriptor>,
+    #[serde(default)]
+    pub launch_fingerprint: Option<String>,
+    #[serde(default)]
+    pub compatibility: compat::Record,
+    #[serde(default)]
+    pub last_verified: Option<u64>,
+    #[serde(default)]
+    pub available_actions: Vec<String>,
     pub session: Option<Session>,
     pub error: Option<String>,
 }
@@ -92,6 +108,7 @@ pub enum Operation {
     Analyze,
     Optimize,
     Verify,
+    Repair,
     Mount,
     Launch,
     Stop,
@@ -109,7 +126,7 @@ struct Inner {
     db: Snapshot,
     active: Option<(String, Arc<AtomicBool>)>,
     mounts: BTreeMap<String, Child>,
-    processes: BTreeMap<String, Child>,
+    processes: BTreeMap<String, process::LaunchTree>,
 }
 pub struct Service {
     root: PathBuf,
@@ -122,6 +139,7 @@ impl Service {
     pub fn open(root: &Path, engine: &Path) -> Result<Arc<Self>> {
         fs::create_dir_all(root)?;
         let root = root.canonicalize()?;
+        validate_metadata_file(&root.join("library.lock"))?;
         let lock = OpenOptions::new()
             .create(true)
             .truncate(false)
@@ -131,6 +149,7 @@ impl Service {
         lock.try_lock()
             .context("PlaySparse is already using this library")?;
         let path = root.join("library.json");
+        validate_metadata_file(&path)?;
         let mut db: Snapshot = if path.exists() {
             ensure!(
                 fs::metadata(&path)?.len() <= 16 * 1024 * 1024,
@@ -156,6 +175,10 @@ impl Service {
             db.version == 1,
             "unsupported library version; retained for recovery"
         );
+        ensure!(
+            db.games.len() <= 1000 && db.jobs.len() <= 200,
+            "Library entry limits exceeded"
+        );
         for job in &mut db.jobs {
             if job.state == "running" {
                 job.state = "interrupted".into();
@@ -165,6 +188,18 @@ impl Service {
             }
         }
         for game in &mut db.games {
+            let _ = compat::Record::parse(&serde_json::to_vec(&game.compatibility)?)?;
+            if let Some(descriptor) = &game.launch {
+                ensure!(
+                    relative_executable(&descriptor.executable)
+                        && descriptor.args.len() <= 128
+                        && descriptor
+                            .args
+                            .iter()
+                            .all(|s| s.len() <= 8192 && !s.contains('\0')),
+                    "Invalid persisted launch descriptor"
+                );
+            }
             ensure!(
                 game.id.starts_with("g-")
                     && game
@@ -189,6 +224,10 @@ impl Service {
             // Never trust a persisted process ID or pretend a session survived restart.
             if let Some(session) = &mut game.session {
                 session.state = "needs_attention".into();
+                session.processes = process::Observation {
+                    lifecycle: process::Lifecycle::NeedsAttention,
+                    ..Default::default()
+                };
                 session.error = Some("Previous session requires inspection. Close game processes before unmounting. No persisted PID is killed.".into());
             }
             if game
@@ -220,7 +259,22 @@ impl Service {
         serde_json::to_writer_pretty(&mut temp, db)?;
         temp.write_all(b"\n")?;
         temp.as_file().sync_all()?;
-        temp.persist(self.root.join("library.json"))?;
+        let library = self.root.join("library.json");
+        if library.exists() {
+            validate_metadata_file(&library)?;
+            let bytes = fs::read(&library)?;
+            ensure!(
+                bytes.len() <= 16 * 1024 * 1024,
+                "Library backup exceeds limit"
+            );
+            let _: Snapshot =
+                serde_json::from_slice(&bytes).context("Refuse to replace corrupt metadata")?;
+            let mut backup = tempfile::NamedTempFile::new_in(&self.root)?;
+            backup.write_all(&bytes)?;
+            backup.as_file().sync_all()?;
+            backup.persist(self.root.join("library.backup.json"))?;
+        }
+        temp.persist(&library)?;
         #[cfg(unix)]
         File::open(&self.root)?.sync_all()?;
         Ok(())
@@ -254,7 +308,14 @@ impl Service {
         Ok(result)
     }
     pub fn snapshot(&self) -> Snapshot {
-        self.inner.lock().unwrap().db.clone()
+        let mut snapshot = self.inner.lock().unwrap().db.clone();
+        for game in &mut snapshot.games {
+            game.available_actions = available_actions(game)
+                .into_iter()
+                .map(str::to_owned)
+                .collect();
+        }
+        snapshot
     }
     fn idle(&self) -> Result<()> {
         let inner = self.inner.lock().unwrap();
@@ -401,6 +462,10 @@ impl Service {
             store_stats: None,
             overlay_allocated_bytes: Some(0),
             launch: None,
+            launch_fingerprint: None,
+            compatibility: Default::default(),
+            last_verified: None,
+            available_actions: vec![],
             session: None,
             error: None,
         };
@@ -518,6 +583,16 @@ impl Service {
             if bundle {
                 product::bundle_executable(&target)?;
             }
+            game.launch_fingerprint = Some(compat::fingerprint(&root, &descriptor.executable)?);
+            game.compatibility = compat::Record {
+                status: compat::Status::Detected,
+                game_identifier: game.id.clone(),
+                os: std::env::consts::OS.into(),
+                architecture: std::env::consts::ARCH.into(),
+                launch_target: descriptor.executable.clone(),
+                anti_cheat: "Unknown".into(),
+                ..Default::default()
+            };
             game.launch = Some(descriptor);
             Ok(())
         })
@@ -526,7 +601,7 @@ impl Service {
         ensure!(
             matches!(
                 operation,
-                Operation::Analyze | Operation::Optimize | Operation::Verify
+                Operation::Analyze | Operation::Optimize | Operation::Verify | Operation::Repair
             ),
             "Use runtime action for session operations"
         );
@@ -545,7 +620,7 @@ impl Service {
             .iter()
             .find(|g| g.id == id)
             .context("Unknown game")?;
-        if operation == Operation::Verify {
+        if matches!(operation, Operation::Verify | Operation::Repair) {
             ensure!(game.store.is_some(), "Optimize the installation first");
         }
         if operation == Operation::Optimize {
@@ -663,7 +738,9 @@ impl Service {
                     job.files = progress.files;
                     last = std::time::Instant::now();
                 }
-                if progress.stage == "publishing" && operation == Operation::Optimize {
+                if progress.stage == "publishing"
+                    && matches!(operation, Operation::Optimize | Operation::Repair)
+                {
                     job.cancellable = false;
                 }
             }
@@ -724,7 +801,50 @@ impl Service {
                     g.store = Some(destination);
                     g.store_stats = Some(serde_json::to_value(stats)?);
                     g.verified = true;
+                    g.last_verified = Some(now());
                     g.error = None;
+                    Ok(())
+                })?;
+            }
+            Operation::Repair => {
+                let old = game.store.as_ref().context("No store registered")?;
+                ensure!(
+                    Store::open(old).and_then(|s| s.verify()).is_err(),
+                    "Store verifies successfully; repair is unnecessary"
+                );
+                let parent = old.parent().context("Store has no parent")?;
+                let parent = playsparse_cli::workspace::projected(parent)?.0;
+                for source in snapshot.games.iter().map(|g| &g.source) {
+                    ensure!(
+                        !overlap(&parent, source),
+                        "Repair destination overlaps an installation"
+                    );
+                }
+                let destination = parent.join(identity("rebuilt-store"));
+                playsparse_cli::workspace::preflight(
+                    &game.source,
+                    &parent,
+                    256 * 1024,
+                    playsparse_core::Layout::Packs,
+                    1,
+                    "repair",
+                )?;
+                let stats = playsparse_store::pack_directory_observed(
+                    &game.source,
+                    &destination,
+                    &PackOptions::default(),
+                    &mut observer,
+                )?;
+                Store::open(&destination)?.verify()?;
+                // Atomic library pointer replacement. Old store never renamed/deleted, even across crashes.
+                self.change(|db| {
+                    let g = game_mut(db, id)?;
+                    g.store = Some(destination);
+                    g.store_stats = Some(serde_json::to_value(stats)?);
+                    g.verified = true;
+                    g.last_verified = Some(now());
+                    g.error = Some(format!("Rebuilt from current source. Previous store retained at {}. Writable overlay was retained; inspect saves before mounting.", old.display()));
+                    g.compatibility.status = compat::Status::Unknown;
                     Ok(())
                 })?;
             }
@@ -737,6 +857,7 @@ impl Service {
                     .verify_observed(&mut observer)?;
                 self.change(|db| {
                     game_mut(db, id)?.verified = true;
+                    game_mut(db, id)?.last_verified = Some(now());
                     Ok(())
                 })?;
             }
@@ -911,6 +1032,8 @@ impl Service {
             mountpoint: mountpoint.clone(),
             overlay: overlay.clone(),
             error: None,
+            processes: Default::default(),
+            ownership_token: None,
         };
         game_mut(&mut inner.db, id)?.overlay_allocated_bytes = None;
         game_mut(&mut inner.db, id)?.session = Some(session);
@@ -968,6 +1091,28 @@ impl Service {
         }
         let session = game_mut(&mut inner.db, id)?.session.as_mut().unwrap();
         if mounted {
+            let nonce = tempfile::Builder::new()
+                .prefix("session-")
+                .tempfile_in(&runtime)?;
+            let token = nonce
+                .path()
+                .file_name()
+                .unwrap()
+                .to_string_lossy()
+                .into_owned();
+            let marker = mounted_root(&mountpoint).join(format!(".playsparse-session-{token}"));
+            // Marker traverses this mount into its overlay, proving more than a path match.
+            let mut file = OpenOptions::new()
+                .write(true)
+                .create_new(true)
+                .open(&marker)?;
+            file.write_all(token.as_bytes())?;
+            file.sync_all()?;
+            ensure!(
+                fs::read(&marker)? == token.as_bytes(),
+                "Mount identity probe failed"
+            );
+            session.ownership_token = Some(token);
             session.state = "mounted".into();
         } else {
             session.state = "needs_attention".into();
@@ -1004,6 +1149,15 @@ impl Service {
             "Invalid executable path"
         );
         let mount = mounted_root(&session.mountpoint).canonicalize()?;
+        let expected = game
+            .launch_fingerprint
+            .as_ref()
+            .context("Launch target needs reconfirmation")?;
+        ensure!(
+            compat::fingerprint(&game.source, &descriptor.executable)? == *expected
+                && compat::fingerprint(&mount, &descriptor.executable)? == *expected,
+            "Executable changed after confirmation. Unmount and reconfirm launch target"
+        );
         let executable = mount.join(&descriptor.executable).canonicalize()?;
         #[cfg(target_os = "macos")]
         let bundle = executable.is_dir() && executable.extension().is_some_and(|s| s == "app");
@@ -1028,33 +1182,49 @@ impl Service {
         #[cfg(not(target_os = "macos"))]
         let mut command = Command::new(&executable);
         command.args(descriptor.args).current_dir(&mount);
+        process::LaunchTree::prepare(&mut command);
         let child = spawn_logged(&mut command, &self.root.join("runtimes").join(id).join("launch.log"), inner.db.settings.retain_logs)
             .context("Launch failed; signed native macOS code may require an independently prepared APFS compatibility shadow")?;
-        inner.processes.insert(id.into(), child);
+        let mut tree = process::LaunchTree::attach(child, bundle)?;
+        let observation = tree.observe()?;
+        inner.processes.insert(id.into(), tree);
+        game_mut(&mut inner.db, id)?
+            .session
+            .as_mut()
+            .unwrap()
+            .processes = observation;
         game_mut(&mut inner.db, id)?.session.as_mut().unwrap().state = "running".into();
         self.persist(&inner.db)?;
         Ok(())
     }
     pub fn reconcile(&self) -> Result<()> {
         let mut inner = self.inner.lock().unwrap();
-        let mut exited = vec![];
-        for (id, child) in &mut inner.processes {
-            if let Some(status) = child.try_wait()? {
-                exited.push((id.clone(), status));
-            }
+        let mut observations = vec![];
+        for (id, tree) in &mut inner.processes {
+            let observation = tree.observe().unwrap_or_else(|e| process::Observation {
+                lifecycle: process::Lifecycle::NeedsAttention,
+                limitation: Some(format!("Process inspection failed: {e:#}")),
+                ..Default::default()
+            });
+            observations.push((id.clone(), observation));
         }
-        let mut changed = !exited.is_empty();
-        for (id, status) in exited {
-            inner.processes.remove(&id);
-            if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session {
-                session.state = "mounted".into();
-                session.error = Some(if status.success() {
-                    "Tracked process exited. Child/launcher processes are not tracked; close them before unmounting.".into()
-                } else {
-                    format!(
-                        "Launch exited with {status}. Inspect launch.log and compatibility; close any remaining child processes before unmounting."
-                    )
-                });
+        let mut changed = false;
+        for (id, observation) in observations {
+            if let Some(session) = &mut game_mut(&mut inner.db, &id)?.session
+                && session.processes != observation
+            {
+                changed = true;
+                session.state = match observation.lifecycle {
+                    process::Lifecycle::Running | process::Lifecycle::Launching => "running",
+                    process::Lifecycle::LauncherExitedButGameRunning => {
+                        "launcher_exited_but_game_running"
+                    }
+                    process::Lifecycle::Exited => "mounted",
+                    process::Lifecycle::NeedsAttention => "needs_attention",
+                }
+                .into();
+                session.error = observation.limitation.clone();
+                session.processes = observation;
             }
         }
         let mut failed = vec![];
@@ -1089,21 +1259,23 @@ impl Service {
                 .is_some_and(|d| d.executable.ends_with(".app")),
             "Quit the app using its own Quit command. PlaySparse tracks Launch Services waiting, and cannot safely terminate the application by that helper PID."
         );
-        let child = inner
+        let tree = inner
             .processes
             .get_mut(id)
             .context("No tracked running process")?;
-        child.kill()?;
-        child.wait()?;
-        inner.processes.remove(id);
+        let observation = tree.stop_root()?;
         let session = game_mut(&mut inner.db, id)?
             .session
             .as_mut()
             .context("No session")?;
-        session.state = "mounted".into();
-        session.error = Some(
-            "Tracked process stopped. Close any launcher/child processes before unmounting.".into(),
-        );
+        session.state = if observation.active_processes.is_empty() {
+            "mounted"
+        } else {
+            "launcher_exited_but_game_running"
+        }
+        .into();
+        session.error = observation.limitation.clone();
+        session.processes = observation;
         self.persist(&inner.db)?;
         Ok(())
     }
@@ -1113,17 +1285,45 @@ impl Service {
             "Confirm all game and launcher processes are closed"
         );
         let mut inner = self.inner.lock().unwrap();
-        ensure!(
-            !inner.processes.contains_key(id),
-            "Stop the tracked game process first"
-        );
+        if let Some(tree) = inner.processes.get_mut(id) {
+            let observation = tree.observe()?;
+            ensure!(
+                observation.active_processes.is_empty()
+                    && observation.lifecycle != process::Lifecycle::NeedsAttention,
+                "The game or one of its child processes is still using this PlaySparse mount. Close the game before unmounting. Process inspection must succeed."
+            );
+        }
         let game = inner
             .db
             .games
             .iter()
             .find(|g| g.id == id)
-            .context("Unknown game")?;
+            .context("Unknown game")?
+            .clone();
         let session = game.session.as_ref().context("No runtime session")?;
+        let owner = inner.mounts.get_mut(id).context("Mount ownership is not established in this app lifetime. Inspect and detach the stale mount externally, then Recover");
+        // Validate owner before looking at any user-controlled persisted mount path.
+        let owner = owner?;
+        ensure!(
+            owner.try_wait()?.is_none(),
+            "Mount owner exited; inspect externally and recover only after absence"
+        );
+        let token = session
+            .ownership_token
+            .as_ref()
+            .context("Mount identity missing")?;
+        ensure!(
+            token
+                .bytes()
+                .all(|b| b.is_ascii_alphanumeric() || b == b'-'),
+            "Invalid mount identity"
+        );
+        ensure!(
+            fs::read(
+                mounted_root(&session.mountpoint).join(format!(".playsparse-session-{token}"))
+            )? == token.as_bytes(),
+            "Mount identity mismatch; refusing unmount"
+        );
         self.validate_mount_location(id, &session.mountpoint)?;
         let output = Command::new(&self.engine)
             .arg("unmount")
@@ -1145,6 +1345,7 @@ impl Service {
             );
         }
         inner.mounts.remove(id);
+        inner.processes.remove(id);
         game_mut(&mut inner.db, id)?.session = None;
         game_mut(&mut inner.db, id)?.overlay_allocated_bytes =
             overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
@@ -1175,10 +1376,14 @@ impl Service {
     pub fn recover_session(&self, id: &str) -> Result<()> {
         let mut inner = self.inner.lock().unwrap();
         ensure!(inner.active.is_none(), "Wait for storage operation");
-        ensure!(
-            !inner.processes.contains_key(id),
-            "Stop the tracked game process first"
-        );
+        if let Some(tree) = inner.processes.get_mut(id) {
+            let observation = tree.observe()?;
+            ensure!(
+                observation.active_processes.is_empty()
+                    && observation.lifecycle != process::Lifecycle::NeedsAttention,
+                "The game or one of its child processes is still using this PlaySparse mount. Close the game before unmounting. Process inspection must succeed."
+            );
+        }
         if let Some(child) = inner.mounts.get_mut(id) {
             ensure!(
                 child.try_wait()?.is_some(),
@@ -1224,6 +1429,7 @@ impl Service {
             overlay_allocation(&self.root.join("runtimes").join(id).join("overlay"));
         self.persist(&next)?;
         inner.db = next;
+        inner.processes.remove(id);
         Ok(())
     }
     pub fn can_close(&self) -> bool {
@@ -1253,6 +1459,17 @@ fn relative_executable(value: &str) -> bool {
 
 fn default_logs() -> bool {
     true
+}
+
+fn validate_metadata_file(path: &Path) -> Result<()> {
+    validate_owned_path(path.parent().context("Metadata has no parent")?)?;
+    if let Ok(metadata) = fs::symlink_metadata(path) {
+        ensure!(
+            metadata.is_file() && !metadata.is_symlink(),
+            "Metadata is redirected or not regular"
+        );
+    }
+    Ok(())
 }
 
 fn validate_owned_path(path: &Path) -> Result<()> {
@@ -1463,7 +1680,7 @@ pub fn runtime_state(game: &Game, jobs: &[Job]) -> RuntimeState {
     if let Some(session) = &game.session {
         return match session.state.as_str() {
             "mounted" => RuntimeState::Mounted,
-            "running" => RuntimeState::Running,
+            "running" | "launcher_exited_but_game_running" => RuntimeState::Running,
             _ => RuntimeState::NeedsAttention,
         };
     }
@@ -1498,11 +1715,116 @@ pub fn validate_transition(game: &Game, operation: Operation) -> Result<()> {
         Operation::Unmount | Operation::Recover => {
             game.session.is_some() && state != RuntimeState::Running
         }
-        Operation::Analyze | Operation::Optimize | Operation::Verify => game.session.is_none(),
+        Operation::Analyze | Operation::Optimize | Operation::Verify | Operation::Repair => {
+            game.session.is_none()
+        }
     };
     ensure!(
         allowed,
         "Cannot {operation:?} while runtime state is {state:?}; inspect the game details for recovery"
     );
     Ok(())
+}
+
+#[cfg(all(test, unix))]
+mod lifecycle_security_tests {
+    use super::*;
+    #[test]
+    fn changed_mounted_target_is_rejected_before_spawn() {
+        let temp = tempfile::tempdir().unwrap();
+        let source = temp.path().join("source");
+        fs::create_dir(&source).unwrap();
+        fs::write(source.join("game"), b"confirmed bytes").unwrap();
+        let service = Service::open(&temp.path().join("app"), Path::new("unused")).unwrap();
+        let game = service.add_game(&source).unwrap();
+        service
+            .configure_launch(
+                &game.id,
+                LaunchDescriptor {
+                    executable: "game".into(),
+                    args: vec![],
+                    compatibility_confirmed: true,
+                },
+            )
+            .unwrap();
+        let mount = service.root.join("runtimes").join(&game.id).join("mount");
+        fs::create_dir_all(&mount).unwrap();
+        fs::write(mount.join("game"), b"replaced overlay executable").unwrap();
+        service.inner.lock().unwrap().db.games[0].session = Some(Session {
+            state: "mounted".into(),
+            mountpoint: mount,
+            overlay: temp.path().join("overlay"),
+            error: None,
+            processes: Default::default(),
+            ownership_token: None,
+        });
+        assert!(
+            service
+                .launch_game(&game.id)
+                .unwrap_err()
+                .to_string()
+                .contains("Executable changed")
+        );
+        assert!(service.inner.lock().unwrap().processes.is_empty());
+    }
+    #[test]
+    fn descendants_block_unmount_and_restart_never_claims_mount_ownership() {
+        use std::os::unix::fs::PermissionsExt;
+        let temp = tempfile::tempdir().unwrap();
+        let source = temp.path().join("source");
+        fs::create_dir(&source).unwrap();
+        // Generated script interpreted by its shebang; game launch argv is still literal, no shell -c.
+        fs::write(
+            source.join("launcher"),
+            b"#!/bin/sh\nsleep 2 &\nsleep 0.2\nexit 0\n",
+        )
+        .unwrap();
+        fs::set_permissions(source.join("launcher"), fs::Permissions::from_mode(0o755)).unwrap();
+        let service = Service::open(&temp.path().join("app"), Path::new("unused")).unwrap();
+        let game = service.add_game(&source).unwrap();
+        service
+            .configure_launch(
+                &game.id,
+                LaunchDescriptor {
+                    executable: "launcher".into(),
+                    args: vec![],
+                    compatibility_confirmed: true,
+                },
+            )
+            .unwrap();
+        let mount = service.root.join("runtimes").join(&game.id).join("mount");
+        fs::create_dir_all(&mount).unwrap();
+        fs::copy(source.join("launcher"), mount.join("launcher")).unwrap();
+        service.inner.lock().unwrap().db.games[0].session = Some(Session {
+            state: "mounted".into(),
+            mountpoint: mount,
+            overlay: temp.path().join("overlay"),
+            error: None,
+            processes: Default::default(),
+            ownership_token: None,
+        });
+        service.launch_game(&game.id).unwrap();
+        thread::sleep(Duration::from_millis(400));
+        service.reconcile().unwrap();
+        assert_eq!(
+            service.snapshot().games[0].session.as_ref().unwrap().state,
+            "launcher_exited_but_game_running"
+        );
+        assert!(
+            service
+                .unmount_game(&game.id, true)
+                .unwrap_err()
+                .to_string()
+                .contains("child processes")
+        );
+        thread::sleep(Duration::from_secs(2));
+        service.reconcile().unwrap();
+        assert!(
+            service
+                .unmount_game(&game.id, true)
+                .unwrap_err()
+                .to_string()
+                .contains("ownership")
+        );
+    }
 }

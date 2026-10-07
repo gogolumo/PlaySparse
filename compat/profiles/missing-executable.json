@@ -1,0 +1,20 @@
+{
+  "status": "Unknown",
+  "game_identifier": "missing-executable",
+  "platform": "synthetic",
+  "os": "host",
+  "architecture": "host",
+  "launch_target": "missing-executable",
+  "launcher_type": "missing",
+  "filesystem_behaviour": "generated exact byte reads",
+  "case_sensitivity": "Unknown",
+  "anti_cheat": "absent in generated fixture",
+  "native_code": "generated Rust executable",
+  "overlay_behaviour": "isolated writes",
+  "limitations": [
+    "Synthetic profile is a test specification, not a compatibility claim."
+  ],
+  "tested_version": null,
+  "test_date": null,
+  "evidence": []
+}
