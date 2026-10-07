@@ -49,7 +49,7 @@ See [release preparation](release.md) for secrets, fail-closed signing and disab
 
 ## Retained local evidence and exact checks
 
-- [Native WKWebView/Tauri receipt](evidence/hardening-native-wkwebview-20261007.json): 7825299, PASS, original hashes/modes unchanged. Window capture remained blocked; refreshed screenshots are Preview Mode evidence only.
+- [Native WKWebView/Tauri receipt](evidence/hardening-native-wkwebview-20261007.json): 7825299, PASS, original hashes/modes unchanged. The final [native window screenshot](screenshots/hardening-native-macos-fixture.png) was captured successfully; refreshed analysis/settings screenshots remain Preview Mode evidence. The generated fixture is deliberately compressible, not a commercial-game savings claim.
 - [macFUSE native service/descendant receipt](evidence/hardening-native-service-20261007.json): b0ec736, SERVICE PASS; GUI NOT RUN in that harness. Exact data, overlay readback, child detection, blocked live-child unmount, root Stop, unmount and post-verify passed.
 - [Minimal signed C probe](evidence/hardening-native-code-20261007.json): 2e73ddc, ad-hoc signature and direct execution PASS, source unchanged. Runtime-loaded libraries and Developer ID remain NOT VERIFIED.
 - [Synthetic profile receipt](evidence/hardening-compat-synthetic-20261007.json): seven generated profiles passed expected behaviours. Case-sensitive is Unsupported on the available case-insensitive APFS volume; crashing/missing targets are Broken as expected. No record claims commercial compatibility.
