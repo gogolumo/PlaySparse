@@ -1448,7 +1448,9 @@ impl Service {
         Ok(())
     }
     pub fn can_close(&self) -> bool {
-        let inner = self.inner.lock().unwrap();
+        let Ok(inner) = self.inner.try_lock() else {
+            return false;
+        };
         inner.active.is_none()
             && !inner.db.jobs.iter().any(|j| j.state == "running")
             && inner.db.games.iter().all(|g| g.session.is_none())
