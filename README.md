@@ -432,3 +432,8 @@ The Windows build also links GPL-3.0 WinFsp Rust bindings and uses the separatel
 ### Desktop MVP workflow
 
 The native UI now inspects folders before registration, explains filesystem readiness, discovers launch candidates for explicit confirmation, checks destination capacity before optimization and exposes game details/recovery. Analysis, packing and verification use the existing Rust engine; source installations stay untouched. macOS app bundles use Launch Services and must be quit normally. See [first run, workflow and recovery](docs/desktop/README.md). Bundles remain unsigned development builds; physical Windows/Linux desktop acceptance and per-title compatibility are separate gates.
+
+## Production hardening
+
+See [production hardening](docs/desktop/hardening-2026-10-07.md), [physical validation kit](docs/desktop/validation.md) and [release/signing preparation](docs/desktop/release.md).
+Current-session process groups/Job Objects retain descendant activity after launcher exit. Runtime actions come from backend snapshots. Store rebuilding preserves old stores and overlays; atomic metadata backups permit explicit recovery. Diagnostic export omits personal paths, argv and raw logs. Physical Windows/Linux desktop acceptance and signed production release execution remain NOT VERIFIED.
