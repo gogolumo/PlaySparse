@@ -20,7 +20,7 @@ fn main() {
                     .unwrap();
             }
             if args[1] == "child-first" {
-                thread::sleep(Duration::from_secs(2));
+                thread::sleep(Duration::from_secs(4));
             }
         }
         "case" => {
@@ -40,7 +40,7 @@ fn main() {
         "argv" => {
             assert_eq!(args.get(2).unwrap(), "$(must-not-expand); & | > <");
         }
-        "short" => thread::sleep(Duration::from_millis(100)),
+        "short" => thread::sleep(Duration::from_millis(500)),
         "plain" => thread::sleep(Duration::from_secs(5)),
         other => panic!("Unknown synthetic mode {other}"),
     }

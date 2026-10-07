@@ -53,9 +53,9 @@ fn multiple_descendants_are_observed_after_reparenting() {
 #[test]
 fn child_exits_before_owned_root() {
     let mut tree = launch("child-first");
-    thread::sleep(Duration::from_millis(400));
-    let observation = tree.observe().unwrap();
-    assert_eq!(observation.lifecycle, Lifecycle::Running);
-    assert_eq!(observation.active_processes.len(), 1);
+    eventually(&mut tree, |o| o.active_processes.len() >= 2);
+    eventually(&mut tree, |o| {
+        o.lifecycle == Lifecycle::Running && o.active_processes.len() == 1
+    });
     eventually(&mut tree, |o| o.active_processes.is_empty());
 }
