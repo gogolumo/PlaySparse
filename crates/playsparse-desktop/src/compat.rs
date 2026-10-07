@@ -127,10 +127,16 @@ pub fn fingerprint(root: &Path, relative: &str) -> Result<String> {
     let mut path = root.to_path_buf();
     for component in Path::new(relative).components() {
         path.push(component);
-        ensure!(
-            !std::fs::symlink_metadata(&path)?.is_symlink(),
-            "Executable symlink rejected"
-        );
+        let metadata = std::fs::symlink_metadata(&path)?;
+        ensure!(!metadata.is_symlink(), "Executable symlink rejected");
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::MetadataExt;
+            ensure!(
+                metadata.file_attributes() & 0x400 == 0,
+                "Executable reparse point rejected"
+            );
+        }
     }
     #[cfg(target_os = "macos")]
     if path.is_dir() {
