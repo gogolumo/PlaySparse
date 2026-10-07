@@ -3,7 +3,13 @@ import hashlib
 import sys
 from pathlib import Path
 root = Path(sys.argv[1])
-files = sorted(p for p in root.rglob('*') if p.is_file() and p.suffix in {'.dmg', '.exe', '.deb', '.AppImage', '.gz'})
+files = sorted(
+    p for p in root.rglob('*')
+    if p.is_file() and (
+        p.suffix in {'.dmg', '.exe', '.deb', '.AppImage'}
+        or (p.parent == root and p.name.endswith('.tar.gz'))
+    )
+)
 with (root / 'SHA256SUMS').open('w') as out:
     for path in files:
         digest = hashlib.file_digest(path.open('rb'), 'sha256').hexdigest()
