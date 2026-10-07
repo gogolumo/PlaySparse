@@ -213,3 +213,30 @@ fn redirected_mount_log_failure_keeps_recoverable_session_and_preserves_source()
     assert!(service.snapshot().games[0].session.is_none());
     assert_eq!(fs::read(source.join("data")).unwrap(), b"original");
 }
+
+#[test]
+fn unsupported_compatibility_blocks_launch_even_when_target_was_confirmed() {
+    let temp = tempfile::tempdir().unwrap();
+    let source = temp.path().join("source");
+    fs::create_dir(&source).unwrap();
+    let service = Service::open(&temp.path().join("app"), Path::new("unused")).unwrap();
+    let mut game = service.add_game(&source).unwrap();
+    game.session = Some(playsparse_desktop::Session {
+        state: "mounted".into(),
+        mountpoint: temp.path().join("mount"),
+        overlay: temp.path().join("overlay"),
+        error: None,
+        processes: Default::default(),
+        ownership_token: None,
+    });
+    game.launch = Some(playsparse_desktop::LaunchDescriptor {
+        executable: "fixture".into(),
+        args: vec![],
+        compatibility_confirmed: true,
+    });
+    assert!(validate_transition(&game, Operation::Launch).is_ok());
+    game.compatibility.status = playsparse_desktop::compat::Status::Unsupported;
+    assert!(validate_transition(&game, Operation::Launch).is_err());
+    game.compatibility.status = playsparse_desktop::compat::Status::Broken;
+    assert!(validate_transition(&game, Operation::Launch).is_err());
+}

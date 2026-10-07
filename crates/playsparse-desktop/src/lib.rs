@@ -1134,6 +1134,13 @@ impl Service {
             .find(|g| g.id == id)
             .context("Unknown game")?
             .clone();
+        ensure!(
+            !matches!(
+                game.compatibility.status,
+                compat::Status::Unsupported | compat::Status::Broken
+            ),
+            "Compatibility record blocks launch; inspect evidence and limitations"
+        );
         let session = game.session.context("Mount the verified store first")?;
         ensure!(
             session.state == "mounted",
@@ -1714,6 +1721,10 @@ pub fn validate_transition(game: &Game, operation: Operation) -> Result<()> {
         Operation::Mount => game.verified && game.session.is_none(),
         Operation::Launch => {
             state == RuntimeState::Mounted
+                && !matches!(
+                    game.compatibility.status,
+                    compat::Status::Unsupported | compat::Status::Broken
+                )
                 && game
                     .launch
                     .as_ref()
