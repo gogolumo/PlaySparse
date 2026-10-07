@@ -1,21 +1,21 @@
 {
-  "code_commit": "c65d176b308f3eb437ed2ecf80be0b3eafdf8b62",
+  "code_commit": "bdfb861b17065a91cda626e8221e641528404f3e",
   "scope": "Unsigned local Apple Silicon development bundles; hdiutil DMG verification passed",
   "files": [
     {
       "name": "PlaySparse_0.1.0_aarch64.dmg",
-      "bytes": 7554001,
-      "sha256": "7b58024338b1ec97ec3940fbe4f64fe259ef9aa6c900e2427557d29fc836dda4"
+      "bytes": 7555012,
+      "sha256": "e2fec44f364ed4802b2fc84a1d63b8082e3d1d54e8bc4c430715a861a7036b6d"
     },
     {
       "name": "PlaySparse-app.tar.gz",
-      "bytes": 6731867,
-      "sha256": "9cf7e09f83f46cb85d78b4b17eabb9cfacda9d46becc9e8a543ae81995ba056a"
+      "bytes": 6733450,
+      "sha256": "4e853f470459461204ddc7c326a2f838e466ba81aff8771a90a90f5c66e0df36"
     },
     {
       "name": "playsparse-app",
-      "bytes": 13491488,
-      "sha256": "6b8d09f9d5a9d2ab5e2e71cf566c07203eb38e60821487cccc748ffa41d848ec"
+      "bytes": 13492640,
+      "sha256": "a122bc3f7871273f1ea9960f066405090ca1ece69e489277c2308cd5e9969089"
     },
     {
       "name": "playsparse-engine",
