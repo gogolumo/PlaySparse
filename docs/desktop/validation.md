@@ -27,3 +27,5 @@ python3 scripts/validation/macos/native-code.py --engine target/release/playspar
 ```
 
 This probes minimal ad-hoc native code; it is not a Developer ID, notarization, dynamic-library or commercial-game claim.
+
+For a native service-only run on a known host (GUI explicitly excluded), invoke `playsparse-validation --service-only --engine ENGINE --fixture GENERATED_FIXTURE --work FRESH_WORK --commit MANIFEST_COMMIT --evidence 'hosted native test'`. On real physical hardware use the physical evidence level explicitly. App visibility is NOT RUN and summary says SERVICE PASS; GUI NOT RUN. Final hosted receipts are included with matching kits. Synthetic profile receipts are separate: adding a JSON profile does not change React.

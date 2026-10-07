@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "commit_SHA": "2e73ddcba8b64b8f2f43dec8e41a754681f65e01",
+  "OS": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "architecture": "arm64",
+  "evidence_level": "physical hardware validation",
+  "signing": "ad-hoc controlled fixture; Developer ID NOT VERIFIED",
+  "started_at": 1791367445.721847,
+  "stages": [
+    {
+      "name": "compile generated native fixture",
+      "argv": [
+        "cc",
+        "$WORK/generated-source/main.c",
+        "-o",
+        "$WORK/generated-source/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "ad-hoc fixture signature",
+      "argv": [
+        "codesign",
+        "--force",
+        "--sign",
+        "-",
+        "$WORK/generated-source/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "",
+      "stderr": "$WORK/generated-source/native-fixture: replacing existing signature\n"
+    },
+    {
+      "name": "signature on APFS",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--strict",
+        "$WORK/generated-source/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "native fixture on APFS",
+      "argv": [
+        "$WORK/generated-source/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "generated native bytes\n",
+      "stderr": ""
+    },
+    {
+      "name": "pack",
+      "argv": [
+        "$HOME/Documents/PlaySparse/target/release/playsparse",
+        "pack",
+        "$WORK/generated-source",
+        "$WORK/store"
+      ],
+      "code": 0,
+      "stdout": "{\n  \"logical_bytes\": 51471,\n  \"physical_bytes\": 1969,\n  \"object_bytes\": 1053,\n  \"metadata_bytes\": 916,\n  \"allocated_bytes\": 16384,\n  \"filesystem_entries\": 8,\n  \"files\": 2,\n  \"unique_objects\": 2,\n  \"reused_chunks\": 0,\n  \"pack_seconds\": 0.037758083,\n  \"pack_cpu_seconds\": 0.0030209999999999994,\n  \"zstd_attempted_objects\": 2,\n  \"measured_raw_objects\": 0,\n  \"measured_raw_bytes\": 0,\n  \"verified_before_publish\": true\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "verify",
+      "argv": [
+        "$HOME/Documents/PlaySparse/target/release/playsparse",
+        "verify",
+        "$WORK/store"
+      ],
+      "code": 0,
+      "stdout": "{\n  \"ok\": true,\n  \"checked_files\": 2,\n  \"checked_bytes\": 51471,\n  \"checked_objects\": 2\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "signature through virtual filesystem",
+      "argv": [
+        "codesign",
+        "--verify",
+        "--strict",
+        "$WORK/mount/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "native execution through virtual filesystem",
+      "argv": [
+        "$WORK/mount/native-fixture"
+      ],
+      "code": 0,
+      "stdout": "generated native bytes\n",
+      "stderr": ""
+    },
+    {
+      "name": "ordinary unmount",
+      "argv": [
+        "$HOME/Documents/PlaySparse/target/release/playsparse",
+        "unmount",
+        "$WORK/mount"
+      ],
+      "code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "shadow": "not implemented",
+  "source_before_hashes": {
+    "native-fixture": "163a12446adce3ef553c8c7a6d2598556a29c63c524629719707b605e2538c67",
+    "main.c": "8dfec12ba87592a4e8099b13944299c510467cf6c0a5f273cf55955774e6a29e"
+  },
+  "direct_native_execution": "PASS",
+  "result": "PROBE COMPLETED; per-title compatibility NOT VERIFIED",
+  "source_after_hashes": {
+    "native-fixture": "163a12446adce3ef553c8c7a6d2598556a29c63c524629719707b605e2538c67",
+    "main.c": "8dfec12ba87592a4e8099b13944299c510467cf6c0a5f273cf55955774e6a29e"
+  },
+  "source_unchanged": true,
+  "finished_at": 1791367446.888861
+}

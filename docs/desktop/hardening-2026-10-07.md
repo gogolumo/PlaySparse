@@ -46,3 +46,16 @@ Earlier engine/game evidence remains title/host/version specific. It does not es
 The controlled macOS probe compiles a tiny C program, signs it ad hoc, verifies its signature on APFS and through macFUSE, compares exit/output and hashes source before/after. Minimal native execution passed on the available Mac. It does not reproduce the earlier Project Zomboid runtime-loaded-library problem. No APFS shadow is introduced: Developer ID signing, dlopen-heavy native code, bundles and commercial workloads need separate measured fixtures before an architecture change.
 
 See [release preparation](release.md) for secrets, fail-closed signing and disabled updater design. All absent hardware, credentials and commercial workloads remain NOT VERIFIED.
+
+## Retained local evidence and exact checks
+
+- [Native WKWebView/Tauri receipt](evidence/hardening-native-wkwebview-20261007.json): b0ec736, PASS, original hashes/modes unchanged. Window capture remained blocked; refreshed screenshots are Preview Mode evidence only.
+- [macFUSE native service/descendant receipt](evidence/hardening-native-service-20261007.json): b0ec736, SERVICE PASS; GUI NOT RUN in that harness. Exact data, overlay readback, child detection, blocked live-child unmount, root Stop, unmount and post-verify passed.
+- [Minimal signed C probe](evidence/hardening-native-code-20261007.json): 2e73ddc, ad-hoc signature and direct execution PASS, source unchanged. Runtime-loaded libraries and Developer ID remain NOT VERIFIED.
+- [Synthetic profile receipt](evidence/hardening-compat-synthetic-20261007.json): seven generated profiles passed expected behaviours. Case-sensitive is Unsupported on the available case-insensitive APFS volume; crashing/missing targets are Broken as expected. No record claims commercial compatibility.
+
+Local receipts retain dirty-tree declarations caused by two unrelated untracked local sync copies; those files were neither published nor deleted. Artifact/binary hashes are retained. Native runtime code remained unchanged between b0ec736 and the following CI/harness-only commits.
+
+Exact local gates: `cargo fmt --all -- --check`; `cargo clippy --locked --workspace --all-targets --all-features -- -D warnings`; `cargo test --locked --workspace --all-features` (154 passed, 3 driver tests ignored); Tauri formatting/all-feature Clippy; `PLAYSPARSE_GAME_TEST_BINARY=target/release/playsparse python3 -m unittest discover -s tests -p 'test_*.py' -v` (54 tests, 2 platform skips); `npm ci`, `npm audit` (zero vulnerabilities), `npm run lint`, `npm run typecheck`, `npm test` (6), `npm run build`, `npm run test:e2e` (4). The explicit ignored native desktop mount test additionally passed. The final CI must pass separately; local results are not substituted for hosted or physical Windows/Linux proof.
+
+Hosted Windows/Linux now also execute a generated driver-backed service kit with **hosted native test** receipts. GUI visibility is NOT RUN on hosted runners. Profile-driven native workloads run separately with **CI simulation** provenance on normal filesystems. The downloadable kit includes both receipt scopes, separate from the physical wrapper’s manual window attestation.

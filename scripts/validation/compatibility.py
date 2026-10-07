@@ -41,6 +41,9 @@ try:
         runtime = root / 'runtime'
         source.mkdir(parents=True)
         runtime.mkdir()
+        if platform.system() == 'Windows' and not target.lower().endswith('.exe'):
+            target += '.exe'
+            record['launch_target'] = target
         binary = runtime / target
         binary.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(fixture, source / 'generated-fixture')
@@ -84,5 +87,6 @@ except Exception as error:
         'commit_SHA': a.commit, 'records': records, 'pass_fail': 'FAIL', 'error': str(error)[:4096]}, indent=2) + '\n')
     raise
 receipt = {'schema': 1, 'evidence_level': 'CI simulation', 'commit_SHA': a.commit, 'records': records,
+           'fixture_sha256': hashlib.sha256(fixture.read_bytes()).hexdigest(),
            'commercial_game_compatibility': 'NOT VERIFIED', 'pass_fail': 'PASS'}
 (a.work / 'compat-synthetic.json').write_text(json.dumps(receipt, indent=2) + '\n')
