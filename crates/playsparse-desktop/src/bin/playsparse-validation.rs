@@ -79,36 +79,38 @@ fn run(args: &BTreeMap<String, String>, work: &Path, receipt: &mut Value) -> Res
     let portable = args.contains_key("--portable");
     let service_only = args.contains_key("--service-only");
     let mut app_child = None;
-    stage(receipt, "app launches", || {
-        if portable || service_only {
-            return Ok(());
-        }
-        let app = PathBuf::from(
-            args.get("--app")
-                .context("--app required for native validation")?,
-        )
-        .canonicalize()?;
-        let child = Command::new(app)
-            .env("PLAYSPARSE_DESKTOP_DATA_DIR", work.join("gui-library"))
-            .spawn()?;
-        app_child = Some(child);
-        println!(
-            "Confirm the actual PlaySparse library window is visible: type VISIBLE and press Enter."
-        );
-        let mut answer = String::new();
-        std::io::stdin().read_line(&mut answer)?;
-        ensure!(
-            answer.trim() == "VISIBLE",
-            "GUI visibility was not confirmed"
-        );
-        ensure!(
-            app_child.as_mut().unwrap().try_wait()?.is_none(),
-            "App exited"
-        );
-        Ok(())
-    })?;
     if portable || service_only {
-        receipt["test_stages"][0]["status"] = json!("NOT RUN");
+        println!("NOT RUN app launches");
+        receipt["test_stages"]
+            .as_array_mut()
+            .unwrap()
+            .push(json!({"name":"app launches","status":"NOT RUN"}));
+    } else {
+        stage(receipt, "app launches", || {
+            let app = PathBuf::from(
+                args.get("--app")
+                    .context("--app required for native validation")?,
+            )
+            .canonicalize()?;
+            let child = Command::new(app)
+                .env("PLAYSPARSE_DESKTOP_DATA_DIR", work.join("gui-library"))
+                .spawn()?;
+            app_child = Some(child);
+            println!(
+                "Confirm the actual PlaySparse library window is visible: type VISIBLE and press Enter."
+            );
+            let mut answer = String::new();
+            std::io::stdin().read_line(&mut answer)?;
+            ensure!(
+                answer.trim() == "VISIBLE",
+                "GUI visibility was not confirmed"
+            );
+            ensure!(
+                app_child.as_mut().unwrap().try_wait()?.is_none(),
+                "App exited"
+            );
+            Ok(())
+        })?;
     }
     let service = Service::open(&work.join("service-library"), &engine)?;
     stage(receipt, "engine launches", || {
@@ -185,6 +187,10 @@ fn run(args: &BTreeMap<String, String>, work: &Path, receipt: &mut Value) -> Res
         })?;
         stage(receipt, "overlay write", || {
             fs::write(mount.join("save.txt"), b"generated save")?;
+            ensure!(
+                fs::read(mount.join("save.txt"))? == b"generated save",
+                "Overlay readback differs"
+            );
             ensure!(!source.join("save.txt").exists(), "Source modified");
             Ok(())
         })?;
@@ -326,6 +332,8 @@ fn main() -> Result<()> {
     receipt["pass_fail"] = json!(if result.is_ok() {
         if args.contains_key("--portable") {
             "PORTABLE PASS; native stages NOT RUN"
+        } else if args.contains_key("--service-only") {
+            "SERVICE PASS; GUI NOT RUN"
         } else {
             "PASS"
         }
