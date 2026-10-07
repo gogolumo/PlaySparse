@@ -1,4 +1,4 @@
-export type Operation = "analyze" | "optimize" | "verify";
+export type Operation = "analyze" | "optimize" | "verify" | "repair";
 export interface Settings {
   theme: "light" | "dark" | "system";
   storage_dir: string;
@@ -45,8 +45,12 @@ export interface Game {
   overlay_allocated_bytes: number | null;
   error: string | null;
   launch: LaunchDescriptor | null;
+  compatibility?: { status: string };
+  last_verified?: number | null;
+  available_actions?: string[];
   session: {
     state: string;
+    processes?: { lifecycle: string; active_processes: {pid: number; birth: number}[]; limitation: string | null };
     mountpoint: string;
     overlay: string;
     error: string | null;
@@ -117,6 +121,7 @@ export function status(game: Game, jobs: Job[]): string {
     return (
       {
         running: "Running",
+        launcher_exited_but_game_running: "Running · launcher exited",
         mounted: "Mounted",
         preparing: "Preparing",
         needs_attention: "Needs attention",
@@ -125,8 +130,9 @@ export function status(game: Game, jobs: Job[]): string {
   const last = jobs.filter((j) => j.game_id === game.id).at(-1);
   if (game.error || last?.state === "failed" || last?.state === "interrupted")
     return "Needs attention";
-  if (game.store) return game.verified ? "Ready" : "Verify required";
-  return game.analysis ? "Ready to optimize" : "Not analyzed";
+  if (game.compatibility?.status === "Unsupported") return "Unsupported";
+  if (game.store) return game.verified ? "Ready" : "Needs verification";
+  return game.analysis ? "Ready to optimize" : "Needs setup";
 }
 
 export function effectiveBytes(game: Game): number | null {

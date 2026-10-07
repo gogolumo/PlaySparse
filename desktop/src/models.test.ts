@@ -40,8 +40,8 @@ describe("honest storage and state presentation", () => {
     expect(bytes(1024 ** 3)).toBe("1.00 GiB");
   });
   it("does not display readiness before verified publication", () => {
-    expect(status(game, [])).toBe("Not analyzed");
-    expect(status({ ...game, store: "/store" }, [])).toBe("Verify required");
+    expect(status(game, [])).toBe("Needs setup");
+    expect(status({ ...game, store: "/store" }, [])).toBe("Needs verification");
     expect(status({ ...game, store: "/store", verified: true }, [])).toBe(
       "Ready",
     );
@@ -75,7 +75,7 @@ it("shows running, interrupted and verification recovery states without pretendi
     launch: null,
     session: null,
   };
-  expect(status(game, [])).toBe("Verify required");
+  expect(status(game, [])).toBe("Needs verification");
   expect(
     status(
       {
@@ -104,4 +104,8 @@ it("shows running, interrupted and verification recovery states without pretendi
       [],
     ),
   ).toBe("Needs attention");
+});
+
+it("keeps launcher descendants visibly running", () => {
+  expect(status({...game, session: {state: "launcher_exited_but_game_running",mountpoint:"/mount",overlay:"/overlay",error:null}}, [])).toBe("Running · launcher exited");
 });

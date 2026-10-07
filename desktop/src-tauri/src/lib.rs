@@ -8,6 +8,19 @@ type Backend = Arc<Service>;
 type Reply<T> = Result<T, String>;
 
 #[tauri::command]
+async fn export_diagnostics(service: State<'_, Backend>) -> Reply<String> {
+    let service = service.inner().clone();
+    tauri::async_runtime::spawn_blocking(move || {
+        service
+            .export_diagnostics()
+            .map(|p| p.display().to_string())
+            .map_err(|e| format!("{e:#}"))
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
 fn get_snapshot(service: State<'_, Backend>) -> Snapshot {
     service.snapshot()
 }
@@ -311,6 +324,7 @@ pub fn run() {
             game_locations,
             inspect_location,
             get_snapshot,
+            export_diagnostics,
             select_folder,
             add_game,
             remove_game,
@@ -332,6 +346,7 @@ pub fn run() {
         game_locations,
         inspect_location,
         get_snapshot,
+        export_diagnostics,
         select_folder,
         add_game,
         remove_game,

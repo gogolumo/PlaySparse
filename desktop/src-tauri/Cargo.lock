@@ -2893,12 +2893,14 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "blake3",
+ "libc",
  "playsparse-cli",
  "playsparse-core",
  "playsparse-store",
  "serde",
  "serde_json",
  "tempfile",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

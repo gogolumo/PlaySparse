@@ -277,3 +277,8 @@ export async function inspectLocation(id: string, kind: string): Promise<void> {
     );
   await invoke("inspect_location", { id, kind });
 }
+
+export async function exportDiagnostics(): Promise<string> {
+  if (preview) throw Error("Diagnostic export requires the native app.");
+  return invoke("export_diagnostics");
+}
