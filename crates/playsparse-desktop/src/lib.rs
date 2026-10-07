@@ -146,8 +146,7 @@ impl Service {
             .read(true)
             .write(true)
             .open(root.join("library.lock"))?;
-        lock.try_lock()
-            .context("PlaySparse is already using this library")?;
+        acquire_library_lock(&lock)?;
         let path = root.join("library.json");
         validate_metadata_file(&path)?;
         let mut db: Snapshot = if path.exists() {
@@ -1476,6 +1475,24 @@ fn relative_executable(value: &str) -> bool {
 
 fn default_logs() -> bool {
     true
+}
+
+// Concurrent Unix process creation can briefly inherit a lock descriptor before exec closes it.
+// Retry only contention, for at most 250 ms; a genuine writer still prevents opening/recovery.
+fn acquire_library_lock(lock: &File) -> Result<()> {
+    for attempt in 0..=25 {
+        match lock.try_lock() {
+            Ok(()) => return Ok(()),
+            Err(std::fs::TryLockError::WouldBlock) if attempt < 25 => {
+                thread::sleep(Duration::from_millis(10))
+            }
+            Err(error) => {
+                return Err(error)
+                    .context("PlaySparse is already using this library or the lock is unavailable");
+            }
+        }
+    }
+    unreachable!()
 }
 
 fn validate_metadata_file(path: &Path) -> Result<()> {

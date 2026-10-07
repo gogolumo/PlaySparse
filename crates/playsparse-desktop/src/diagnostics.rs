@@ -39,8 +39,7 @@ impl Service {
             .create(true)
             .truncate(false)
             .open(root.join("library.lock"))?;
-        lock.try_lock()
-            .context("Close PlaySparse before restoring metadata")?;
+        acquire_library_lock(&lock).context("Close PlaySparse before restoring metadata")?;
         let backup_path = root.join("library.backup.json");
         validate_metadata_file(&backup_path)?;
         ensure!(
