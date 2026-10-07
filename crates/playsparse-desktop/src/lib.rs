@@ -1493,8 +1493,9 @@ fn acquire_library_lock(lock: &File) -> Result<()> {
                 thread::sleep(Duration::from_millis(10))
             }
             Err(error) => {
-                return Err(error)
-                    .context("PlaySparse is already using this library or the lock is unavailable");
+                return Err(error).context(
+                    "PlaySparse is already using this library or the lock is unavailable",
+                );
             }
         }
     }
