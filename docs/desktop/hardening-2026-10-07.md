@@ -49,13 +49,15 @@ See [release preparation](release.md) for secrets, fail-closed signing and disab
 
 ## Retained local evidence and exact checks
 
-- [Native WKWebView/Tauri receipt](evidence/hardening-native-wkwebview-20261007.json): b0ec736, PASS, original hashes/modes unchanged. Window capture remained blocked; refreshed screenshots are Preview Mode evidence only.
+- [Native WKWebView/Tauri receipt](evidence/hardening-native-wkwebview-20261007.json): 7825299, PASS, original hashes/modes unchanged. Window capture remained blocked; refreshed screenshots are Preview Mode evidence only.
 - [macFUSE native service/descendant receipt](evidence/hardening-native-service-20261007.json): b0ec736, SERVICE PASS; GUI NOT RUN in that harness. Exact data, overlay readback, child detection, blocked live-child unmount, root Stop, unmount and post-verify passed.
 - [Minimal signed C probe](evidence/hardening-native-code-20261007.json): 2e73ddc, ad-hoc signature and direct execution PASS, source unchanged. Runtime-loaded libraries and Developer ID remain NOT VERIFIED.
 - [Synthetic profile receipt](evidence/hardening-compat-synthetic-20261007.json): seven generated profiles passed expected behaviours. Case-sensitive is Unsupported on the available case-insensitive APFS volume; crashing/missing targets are Broken as expected. No record claims commercial compatibility.
 
-Local receipts retain dirty-tree declarations caused by two unrelated untracked local sync copies; those files were neither published nor deleted. Artifact/binary hashes are retained. Native runtime code remained unchanged between b0ec736 and the following CI/harness-only commits.
+Local receipts retain dirty-tree declarations caused by two unrelated untracked local sync copies; those files were neither published nor deleted. Artifact/binary hashes are retained. The service/descendant receipt identifies b0ec736. The later 7825299 native GUI receipt additionally tests async snapshot/location/fingerprint commands and a nonblocking close guard.
 
 Exact local gates: `cargo fmt --all -- --check`; `cargo clippy --locked --workspace --all-targets --all-features -- -D warnings`; `cargo test --locked --workspace --all-features` (154 passed, 3 driver tests ignored); Tauri formatting/all-feature Clippy; `PLAYSPARSE_GAME_TEST_BINARY=target/release/playsparse python3 -m unittest discover -s tests -p 'test_*.py' -v` (54 tests, 2 platform skips); `npm ci`, `npm audit` (zero vulnerabilities), `npm run lint`, `npm run typecheck`, `npm test` (6), `npm run build`, `npm run test:e2e` (4). The explicit ignored native desktop mount test additionally passed. The final CI must pass separately; local results are not substituted for hosted or physical Windows/Linux proof.
 
 Hosted Windows/Linux now also execute a generated driver-backed service kit with **hosted native test** receipts. GUI visibility is NOT RUN on hosted runners. Profile-driven native workloads run separately with **CI simulation** provenance on normal filesystems. The downloadable kit includes both receipt scopes, separate from the physical wrapper’s manual window attestation.
+
+API references: [Windows Job Objects](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects), [nested jobs](https://learn.microsoft.com/en-us/windows/win32/procthread/nested-jobs), [Linux stat/starttime](https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html). macOS BSD identity layouts were checked against the local Apple SDK proc_info/libproc headers and exercised natively.
