@@ -209,11 +209,12 @@ jobs:
 
           rm -rf "$staging"
 
-      - name: Build downloadable synthetic validation kit
+      - name: Build native validation binaries with the platform compiler environment
+        run: cargo build --locked --release -p playsparse-desktop --bins
+      - name: Package downloadable synthetic validation kit
         shell: bash
         run: |
           set -euo pipefail
-          cargo build --locked --release -p playsparse-desktop --bins
           python3 scripts/validation/package-kit.py --platform "${{ matrix.platform }}" --commit "$GITHUB_SHA"
           python3 scripts/validation/run-portable.py --kit validation-kit --work "$RUNNER_TEMP/playsparse-portable" --commit "$GITHUB_SHA"
       - name: Preserve validation kit and portable receipt
