@@ -71,11 +71,7 @@ impl LaunchTree {
                 return Err(error);
             }
         };
-        let root = snapshot().ok().and_then(|rows| {
-            rows.into_iter()
-                .find(|r| r.identity.pid == child.id())
-                .map(|r| r.identity)
-        });
+        let root = root_identity(child.id()).ok();
         // Reap an immediately exiting root only through its owned handle.
         let exit = child.try_wait()?;
         let mut known = BTreeMap::new();
@@ -180,12 +176,50 @@ fn track(
     known.values().cloned().collect()
 }
 #[cfg(target_os = "linux")]
+fn root_identity(pid: u32) -> Result<Identity> {
+    parse_stat(pid, &std::fs::read_to_string(format!("/proc/{pid}/stat"))?)
+        .map(|r| r.identity)
+        .ok_or_else(|| anyhow::anyhow!("Root identity unavailable"))
+}
+#[cfg(target_os = "macos")]
+fn root_identity(pid: u32) -> Result<Identity> {
+    let mut info = std::mem::MaybeUninit::<libc::proc_bsdinfo>::zeroed();
+    let n = unsafe {
+        libc::proc_pidinfo(
+            pid as i32,
+            libc::PROC_PIDTBSDINFO,
+            0,
+            info.as_mut_ptr().cast(),
+            std::mem::size_of::<libc::proc_bsdinfo>() as i32,
+        )
+    };
+    ensure!(
+        n as usize == std::mem::size_of::<libc::proc_bsdinfo>(),
+        "Root identity unavailable"
+    );
+    let info = unsafe { info.assume_init() };
+    Ok(Identity {
+        pid,
+        birth: info.pbi_start_tvsec * 1_000_000 + info.pbi_start_tvusec,
+    })
+}
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+fn root_identity(_: u32) -> Result<Identity> {
+    anyhow::bail!("Use OS Job membership")
+}
+
+#[cfg(target_os = "linux")]
 fn snapshot() -> Result<Vec<Row>> {
     let mut rows = vec![];
     for entry in std::fs::read_dir("/proc")? {
         let entry = entry?;
         use std::os::unix::fs::MetadataExt;
-        if entry.metadata()?.uid() != unsafe { libc::geteuid() } {
+        let metadata = match entry.metadata() {
+            Ok(metadata) => metadata,
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
+            Err(e) => return Err(e.into()),
+        };
+        if metadata.uid() != unsafe { libc::geteuid() } {
             continue;
         }
         let Some(pid) = entry
@@ -295,7 +329,7 @@ fn snapshot() -> Result<Vec<Row>> {
     }
     Ok(rows)
 }
-#[cfg(not(any(target_os = "macos", target_os = "linux")))]
+#[cfg(not(any(target_os = "macos", target_os = "linux", target_os = "windows")))]
 fn snapshot() -> Result<Vec<Row>> {
     anyhow::bail!("Use OS-owned Job membership on Windows")
 }

@@ -1223,7 +1223,15 @@ impl Service {
                     process::Lifecycle::NeedsAttention => "needs_attention",
                 }
                 .into();
-                session.error = observation.limitation.clone();
+                session.error = Some(format!(
+                    "{}{}",
+                    observation
+                        .root_exit
+                        .as_ref()
+                        .map(|s| format!("Launch root exited: {s}. "))
+                        .unwrap_or_default(),
+                    observation.limitation.as_deref().unwrap_or("")
+                ));
                 session.processes = observation;
             }
         }
