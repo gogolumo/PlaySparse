@@ -29,6 +29,8 @@
 > [!IMPORTANT]
 > PlaySparse is **not** claiming arbitrary 10×–15× lossless compression for already-compressed game assets. The project explores a different storage representation: chunked, compressed, verified objects served through a virtual filesystem while applications continue reading ordinary files.
 
+> **Commercial inquiries:** For scoped storage benchmarks, proof-of-concept integrations and Rust/Tauri engineering, see [collaboration and implementation](COMMERCIAL.md). PlaySparse remains experimental and MIT-licensed.
+
 ## Desktop application
 
 PlaySparse now has a Tauri 2 / React desktop application with a persistent library, native folder selection, measured Rust analysis, source-preserving optimization, verification, cancellable jobs, driver diagnostics and managed runtime sessions. Light/dark themes and a browser preview are available.
